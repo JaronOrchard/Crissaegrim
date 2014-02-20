@@ -16,7 +16,8 @@ public class Crissaegrim {
 	private static volatile Player player = new Player();
 	private static volatile ChatBox chatBox = new ChatBox();
 	private static volatile List<DataPacket> outgoingDataPackets = Collections.synchronizedList(new ArrayList<DataPacket>());;
-
+	public static volatile boolean connectionStable = true;
+	
 	public static GameRunner getGameRunner() { return gameRunner; }
 	public static Player getPlayer() { return player; }
 	public static ChatBox getChatBox() { return chatBox; }

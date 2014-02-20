@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
+import crissaegrim.Crissaegrim;
 import datapacket.DataPacket;
 
 public class CrissaegrimReaderThread extends Thread {
@@ -18,12 +19,9 @@ public class CrissaegrimReaderThread extends Thread {
     	
     	ObjectInputStream socketIn = null;
     	try {
-    	
     		socketIn = new ObjectInputStream(valmanwaySocket.getInputStream());
     		
-    		boolean listening = true;
-    		
-    		while (listening) {
+    		while (Crissaegrim.connectionStable) {
     			DataPacket incomingPacket = (DataPacket)socketIn.readObject();
     			DataPacketProcessor.processDataPacket(incomingPacket);
     		}
@@ -38,5 +36,6 @@ public class CrissaegrimReaderThread extends Thread {
 			valmanwaySocket.close();
 		} catch (IOException e) { e.printStackTrace(); }
 		
+    	Crissaegrim.connectionStable = false;
     }
 }

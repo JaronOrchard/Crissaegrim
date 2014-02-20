@@ -7,7 +7,7 @@ public class ReceivePlayerIdPacket extends DataPacket {
 	public int getReceivedPlayerId() { return receivedPlayerId; }
 	
 	public ReceivePlayerIdPacket(int id) {
-		super(RECEIVE_PLAYER_ID_PACKET);
+		super(DataPacketTypes.RECEIVE_PLAYER_ID_PACKET);
 		receivedPlayerId = id;
 	}
 	

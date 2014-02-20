@@ -4,7 +4,7 @@ public class RequestPlayerIdPacket extends DataPacket {
 	private static final long serialVersionUID = 1L;
 	
 	public RequestPlayerIdPacket() {
-		super(REQUEST_PLAYER_ID_PACKET);
+		super(DataPacketTypes.REQUEST_PLAYER_ID_PACKET);
 	}
 	
 }

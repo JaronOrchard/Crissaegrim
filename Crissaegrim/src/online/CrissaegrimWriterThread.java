@@ -16,25 +16,28 @@ public class CrissaegrimWriterThread extends Thread {
 
     public void run() {
     	
+    	ObjectOutputStream socketOut = null;
     	try {
-    		ObjectOutputStream socketOut = new ObjectOutputStream(valmanwaySocket.getOutputStream());
+    		socketOut = new ObjectOutputStream(valmanwaySocket.getOutputStream());
     		socketOut.flush();
     	
-    		boolean listening = true;
-    		
-    		while (listening) {
+    		while (Crissaegrim.connectionStable) {
     			if (Crissaegrim.outgoingDataPacketsExist()) {
     				socketOut.reset();
     				socketOut.writeObject(Crissaegrim.popOutgoingDataPacket());
     			}
     		}
     		
-    		socketOut.close();
-    		valmanwaySocket.close();
-    		
     	} catch (IOException e) {
     		System.out.println("Crissaegrim writer thread ended - " + e.getMessage());
 			e.printStackTrace();
 		}
+    	
+    	try {
+			socketOut.close();
+			valmanwaySocket.close();
+		} catch (IOException e) { e.printStackTrace(); }
+		
+    	Crissaegrim.connectionStable = false;
     }
 }

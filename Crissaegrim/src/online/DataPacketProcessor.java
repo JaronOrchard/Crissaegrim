@@ -2,6 +2,7 @@ package online;
 
 import crissaegrim.Crissaegrim;
 import datapacket.DataPacket;
+import datapacket.DataPacketTypes;
 import datapacket.ReceivePlayerIdPacket;
 
 // Crissaegrim side
@@ -11,7 +12,7 @@ public final class DataPacketProcessor {
 	public static void processDataPacket(DataPacket packet) {
 		switch (packet.getPacketType()) {
 			
-			case DataPacket.RECEIVE_PLAYER_ID_PACKET:
+			case DataPacketTypes.RECEIVE_PLAYER_ID_PACKET:
 				System.out.println("Received player id packet");
 				System.out.println(Crissaegrim.getPlayer().getId());
 				Crissaegrim.getPlayer().assignPlayerId( ((ReceivePlayerIdPacket)(packet)).getReceivedPlayerId());
