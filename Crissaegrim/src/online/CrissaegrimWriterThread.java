@@ -7,7 +7,7 @@ import java.net.Socket;
 import crissaegrim.Crissaegrim;
 
 public class CrissaegrimWriterThread extends Thread {
-	private Socket valmanwaySocket = null;
+	private final Socket valmanwaySocket;
     
     public CrissaegrimWriterThread(Socket socket) {
     	super("CrissaegrimWriterThread");

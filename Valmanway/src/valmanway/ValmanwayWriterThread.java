@@ -5,11 +5,13 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ValmanwayWriterThread extends Thread {
-	private Socket crissaegrimSocket = null;
-    
-    public ValmanwayWriterThread(Socket socket) {
+	private final Socket crissaegrimSocket;
+    private final ValmanwayUserData valmanwayUserData;
+	
+    public ValmanwayWriterThread(Socket socket, ValmanwayUserData userData) {
     	super("ValmanwayWriterThread");
     	this.crissaegrimSocket = socket;
+    	this.valmanwayUserData = userData;
     }
 
     public void run() {
@@ -17,13 +19,13 @@ public class ValmanwayWriterThread extends Thread {
     	try {
     		ObjectOutputStream socketOut = new ObjectOutputStream(crissaegrimSocket.getOutputStream());
     		socketOut.flush();
-    	
+    		
     		boolean listening = true;
     		
     		while (listening) {
-    			if (Valmanway.getSharedData().outgoingDataPacketsExist()) {
+    			if (valmanwayUserData.outgoingDataPacketsExist()) {
     				socketOut.reset();
-    				socketOut.writeObject(Valmanway.getSharedData().popOutgoingDataPacket());
+    				socketOut.writeObject(valmanwayUserData.popOutgoingDataPacket());
     			}
     		}
     		

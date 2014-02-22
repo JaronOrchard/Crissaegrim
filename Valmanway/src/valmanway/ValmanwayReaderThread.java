@@ -7,11 +7,13 @@ import java.net.Socket;
 import datapacket.DataPacket;
 
 public class ValmanwayReaderThread extends Thread {
-	private Socket crissaegrimSocket = null;
+	private final Socket crissaegrimSocket;
+    private final ValmanwayUserData valmanwayUserData;
     
-    public ValmanwayReaderThread(Socket socket) {
+    public ValmanwayReaderThread(Socket socket, ValmanwayUserData userData) {
     	super("ValmanwayReaderThread");
     	this.crissaegrimSocket = socket;
+    	this.valmanwayUserData = userData;
     }
 
     public void run() {
@@ -25,7 +27,7 @@ public class ValmanwayReaderThread extends Thread {
     		
     		while (listening) {
     			DataPacket incomingPacket = (DataPacket)socketIn.readObject();
-    			ValmanwayDataPacketProcessor.processDataPacket(incomingPacket);
+    			ValmanwayDataPacketProcessor.processDataPacket(incomingPacket, valmanwayUserData);
     		}
     		
     	} catch (IOException | ClassNotFoundException e) {

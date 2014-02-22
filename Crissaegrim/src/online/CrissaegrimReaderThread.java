@@ -8,7 +8,7 @@ import crissaegrim.Crissaegrim;
 import datapacket.DataPacket;
 
 public class CrissaegrimReaderThread extends Thread {
-	private Socket valmanwaySocket = null;
+	private final Socket valmanwaySocket;
     
     public CrissaegrimReaderThread(Socket socket) {
     	super("CrissaegrimReaderThread");

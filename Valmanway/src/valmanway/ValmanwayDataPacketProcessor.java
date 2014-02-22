@@ -6,12 +6,12 @@ import datapacket.ReceivePlayerIdPacket;
 
 public final class ValmanwayDataPacketProcessor {
 	
-	public static void processDataPacket(DataPacket packet) {
+	public static void processDataPacket(DataPacket packet, ValmanwayUserData valmanwayUserData) {
 		switch (packet.getPacketType()) {
 			
 			case DataPacketTypes.REQUEST_PLAYER_ID_PACKET:
 				System.out.println("Received player id request packet");
-				Valmanway.getSharedData().addOutgoingDataPacket(new ReceivePlayerIdPacket(Valmanway.getSharedData().getNextPlayerId()));
+				valmanwayUserData.addOutgoingDataPacket(new ReceivePlayerIdPacket(valmanwayUserData.getPlayerId()));
 				break;
 			default:
 				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());
