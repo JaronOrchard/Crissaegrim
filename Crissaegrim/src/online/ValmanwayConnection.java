@@ -7,7 +7,9 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import players.Player;
 import crissaegrim.Crissaegrim;
+import datapacket.SendPlayerStatusPacket;
 
 public class ValmanwayConnection {
 	
@@ -16,6 +18,9 @@ public class ValmanwayConnection {
 	private static int CONNECTION_TIMEOUT_MILLIS = 1000;
 	
 	private Socket valmanwaySocket = null;
+	
+	private long lastPlayerStatusSendTime = 0;
+	private static long PLAYER_STATUS_SEND_INTERVAL = 100;
 	
 	private boolean online = false;
 	public boolean getOnline() { return online; }
@@ -44,25 +49,18 @@ public class ValmanwayConnection {
 		}
 	}
 	
-//	public boolean incomingDataExists() throws IOException {
-//		if (online) {
-//			return valmanwaySocket.getInputStream().available() != 0;
-//		}
-//		return false;
-//	}
-//	
-//	public String getIncomingData() throws IOException {
-//		return inputFromServer.readLine();
-//	}
-	
-//	public void sendPlayerStatus() {
-////		Player player = Crissaegrim.getPlayer();
-////		StringBuilder out = new StringBuilder();
-////		out.append("02|");
-////		02|player_id|board_name|x_pos|y_pos|texture|facing_right
-////		
-//		//outputToServer.println(data);
-//	}
+	public void sendPlayerStatus() {
+		if (Crissaegrim.getTime() - lastPlayerStatusSendTime > PLAYER_STATUS_SEND_INTERVAL) {
+			lastPlayerStatusSendTime = Crissaegrim.getTime();
+			Player player = Crissaegrim.getPlayer();
+			Crissaegrim.addOutgoingDataPacket(new SendPlayerStatusPacket(
+					Crissaegrim.getBoard().getName(),
+					player.getPosition().getX(),
+					player.getPosition().getY(),
+					player.getCurrentTexture(),
+					player.getFacingRight()));
+		}
+	}
 	
 	public void closeConnections() throws IOException {
 		if (valmanwaySocket != null) { valmanwaySocket.close(); }

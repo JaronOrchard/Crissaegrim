@@ -23,7 +23,7 @@ public class CrissaegrimReaderThread extends Thread {
     		
     		while (Crissaegrim.connectionStable) {
     			DataPacket incomingPacket = (DataPacket)socketIn.readObject();
-    			DataPacketProcessor.processDataPacket(incomingPacket);
+    			CrissaegrimDataPacketProcessor.processDataPacket(incomingPacket);
     		}
     		
     	} catch (IOException | ClassNotFoundException e) {

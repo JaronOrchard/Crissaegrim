@@ -35,6 +35,7 @@ public class Player {
 	public double getHorizontalMovementSpeed() { return horizontalMovementSpeed; }
 	public double getJumpMomentum() { return jumpMomentum; }
 	public Coordinate getPosition() { return position; }
+	public boolean getFacingRight() { return facingRight; }
 	public boolean isBusy() { return busyStatus != null; }
 	public Busy getBusyStatus() { return busyStatus; }
 	
@@ -152,7 +153,7 @@ public class Player {
 		glEnable(GL11.GL_TEXTURE_2D);
 	}
 	
-	private int getCurrentTexture() {
+	public int getCurrentTexture() {
 		if (isBusy()) {
 			return busyStatus.getTexture();
 		}

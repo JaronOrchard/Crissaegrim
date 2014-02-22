@@ -7,7 +7,6 @@ import java.util.List;
 import crissaegrim.Coordinate;
 import crissaegrim.Crissaegrim;
 import attack.Attack;
-import board.Board;
 import board.tiles.CollisionDetectionTile;
 import busy.BusySwordSwing;
 
@@ -70,7 +69,7 @@ public class PlayerMovementHelper {
 		attackRequested = true;
 	}
 	
-	public void movePlayer(Board board) {
+	public void movePlayer() {
 		Player player = Crissaegrim.getPlayer();
 		Coordinate startingPosition;
 		Coordinate endingPosition;
@@ -96,7 +95,7 @@ public class PlayerMovementHelper {
 		// - If left/right not requested and not on the ground, horizontal momentum quickly tapers off towards 0
 		
 		// 1) Get the 18 tiles adjacent to the player for collision detection
-		List<CollisionDetectionTile> nearbyTiles = board.getCollisionDetectionTilesNearPlayer(player.getPosition());
+		List<CollisionDetectionTile> nearbyTiles = Crissaegrim.getBoard().getCollisionDetectionTilesNearPlayer(player.getPosition());
 		Collections.swap(nearbyTiles, 0, 7); // A little hack to ensure that the Tile
 		Collections.swap(nearbyTiles, 1, 6); //    the player is in always takes
 		Collections.swap(nearbyTiles, 2, 8); //    precedence for raisedEndingPosition

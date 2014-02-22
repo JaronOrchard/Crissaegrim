@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.lwjgl.Sys;
+
+import board.Board;
 import players.Player;
 import chatbox.ChatBox;
 import datapacket.DataPacket;
@@ -14,12 +17,15 @@ public class Crissaegrim {
 	
 	private static volatile GameRunner gameRunner = new GameRunner();
 	private static volatile Player player = new Player();
+	private static volatile Board board = null;
 	private static volatile ChatBox chatBox = new ChatBox();
 	private static volatile List<DataPacket> outgoingDataPackets = Collections.synchronizedList(new ArrayList<DataPacket>());;
 	public static volatile boolean connectionStable = true;
 	
 	public static GameRunner getGameRunner() { return gameRunner; }
 	public static Player getPlayer() { return player; }
+	public static Board getBoard() { return board; }
+	public static void setBoard(Board b) { board = b; }
 	public static ChatBox getChatBox() { return chatBox; }
 	
 	public static void addOutgoingDataPacket(DataPacket dp) { outgoingDataPackets.add(dp); }
@@ -55,6 +61,14 @@ public class Crissaegrim {
 		pixelsPerTile = (pixelsPerTile % 32) + 16;
 		windowWidthRadiusInTiles = ((double)WINDOW_WIDTH / 2.0 / (double)pixelsPerTile);
 		windowHeightRadiusInTiles = ((double)WINDOW_HEIGHT / 2.0 / (double)pixelsPerTile);
+	}
+	
+	/**
+	 * Get the current time in milliseconds
+	 * @return The current system time in milliseconds
+	 */
+	public static long getTime() {
+		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
 	}
 	
 	public static void main(String[] argv) throws IOException {

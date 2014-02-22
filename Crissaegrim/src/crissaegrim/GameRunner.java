@@ -13,7 +13,6 @@ import java.util.Map;
 
 import online.ValmanwayConnection;
 
-import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
@@ -37,7 +36,6 @@ public class GameRunner {
 	private long millisecondsSkipped = 0;
 	
 	private Map<String, Board> boardMap;
-	private Board currentBoard;
 	private PlayerMovementHelper playerMovementHelper;
 	private ValmanwayConnection valmanwayConnection;
 	
@@ -50,8 +48,8 @@ public class GameRunner {
 		if (valmanwayConnection.getOnline()) { // If online, wait to get player id...
 			long lastSend = 0;
 			while (Crissaegrim.getPlayer().getId() == -1) {
-				if (getTime() - lastSend > 5000) {
-					lastSend = getTime();
+				if (Crissaegrim.getTime() - lastSend > 5000) {
+					lastSend = Crissaegrim.getTime();
 					Crissaegrim.addOutgoingDataPacket(new RequestPlayerIdPacket());
 				}
 			}
@@ -60,21 +58,21 @@ public class GameRunner {
 		}
 		
 		setupBoards();
-		currentBoard = boardMap.get("tower_of_preludes");
+		Crissaegrim.setBoard(boardMap.get("tower_of_preludes"));
 		//currentBoard = boardMap.get("dawning");
 		playerMovementHelper = new PlayerMovementHelper();
 		
 		//initializeGame();
 		
-		lastFPSTitleUpdate = getTime();
+		lastFPSTitleUpdate = Crissaegrim.getTime();
 		GameInitializer.initializeOpenGLFor2D();
 		
 		long startTime, endTime, elaspedTime; // Per-loop times to keep FRAMES_PER_SECOND
 		while (!Display.isCloseRequested()) {
-			startTime = getTime();
+			startTime = Crissaegrim.getTime();
 			
 			// Update the board, including all entities and bullets:
-			currentBoard.preloadChunks(); // WE COULD PROBABLY DO THIS NOT THAT OFTEN
+			Crissaegrim.getBoard().preloadChunks(); // WE COULD PROBABLY DO THIS NOT THAT OFTEN
 			actionAttackList();
 			Crissaegrim.getPlayer().update();
 			actionEntityList();
@@ -93,14 +91,14 @@ public class GameRunner {
 			} else {
 				getKeyboardAndMouseInput();
 			}
-			playerMovementHelper.movePlayer(currentBoard);
-			currentBoard.getAttackList().addAll(playerMovementHelper.getAttackList());
+			playerMovementHelper.movePlayer();
+			Crissaegrim.getBoard().getAttackList().addAll(playerMovementHelper.getAttackList());
 			
 			// Transmit data to the server
-//			valmanwayConnection.sendPlayerStatus();
+			valmanwayConnection.sendPlayerStatus();
 			
 			Display.update();
-			endTime = getTime();
+			endTime = Crissaegrim.getTime();
 			elaspedTime = endTime - startTime;
 			Thread.sleep(Math.max(0, MILLISECONDS_PER_FRAME - elaspedTime));
 			updateFPS(Math.max(0, MILLISECONDS_PER_FRAME - elaspedTime));
@@ -114,12 +112,12 @@ public class GameRunner {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		GameInitializer.initializeNewFrameForWindow();
-		currentBoard.drawBackground();
+		Crissaegrim.getBoard().drawBackground();
 		
 		GameInitializer.initializeNewFrameForScene();
-		currentBoard.draw(TileLayer.BACKGROUND);
-		currentBoard.draw(TileLayer.MIDDLEGROUND);
-		for (Entity entity : currentBoard.getEntityList()) {
+		Crissaegrim.getBoard().draw(TileLayer.BACKGROUND);
+		Crissaegrim.getBoard().draw(TileLayer.MIDDLEGROUND);
+		for (Entity entity : Crissaegrim.getBoard().getEntityList()) {
 			if (!Crissaegrim.getDebugMode()) {
 				entity.draw();
 			} else {
@@ -130,7 +128,7 @@ public class GameRunner {
 		if (Crissaegrim.getDebugMode()) {
 			Crissaegrim.getPlayer().drawDebugMode();
 		}
-		currentBoard.draw(TileLayer.FOREGROUND);
+		Crissaegrim.getBoard().draw(TileLayer.FOREGROUND);
 		
 		GameInitializer.initializeNewFrameForWindow();
 		Crissaegrim.getChatBox().draw();
@@ -140,11 +138,11 @@ public class GameRunner {
 	 * Goes through the {@link Attack} list, actioning Attacks if necessary
 	 */
 	private void actionAttackList() {
-		Iterator<Attack> attackIter = currentBoard.getAttackList().iterator();
+		Iterator<Attack> attackIter = Crissaegrim.getBoard().getAttackList().iterator();
 		while (attackIter.hasNext()) {
 			Attack attack = attackIter.next();
 			
-			Iterator<Entity> entityIter = currentBoard.getEntityList().iterator();
+			Iterator<Entity> entityIter = Crissaegrim.getBoard().getEntityList().iterator();
 			while (entityIter.hasNext()) {
 				Entity entity = entityIter.next();
 				if (entity instanceof Target) {
@@ -163,7 +161,7 @@ public class GameRunner {
 	}
 	
 	private void actionEntityList() {
-		Iterator<Entity> entityIter = currentBoard.getEntityList().iterator();
+		Iterator<Entity> entityIter = Crissaegrim.getBoard().getEntityList().iterator();
 		while (entityIter.hasNext()) {
 			Entity entity = entityIter.next();
 			if (entity instanceof Door) {
@@ -194,14 +192,14 @@ public class GameRunner {
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_TAB) {	// Tab key: toggle zoom
 					Crissaegrim.toggleZoom();
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_X) {		// X key: Enter door
-					for (Entity entity : currentBoard.getEntityList()) {
+					for (Entity entity : Crissaegrim.getBoard().getEntityList()) {
 						if (!Crissaegrim.getPlayer().isBusy() && entity instanceof Door &&
 								RectUtils.coordinateIsInRect(Crissaegrim.getPlayer().getPosition(), entity.getBounds())) {
 							Door door = (Door)entity;
 							Crissaegrim.getPlayer().getPosition().setAll(door.getDestinationCoordinate().getX(), door.getDestinationCoordinate().getY());
 							playerMovementHelper.resetMovementRequests();
-							currentBoard = boardMap.get(door.getDestinationBoardName());
-							currentBoard.preloadChunks();
+							Crissaegrim.setBoard(boardMap.get(door.getDestinationBoardName()));
+							Crissaegrim.getBoard().preloadChunks();
 						}
 					}
 				}
@@ -211,20 +209,12 @@ public class GameRunner {
 	}
 	
 	/**
-	 * Get the current time in milliseconds
-	 * @return The current system time in milliseconds
-	 */
-	public static long getTime() {
-		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
-	}
-	
-	/**
 	 * Count the number of frames per second.  Update the title bar with the count every second.
 	 * @param millisSkipped The number of milliseconds skipped in the current frame
 	 */
 	public void updateFPS(long millisSkipped) {
 		millisecondsSkipped += millisSkipped;
-	    if (getTime() - lastFPSTitleUpdate > 1000) { // Update the title in one-second increments
+	    if (Crissaegrim.getTime() - lastFPSTitleUpdate > 1000) { // Update the title in one-second increments
 	        GameInitializer.setWindowTitle("Milliseconds skipped: " + millisecondsSkipped);
 	        millisecondsSkipped = 0; // Reset the milliseconds skipped
 	        lastFPSTitleUpdate += 1000; // Add one second

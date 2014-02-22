@@ -25,7 +25,7 @@ public class ValmanwayReaderThread extends Thread {
     		
     		while (listening) {
     			DataPacket incomingPacket = (DataPacket)socketIn.readObject();
-    			DataPacketProcessor.processDataPacket(incomingPacket);
+    			ValmanwayDataPacketProcessor.processDataPacket(incomingPacket);
     		}
     		
     	} catch (IOException | ClassNotFoundException e) {

@@ -5,9 +5,7 @@ import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
 import datapacket.ReceivePlayerIdPacket;
 
-// Crissaegrim side
-
-public final class DataPacketProcessor {
+public final class CrissaegrimDataPacketProcessor {
 	
 	public static void processDataPacket(DataPacket packet) {
 		switch (packet.getPacketType()) {

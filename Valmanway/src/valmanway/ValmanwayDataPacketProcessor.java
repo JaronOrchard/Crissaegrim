@@ -4,9 +4,7 @@ import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
 import datapacket.ReceivePlayerIdPacket;
 
-// Valmanway side
-
-public final class DataPacketProcessor {
+public final class ValmanwayDataPacketProcessor {
 	
 	public static void processDataPacket(DataPacket packet) {
 		switch (packet.getPacketType()) {
