@@ -23,9 +23,7 @@ public class ValmanwayReaderThread extends Thread {
     	
     		socketIn = new ObjectInputStream(crissaegrimSocket.getInputStream());
     		
-    		boolean listening = true;
-    		
-    		while (listening) {
+    		while (valmanwayUserData.connectionStable) {
     			DataPacket incomingPacket = (DataPacket)socketIn.readObject();
     			ValmanwayDataPacketProcessor.processDataPacket(incomingPacket, valmanwayUserData);
     		}
@@ -39,6 +37,7 @@ public class ValmanwayReaderThread extends Thread {
 			socketIn.close();
 			crissaegrimSocket.close();
 		} catch (IOException e) { e.printStackTrace(); }
-		
+    	
+    	valmanwayUserData.connectionStable = false;
     }
 }

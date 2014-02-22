@@ -20,9 +20,7 @@ public class ValmanwayWriterThread extends Thread {
     		ObjectOutputStream socketOut = new ObjectOutputStream(crissaegrimSocket.getOutputStream());
     		socketOut.flush();
     		
-    		boolean listening = true;
-    		
-    		while (listening) {
+    		while (valmanwayUserData.connectionStable) {
     			if (valmanwayUserData.outgoingDataPacketsExist()) {
     				socketOut.reset();
     				socketOut.writeObject(valmanwayUserData.popOutgoingDataPacket());
@@ -36,5 +34,8 @@ public class ValmanwayWriterThread extends Thread {
     		System.out.println("Valmanway writer thread ended - " + e.getMessage());
 			e.printStackTrace();
 		}
+    	System.out.println("writer thread end");
+    	
+    	valmanwayUserData.connectionStable = false;
     }
 }

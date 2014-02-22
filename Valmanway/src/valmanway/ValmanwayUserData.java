@@ -9,6 +9,7 @@ import datapacket.DataPacket;
 public class ValmanwayUserData {
 	
 	private List<DataPacket> outgoingDataPackets;
+	public volatile boolean connectionStable = true;
 	private final int playerId;
 	
 	public int getPlayerId() { return playerId; }
