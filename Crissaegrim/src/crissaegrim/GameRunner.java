@@ -24,6 +24,7 @@ import players.PlayerMovementHelper;
 import attack.Attack;
 import board.Board;
 import textures.Textures;
+import thunderbrand.Thunderbrand;
 
 public class GameRunner {
 	
@@ -48,8 +49,8 @@ public class GameRunner {
 		if (valmanwayConnection.getOnline()) { // If online, wait to get player id...
 			long lastSend = 0;
 			while (Crissaegrim.getPlayer().getId() == -1) {
-				if (Crissaegrim.getTime() - lastSend > 5000) {
-					lastSend = Crissaegrim.getTime();
+				if (Thunderbrand.getTime() - lastSend > 5000) {
+					lastSend = Thunderbrand.getTime();
 					Crissaegrim.addOutgoingDataPacket(new RequestPlayerIdPacket());
 				}
 			}
@@ -64,12 +65,12 @@ public class GameRunner {
 		
 		//initializeGame();
 		
-		lastFPSTitleUpdate = Crissaegrim.getTime();
+		lastFPSTitleUpdate = Thunderbrand.getTime();
 		GameInitializer.initializeOpenGLFor2D();
 		
 		long startTime, endTime, elaspedTime; // Per-loop times to keep FRAMES_PER_SECOND
 		while (!Display.isCloseRequested()) {
-			startTime = Crissaegrim.getTime();
+			startTime = Thunderbrand.getTime();
 			
 			// Update the board, including all entities and bullets:
 			Crissaegrim.getBoard().preloadChunks(); // WE COULD PROBABLY DO THIS NOT THAT OFTEN
@@ -98,7 +99,7 @@ public class GameRunner {
 			valmanwayConnection.sendPlayerStatus();
 			
 			Display.update();
-			endTime = Crissaegrim.getTime();
+			endTime = Thunderbrand.getTime();
 			elaspedTime = endTime - startTime;
 			Thread.sleep(Math.max(0, MILLISECONDS_PER_FRAME - elaspedTime));
 			updateFPS(Math.max(0, MILLISECONDS_PER_FRAME - elaspedTime));
@@ -214,7 +215,7 @@ public class GameRunner {
 	 */
 	public void updateFPS(long millisSkipped) {
 		millisecondsSkipped += millisSkipped;
-	    if (Crissaegrim.getTime() - lastFPSTitleUpdate > 1000) { // Update the title in one-second increments
+	    if (Thunderbrand.getTime() - lastFPSTitleUpdate > 1000) { // Update the title in one-second increments
 	        GameInitializer.setWindowTitle("Milliseconds skipped: " + millisecondsSkipped);
 	        millisecondsSkipped = 0; // Reset the milliseconds skipped
 	        lastFPSTitleUpdate += 1000; // Add one second

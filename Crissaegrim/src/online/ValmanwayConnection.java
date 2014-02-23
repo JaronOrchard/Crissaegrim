@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import players.Player;
+import thunderbrand.Thunderbrand;
 import crissaegrim.Crissaegrim;
 import datapacket.SendPlayerStatusPacket;
 
@@ -50,8 +51,8 @@ public class ValmanwayConnection {
 	}
 	
 	public void sendPlayerStatus() {
-		if (Crissaegrim.getTime() - lastPlayerStatusSendTime > PLAYER_STATUS_SEND_INTERVAL) {
-			lastPlayerStatusSendTime = Crissaegrim.getTime();
+		if (Thunderbrand.getTime() - lastPlayerStatusSendTime > PLAYER_STATUS_SEND_INTERVAL) {
+			lastPlayerStatusSendTime = Thunderbrand.getTime();
 			Player player = Crissaegrim.getPlayer();
 			Crissaegrim.addOutgoingDataPacket(new SendPlayerStatusPacket(
 					Crissaegrim.getBoard().getName(),

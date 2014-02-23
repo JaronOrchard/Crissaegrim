@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.lwjgl.Sys;
-
 import board.Board;
 import players.Player;
 import chatbox.ChatBox;
@@ -61,14 +59,6 @@ public class Crissaegrim {
 		pixelsPerTile = (pixelsPerTile % 32) + 16;
 		windowWidthRadiusInTiles = ((double)WINDOW_WIDTH / 2.0 / (double)pixelsPerTile);
 		windowHeightRadiusInTiles = ((double)WINDOW_HEIGHT / 2.0 / (double)pixelsPerTile);
-	}
-	
-	/**
-	 * Get the current time in milliseconds
-	 * @return The current system time in milliseconds
-	 */
-	public static long getTime() {
-		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
 	}
 	
 	public static void main(String[] argv) throws IOException {
