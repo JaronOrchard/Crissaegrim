@@ -34,12 +34,17 @@ public class ValmanwayWriterThread extends Thread {
     				socketOut.writeObject(valmanwayUserData.popOutgoingDataPacket());
     			}
     			
-    			// Every 100 ms, send a list of all other players
+    			// Every 100 ms, send new data:
+    			//  - A list of all other player statuses
+    			//  - New chat messages
     			if (Thunderbrand.getTime() - lastPlayerStatusSendTime > PLAYER_STATUS_SEND_INTERVAL) {
     				lastPlayerStatusSendTime = Thunderbrand.getTime();
-					Map<Integer, PlayerStatus> ps = Valmanway.getSharedData().getPlayerStatuses();
+					
+    				Map<Integer, PlayerStatus> ps = Valmanway.getSharedData().getPlayerStatuses();
 					ps.remove(valmanwayUserData.getPlayerId());
 					valmanwayUserData.addOutgoingDataPacket(new SendAllPlayerStatusesPacket(ps));
+					
+					valmanwayUserData.sendNewChatMessages();
     			}
     		}
     		

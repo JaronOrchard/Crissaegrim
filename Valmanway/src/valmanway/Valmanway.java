@@ -25,7 +25,8 @@ public class Valmanway {
 
         while (listening) {
         	Socket acceptedSocket = serverSocket.accept();
-        	ValmanwayUserData valmanwayUserData = new ValmanwayUserData(Valmanway.getSharedData().getNextPlayerId());
+        	ValmanwayUserData valmanwayUserData = new ValmanwayUserData(
+        			Valmanway.getSharedData().getNextPlayerId(), Valmanway.getSharedData().getMostRecentChatMessageIndex());
         	new ValmanwayWriterThread(acceptedSocket, valmanwayUserData).start();
         	new ValmanwayReaderThread(acceptedSocket, valmanwayUserData).start();
         }

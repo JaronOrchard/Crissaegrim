@@ -24,7 +24,7 @@ public final class ValmanwayDataPacketProcessor {
 						((SendPlayerStatusPacket)(packet)).getPlayerStatus());
 				break;
 			case DataPacketTypes.SEND_CHAT_MESSAGE_PACKET:
-				processChatMessage( ((SendChatMessagePacket)(packet)).getTextBlock().getMessage(), valmanwayUserData);
+				processChatMessage( ((SendChatMessagePacket)(packet)).getTextBlock(), valmanwayUserData);
 				break;
 			default:
 				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());
@@ -32,7 +32,8 @@ public final class ValmanwayDataPacketProcessor {
 		
 	}
 	
-	private static void processChatMessage(String message, ValmanwayUserData valmanwayUserData) {
+	private static void processChatMessage(TextBlock textBlock, ValmanwayUserData valmanwayUserData) {
+		String message = textBlock.getMessage();
 		if (message.charAt(0) == '/') { // System command
 			String lowercaseMessage = message.toLowerCase();
 			
@@ -58,9 +59,9 @@ public final class ValmanwayDataPacketProcessor {
 				valmanwayUserData.addOutgoingDataPacket(new SendChatMessagePacket(new TextBlock(
 						"Type \"/help\" to see the list of commands.", Color.GRAY)));
 			}
-		
 		} else { // Normal message
-			//parentChatBox.addChatMessage(currentMessage, currentColor);
+			Valmanway.getSharedData().addChatMessage(new TextBlock(
+					"<" + valmanwayUserData.getPlayerName() + "> " + message, textBlock.getColor()));
 		}
 		
 	}
