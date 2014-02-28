@@ -3,14 +3,14 @@ package crissaegrim;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import online.ValmanwayConnection;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -24,6 +24,7 @@ import players.PlayerMovementHelper;
 import attack.Attack;
 import board.Board;
 import textures.Textures;
+import thunderbrand.TextBlock;
 import thunderbrand.Thunderbrand;
 
 public class GameRunner {
@@ -38,18 +39,19 @@ public class GameRunner {
 	
 	private Map<String, Board> boardMap;
 	private PlayerMovementHelper playerMovementHelper;
-	private ValmanwayConnection valmanwayConnection;
+	private List<TextBlock> waitingChatMessages = Collections.synchronizedList(new ArrayList<TextBlock>());
+	
+	public void addWaitingChatMessage(TextBlock tb) { waitingChatMessages.add(tb); }
 	
 	public void run() throws InterruptedException, IOException {
 		GameInitializer.initializeDisplay();
 		Textures.initializeTextures();
 		
-		valmanwayConnection = new ValmanwayConnection();
-		valmanwayConnection.connectToValmonwayServer();
-		if (valmanwayConnection.getOnline()) { // If online, wait to get player id...
+		Crissaegrim.getValmanwayConnection().connectToValmonwayServer();
+		if (Crissaegrim.getValmanwayConnection().getOnline()) { // If online, wait to get player id...
 			long lastSend = 0;
 			while (Crissaegrim.getPlayer().getId() == -1) {
-				if (Thunderbrand.getTime() - lastSend > 5000) {
+				if (Thunderbrand.getTime() - lastSend > 1000) {
 					lastSend = Thunderbrand.getTime();
 					Crissaegrim.addOutgoingDataPacket(new RequestPlayerIdPacket());
 				}
@@ -78,11 +80,6 @@ public class GameRunner {
 			Crissaegrim.getPlayer().update();
 			actionEntityList();
 			
-			// Get and action updates from the server:
-//			while (valmanwayConnection.incomingDataExists()) {
-//				System.out.println(valmanwayConnection.getIncomingData());
-//			}
-			
 			// Draw new scene:
 			drawScene();
 			
@@ -96,7 +93,7 @@ public class GameRunner {
 			Crissaegrim.getBoard().getAttackList().addAll(playerMovementHelper.getAttackList());
 			
 			// Transmit data to the server
-			valmanwayConnection.sendPlayerStatus();
+			Crissaegrim.getValmanwayConnection().sendPlayerStatus();
 			
 			Display.update();
 			endTime = Thunderbrand.getTime();
@@ -106,7 +103,7 @@ public class GameRunner {
 		}
 
 		Display.destroy();
-		valmanwayConnection.closeConnections();
+		Crissaegrim.getValmanwayConnection().closeConnections();
 	}
 	
 	private void drawScene() {
@@ -133,6 +130,9 @@ public class GameRunner {
 		Crissaegrim.getBoard().draw(TileLayer.FOREGROUND);
 		
 		GameInitializer.initializeNewFrameForWindow();
+		while (!waitingChatMessages.isEmpty()) {
+			Crissaegrim.getChatBox().addChatMessage(waitingChatMessages.remove(0));
+		}
 		Crissaegrim.getChatBox().draw();
 	}
 	

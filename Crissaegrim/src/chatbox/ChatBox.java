@@ -2,6 +2,8 @@ package chatbox;
 
 import java.awt.Color;
 
+import thunderbrand.TextBlock;
+
 public class ChatBox {
 	
 	private ChatHistory chatHistory;
@@ -14,6 +16,10 @@ public class ChatBox {
 	
 	public void addChatMessage(String message, Color color) {
 		chatHistory.addChatMessage(message, color);
+	}
+	
+	public void addChatMessage(TextBlock tb) {
+		chatHistory.addChatMessage(tb.getMessage(), tb.getColor());
 	}
 	
 	public void draw() {

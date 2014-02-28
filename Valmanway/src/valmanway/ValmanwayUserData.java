@@ -11,11 +11,15 @@ public class ValmanwayUserData {
 	private List<DataPacket> outgoingDataPackets;
 	public volatile boolean connectionStable = true;
 	private final int playerId;
+	private String playerName;
 	
 	public int getPlayerId() { return playerId; }
+	public String getPlayerName() { return playerName; }
+	public void setPlayerName(String n) { playerName = n; }
 	
 	public ValmanwayUserData(int playerId) {
 		this.playerId = playerId;
+		playerName = "Player " + playerId;
 		outgoingDataPackets = Collections.synchronizedList(new ArrayList<DataPacket>());
 	}
 	

@@ -5,6 +5,7 @@ import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
 import datapacket.ReceivePlayerIdPacket;
 import datapacket.SendAllPlayerStatusesPacket;
+import datapacket.SendChatMessagePacket;
 
 public final class CrissaegrimDataPacketProcessor {
 	
@@ -16,6 +17,9 @@ public final class CrissaegrimDataPacketProcessor {
 				break;
 			case DataPacketTypes.SEND_ALL_PLAYER_STATUSES_PACKET:
 				Crissaegrim.setGhosts( ((SendAllPlayerStatusesPacket)(packet)).getPlayerStatuses() );
+				break;
+			case DataPacketTypes.SEND_CHAT_MESSAGE_PACKET:
+				Crissaegrim.getGameRunner().addWaitingChatMessage( ((SendChatMessagePacket)(packet)).getTextBlock() );
 				break;
 			default:
 				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());

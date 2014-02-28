@@ -1,10 +1,5 @@
 package chatbox;
 
-import static org.lwjgl.opengl.GL11.GL_MODULATE;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_ENV;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_ENV_MODE;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
@@ -13,7 +8,9 @@ import java.util.Map;
 
 import org.lwjgl.input.Keyboard;
 
+import thunderbrand.TextBlock;
 import crissaegrim.Crissaegrim;
+import datapacket.SendChatMessagePacket;
 
 public class ChatTypingArea {
 	
@@ -148,32 +145,41 @@ public class ChatTypingArea {
 	
 	private void processMessage() {
 		String message = currentMessage.substring(getMinimumMessageLength()).trim();
-		if (message.charAt(0) == '/') { // System command
-			String lowercaseMessage = message.toLowerCase();
+		if (Crissaegrim.getValmanwayConnection().getOnline()) {
+			Crissaegrim.addOutgoingDataPacket(new SendChatMessagePacket(new TextBlock(message, currentColor)));
 			
-			if (lowercaseMessage.startsWith("/help")) {
-				Crissaegrim.addSystemMessage("Commands: /me, /setname");
-			} else if (lowercaseMessage.startsWith("/me")) {
-				if (lowercaseMessage.equals("/me")) {
-					Crissaegrim.addSystemMessage("Usage: /me [action]");
+			
+		} else { // NOT ONLINE ( -- remove? )
+			if (message.charAt(0) == '/') { // System command
+				String lowercaseMessage = message.toLowerCase();
+				
+				if (lowercaseMessage.startsWith("/help")) {
+					Crissaegrim.addSystemMessage("Commands: /me, /setname");
+				} else if (lowercaseMessage.startsWith("/me")) {
+					if (lowercaseMessage.equals("/me")) {
+						Crissaegrim.addSystemMessage("Usage: /me [action]");
+					} else {
+						parentChatBox.addChatMessage(Crissaegrim.getPlayer().getName() + " " + message.substring(4), currentColor);
+					}
+				} else if (lowercaseMessage.startsWith("/setname")) {
+					if (lowercaseMessage.equals("/setname")) {
+						Crissaegrim.addSystemMessage("Usage: /setname [name]");
+					} else {
+						Crissaegrim.getPlayer().setName(message.substring(9).trim());
+						Crissaegrim.addSystemMessage("Your name has been changed to \"" + Crissaegrim.getPlayer().getName() + "\".");
+					}
 				} else {
-					parentChatBox.addChatMessage(Crissaegrim.getPlayer().getName() + " " + message.substring(4), currentColor);
+					Crissaegrim.addSystemMessage("Unrecognized command: " + message);
+					Crissaegrim.addSystemMessage("Type \"/help\" to see the list of commands.");
 				}
-			} else if (lowercaseMessage.startsWith("/setname")) {
-				if (lowercaseMessage.equals("/setname")) {
-					Crissaegrim.addSystemMessage("Usage: /setname [name]");
-				} else {
-					Crissaegrim.getPlayer().setName(message.substring(9).trim());
-					Crissaegrim.addSystemMessage("Your name has been changed to \"" + Crissaegrim.getPlayer().getName() + "\".");
-				}
-			} else {
-				Crissaegrim.addSystemMessage("Unrecognized command: " + message);
-				Crissaegrim.addSystemMessage("Type \"/help\" to see the list of commands.");
+			
+			} else { // Normal message
+				parentChatBox.addChatMessage(currentMessage, currentColor);
 			}
-		
-		} else { // Normal message
-			parentChatBox.addChatMessage(currentMessage, currentColor);
 		}
+		
+		
+		
 	}
 	
 }

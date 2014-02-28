@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import online.ValmanwayConnection;
 import board.Board;
 import player.PlayerStatus;
 import players.Player;
@@ -21,6 +22,7 @@ public class Crissaegrim {
 	private static volatile Map<Integer, PlayerStatus> ghosts = new HashMap<Integer, PlayerStatus>();
 	private static volatile Board board = null;
 	private static volatile ChatBox chatBox = new ChatBox();
+	private static volatile ValmanwayConnection valmanwayConnection = new ValmanwayConnection();
 	private static volatile List<DataPacket> outgoingDataPackets = Collections.synchronizedList(new ArrayList<DataPacket>());;
 	public static volatile boolean connectionStable = true;
 	
@@ -31,6 +33,7 @@ public class Crissaegrim {
 	public static Board getBoard() { return board; }
 	public static void setBoard(Board b) { board = b; }
 	public static ChatBox getChatBox() { return chatBox; }
+	public static ValmanwayConnection getValmanwayConnection() { return valmanwayConnection; }
 	
 	public static void addOutgoingDataPacket(DataPacket dp) { outgoingDataPackets.add(dp); }
 	public static boolean outgoingDataPacketsExist() { return !outgoingDataPackets.isEmpty(); }
