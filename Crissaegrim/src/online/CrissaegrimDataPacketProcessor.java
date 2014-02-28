@@ -4,6 +4,7 @@ import crissaegrim.Crissaegrim;
 import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
 import datapacket.ReceivePlayerIdPacket;
+import datapacket.SendAllPlayerStatusesPacket;
 
 public final class CrissaegrimDataPacketProcessor {
 	
@@ -11,10 +12,10 @@ public final class CrissaegrimDataPacketProcessor {
 		switch (packet.getPacketType()) {
 			
 			case DataPacketTypes.RECEIVE_PLAYER_ID_PACKET:
-				System.out.println("Received player id packet");
-				System.out.println(Crissaegrim.getPlayer().getId());
-				Crissaegrim.getPlayer().assignPlayerId( ((ReceivePlayerIdPacket)(packet)).getReceivedPlayerId());
-				System.out.println(Crissaegrim.getPlayer().getId());
+				Crissaegrim.getPlayer().assignPlayerId( ((ReceivePlayerIdPacket)(packet)).getReceivedPlayerId() );
+				break;
+			case DataPacketTypes.SEND_ALL_PLAYER_STATUSES_PACKET:
+				Crissaegrim.setGhosts( ((SendAllPlayerStatusesPacket)(packet)).getPlayerStatuses() );
 				break;
 			default:
 				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());

@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import board.Board;
+import player.PlayerStatus;
 import players.Player;
 import chatbox.ChatBox;
 import datapacket.DataPacket;
@@ -15,6 +18,7 @@ public class Crissaegrim {
 	
 	private static volatile GameRunner gameRunner = new GameRunner();
 	private static volatile Player player = new Player();
+	private static volatile Map<Integer, PlayerStatus> ghosts = new HashMap<Integer, PlayerStatus>();
 	private static volatile Board board = null;
 	private static volatile ChatBox chatBox = new ChatBox();
 	private static volatile List<DataPacket> outgoingDataPackets = Collections.synchronizedList(new ArrayList<DataPacket>());;
@@ -22,6 +26,8 @@ public class Crissaegrim {
 	
 	public static GameRunner getGameRunner() { return gameRunner; }
 	public static Player getPlayer() { return player; }
+	public static Map<Integer, PlayerStatus> getGhosts() { return ghosts; }
+	public static void setGhosts(Map<Integer, PlayerStatus> g) { synchronized(Crissaegrim.getGhosts()) { ghosts = g; } }
 	public static Board getBoard() { return board; }
 	public static void setBoard(Board b) { board = b; }
 	public static ChatBox getChatBox() { return chatBox; }

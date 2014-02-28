@@ -1,8 +1,6 @@
 package crissaegrim;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -10,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import online.ValmanwayConnection;
 
@@ -20,6 +19,7 @@ import datapacket.RequestPlayerIdPacket;
 import entities.Door;
 import entities.Entity;
 import entities.Target;
+import player.PlayerStatus;
 import players.PlayerMovementHelper;
 import attack.Attack;
 import board.Board;
@@ -129,6 +129,7 @@ public class GameRunner {
 		if (Crissaegrim.getDebugMode()) {
 			Crissaegrim.getPlayer().drawDebugMode();
 		}
+		drawGhosts();
 		Crissaegrim.getBoard().draw(TileLayer.FOREGROUND);
 		
 		GameInitializer.initializeNewFrameForWindow();
@@ -220,6 +221,38 @@ public class GameRunner {
 	        millisecondsSkipped = 0; // Reset the milliseconds skipped
 	        lastFPSTitleUpdate += 1000; // Add one second
 	    }
+	}
+	
+	private void drawGhosts() {
+		synchronized (Crissaegrim.getGhosts()) {
+			String currentBoardName = Crissaegrim.getBoard().getName();
+			for (Entry<Integer, PlayerStatus> ghost : Crissaegrim.getGhosts().entrySet()) {
+				if (ghost.getValue().getBoardName().equalsIgnoreCase(currentBoardName)) {
+					drawGhost(ghost.getValue());
+				}
+			}
+		}		
+	}
+	
+	private void drawGhost(PlayerStatus ghost) {
+		boolean facingRight = ghost.getFacingRight();
+		double xPos = ghost.getXPos();
+		double yPos = ghost.getYPos();
+		glColor3d(1.0, 1.0, 1.0);
+		glPushMatrix();
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBindTexture(GL_TEXTURE_2D, ghost.getCurrentTexture());
+			glBegin(GL_QUADS);
+				glTexCoord2d(facingRight ? 0 : 1, 0);
+				glVertex2d(xPos - 1.5, yPos + 3);
+				glTexCoord2d(facingRight ? 1 : 0, 0);
+				glVertex2d(xPos + 1.5, yPos + 3);
+				glTexCoord2d(facingRight ? 1 : 0, 1);
+				glVertex2d(xPos + 1.5, yPos);
+				glTexCoord2d(facingRight ? 0 : 1, 1);
+				glVertex2d(xPos - 1.5, yPos);
+			glEnd();
+		glPopMatrix();
 	}
 	
 	private void setupBoards() {
