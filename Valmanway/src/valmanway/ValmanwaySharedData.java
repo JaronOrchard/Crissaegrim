@@ -24,4 +24,8 @@ class ValmanwaySharedData {
 	public int getPlayerStatusMapCount() { return playerStatusMap.size(); }
 	public Map<Integer, PlayerStatus> getPlayerStatuses() { return new HashMap<Integer, PlayerStatus>(playerStatusMap); }
 	
+	public void dropPlayer(int playerId) {
+		playerStatusMap.remove(playerId);
+	}
+	
 }

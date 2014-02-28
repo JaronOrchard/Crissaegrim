@@ -39,5 +39,6 @@ public class ValmanwayReaderThread extends Thread {
 		} catch (IOException e) { e.printStackTrace(); }
     	
     	valmanwayUserData.connectionStable = false;
+    	Valmanway.getSharedData().dropPlayer(valmanwayUserData.getPlayerId());
     }
 }

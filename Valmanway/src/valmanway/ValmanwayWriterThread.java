@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Map;
+
 import datapacket.SendAllPlayerStatusesPacket;
 import player.PlayerStatus;
 import thunderbrand.Thunderbrand;
@@ -36,11 +37,9 @@ public class ValmanwayWriterThread extends Thread {
     			// Every 100 ms, send a list of all other players
     			if (Thunderbrand.getTime() - lastPlayerStatusSendTime > PLAYER_STATUS_SEND_INTERVAL) {
     				lastPlayerStatusSendTime = Thunderbrand.getTime();
-    				if (Valmanway.getSharedData().getPlayerStatusMapCount() > 1) {
-    					Map<Integer, PlayerStatus> ps = Valmanway.getSharedData().getPlayerStatuses();
-    					ps.remove(valmanwayUserData.getPlayerId());
-    					valmanwayUserData.addOutgoingDataPacket(new SendAllPlayerStatusesPacket(ps));
-    				}    				
+					Map<Integer, PlayerStatus> ps = Valmanway.getSharedData().getPlayerStatuses();
+					ps.remove(valmanwayUserData.getPlayerId());
+					valmanwayUserData.addOutgoingDataPacket(new SendAllPlayerStatusesPacket(ps));
     			}
     		}
     		
@@ -51,8 +50,8 @@ public class ValmanwayWriterThread extends Thread {
     		System.out.println("Valmanway writer thread ended - " + e.getMessage());
 			e.printStackTrace();
 		}
-    	System.out.println("writer thread end");
     	
     	valmanwayUserData.connectionStable = false;
+    	Valmanway.getSharedData().dropPlayer(valmanwayUserData.getPlayerId());
     }
 }
