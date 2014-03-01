@@ -6,6 +6,7 @@ import thunderbrand.TextBlock;
 import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
 import datapacket.ReceivePlayerIdPacket;
+import datapacket.ReceivePlayerNamePacket;
 import datapacket.SendChatMessagePacket;
 import datapacket.SendPlayerStatusPacket;
 
@@ -32,38 +33,44 @@ public final class ValmanwayDataPacketProcessor {
 		
 	}
 	
-	private static void processChatMessage(TextBlock textBlock, ValmanwayUserData valmanwayUserData) {
+	private static void processChatMessage(TextBlock textBlock, ValmanwayUserData vud) {
 		String message = textBlock.getMessage();
 		if (message.charAt(0) == '/') { // System command
 			String lowercaseMessage = message.toLowerCase();
 			
 			if (lowercaseMessage.startsWith("/help")) {
-				valmanwayUserData.addOutgoingDataPacket(new SendChatMessagePacket(new TextBlock(
-						"Commands: /me, /setname", Color.GRAY)));
-//			} else if (lowercaseMessage.startsWith("/me")) {
-//				if (lowercaseMessage.equals("/me")) {
-//					Crissaegrim.addSystemMessage("Usage: /me [action]");
-//				} else {
-//					parentChatBox.addChatMessage(Crissaegrim.getPlayer().getName() + " " + message.substring(4), currentColor);
-//				}
-//			} else if (lowercaseMessage.startsWith("/setname")) {
-//				if (lowercaseMessage.equals("/setname")) {
-//					Crissaegrim.addSystemMessage("Usage: /setname [name]");
-//				} else {
-//					Crissaegrim.getPlayer().setName(message.substring(9).trim());
-//					Crissaegrim.addSystemMessage("Your name has been changed to \"" + Crissaegrim.getPlayer().getName() + "\".");
-//				}
+				sendSystemMessage("Commands: /me, /setname", vud);
+			} else if (lowercaseMessage.startsWith("/me")) {
+				if (lowercaseMessage.equals("/me")) {
+					sendSystemMessage("Usage: /me [action]", vud);
+				} else {
+					sendRegularMessage(vud.getPlayerName() + " " + message.substring(4), textBlock.getColor());
+				}
+			} else if (lowercaseMessage.startsWith("/setname")) {
+				if (lowercaseMessage.equals("/setname")) {
+					sendSystemMessage("Usage: /setname [name]", vud);
+				} else {
+					String newName = message.substring(9).trim();
+					vud.setPlayerName(newName);
+					vud.addOutgoingDataPacket(new ReceivePlayerNamePacket(newName));
+					sendSystemMessage("Your name has been changed to \"" + newName + "\".", vud);
+				}
 			} else {
-				valmanwayUserData.addOutgoingDataPacket(new SendChatMessagePacket(new TextBlock(
-						"Unrecognized command: " + message, Color.GRAY)));
-				valmanwayUserData.addOutgoingDataPacket(new SendChatMessagePacket(new TextBlock(
-						"Type \"/help\" to see the list of commands.", Color.GRAY)));
+				sendSystemMessage("Unrecognized command: " + message, vud);
+				sendSystemMessage("Type \"/help\" to see the list of commands.", vud);
 			}
 		} else { // Normal message
-			Valmanway.getSharedData().addChatMessage(new TextBlock(
-					"<" + valmanwayUserData.getPlayerName() + "> " + message, textBlock.getColor()));
+			sendRegularMessage("<" + vud.getPlayerName() + "> " + message, textBlock.getColor());
 		}
 		
+	}
+	
+	private static void sendSystemMessage(String message, ValmanwayUserData vud) {
+		vud.addOutgoingDataPacket(new SendChatMessagePacket(new TextBlock(message, Color.GRAY)));
+	}
+	
+	private static void sendRegularMessage(String message, Color color) {
+		Valmanway.getSharedData().addChatMessage(new TextBlock(message, color));
 	}
 		
 }

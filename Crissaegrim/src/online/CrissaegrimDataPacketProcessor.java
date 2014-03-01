@@ -4,6 +4,7 @@ import crissaegrim.Crissaegrim;
 import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
 import datapacket.ReceivePlayerIdPacket;
+import datapacket.ReceivePlayerNamePacket;
 import datapacket.SendAllPlayerStatusesPacket;
 import datapacket.SendChatMessagePacket;
 
@@ -14,6 +15,9 @@ public final class CrissaegrimDataPacketProcessor {
 			
 			case DataPacketTypes.RECEIVE_PLAYER_ID_PACKET:
 				Crissaegrim.getPlayer().assignPlayerId( ((ReceivePlayerIdPacket)(packet)).getReceivedPlayerId() );
+				break;
+			case DataPacketTypes.RECEIVE_PLAYER_NAME_PACKET:
+				Crissaegrim.getPlayer().setName( ((ReceivePlayerNamePacket)(packet)).getReceivedPlayerName() );
 				break;
 			case DataPacketTypes.SEND_ALL_PLAYER_STATUSES_PACKET:
 				Crissaegrim.setGhosts( ((SendAllPlayerStatusesPacket)(packet)).getPlayerStatuses() );
