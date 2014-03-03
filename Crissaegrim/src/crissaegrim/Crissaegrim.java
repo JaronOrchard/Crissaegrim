@@ -25,6 +25,7 @@ public class Crissaegrim {
 	private static volatile ValmanwayConnection valmanwayConnection = new ValmanwayConnection();
 	private static volatile List<DataPacket> outgoingDataPackets = Collections.synchronizedList(new ArrayList<DataPacket>());;
 	public static volatile boolean connectionStable = true;
+	public static volatile boolean currentlyLoading = false;
 	
 	public static GameRunner getGameRunner() { return gameRunner; }
 	public static Player getPlayer() { return player; }

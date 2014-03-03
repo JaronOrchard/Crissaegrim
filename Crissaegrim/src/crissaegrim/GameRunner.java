@@ -83,14 +83,18 @@ public class GameRunner {
 			// Draw new scene:
 			drawScene();
 			
-			// Get input and move the player:
-			if (Crissaegrim.getChatBox().isTypingMode()) {
-				Crissaegrim.getChatBox().getKeyboardInput();
+			if (!Crissaegrim.currentlyLoading) {
+				// Get input and move the player:
+				if (Crissaegrim.getChatBox().isTypingMode()) {
+					Crissaegrim.getChatBox().getKeyboardInput();
+				} else {
+					getKeyboardAndMouseInput();
+				}
+				playerMovementHelper.movePlayer();
+				Crissaegrim.getBoard().getAttackList().addAll(playerMovementHelper.getAttackList());
 			} else {
-				getKeyboardAndMouseInput();
+				drawLoadingMessage();
 			}
-			playerMovementHelper.movePlayer();
-			Crissaegrim.getBoard().getAttackList().addAll(playerMovementHelper.getAttackList());
 			
 			// Transmit data to the server
 			Crissaegrim.getValmanwayConnection().sendPlayerStatus();
@@ -205,7 +209,6 @@ public class GameRunner {
 						}
 					}
 				}
-				
 			}
 		}
 	}
@@ -251,6 +254,25 @@ public class GameRunner {
 				glVertex2d(xPos + 1.5, yPos);
 				glTexCoord2d(facingRight ? 0 : 1, 1);
 				glVertex2d(xPos - 1.5, yPos);
+			glEnd();
+		glPopMatrix();
+	}
+	
+	private void drawLoadingMessage() {
+		GameInitializer.initializeNewFrameForWindow();
+		// Loading message texture size is 372 x 64
+		glBindTexture(GL_TEXTURE_2D, Textures.LOADING_MESSAGE);
+		glPushMatrix();
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBegin(GL_QUADS);
+				glTexCoord2d(0, 1);
+				glVertex2d(32, Crissaegrim.getWindowHeight() - 96);
+				glTexCoord2d(1, 1);
+				glVertex2d(404, Crissaegrim.getWindowHeight() - 96);
+				glTexCoord2d(1, 0);
+				glVertex2d(404, Crissaegrim.getWindowHeight() - 32);
+				glTexCoord2d(0, 0);
+				glVertex2d(32, Crissaegrim.getWindowHeight() - 32);
 			glEnd();
 		glPopMatrix();
 	}

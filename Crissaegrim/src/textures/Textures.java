@@ -80,6 +80,8 @@ public class Textures {
 	public static final int TARGET = 2000;
 	public static final int DOOR_CLOSED = 2001;
 	
+	public static final int LOADING_MESSAGE = 17900;
+	
 	public static final int BACKGROUND_SOTN = 17960;
 	
 	// (Texture IDs 100000 and up are reserved for text)
@@ -162,6 +164,8 @@ public class Textures {
 		
 		TextureLoader.loadTexture(TARGET, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/Target.png")));
 		TextureLoader.loadTexture(DOOR_CLOSED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/DoorClosed.png")));
+		
+		TextureLoader.loadTexture(LOADING_MESSAGE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/LoadingMessage.png")));
 		
 		TextureLoader.loadTexture(BACKGROUND_SOTN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/SotNCastle.png")));
 		
