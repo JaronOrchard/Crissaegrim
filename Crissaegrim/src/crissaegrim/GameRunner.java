@@ -15,6 +15,9 @@ import java.util.Map.Entry;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
+import datapacket.ChunkPacket;
+import datapacket.NonexistentChunkPacket;
+import datapacket.RequestEntireBoardPacket;
 import datapacket.RequestPlayerIdPacket;
 import entities.Door;
 import entities.Entity;
@@ -23,6 +26,8 @@ import player.PlayerStatus;
 import players.PlayerMovementHelper;
 import attack.Attack;
 import board.Board;
+import board.Chunk;
+import board.MissingChunk;
 import textures.Textures;
 import thunderbrand.TextBlock;
 import thunderbrand.Thunderbrand;
@@ -37,7 +42,8 @@ public class GameRunner {
 	private long lastFPSTitleUpdate;
 	private long millisecondsSkipped = 0;
 	
-	private Map<String, Board> boardMap;
+	private Map<String, Board> boardMap = new HashMap<String, Board>();
+	private String destinationBoard = "";
 	private PlayerMovementHelper playerMovementHelper;
 	private List<TextBlock> waitingChatMessages = Collections.synchronizedList(new ArrayList<TextBlock>());
 	
@@ -60,9 +66,13 @@ public class GameRunner {
 			Crissaegrim.getPlayer().assignPlayerId(999); // No Valmanway connection
 		}
 		
-		setupBoards();
-		Crissaegrim.setBoard(boardMap.get("tower_of_preludes"));
-		//currentBoard = boardMap.get("dawning");
+		if (!Crissaegrim.getValmanwayConnection().getOnline()) {
+			setupBoards();
+		}
+		//Crissaegrim.setBoard(boardMap.get("tower_of_preludes"));
+		destinationBoard = "tower_of_preludes";
+		goToDestinationBoard();
+		
 		playerMovementHelper = new PlayerMovementHelper();
 		
 		//initializeGame();
@@ -75,15 +85,18 @@ public class GameRunner {
 			startTime = Thunderbrand.getTime();
 			
 			// Update the board, including all entities and bullets:
-			Crissaegrim.getBoard().preloadChunks(); // WE COULD PROBABLY DO THIS NOT THAT OFTEN
-			actionAttackList();
-			Crissaegrim.getPlayer().update();
-			actionEntityList();
-			
-			// Draw new scene:
-			drawScene();
-			
 			if (!Crissaegrim.currentlyLoading) {
+				if (!Crissaegrim.getValmanwayConnection().getOnline()) { // Offline load only
+					Crissaegrim.getBoard().preloadChunks(); // WE COULD PROBABLY DO THIS NOT THAT OFTEN
+				}
+				if (Crissaegrim.currentlyLoading) { break; }
+				actionAttackList();
+				Crissaegrim.getPlayer().update();
+				actionEntityList();
+			
+				// Draw new scene:
+				drawScene();
+			
 				// Get input and move the player:
 				if (Crissaegrim.getChatBox().isTypingMode()) {
 					Crissaegrim.getChatBox().getKeyboardInput();
@@ -92,12 +105,13 @@ public class GameRunner {
 				}
 				playerMovementHelper.movePlayer();
 				Crissaegrim.getBoard().getAttackList().addAll(playerMovementHelper.getAttackList());
+			
+				// Transmit data to the server
+				Crissaegrim.getValmanwayConnection().sendPlayerStatus();
 			} else {
+				drawScene();
 				drawLoadingMessage();
 			}
-			
-			// Transmit data to the server
-			Crissaegrim.getValmanwayConnection().sendPlayerStatus();
 			
 			Display.update();
 			endTime = Thunderbrand.getTime();
@@ -113,25 +127,27 @@ public class GameRunner {
 	private void drawScene() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		GameInitializer.initializeNewFrameForWindow();
-		Crissaegrim.getBoard().drawBackground();
-		
-		GameInitializer.initializeNewFrameForScene();
-		Crissaegrim.getBoard().draw(TileLayer.BACKGROUND);
-		Crissaegrim.getBoard().draw(TileLayer.MIDDLEGROUND);
-		for (Entity entity : Crissaegrim.getBoard().getEntityList()) {
-			if (!Crissaegrim.getDebugMode()) {
-				entity.draw();
-			} else {
-				entity.drawDebugMode();
+		if (Crissaegrim.getBoard() != null) {
+			GameInitializer.initializeNewFrameForWindow();
+			Crissaegrim.getBoard().drawBackground();
+			
+			GameInitializer.initializeNewFrameForScene();
+			Crissaegrim.getBoard().draw(TileLayer.BACKGROUND);
+			Crissaegrim.getBoard().draw(TileLayer.MIDDLEGROUND);
+			for (Entity entity : Crissaegrim.getBoard().getEntityList()) {
+				if (!Crissaegrim.getDebugMode()) {
+					entity.draw();
+				} else {
+					entity.drawDebugMode();
+				}
 			}
+			Crissaegrim.getPlayer().draw();
+			if (Crissaegrim.getDebugMode()) {
+				Crissaegrim.getPlayer().drawDebugMode();
+			}
+			drawGhosts();
+			Crissaegrim.getBoard().draw(TileLayer.FOREGROUND);
 		}
-		Crissaegrim.getPlayer().draw();
-		if (Crissaegrim.getDebugMode()) {
-			Crissaegrim.getPlayer().drawDebugMode();
-		}
-		drawGhosts();
-		Crissaegrim.getBoard().draw(TileLayer.FOREGROUND);
 		
 		GameInitializer.initializeNewFrameForWindow();
 		while (!waitingChatMessages.isEmpty()) {
@@ -158,7 +174,6 @@ public class GameRunner {
 					}
 				}
 			}
-			
 			
 			if (attack.getOneFrameLifetime()) {
 				attackIter.remove();
@@ -204,7 +219,8 @@ public class GameRunner {
 							Door door = (Door)entity;
 							Crissaegrim.getPlayer().getPosition().setAll(door.getDestinationCoordinate().getX(), door.getDestinationCoordinate().getY());
 							playerMovementHelper.resetMovementRequests();
-							Crissaegrim.setBoard(boardMap.get(door.getDestinationBoardName()));
+							destinationBoard = door.getDestinationBoardName();
+							goToDestinationBoard();
 							Crissaegrim.getBoard().preloadChunks();
 						}
 					}
@@ -277,8 +293,49 @@ public class GameRunner {
 		glPopMatrix();
 	}
 	
+	public void goToDestinationBoard() {
+		if (!destinationBoard.isEmpty()) {
+			if (boardMap.containsKey(destinationBoard)) {
+				Crissaegrim.setBoard(boardMap.get(destinationBoard));
+				destinationBoard = "";
+				Crissaegrim.currentlyLoading = false;
+			} else {
+				Crissaegrim.addOutgoingDataPacket(new RequestEntireBoardPacket(destinationBoard));
+				Crissaegrim.currentlyLoading = true;
+			}
+		}
+	}
+	
+	public void addChunk(ChunkPacket cp) {
+		addBoardToMapIfNeeded(cp.getBoardName());
+		boardMap.get(cp.getBoardName()).getChunkMap().put(
+				cp.getChunkXOrigin() + "_" + cp.getChunkYOrigin(),
+				new Chunk(cp.getChunkXOrigin(), cp.getChunkYOrigin(), cp.getData()));
+	}
+	
+	public void addNonexistentChunk(NonexistentChunkPacket ncp) {
+		addBoardToMapIfNeeded(ncp.getBoardName());
+		boardMap.get(ncp.getBoardName()).getChunkMap().put(
+				ncp.getChunkXOrigin() + "_" + ncp.getChunkYOrigin(),
+				new MissingChunk(ncp.getChunkXOrigin(), ncp.getChunkYOrigin()));
+	}
+	
+	private void addBoardToMapIfNeeded(String boardName) {
+		if (!boardMap.containsKey(boardName)) {
+			boardMap.put(boardName, new Board(boardName));
+			if (boardName.equals("dawning")) {
+				boardMap.get("dawning").getEntityList().add(new Door(new Coordinate(10052.5, 10013), "tower_of_preludes", new Coordinate(10050.5, 10016)));
+			} else if (boardName.equals("tower_of_preludes")) {
+				boardMap.get("tower_of_preludes").getEntityList().add(new Door(new Coordinate(10050.5, 10016), "dawning", new Coordinate(10052.5, 10013)));
+			}
+		}
+	}
+	
+	/**
+	 * (For offline mode only)
+	 */
 	private void setupBoards() {
-		boardMap = new HashMap<String, Board>();
+		boardMap.clear();
 		// Add all existing boards:
 		List<String> boardNames = Arrays.asList("first_board", "second_board", "tower_of_preludes", "dawning");
 		for (String boardName : boardNames) {

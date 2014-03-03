@@ -27,6 +27,7 @@ public class Board {
 	private List<Attack> attackList;
 	private List<Entity> entityList;
 	
+	public Map<String, Chunk> getChunkMap() { return chunkMap; }
 	public String getName() { return boardName; }
 	public List<Attack> getAttackList() { return attackList; }
 	public List<Entity> getEntityList() { return entityList; }

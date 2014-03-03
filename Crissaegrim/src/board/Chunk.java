@@ -14,6 +14,7 @@ import crissaegrim.Coordinate;
 import crissaegrim.Crissaegrim;
 import crissaegrim.GameRunner.TileLayer;
 import board.tiles.Tile;
+import board.tiles.TileUtils;
 
 public class Chunk {
 	protected int xOrigin; // The origin of the chunk is
@@ -29,6 +30,22 @@ public class Chunk {
 		xOrigin = xOrig;
 		yOrigin = yOrig;
 		tiles = new Tile[Crissaegrim.getChunkSideSize()][Crissaegrim.getChunkSideSize()];
+	}
+	
+	public Chunk(int xOrig, int yOrig, byte[] bytes) {
+		xOrigin = xOrig;
+		yOrigin = yOrig;
+		tiles = new Tile[Crissaegrim.getChunkSideSize()][Crissaegrim.getChunkSideSize()];
+		
+		for (int x = 0; x < Crissaegrim.getChunkSideSize(); x++) {
+			for (int y = 0; y < Crissaegrim.getChunkSideSize(); y++) {
+				int base = (x * 7) + (y * 100 * 7);
+				tiles[y][x] = TileUtils.getTileType(bytes[base]);
+				tiles[y][x].setBackgroundTexture((bytes[base+1] * 256) + bytes[base+2]);
+				tiles[y][x].setMiddlegroundTexture((bytes[base+3] * 256) + bytes[base+4]);
+				tiles[y][x].setForegroundTexture((bytes[base+5] * 256) + bytes[base+6]);
+			}
+		}
 	}
 	
 	public void setTile(int tileX, int tileY, Tile tile) { tiles[tileX][tileY] = tile; }

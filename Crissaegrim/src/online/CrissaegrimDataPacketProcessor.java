@@ -1,8 +1,10 @@
 package online;
 
 import crissaegrim.Crissaegrim;
+import datapacket.ChunkPacket;
 import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
+import datapacket.NonexistentChunkPacket;
 import datapacket.ReceivePlayerIdPacket;
 import datapacket.ReceivePlayerNamePacket;
 import datapacket.SendAllPlayerStatusesPacket;
@@ -24,6 +26,16 @@ public final class CrissaegrimDataPacketProcessor {
 				break;
 			case DataPacketTypes.SEND_CHAT_MESSAGE_PACKET:
 				Crissaegrim.getGameRunner().addWaitingChatMessage( ((SendChatMessagePacket)(packet)).getTextBlock() );
+				break;
+			case DataPacketTypes.CHUNK_PACKET:
+				Crissaegrim.getGameRunner().addChunk( ((ChunkPacket)(packet)) );
+				break;
+			case DataPacketTypes.NONEXISTENT_CHUNK_PACKET:
+				Crissaegrim.getGameRunner().addNonexistentChunk( ((NonexistentChunkPacket)(packet)) );
+				break;
+			case DataPacketTypes.DONE_SENDING_CHUNKS_PACKET:
+				Crissaegrim.currentlyLoading = false;
+				Crissaegrim.getGameRunner().goToDestinationBoard();
 				break;
 			default:
 				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());

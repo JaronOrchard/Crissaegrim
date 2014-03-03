@@ -1,12 +1,23 @@
 package valmanway;
 
 import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import thunderbrand.TextBlock;
+import datapacket.ChunkPacket;
 import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
+import datapacket.DoneSendingChunksPacket;
+import datapacket.NonexistentChunkPacket;
 import datapacket.ReceivePlayerIdPacket;
 import datapacket.ReceivePlayerNamePacket;
+import datapacket.RequestEntireBoardPacket;
 import datapacket.SendChatMessagePacket;
 import datapacket.SendPlayerStatusPacket;
 
@@ -26,6 +37,9 @@ public final class ValmanwayDataPacketProcessor {
 				break;
 			case DataPacketTypes.SEND_CHAT_MESSAGE_PACKET:
 				processChatMessage( ((SendChatMessagePacket)(packet)).getTextBlock(), valmanwayUserData);
+				break;
+			case DataPacketTypes.REQUEST_ENTIRE_BOARD_PACKET:
+				sendEntireBoard( ((RequestEntireBoardPacket)(packet)).getBoardName(), valmanwayUserData);
 				break;
 			default:
 				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());
@@ -71,6 +85,67 @@ public final class ValmanwayDataPacketProcessor {
 	
 	private static void sendRegularMessage(String message, Color color) {
 		Valmanway.getSharedData().addChatMessage(new TextBlock(message, color));
+	}
+	
+	private static void sendEntireBoard(String boardName, ValmanwayUserData vud) {
+		Map<String, DataPacket> chunkPackets = new HashMap<String, DataPacket>();
+		int chunkSizeSide = 100;
+		
+		File chunksDir = new File("C:/CrissaegrimChunks/" + boardName);
+		for (File f : chunksDir.listFiles()) {
+			if (!f.isDirectory() && f.getName().startsWith(boardName + "@")) {
+				int chunkXOrigin = Integer.parseInt(f.getName().substring(f.getName().indexOf('@') + 1, f.getName().lastIndexOf('_')));
+				int chunkYOrigin = Integer.parseInt(f.getName().substring(f.getName().lastIndexOf('_') + 1));
+				byte[] bytes = new byte[70000];
+				
+				BufferedReader br = null;
+				try {
+					br = new BufferedReader(new FileReader(f));
+					int numEntities = Integer.parseInt(br.readLine());
+					for (int i = 0; i < numEntities; i++) {
+						br.readLine(); // Skip entities
+					}
+					ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+					char[] tileChar = new char[7];
+					for (int i = 0; i < chunkSizeSide; i++) {
+						for (int j = 0; j < chunkSizeSide; j++) {
+							br.read(tileChar, 0, 7);
+							for (int k = 0; k < 7; k++) {
+								outStream.write(tileChar[k]);
+							}
+						}
+					}
+					bytes = outStream.toByteArray();
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("Failed to load chunk " + chunkXOrigin + "_" + chunkYOrigin + "!");
+				} finally {
+					if (br != null) {
+						try {
+							br.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				
+				chunkPackets.put(chunkXOrigin + "_" + chunkYOrigin, new ChunkPacket(boardName, chunkXOrigin, chunkYOrigin, bytes));
+				
+				// Create 8 neighboring NonexistentChunks if there's not already data there:
+				for (int xOrig = chunkXOrigin - chunkSizeSide; xOrig <= chunkXOrigin + chunkSizeSide; xOrig += chunkSizeSide) {
+					for (int yOrig = chunkYOrigin - chunkSizeSide; yOrig <= chunkYOrigin + chunkSizeSide; yOrig += chunkSizeSide) {
+						if (!chunkPackets.containsKey(xOrig + "_" + yOrig)) {
+							chunkPackets.put(xOrig + "_" + yOrig, new NonexistentChunkPacket(boardName, xOrig, yOrig));
+						}
+					}
+				}
+			}
+		}
+		for (DataPacket chunkPacket : chunkPackets.values()) {
+			vud.addOutgoingDataPacket(chunkPacket);
+		}
+		
+		vud.addOutgoingDataPacket(new DoneSendingChunksPacket());
 	}
 		
 }
