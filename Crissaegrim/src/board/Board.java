@@ -17,6 +17,7 @@ import board.tiles.TileUtils;
 import crissaegrim.Coordinate;
 import crissaegrim.Crissaegrim;
 import crissaegrim.GameRunner.TileLayer;
+import datapacket.RequestSpecificChunkPacket;
 import entities.Entity;
 
 public class Board {
@@ -37,6 +38,26 @@ public class Board {
 		boardName = bName;
 		attackList = new ArrayList<Attack>();
 		entityList = new ArrayList<Entity>();
+	}
+	
+	public void verifyChunksExist() {
+		Coordinate playerPosition = Crissaegrim.getPlayer().getPosition();
+		int chunkSideSize = Crissaegrim.getChunkSideSize();
+		// Get the coordinates of the Chunk the player is in:
+		int chunkXOrigin = (int)playerPosition.getX() - ((int)playerPosition.getX() % chunkSideSize);
+		int chunkYOrigin = (int)playerPosition.getY() - ((int)playerPosition.getY() % chunkSideSize);
+		// Ensure that the current Chunk and the 8 around it exist:
+		for (int xOrig = chunkXOrigin - chunkSideSize; xOrig <= chunkXOrigin + chunkSideSize; xOrig += chunkSideSize) {
+			for (int yOrig = chunkYOrigin - chunkSideSize; yOrig <= chunkYOrigin + chunkSideSize; yOrig += chunkSideSize) {
+				if (!chunkMap.containsKey(xOrig + "_" + yOrig)) {
+					// Chunk is missing!  Request and set to loading, then break out.
+					Crissaegrim.addOutgoingDataPacket(new RequestSpecificChunkPacket(boardName, xOrig, yOrig));
+					Crissaegrim.currentlyLoading = true;
+					System.out.println("Warning!  Chunk '" + boardName + "@" + xOrig + "_" + yOrig + "' was missing!"); 
+					return;
+				}
+			}
+		}
 	}
 	
 	public void preloadChunks() {
@@ -121,7 +142,9 @@ public class Board {
 		
 		glColor3d(1.0, 1.0, 1.0);
 		for (Chunk chunk : chunks) {
-			chunk.draw(playerPosition, layer);
+			if (chunk != null) {
+				chunk.draw(playerPosition, layer);
+			}
 		}
 	}
 	

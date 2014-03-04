@@ -89,7 +89,8 @@ public class GameRunner {
 				if (!Crissaegrim.getValmanwayConnection().getOnline()) { // Offline load only
 					Crissaegrim.getBoard().preloadChunks(); // WE COULD PROBABLY DO THIS NOT THAT OFTEN
 				}
-				if (Crissaegrim.currentlyLoading) { break; }
+				Crissaegrim.getBoard().verifyChunksExist();
+				if (Crissaegrim.currentlyLoading) { continue; }
 				actionAttackList();
 				Crissaegrim.getPlayer().update();
 				actionEntityList();
@@ -323,6 +324,8 @@ public class GameRunner {
 	private void addBoardToMapIfNeeded(String boardName) {
 		if (!boardMap.containsKey(boardName)) {
 			boardMap.put(boardName, new Board(boardName));
+			
+			// Temporarily set up entities since it's not set up in Badelaire yet:
 			if (boardName.equals("dawning")) {
 				boardMap.get("dawning").getEntityList().add(new Door(new Coordinate(10052.5, 10013), "tower_of_preludes", new Coordinate(10050.5, 10016)));
 			} else if (boardName.equals("tower_of_preludes")) {

@@ -18,6 +18,7 @@ import datapacket.NonexistentChunkPacket;
 import datapacket.ReceivePlayerIdPacket;
 import datapacket.ReceivePlayerNamePacket;
 import datapacket.RequestEntireBoardPacket;
+import datapacket.RequestSpecificChunkPacket;
 import datapacket.SendChatMessagePacket;
 import datapacket.SendPlayerStatusPacket;
 
@@ -41,8 +42,12 @@ public final class ValmanwayDataPacketProcessor {
 			case DataPacketTypes.REQUEST_ENTIRE_BOARD_PACKET:
 				sendEntireBoard( ((RequestEntireBoardPacket)(packet)).getBoardName(), valmanwayUserData);
 				break;
+			case DataPacketTypes.REQUEST_SPECIFIC_CHUNK_PACKET:
+				sendSpecificChunk( (RequestSpecificChunkPacket)packet, valmanwayUserData);
+				break;
 			default:
 				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());
+				break;
 		}
 		
 	}
@@ -144,7 +149,50 @@ public final class ValmanwayDataPacketProcessor {
 		for (DataPacket chunkPacket : chunkPackets.values()) {
 			vud.addOutgoingDataPacket(chunkPacket);
 		}
-		
+		vud.addOutgoingDataPacket(new DoneSendingChunksPacket());
+	}
+	
+	private static void sendSpecificChunk(RequestSpecificChunkPacket rscp, ValmanwayUserData vud) {
+		File chunksDir = new File("C:/CrissaegrimChunks/" + rscp.getBoardName());
+		File f = new File(chunksDir, rscp.getBoardName() + "@" + rscp.getChunkXOrigin() + "_" + rscp.getChunkYOrigin());
+		if (!f.exists() || f.isDirectory()) {
+			vud.addOutgoingDataPacket(new NonexistentChunkPacket(rscp.getBoardName(), rscp.getChunkXOrigin(), rscp.getChunkYOrigin()));
+		} else {
+			int chunkSizeSide = 100;
+			byte[] bytes = new byte[70000];
+			
+			BufferedReader br = null;
+			try {
+				br = new BufferedReader(new FileReader(f));
+				int numEntities = Integer.parseInt(br.readLine());
+				for (int i = 0; i < numEntities; i++) {
+					br.readLine(); // Skip entities
+				}
+				ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+				char[] tileChar = new char[7];
+				for (int i = 0; i < chunkSizeSide; i++) {
+					for (int j = 0; j < chunkSizeSide; j++) {
+						br.read(tileChar, 0, 7);
+						for (int k = 0; k < 7; k++) {
+							outStream.write(tileChar[k]);
+						}
+					}
+				}
+				bytes = outStream.toByteArray();
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Failed to load chunk " + rscp.getChunkXOrigin() + "_" + rscp.getChunkYOrigin() + "!");
+			} finally {
+				if (br != null) {
+					try {
+						br.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			vud.addOutgoingDataPacket(new ChunkPacket(rscp.getBoardName(), rscp.getChunkXOrigin(), rscp.getChunkYOrigin(), bytes));
+		}
 		vud.addOutgoingDataPacket(new DoneSendingChunksPacket());
 	}
 		
