@@ -40,10 +40,11 @@ public class Chunk {
 		for (int x = 0; x < Crissaegrim.getChunkSideSize(); x++) {
 			for (int y = 0; y < Crissaegrim.getChunkSideSize(); y++) {
 				int base = (x * 7) + (y * 100 * 7);
+				// The "& 0xff" basically converts signed bytes to unsigned to fix high textures.
 				tiles[y][x] = TileUtils.getTileType(bytes[base]);
-				tiles[y][x].setBackgroundTexture((bytes[base+1] * 256) + bytes[base+2]);
-				tiles[y][x].setMiddlegroundTexture((bytes[base+3] * 256) + bytes[base+4]);
-				tiles[y][x].setForegroundTexture((bytes[base+5] * 256) + bytes[base+6]);
+				tiles[y][x].setBackgroundTexture(((bytes[base+1] & 0xff) * 256) + (bytes[base+2] & 0xff));
+				tiles[y][x].setMiddlegroundTexture(((bytes[base+3] & 0xff) * 256) + (bytes[base+4] & 0xff));
+				tiles[y][x].setForegroundTexture(((bytes[base+5] & 0xff) * 256) + (bytes[base+6] & 0xff));
 			}
 		}
 	}
