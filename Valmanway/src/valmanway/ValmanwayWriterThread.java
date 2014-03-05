@@ -1,5 +1,6 @@
 package valmanway;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -28,6 +29,8 @@ public class ValmanwayWriterThread extends Thread {
     		ObjectOutputStream socketOut = new ObjectOutputStream(crissaegrimSocket.getOutputStream());
     		socketOut.flush();
     		
+    		ValmanwayDataPacketProcessor.sendRegularMessage(valmanwayUserData.getPlayerName() + " has logged in.", Color.GRAY);
+    		
     		while (valmanwayUserData.connectionStable) {
     			if (valmanwayUserData.outgoingDataPacketsExist()) {
     				socketOut.reset();
@@ -47,6 +50,8 @@ public class ValmanwayWriterThread extends Thread {
 					valmanwayUserData.sendNewChatMessages();
     			}
     		}
+    		
+    		ValmanwayDataPacketProcessor.sendRegularMessage(valmanwayUserData.getPlayerName() + " has logged out.", Color.GRAY);
     		
     		socketOut.close();
     		crissaegrimSocket.close();

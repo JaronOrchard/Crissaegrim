@@ -69,10 +69,11 @@ public final class ValmanwayDataPacketProcessor {
 				if (lowercaseMessage.equals("/setname")) {
 					sendSystemMessage("Usage: /setname [name]", vud);
 				} else {
+					String origName = vud.getPlayerName();
 					String newName = message.substring(9).trim();
 					vud.setPlayerName(newName);
 					vud.addOutgoingDataPacket(new ReceivePlayerNamePacket(newName));
-					sendSystemMessage("Your name has been changed to \"" + newName + "\".", vud);
+					sendRegularMessage("\"" + origName + "\" is now known as \"" + newName + "\".", Color.GRAY);
 				}
 			} else {
 				sendSystemMessage("Unrecognized command: " + message, vud);
@@ -84,11 +85,11 @@ public final class ValmanwayDataPacketProcessor {
 		
 	}
 	
-	private static void sendSystemMessage(String message, ValmanwayUserData vud) {
+	public static void sendSystemMessage(String message, ValmanwayUserData vud) {
 		vud.addOutgoingDataPacket(new SendChatMessagePacket(new TextBlock(message, Color.GRAY)));
 	}
 	
-	private static void sendRegularMessage(String message, Color color) {
+	public static void sendRegularMessage(String message, Color color) {
 		Valmanway.getSharedData().addChatMessage(new TextBlock(message, color));
 	}
 	
