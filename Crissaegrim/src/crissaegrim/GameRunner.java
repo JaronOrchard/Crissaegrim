@@ -63,6 +63,16 @@ public class GameRunner {
 				}
 			}
 		} else {
+			if (Crissaegrim.getValmanwayConnection().getOnlineOnly()) {
+				// Cannot connect + offline mode disallowed; display error and quit
+				while (!Display.isCloseRequested()) {
+					drawNoConnectionMessage();
+					Display.update();
+					Thread.sleep(100);
+				}
+				Display.destroy();
+				return;
+			}
 			Crissaegrim.getPlayer().assignPlayerId(999); // No Valmanway connection
 		}
 		
@@ -288,6 +298,26 @@ public class GameRunner {
 				glVertex2d(404, Crissaegrim.getWindowHeight() - 96);
 				glTexCoord2d(1, 0);
 				glVertex2d(404, Crissaegrim.getWindowHeight() - 32);
+				glTexCoord2d(0, 0);
+				glVertex2d(32, Crissaegrim.getWindowHeight() - 32);
+			glEnd();
+		glPopMatrix();
+	}
+	
+	private void drawNoConnectionMessage() {
+		GameInitializer.initializeNewFrameForWindow();
+		// Loading message texture size is 458 x 64
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, Textures.NO_CONNECTION_MESSAGE);
+		glPushMatrix();
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBegin(GL_QUADS);
+				glTexCoord2d(0, 1);
+				glVertex2d(32, Crissaegrim.getWindowHeight() - 96);
+				glTexCoord2d(1, 1);
+				glVertex2d(490, Crissaegrim.getWindowHeight() - 96);
+				glTexCoord2d(1, 0);
+				glVertex2d(490, Crissaegrim.getWindowHeight() - 32);
 				glTexCoord2d(0, 0);
 				glVertex2d(32, Crissaegrim.getWindowHeight() - 32);
 			glEnd();

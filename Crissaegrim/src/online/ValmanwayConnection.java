@@ -14,9 +14,11 @@ import datapacket.SendPlayerStatusPacket;
 
 public class ValmanwayConnection {
 	
+	private boolean onlineOnly = true; // If true, offline mode is DISABLED
+	private static int CONNECTION_TIMEOUT_MILLIS = 1000; // Milliseconds to attempted connection timeout
+	
 	private List<String> VALMANWAY_HOSTNAMES = new ArrayList<String>();
 	private int VALMANWAY_PORT;
-	private static int CONNECTION_TIMEOUT_MILLIS = 1000;
 	
 	private Socket valmanwaySocket = null;
 	
@@ -25,6 +27,7 @@ public class ValmanwayConnection {
 	
 	private boolean online = false;
 	public boolean getOnline() { return online; }
+	public boolean getOnlineOnly() { return onlineOnly; }
 	
 	public ValmanwayConnection() {
 		VALMANWAY_HOSTNAMES.add("garnet");		// Laptop computer

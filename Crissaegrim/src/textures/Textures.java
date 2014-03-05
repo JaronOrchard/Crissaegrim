@@ -81,6 +81,7 @@ public class Textures {
 	public static final int DOOR_CLOSED = 2001;
 	
 	public static final int LOADING_MESSAGE = 17900;
+	public static final int NO_CONNECTION_MESSAGE = 17901;
 	
 	public static final int BACKGROUND_SOTN = 17960;
 	
@@ -166,6 +167,7 @@ public class Textures {
 		TextureLoader.loadTexture(DOOR_CLOSED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/DoorClosed.png")));
 		
 		TextureLoader.loadTexture(LOADING_MESSAGE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/LoadingMessage.png")));
+		TextureLoader.loadTexture(NO_CONNECTION_MESSAGE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NoConnectionMessage.png")));
 		
 		TextureLoader.loadTexture(BACKGROUND_SOTN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/SotNCastle.png")));
 		
