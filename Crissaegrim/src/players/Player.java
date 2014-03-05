@@ -2,8 +2,6 @@ package players;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import org.lwjgl.opengl.GL11;
-
 import busy.Busy;
 import textures.Textures;
 import crissaegrim.Coordinate;
@@ -124,7 +122,7 @@ public class Player {
 	}
 	
 	public void drawDebugMode() {
-		glDisable(GL11.GL_TEXTURE_2D);
+		glDisable(GL_TEXTURE_2D);
 		glColor3d(0, 0, 1);
 		glBegin(GL_LINE_STRIP);
 			glVertex2d(position.getX() - (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight());
@@ -150,7 +148,7 @@ public class Player {
 			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * ((getPlayerBodyWidth() / 2) + getPlayerSwordLength())), position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight());
 			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * ((getPlayerBodyWidth() / 2))), position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight());
 		glEnd();
-		glEnable(GL11.GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_2D);
 	}
 	
 	public int getCurrentTexture() {

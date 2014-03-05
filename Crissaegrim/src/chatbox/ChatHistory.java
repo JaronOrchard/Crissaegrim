@@ -35,7 +35,7 @@ public class ChatHistory {
 	}
 	
 	public void draw() {
-		int y = 30;
+		int y = 34;
 		double alpha = 1.0;
 		glColor3d(1.0, 1.0, 1.0);
 		for (int i = 0; i < chatMessages.size(); i++) {

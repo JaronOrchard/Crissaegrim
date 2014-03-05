@@ -149,6 +149,7 @@ public class Board {
 	}
 	
 	public void drawBackground() {
+		glColor3d(1.0, 1.0, 1.0);
 		glBindTexture(GL_TEXTURE_2D, Textures.BACKGROUND_SOTN);
 		glPushMatrix();
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);

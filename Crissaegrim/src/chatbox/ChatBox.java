@@ -2,6 +2,7 @@ package chatbox;
 
 import java.awt.Color;
 
+import static org.lwjgl.opengl.GL11.*;
 import thunderbrand.TextBlock;
 
 public class ChatBox {
@@ -24,6 +25,9 @@ public class ChatBox {
 	
 	public void draw() {
 		chatHistory.draw();
+		if (isTypingMode()) {
+			drawSeparatingLine();
+		}
 		chatTypingArea.draw();
 	}
 	
@@ -40,6 +44,19 @@ public class ChatBox {
 	
 	public void getKeyboardInput() {
 		chatTypingArea.getKeyboardInput();
+	}
+	
+	private void drawSeparatingLine() {
+		glDisable(GL_TEXTURE_2D);
+		glBegin(GL_LINE_STRIP);
+			glColor4d(1, 1, 1, 1);
+			glVertex2d(5, 31);
+			glVertex2d(250, 31);
+			glColor4d(1, 1, 1, 0);
+			glVertex2d(400, 31);
+		glEnd();
+		glEnable(GL_TEXTURE_2D);
+		glColor4d(1, 1, 1, 1);
 	}
 	
 }
