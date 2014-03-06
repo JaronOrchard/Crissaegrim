@@ -57,8 +57,7 @@ public class Player {
 	public Player() {
 		playerId = -1;
 		name = "UNASSIGNED";
-		position = new Coordinate(10044, 10084); // tower_of_preludes
-		//position = new Coordinate(10044, 10020); // dawning
+		position = new Coordinate(0, 0);
 	}
 	
 	public void assignPlayerId(int id) {

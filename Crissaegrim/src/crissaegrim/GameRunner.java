@@ -44,6 +44,7 @@ public class GameRunner {
 	
 	private Map<String, Board> boardMap = new HashMap<String, Board>();
 	private String destinationBoard = "";
+	private Coordinate destinationCoordinate = null;
 	private PlayerMovementHelper playerMovementHelper;
 	private List<TextBlock> waitingChatMessages = Collections.synchronizedList(new ArrayList<TextBlock>());
 	
@@ -81,6 +82,8 @@ public class GameRunner {
 		}
 		//Crissaegrim.setBoard(boardMap.get("tower_of_preludes"));
 		destinationBoard = "tower_of_preludes";
+		destinationCoordinate = new Coordinate(10044, 10084); // tower_of_preludes
+		//destinationPosition = new Coordinate(10044, 10020); // dawning
 		goToDestinationBoard();
 		
 		playerMovementHelper = new PlayerMovementHelper();
@@ -228,9 +231,9 @@ public class GameRunner {
 						if (!Crissaegrim.getPlayer().isBusy() && entity instanceof Door &&
 								RectUtils.coordinateIsInRect(Crissaegrim.getPlayer().getPosition(), entity.getBounds())) {
 							Door door = (Door)entity;
-							Crissaegrim.getPlayer().getPosition().setAll(door.getDestinationCoordinate().getX(), door.getDestinationCoordinate().getY());
 							playerMovementHelper.resetMovementRequests();
 							destinationBoard = door.getDestinationBoardName();
+							destinationCoordinate = door.getDestinationCoordinate();
 							goToDestinationBoard();
 							Crissaegrim.getBoard().preloadChunks();
 						}
@@ -325,10 +328,12 @@ public class GameRunner {
 	}
 	
 	public void goToDestinationBoard() {
-		if (!destinationBoard.isEmpty()) {
+		if (!destinationBoard.isEmpty() && destinationCoordinate != null) {
 			if (boardMap.containsKey(destinationBoard)) {
 				Crissaegrim.setBoard(boardMap.get(destinationBoard));
+				Crissaegrim.getPlayer().getPosition().setAll(destinationCoordinate.getX(), destinationCoordinate.getY());
 				destinationBoard = "";
+				destinationCoordinate = null;
 				Crissaegrim.currentlyLoading = false;
 			} else {
 				Crissaegrim.addOutgoingDataPacket(new RequestEntireBoardPacket(destinationBoard));
