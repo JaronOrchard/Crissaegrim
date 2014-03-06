@@ -40,6 +40,7 @@ class ValmanwaySharedData {
 		// In this order to avoid synchronization issues:
 		chatMessages[(mostRecentChatMessageIndex + 1) % CHAT_MESSAGES_ARRAY_SIZE] = tb;
 		mostRecentChatMessageIndex++;
+		Valmanway.logMessage(tb);
 	}
 	
 	public void dropPlayer(int playerId) {

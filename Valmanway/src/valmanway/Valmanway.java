@@ -4,18 +4,23 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import thunderbrand.TextBlock;
+
 public class Valmanway {
 	
 	private static int VALMANWAY_SERVER_PORT = 22112;
 	private static volatile ValmanwaySharedData sharedData = new ValmanwaySharedData();
 	public static ValmanwaySharedData getSharedData() { return sharedData; }
 	
+	private static ValmanwayLogger logger = new ValmanwayLogger();
+	
 	public static void main(String[] argv) throws IOException {
 		ServerSocket serverSocket = null;
         boolean listening = true;
         
         System.out.println("Starting Valmanway server on port " + VALMANWAY_SERVER_PORT + "...");
-
+        logger.log("=== Server started ===");
+        
         try {
             serverSocket = new ServerSocket(VALMANWAY_SERVER_PORT);
         } catch (IOException e) {
@@ -30,8 +35,13 @@ public class Valmanway {
         	new ValmanwayWriterThread(acceptedSocket, valmanwayUserData).start();
         	new ValmanwayReaderThread(acceptedSocket, valmanwayUserData).start();
         }
-
+        
+        logger.close();
         serverSocket.close();
+	}
+	
+	public static void logMessage(TextBlock tb) {
+		logger.log(tb);
 	}
 	
 }
