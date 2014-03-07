@@ -23,7 +23,7 @@ public class ValmanwayConnection {
 	private Socket valmanwaySocket = null;
 	
 	private long lastPlayerStatusSendTime = 0;
-	private static long PLAYER_STATUS_SEND_INTERVAL = 100;
+	private static long PLAYER_STATUS_SEND_INTERVAL = 50;
 	
 	private boolean online = false;
 	public boolean getOnline() { return online; }

@@ -15,7 +15,7 @@ public class ValmanwayWriterThread extends Thread {
     private final ValmanwayUserData valmanwayUserData;
 	
     private long lastPlayerStatusSendTime = 0;
-	private static long PLAYER_STATUS_SEND_INTERVAL = 100;
+	private static long PLAYER_STATUS_SEND_INTERVAL = 50;
 	
     public ValmanwayWriterThread(Socket socket, ValmanwayUserData userData) {
     	super("ValmanwayWriterThread");
