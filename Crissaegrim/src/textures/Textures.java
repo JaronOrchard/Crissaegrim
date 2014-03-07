@@ -48,6 +48,7 @@ public class Textures {
 	public static final int TOWER_OF_PRELUDES_HALF_VERTICALLY_TB = 44;
 	public static final int TOWER_OF_PRELUDES_HALF_VERTICALLY_TBR = 45;
 	public static final int TOWER_OF_PRELUDES_HALF_VERTICALLY_TBL = 46;
+	public static final int TOWER_OF_PRELUDES_BACKGROUND = 47;
 	
 	public static final int KIKORI_DG_1L = 60;
 	public static final int KIKORI_DG_1R = 61;
@@ -68,6 +69,15 @@ public class Textures {
 	public static final int KIKORI_D_FULL_OFL = 76;
 	public static final int KIKORI_D_FULL_OFR = 77;
 	public static final int KIKORI_D_FULL_R = 78;
+	public static final int KIKORI_GRASS_SPRIG_1 = 79;
+	public static final int KIKORI_GRASS_SPRIG_2 = 80;
+	public static final int KIKORI_GRASS_SPRIG_3 = 81;
+	
+	public static final int DAWNING_BRIDGE_2RH = 100;
+	public static final int DAWNING_BRIDGE_2R = 101;
+	public static final int DAWNING_BRIDGE_2RU = 102;
+	public static final int DAWNING_BRIDGE_POST_L = 103;
+	public static final int DAWNING_BRIDGE_POST_R = 104;
 	
 	public static final int CHUNK_NOT_FOUND = 999;
 	
@@ -134,6 +144,7 @@ public class Textures {
 		TextureLoader.loadTexture(TOWER_OF_PRELUDES_HALF_VERTICALLY_TB, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/tower_of_preludes/HalfVerticallyTB.png")));
 		TextureLoader.loadTexture(TOWER_OF_PRELUDES_HALF_VERTICALLY_TBR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/tower_of_preludes/HalfVerticallyTBR.png")));
 		TextureLoader.loadTexture(TOWER_OF_PRELUDES_HALF_VERTICALLY_TBL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/tower_of_preludes/HalfVerticallyTBL.png")));
+		TextureLoader.loadTexture(TOWER_OF_PRELUDES_BACKGROUND, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/tower_of_preludes/towerBG.png")));
 		
 		TextureLoader.loadTexture(KIKORI_DG_1L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&G1L.png")));
 		TextureLoader.loadTexture(KIKORI_DG_1R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&G1R.png")));
@@ -154,6 +165,15 @@ public class Textures {
 		TextureLoader.loadTexture(KIKORI_D_FULL_OFL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileDFullOFL.png")));
 		TextureLoader.loadTexture(KIKORI_D_FULL_OFR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileDFullOFR.png")));
 		TextureLoader.loadTexture(KIKORI_D_FULL_R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileDFullR.png")));
+		TextureLoader.loadTexture(KIKORI_GRASS_SPRIG_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/GrassSprig1.png")));
+		TextureLoader.loadTexture(KIKORI_GRASS_SPRIG_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/GrassSprig2.png")));
+		TextureLoader.loadTexture(KIKORI_GRASS_SPRIG_3, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/GrassSprig3.png")));
+		
+		TextureLoader.loadTexture(DAWNING_BRIDGE_2RH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/bridge/Bridge2RH.png")));
+		TextureLoader.loadTexture(DAWNING_BRIDGE_2R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/bridge/Bridge2R.png")));
+		TextureLoader.loadTexture(DAWNING_BRIDGE_2RU, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/bridge/Bridge2RUnder.png")));
+		TextureLoader.loadTexture(DAWNING_BRIDGE_POST_L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/bridge/BridgePostL.png")));
+		TextureLoader.loadTexture(DAWNING_BRIDGE_POST_R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/bridge/BridgePostR.png")));
 		
 		TextureLoader.loadTexture(CHUNK_NOT_FOUND, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ChunkNotFound.png")));
 				
