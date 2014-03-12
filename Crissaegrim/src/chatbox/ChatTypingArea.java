@@ -14,6 +14,8 @@ import datapacket.SendChatMessagePacket;
 
 public class ChatTypingArea {
 	
+	private static final int MAXIMUM_MESSAGE_LENGTH = 250;
+	
 	private Map<String, ChatMessage> messageEntryTextures;
 	private boolean typingModeEnabled;
 	private String currentMessage;
@@ -98,7 +100,7 @@ public class ChatTypingArea {
 					typingModeEnabled = false;
 					resetState();
 					return; // Don't process any more keys!
-				} else if (Keyboard.getEventCharacter() != 0) {
+				} else if (Keyboard.getEventCharacter() != 0 && currentMessage.length() < MAXIMUM_MESSAGE_LENGTH) {
 					currentMessage += Keyboard.getEventCharacter();
 					if (Keyboard.getEventCharacter() == '@') {
 						checkForRecolor();

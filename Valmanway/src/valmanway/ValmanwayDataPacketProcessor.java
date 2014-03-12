@@ -57,15 +57,15 @@ public final class ValmanwayDataPacketProcessor {
 		if (message.charAt(0) == '/') { // System command
 			String lowercaseMessage = message.toLowerCase();
 			
-			if (lowercaseMessage.startsWith("/help")) {
+			if (lowercaseMessage.startsWith("/help")) {					// "/help"
 				sendSystemMessage("Commands: /me, /setname", vud);
-			} else if (lowercaseMessage.startsWith("/me")) {
+			} else if (lowercaseMessage.startsWith("/me")) {			// "/me"
 				if (lowercaseMessage.equals("/me")) {
 					sendSystemMessage("Usage: /me [action]", vud);
 				} else {
 					sendRegularMessage(vud.getPlayerName() + " " + message.substring(4), textBlock.getColor());
 				}
-			} else if (lowercaseMessage.startsWith("/setname")) {
+			} else if (lowercaseMessage.startsWith("/setname")) {		// "/setname"
 				if (lowercaseMessage.equals("/setname")) {
 					sendSystemMessage("Usage: /setname [name]", vud);
 				} else {
@@ -75,11 +75,11 @@ public final class ValmanwayDataPacketProcessor {
 					vud.addOutgoingDataPacket(new ReceivePlayerNamePacket(newName));
 					sendRegularMessage("\"" + origName + "\" is now known as \"" + newName + "\".", Color.GRAY);
 				}
-			} else {
+			} else {													// Invalid /command
 				sendSystemMessage("Unrecognized command: " + message, vud);
 				sendSystemMessage("Type \"/help\" to see the list of commands.", vud);
 			}
-		} else { // Normal message
+		} else {														// Normal message
 			sendRegularMessage("<" + vud.getPlayerName() + "> " + message, textBlock.getColor());
 		}
 		
