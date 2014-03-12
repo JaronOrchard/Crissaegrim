@@ -153,6 +153,8 @@ public class Player {
 	public int getCurrentTexture() {
 		if (isBusy()) {
 			return busyStatus.getTexture();
+		} else if (Crissaegrim.getChatBox().isTypingMode()) {
+			return Textures.STICK_PLAYER_TYPING;
 		}
 		return Textures.STICK_PLAYER;
 	}

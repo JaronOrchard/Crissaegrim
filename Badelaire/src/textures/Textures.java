@@ -87,6 +87,7 @@ public class Textures {
 	public static final int STICK_PLAYER = 1000;
 	public static final int STICK_PLAYER_ATTACK_1 = 1001;
 	public static final int STICK_PLAYER_ATTACK_2 = 1002;
+	public static final int STICK_PLAYER_TYPING = 1003;
 	
 	public static final int TARGET = 2000;
 	
@@ -173,6 +174,7 @@ public class Textures {
 		TextureLoader.loadTexture(STICK_PLAYER, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayer.png")));
 		TextureLoader.loadTexture(STICK_PLAYER_ATTACK_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerAttack1.png")));
 		TextureLoader.loadTexture(STICK_PLAYER_ATTACK_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerAttack2.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_TYPING, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerTyping.png")));
 		
 		TextureLoader.loadTexture(TARGET, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/Target.png")));
 		
