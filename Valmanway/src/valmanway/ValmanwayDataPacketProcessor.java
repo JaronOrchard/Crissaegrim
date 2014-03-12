@@ -71,6 +71,9 @@ public final class ValmanwayDataPacketProcessor {
 				} else {
 					String origName = vud.getPlayerName();
 					String newName = message.substring(9).trim();
+					if (newName.length() > 16) {
+						newName = newName.substring(0, 16);
+					}
 					vud.setPlayerName(newName);
 					vud.addOutgoingDataPacket(new ReceivePlayerNamePacket(newName));
 					sendRegularMessage("\"" + origName + "\" is now known as \"" + newName + "\".", Color.GRAY);

@@ -46,13 +46,7 @@ public class Player {
 	
 	private String name;
 	public String getName() { return name; }
-	public void setName(String n) {
-		if (n.trim().length() > 16) {
-			name = n.trim().substring(0, 16);
-		} else {
-			name = n.trim();
-		}
-	}
+	public void setName(String n) { name = n; }
 	
 	public Player() {
 		playerId = -1;
