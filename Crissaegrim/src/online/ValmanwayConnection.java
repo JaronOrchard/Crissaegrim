@@ -14,7 +14,6 @@ import datapacket.SendPlayerStatusPacket;
 
 public class ValmanwayConnection {
 	
-	private boolean onlineOnly = true; // If true, offline mode is DISABLED
 	private static int CONNECTION_TIMEOUT_MILLIS = 1000; // Milliseconds to attempted connection timeout
 	
 	private List<String> VALMANWAY_HOSTNAMES = new ArrayList<String>();
@@ -25,10 +24,6 @@ public class ValmanwayConnection {
 	private long lastPlayerStatusSendTime = 0;
 	private static long PLAYER_STATUS_SEND_INTERVAL = 50;
 	
-	private boolean online = false;
-	public boolean getOnline() { return online; }
-	public boolean getOnlineOnly() { return onlineOnly; }
-	
 	public ValmanwayConnection() {
 		VALMANWAY_HOSTNAMES.add("garnet");		// Laptop computer
 		VALMANWAY_HOSTNAMES.add("96.35.6.105");	// Home desktop computer
@@ -36,20 +31,25 @@ public class ValmanwayConnection {
 	}
 	
 	public void connectToValmonwayServer() throws IOException {
-		online = false;
+		boolean gotOnline = false;
 		for (String hostname : VALMANWAY_HOSTNAMES) {
 			try {
 				valmanwaySocket = new Socket();
 				valmanwaySocket.connect(new InetSocketAddress(hostname, VALMANWAY_PORT), CONNECTION_TIMEOUT_MILLIS);
 				new CrissaegrimWriterThread(valmanwaySocket).start();
 				new CrissaegrimReaderThread(valmanwaySocket).start();
-				online = true;
+				gotOnline = true;
 			} catch (UnknownHostException e) {
 				Crissaegrim.addSystemMessage("Don't know about host: " + hostname);
 			} catch (IOException e) {
 				Crissaegrim.addSystemMessage("Couldn't get I/O for the connection to: " + hostname);
 			}
-			if (online) { break; }
+			if (gotOnline) {
+				break; // Connected, so don't try more hostnames
+			}
+		}
+		if (!gotOnline) {
+			Crissaegrim.connectionStable = false; // Failed to connect to all servers; mark as offline
 		}
 	}
 	

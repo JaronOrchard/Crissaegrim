@@ -23,7 +23,7 @@ public class Crissaegrim {
 	private static volatile Board board = null;
 	private static volatile ChatBox chatBox = new ChatBox();
 	private static volatile ValmanwayConnection valmanwayConnection = new ValmanwayConnection();
-	private static volatile List<DataPacket> outgoingDataPackets = Collections.synchronizedList(new ArrayList<DataPacket>());;
+	private static volatile List<DataPacket> outgoingDataPackets = Collections.synchronizedList(new ArrayList<DataPacket>());
 	public static volatile boolean connectionStable = true;
 	public static volatile boolean currentlyLoading = false;
 	

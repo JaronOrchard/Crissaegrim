@@ -4,7 +4,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -55,7 +54,7 @@ public class GameRunner {
 		Textures.initializeTextures();
 		
 		Crissaegrim.getValmanwayConnection().connectToValmonwayServer();
-		if (Crissaegrim.getValmanwayConnection().getOnline()) { // If online, wait to get player id...
+		if (Crissaegrim.connectionStable) { // Wait to get player id...
 			long lastSend = 0;
 			while (Crissaegrim.getPlayer().getId() == -1) {
 				if (Thunderbrand.getTime() - lastSend > 1000) {
@@ -63,24 +62,16 @@ public class GameRunner {
 					Crissaegrim.addOutgoingDataPacket(new RequestPlayerIdPacket());
 				}
 			}
-		} else {
-			if (Crissaegrim.getValmanwayConnection().getOnlineOnly()) {
-				// Cannot connect + offline mode disallowed; display error and quit
-				while (!Display.isCloseRequested()) {
-					drawNoConnectionMessage();
-					Display.update();
-					Thread.sleep(100);
-				}
-				Display.destroy();
-				return;
+		} else { // Couldn't connect + offline mode disallowed; display error and quit
+			while (!Display.isCloseRequested()) {
+				drawNoConnectionMessage();
+				Display.update();
+				Thread.sleep(100);
 			}
-			Crissaegrim.getPlayer().assignPlayerId(999); // No Valmanway connection
+			Display.destroy();
+			return;
 		}
 		
-		if (!Crissaegrim.getValmanwayConnection().getOnline()) {
-			setupBoards();
-		}
-		//Crissaegrim.setBoard(boardMap.get("tower_of_preludes"));
 		destinationBoard = "tower_of_preludes";
 		destinationCoordinate = new Coordinate(10044, 10084); // tower_of_preludes
 		//destinationPosition = new Coordinate(10044, 10020); // dawning
@@ -99,9 +90,6 @@ public class GameRunner {
 			
 			// Update the board, including all entities and bullets:
 			if (!Crissaegrim.currentlyLoading) {
-				if (!Crissaegrim.getValmanwayConnection().getOnline()) { // Offline load only
-					Crissaegrim.getBoard().preloadChunks(); // WE COULD PROBABLY DO THIS NOT THAT OFTEN
-				}
 				Crissaegrim.getBoard().verifyChunksExist();
 				if (Crissaegrim.currentlyLoading) { continue; }
 				actionAttackList();
@@ -235,7 +223,6 @@ public class GameRunner {
 							destinationBoard = door.getDestinationBoardName();
 							destinationCoordinate = door.getDestinationCoordinate();
 							goToDestinationBoard();
-							Crissaegrim.getBoard().preloadChunks();
 						}
 					}
 				}
@@ -367,28 +354,6 @@ public class GameRunner {
 				boardMap.get("tower_of_preludes").getEntityList().add(new Door(new Coordinate(10050.5, 10016), "dawning", new Coordinate(10052.5, 10013)));
 			}
 		}
-	}
-	
-	/**
-	 * (For offline mode only)
-	 */
-	private void setupBoards() {
-		boardMap.clear();
-		// Add all existing boards:
-		List<String> boardNames = Arrays.asList("first_board", "second_board", "tower_of_preludes", "dawning");
-		for (String boardName : boardNames) {
-			boardMap.put(boardName, new Board(boardName));
-		}
-		
-		// Temporarily set up entities since it's not set up in Badelaire yet:
-		
-		//boardMap.get("first_board").getEntityList().add(new Target(new Coordinate(10050, 10010)));
-		boardMap.get("first_board").getEntityList().add(new Door(new Coordinate(10028.5, 10001), "second_board", new Coordinate(10041.5, 10002)));
-		boardMap.get("second_board").getEntityList().add(new Door(new Coordinate(10041.5, 10002), "first_board", new Coordinate(10028.5, 10001)));
-		
-		boardMap.get("dawning").getEntityList().add(new Door(new Coordinate(10052.5, 10013), "tower_of_preludes", new Coordinate(10050.5, 10016)));
-		boardMap.get("tower_of_preludes").getEntityList().add(new Door(new Coordinate(10050.5, 10016), "dawning", new Coordinate(10052.5, 10013)));
-		
 	}
 	
 }

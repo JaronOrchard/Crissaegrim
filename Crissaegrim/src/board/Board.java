@@ -1,9 +1,5 @@
 package board;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +9,6 @@ import textures.Textures;
 import static org.lwjgl.opengl.GL11.*;
 import attack.Attack;
 import board.tiles.CollisionDetectionTile;
-import board.tiles.TileUtils;
 import crissaegrim.Coordinate;
 import crissaegrim.Crissaegrim;
 import crissaegrim.GameRunner.TileLayer;
@@ -55,70 +50,6 @@ public class Board {
 					Crissaegrim.currentlyLoading = true;
 					System.out.println("Warning!  Chunk '" + boardName + "@" + xOrig + "_" + yOrig + "' was missing!"); 
 					return;
-				}
-			}
-		}
-	}
-	
-	public void preloadChunks() {
-		Coordinate playerPosition = Crissaegrim.getPlayer().getPosition();
-		int chunkSideSize = Crissaegrim.getChunkSideSize();
-		// Get the coordinates of the Chunk the player is in:
-		int chunkXOrigin = (int)playerPosition.getX() - ((int)playerPosition.getX() % chunkSideSize);
-		int chunkYOrigin = (int)playerPosition.getY() - ((int)playerPosition.getY() % chunkSideSize);
-		// Ensure that Chunk and the 8 around it are loaded:
-		loadChunkIfNeeded(chunkXOrigin-chunkSideSize, chunkYOrigin-chunkSideSize);
-		loadChunkIfNeeded(chunkXOrigin-chunkSideSize, chunkYOrigin);
-		loadChunkIfNeeded(chunkXOrigin-chunkSideSize, chunkYOrigin+chunkSideSize);
-		loadChunkIfNeeded(chunkXOrigin, chunkYOrigin-chunkSideSize);
-		loadChunkIfNeeded(chunkXOrigin, chunkYOrigin);
-		loadChunkIfNeeded(chunkXOrigin, chunkYOrigin+chunkSideSize);
-		loadChunkIfNeeded(chunkXOrigin+chunkSideSize, chunkYOrigin-chunkSideSize);
-		loadChunkIfNeeded(chunkXOrigin+chunkSideSize, chunkYOrigin);
-		loadChunkIfNeeded(chunkXOrigin+chunkSideSize, chunkYOrigin+chunkSideSize);
-	}
-	
-	private void loadChunkIfNeeded(int chunkXOrigin, int chunkYOrigin) {
-		String chunkName = chunkXOrigin + "_" + chunkYOrigin;
-		if (!chunkMap.containsKey(chunkName)) {
-			File chunkFile = new File("C:/CrissaegrimChunks/" + boardName + "/" + boardName + "@" + chunkName);
-			if (!chunkFile.exists()) {
-				chunkMap.put(chunkXOrigin + "_" + chunkYOrigin, new MissingChunk(chunkXOrigin, chunkYOrigin));
-				Crissaegrim.addSystemMessageIfDebug("MissingChunk " + boardName + "@" + chunkXOrigin + "_" + chunkYOrigin + " created");
-			} else {
-				Chunk chunk = new Chunk(chunkXOrigin, chunkYOrigin);
-				
-				BufferedReader br = null;
-				try {
-					int chunkSideSize = Crissaegrim.getChunkSideSize();
-					br = new BufferedReader(new FileReader(chunkFile));
-					int numEntities = Integer.parseInt(br.readLine());
-					for (int i = 0; i < numEntities; i++) {
-						br.readLine(); // Skip entities
-					}
-					for (int i = 0; i < chunkSideSize; i++) {
-						for (int j = 0; j < chunkSideSize; j++) {
-							char[] tileChar = new char[7];
-							br.read(tileChar, 0, 7);
-							chunk.setTile(i, j, TileUtils.getTileType(tileChar[0]));
-							chunk.getTile(i, j).setBackgroundTexture((tileChar[1] * 256) + tileChar[2]);
-							chunk.getTile(i, j).setMiddlegroundTexture((tileChar[3] * 256) + tileChar[4]);
-							chunk.getTile(i, j).setForegroundTexture((tileChar[5] * 256) + tileChar[6]);
-						}
-					}
-					chunkMap.put(chunkXOrigin + "_" + chunkYOrigin, chunk);
-					Crissaegrim.addSystemMessageIfDebug("Chunk " + chunkXOrigin + "_" + chunkYOrigin + " loaded");
-				} catch (Exception e) {
-					e.printStackTrace();
-					Crissaegrim.addSystemMessageIfDebug("Failed to load chunk " + boardName + "@" + chunkXOrigin + "_" + chunkYOrigin + "!");
-				} finally {
-					if (br != null) {
-						try {
-							br.close();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
 				}
 			}
 		}

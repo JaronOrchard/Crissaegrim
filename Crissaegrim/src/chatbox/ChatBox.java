@@ -12,7 +12,7 @@ public class ChatBox {
 	
 	public ChatBox() {
 		chatHistory = new ChatHistory(this);
-		chatTypingArea = new ChatTypingArea(this);
+		chatTypingArea = new ChatTypingArea();
 	}
 	
 	public void addChatMessage(String message, Color color) {
