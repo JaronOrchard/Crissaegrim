@@ -1,7 +1,9 @@
 package valmanway;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import player.PlayerStatus;
@@ -40,6 +42,11 @@ class ValmanwaySharedData {
 	public String getPlayerName(int playerId) { return playerNameMap.get(playerId); }
 	public void setPlayerName(int playerId, String playerName) { playerNameMap.put(playerId, playerName); }
 	public boolean isPlayerNameInUse(String playerName) { return playerNameMap.containsValue(playerName); }
+	public List<String> getPlayerNamesSorted() {
+		List<String> names = new ArrayList<String>(playerNameMap.values());
+		Collections.sort(names, String.CASE_INSENSITIVE_ORDER);
+		return names;
+	}
 	
 	public synchronized void addChatMessage(TextBlock tb) {
 		// In this order to avoid synchronization issues:

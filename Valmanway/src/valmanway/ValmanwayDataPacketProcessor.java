@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,8 @@ import datapacket.SendChatMessagePacket;
 import datapacket.SendPlayerStatusPacket;
 
 public final class ValmanwayDataPacketProcessor {
+	
+	private static final int LIST_PLAYERS_LINE_MAX_CHARS = 100;
 	
 	public static void processDataPacket(DataPacket packet, ValmanwayUserData valmanwayUserData) {
 		switch (packet.getPacketType()) {
@@ -60,7 +63,7 @@ public final class ValmanwayDataPacketProcessor {
 			String lowercaseMessage = message.toLowerCase();
 			
 			if (lowercaseMessage.startsWith("/help")) {					// "/help"
-				sendSystemMessage("Commands: /me, /setname", vud);
+				sendSystemMessage("Commands: /me, /setname, /players", vud);
 			} else if (lowercaseMessage.startsWith("/me")) {			// "/me"
 				if (lowercaseMessage.equals("/me")) {
 					sendSystemMessage("Usage: /me [action]", vud);
@@ -88,6 +91,22 @@ public final class ValmanwayDataPacketProcessor {
 						sendRegularMessage("\"" + origName + "\" is now known as \"" + newName + "\".", Color.GRAY);
 					}
 				}
+			} else if (lowercaseMessage.startsWith("/players")) {		// "/players"
+				List<String> names = Valmanway.getSharedData().getPlayerNamesSorted();
+				StringBuilder sb = new StringBuilder("There are " + names.size() + " players online: ");
+				for (int i = 0; i < names.size(); i++) {
+					if (sb.length() + names.get(i).length() > LIST_PLAYERS_LINE_MAX_CHARS) {
+						sb.append(",");
+						sendSystemMessage(sb.toString(), vud);
+						sb = new StringBuilder("     " + names.get(i));
+					} else {
+						if (i != 0) {
+							sb.append(", ");
+						}
+						sb.append(names.get(i));
+					}
+				}
+				sendSystemMessage(sb.toString(), vud);
 			} else {													// Invalid /command
 				sendSystemMessage("Unrecognized command: " + message, vud);
 				sendSystemMessage("Type \"/help\" to see the list of commands.", vud);
