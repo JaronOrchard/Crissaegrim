@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import thunderbrand.TextBlock;
 import datapacket.ChunkPacket;
 import datapacket.DataPacket;
@@ -72,11 +74,19 @@ public final class ValmanwayDataPacketProcessor {
 					String origName = vud.getPlayerName();
 					String newName = message.substring(9).trim();
 					if (newName.length() > 16) {
-						newName = newName.substring(0, 16);
+						newName = newName.substring(0, 16).trim();
 					}
-					vud.setPlayerName(newName);
-					vud.addOutgoingDataPacket(new ReceivePlayerNamePacket(newName));
-					sendRegularMessage("\"" + origName + "\" is now known as \"" + newName + "\".", Color.GRAY);
+					if (newName.startsWith("Player")) {
+						sendSystemMessage("That name is not allowed.", vud);
+					} else if (!StringUtils.isAlphanumericSpace(newName)) {
+						sendSystemMessage("Names can only contain letters, numbers, and spaces.", vud);
+					} else if (Valmanway.getSharedData().isPlayerNameInUse(newName)) {
+						sendSystemMessage("Someone else is already using that name.", vud);
+					} else {
+						vud.setPlayerName(newName);
+						vud.addOutgoingDataPacket(new ReceivePlayerNamePacket(newName));
+						sendRegularMessage("\"" + origName + "\" is now known as \"" + newName + "\".", Color.GRAY);
+					}
 				}
 			} else {													// Invalid /command
 				sendSystemMessage("Unrecognized command: " + message, vud);

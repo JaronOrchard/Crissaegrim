@@ -12,17 +12,16 @@ public class ValmanwayUserData {
 	private List<DataPacket> outgoingDataPackets;
 	public volatile boolean connectionStable = true;
 	private final int playerId;
-	private String playerName;
 	private int lastDisplayedChatMessageIndex;
 	
 	public int getPlayerId() { return playerId; }
-	public String getPlayerName() { return playerName; }
-	public void setPlayerName(String n) { playerName = n; }
+	public String getPlayerName() { return Valmanway.getSharedData().getPlayerName(playerId); }
+	public void setPlayerName(String n) { Valmanway.getSharedData().setPlayerName(playerId, n); }
 	public int getLastDisplayedChatMessageIndex() { return lastDisplayedChatMessageIndex; }
 	
 	public ValmanwayUserData(int playerId, int mostRecentChatMessageIndex) {
 		this.playerId = playerId;
-		playerName = "Player " + playerId;
+		setPlayerName("Player " + playerId);
 		outgoingDataPackets = Collections.synchronizedList(new ArrayList<DataPacket>());
 		lastDisplayedChatMessageIndex = mostRecentChatMessageIndex;
 	}
