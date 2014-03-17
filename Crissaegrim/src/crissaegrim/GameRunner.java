@@ -153,6 +153,7 @@ public class GameRunner {
 		}
 		
 		GameInitializer.initializeNewFrameForWindow();
+		Crissaegrim.getPlayer().getInventory().draw();
 		while (!waitingChatMessages.isEmpty()) {
 			Crissaegrim.getChatBox().addChatMessage(waitingChatMessages.remove(0));
 		}

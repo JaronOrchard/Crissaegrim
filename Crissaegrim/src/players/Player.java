@@ -29,7 +29,7 @@ public class Player {
 	private boolean facingRight = true;
 	private Busy busyStatus = null;
 	private String icon = null; // Appears when something is actionable, like entering a door
-
+	
 	public double getHorizontalMovementSpeed() { return horizontalMovementSpeed; }
 	public double getJumpMomentum() { return jumpMomentum; }
 	public Coordinate getPosition() { return position; }
@@ -47,6 +47,9 @@ public class Player {
 	private String name;
 	public String getName() { return name; }
 	public void setName(String n) { name = n; }
+	
+	private Inventory inventory = new Inventory();
+	public Inventory getInventory() { return inventory; }
 	
 	public Player() {
 		playerId = -1;
