@@ -63,12 +63,7 @@ public class GameRunner {
 				}
 			}
 		} else { // Couldn't connect + offline mode disallowed; display error and quit
-			while (!Display.isCloseRequested()) {
-				drawNoConnectionMessage();
-				Display.update();
-				Thread.sleep(100);
-			}
-			Display.destroy();
+			displayNoConnectionMessageForever();
 			return;
 		}
 		
@@ -87,6 +82,12 @@ public class GameRunner {
 		long startTime, endTime, elaspedTime; // Per-loop times to keep FRAMES_PER_SECOND
 		while (!Display.isCloseRequested()) {
 			startTime = Thunderbrand.getTime();
+			
+			if (!Crissaegrim.connectionStable) { // Lost connection to server
+				Crissaegrim.getValmanwayConnection().closeConnections();
+				displayLostConnectionMessageForever();
+				return;
+			}
 			
 			// Update the board, including all entities and bullets:
 			if (!Crissaegrim.currentlyLoading) {
@@ -294,24 +295,59 @@ public class GameRunner {
 		glPopMatrix();
 	}
 	
-	private void drawNoConnectionMessage() {
-		GameInitializer.initializeNewFrameForWindow();
-		// Loading message texture size is 458 x 64
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, Textures.NO_CONNECTION_MESSAGE);
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBegin(GL_QUADS);
-				glTexCoord2d(0, 1);
-				glVertex2d(32, Crissaegrim.getWindowHeight() - 96);
-				glTexCoord2d(1, 1);
-				glVertex2d(490, Crissaegrim.getWindowHeight() - 96);
-				glTexCoord2d(1, 0);
-				glVertex2d(490, Crissaegrim.getWindowHeight() - 32);
-				glTexCoord2d(0, 0);
-				glVertex2d(32, Crissaegrim.getWindowHeight() - 32);
-			glEnd();
-		glPopMatrix();
+	private void displayNoConnectionMessageForever() throws InterruptedException {
+		while (!Display.isCloseRequested()) {
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			GameInitializer.initializeNewFrameForWindow();
+			// No connection message texture size is 458 x 64
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, Textures.NO_CONNECTION_MESSAGE);
+			glPushMatrix();
+				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+				glBegin(GL_QUADS);
+					glTexCoord2d(0, 1);
+					glVertex2d(32, Crissaegrim.getWindowHeight() - 96);
+					glTexCoord2d(1, 1);
+					glVertex2d(490, Crissaegrim.getWindowHeight() - 96);
+					glTexCoord2d(1, 0);
+					glVertex2d(490, Crissaegrim.getWindowHeight() - 32);
+					glTexCoord2d(0, 0);
+					glVertex2d(32, Crissaegrim.getWindowHeight() - 32);
+				glEnd();
+			glPopMatrix();
+			
+			Display.update();
+			Thread.sleep(100);
+		}
+		Display.destroy();
+	}
+	
+	private void displayLostConnectionMessageForever() throws InterruptedException {
+		GameInitializer.setWindowTitle("Connection lost - Please restart");
+		while (!Display.isCloseRequested()) {
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			GameInitializer.initializeNewFrameForWindow();
+			// Lost connection message texture size is 423 x 64
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, Textures.LOST_CONNECTION_MESSAGE);
+			glPushMatrix();
+				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+				glBegin(GL_QUADS);
+					glTexCoord2d(0, 1);
+					glVertex2d(32, Crissaegrim.getWindowHeight() - 96);
+					glTexCoord2d(1, 1);
+					glVertex2d(455, Crissaegrim.getWindowHeight() - 96);
+					glTexCoord2d(1, 0);
+					glVertex2d(455, Crissaegrim.getWindowHeight() - 32);
+					glTexCoord2d(0, 0);
+					glVertex2d(32, Crissaegrim.getWindowHeight() - 32);
+				glEnd();
+			glPopMatrix();
+			
+			Display.update();
+			Thread.sleep(100);
+		}
+		Display.destroy();
 	}
 	
 	public void goToDestinationBoard() {
