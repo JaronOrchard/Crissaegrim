@@ -1,6 +1,9 @@
 package players;
 
 import static org.lwjgl.opengl.GL11.*;
+
+import java.util.Date;
+
 import textures.Textures;
 import crissaegrim.Crissaegrim;
 import items.Item;
@@ -11,10 +14,13 @@ public class Inventory {
 	private static final int BOX_SIZE_PIXELS = 32;
 	private static final int INNER_PADDING_PIXELS = 4;
 	private static final int OUTER_PADDING_PIXELS = 8;
+	private final static long MILLIS_AT_FULL_EXTENDED = 2000;
+	private final static long MILLIS_TO_SLIDE_RIGHT = 300;
 	
 	private static final int INVENTORY_SIZE = 8;
 	private Item[] items;
 	private int selectedItemIndex;
+	private long lastTouchedTime = 0;
 	
 	public Inventory() {
 		items = new Item[INVENTORY_SIZE];
@@ -27,8 +33,14 @@ public class Inventory {
 				items[6] = new Weapon("Fists", Textures.TOWER_OF_PRELUDES_1R_L);
 	}
 	
-	public void selectPreviousItem() { selectedItemIndex = (selectedItemIndex + INVENTORY_SIZE - 1) % INVENTORY_SIZE; }
-	public void selectNextItem() { selectedItemIndex = (selectedItemIndex + 1) % INVENTORY_SIZE; }
+	public void selectPreviousItem() {
+		selectedItemIndex = (selectedItemIndex + INVENTORY_SIZE - 1) % INVENTORY_SIZE;
+		updateLastTouchedTime();
+	}
+	public void selectNextItem() {
+		selectedItemIndex = (selectedItemIndex + 1) % INVENTORY_SIZE;
+		updateLastTouchedTime();
+	}
 	public void selectSpecificItem(int index) {
 		if (index < 0) {
 			selectedItemIndex = 0;
@@ -37,11 +49,22 @@ public class Inventory {
 		} else {
 			selectedItemIndex = index;
 		}
-	} 
+		updateLastTouchedTime();
+	}
+	private void updateLastTouchedTime() { lastTouchedTime = new Date().getTime(); }
 	
 	public void draw() {
+		long now = new Date().getTime();
+		if (now - lastTouchedTime > MILLIS_AT_FULL_EXTENDED + MILLIS_TO_SLIDE_RIGHT) { return; } // Inventory is out of view
 		int topY = Crissaegrim.getWindowHeight() - OUTER_PADDING_PIXELS;
-		int rightX = Crissaegrim.getWindowWidth() - OUTER_PADDING_PIXELS;
+		int rightX;
+		if (now - lastTouchedTime < MILLIS_AT_FULL_EXTENDED) {
+			rightX = Crissaegrim.getWindowWidth() - OUTER_PADDING_PIXELS;
+		} else {
+			double amtSlid = ((double)(now - lastTouchedTime - MILLIS_AT_FULL_EXTENDED)) / (double)MILLIS_TO_SLIDE_RIGHT;
+			rightX = (int)((1.0 - amtSlid)*(Crissaegrim.getWindowWidth() - OUTER_PADDING_PIXELS) +
+					amtSlid*(Crissaegrim.getWindowWidth() + BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2));
+		}
 		
 		// Draw item box outlines:
 		glDisable(GL_TEXTURE_2D);
