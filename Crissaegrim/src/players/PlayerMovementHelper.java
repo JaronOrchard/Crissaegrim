@@ -1,5 +1,7 @@
 package players;
 
+import items.Weapon;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,11 +28,10 @@ public class PlayerMovementHelper {
 	private boolean leftMovementRequested;
 	private boolean rightMovementRequested;
 	private boolean jumpMovementRequested;
-	private boolean attackRequested;
+	private boolean useItemRequested;
 	private boolean onTheGround;
 	private boolean currentlyJumping;
 	private boolean holdingJumpButton;
-	private boolean holdingAttackButton;
 	private List<Attack> attackList;
 	
 	public List<Attack> getAttackList() { return attackList; }
@@ -42,7 +43,6 @@ public class PlayerMovementHelper {
 		onTheGround = false;
 		currentlyJumping = false;
 		holdingJumpButton = false;
-		holdingAttackButton = false;
 		attackList = new ArrayList<Attack>();
 	}
 	
@@ -50,7 +50,7 @@ public class PlayerMovementHelper {
 		leftMovementRequested = false;
 		rightMovementRequested = false;
 		jumpMovementRequested = false;
-		attackRequested = false;
+		useItemRequested = false;
 	}
 	
 	public void requestLeftMovement() {
@@ -65,8 +65,8 @@ public class PlayerMovementHelper {
 		jumpMovementRequested = true;
 	}
 	
-	public void requestAttack() {
-		attackRequested = true;
+	public void requestUseItem() {
+		useItemRequested = true;
 	}
 	
 	public void movePlayer() {
@@ -75,13 +75,12 @@ public class PlayerMovementHelper {
 		Coordinate endingPosition;
 		
 		attackList.clear();		
-		if (attackRequested && !player.isBusy() && !holdingAttackButton) {
+		if (useItemRequested && !player.isBusy() && player.getInventory().getCurrentItem() instanceof Weapon) {
 			player.setBusy(new BusySwordSwing());
 		}
 		if (player.isBusy() && player.getBusyStatus() instanceof BusySwordSwing) {
 			attackList.add(new Attack(player.getId(), player.getSwordSwingRect(), true));
 		}
-		holdingAttackButton = attackRequested;
 		
 		// Planned movement rules:
 		// 

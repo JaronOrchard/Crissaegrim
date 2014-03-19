@@ -29,6 +29,8 @@ public class Inventory {
 		items[0] = new Weapon("Starter Sword", Textures.ITEM_STARTER_SWORD);
 	}
 	
+	public Item getCurrentItem() { return items[selectedItemIndex]; }
+	
 	public void selectPreviousItem() {
 		selectedItemIndex = (selectedItemIndex + INVENTORY_SIZE - 1) % INVENTORY_SIZE;
 		updateLastTouchedTime();

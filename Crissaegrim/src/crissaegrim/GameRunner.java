@@ -205,7 +205,6 @@ public class GameRunner {
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) { playerMovementHelper.requestLeftMovement(); }
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) { playerMovementHelper.requestRightMovement(); }
 		if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_SPACE)) { playerMovementHelper.requestJumpMovement(); }
-		//if (Keyboard.isKeyDown(Keyboard.KEY_Z)) { playerMovementHelper.requestAttack(); }
 		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
@@ -243,7 +242,7 @@ public class GameRunner {
 			while (Mouse.next()) {
 				if (Mouse.getEventButtonState()) { // Button was clicked (not released)
 					if (Mouse.getEventButton() == 0) {
-						playerMovementHelper.requestAttack();
+						playerMovementHelper.requestUseItem();
 					}
 				}
 			}
