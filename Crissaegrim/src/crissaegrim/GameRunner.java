@@ -204,7 +204,7 @@ public class GameRunner {
 	private void getKeyboardAndMouseInput() {
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) { playerMovementHelper.requestLeftMovement(); }
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) { playerMovementHelper.requestRightMovement(); }
-		if (Keyboard.isKeyDown(Keyboard.KEY_W)) { playerMovementHelper.requestJumpMovement(); }
+		if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_SPACE)) { playerMovementHelper.requestJumpMovement(); }
 		//if (Keyboard.isKeyDown(Keyboard.KEY_Z)) { playerMovementHelper.requestAttack(); }
 		
 		while (Keyboard.next()) {

@@ -24,13 +24,9 @@ public class Inventory {
 	
 	public Inventory() {
 		items = new Item[INVENTORY_SIZE];
-		selectedItemIndex = 3;
+		selectedItemIndex = 0;
 		
-		// --- Remove when Inventory is done:
-				items[2] = new Weapon("Air Staff", Textures.CHUNK_NOT_FOUND);
-				items[3] = new Weapon("Water Flask", Textures.KIKORI_D_FULL_L);
-				items[4] = new Weapon("Space Sword", Textures.KIKORI_GRASS_SPRIG_2);
-				items[6] = new Weapon("Fists", Textures.TOWER_OF_PRELUDES_1R_L);
+		items[0] = new Weapon("Starter Sword", Textures.ITEM_STARTER_SWORD);
 	}
 	
 	public void selectPreviousItem() {

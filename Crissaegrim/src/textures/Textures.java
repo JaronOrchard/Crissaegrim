@@ -97,6 +97,8 @@ public class Textures {
 	
 	public static final int BACKGROUND_SOTN = 17960;
 	
+	public static final int ITEM_STARTER_SWORD = 20000;
+	
 	// (Texture IDs 100000 and up are reserved for text)
 	
 	public static void initializeTextures() {
@@ -194,6 +196,8 @@ public class Textures {
 		TextureLoader.loadTexture(LOST_CONNECTION_MESSAGE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/LostConnectionMessage.png")));
 		
 		TextureLoader.loadTexture(BACKGROUND_SOTN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/SotNCastle.png")));
+		
+		TextureLoader.loadTexture(ITEM_STARTER_SWORD, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ItemStarterSword.png")));
 		
 	}
 	
