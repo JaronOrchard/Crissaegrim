@@ -27,6 +27,18 @@ public class Inventory {
 				items[6] = new Weapon("Fists", Textures.TOWER_OF_PRELUDES_1R_L);
 	}
 	
+	public void selectPreviousItem() { selectedItemIndex = (selectedItemIndex + INVENTORY_SIZE - 1) % INVENTORY_SIZE; }
+	public void selectNextItem() { selectedItemIndex = (selectedItemIndex + 1) % INVENTORY_SIZE; }
+	public void selectSpecificItem(int index) {
+		if (index < 0) {
+			selectedItemIndex = 0;
+		} else if (index >= INVENTORY_SIZE) {
+			selectedItemIndex = INVENTORY_SIZE - 1;
+		} else {
+			selectedItemIndex = index;
+		}
+	} 
+	
 	public void draw() {
 		int topY = Crissaegrim.getWindowHeight() - OUTER_PADDING_PIXELS;
 		int rightX = Crissaegrim.getWindowWidth() - OUTER_PADDING_PIXELS;

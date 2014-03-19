@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import datapacket.ChunkPacket;
@@ -196,22 +197,29 @@ public class GameRunner {
 			}
 		}
 	}
-	
+	int x = 0;
 	/**
 	 * Detects keyboard and mouse input and makes the main player react accordingly.
 	 */
 	private void getKeyboardAndMouseInput() {
-		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) { playerMovementHelper.requestLeftMovement(); }
-		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) { playerMovementHelper.requestRightMovement(); }
-		if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP)) { playerMovementHelper.requestJumpMovement(); }
-		if (Keyboard.isKeyDown(Keyboard.KEY_Z)) { playerMovementHelper.requestAttack(); }
+		if (Keyboard.isKeyDown(Keyboard.KEY_A)) { playerMovementHelper.requestLeftMovement(); }
+		if (Keyboard.isKeyDown(Keyboard.KEY_D)) { playerMovementHelper.requestRightMovement(); }
+		if (Keyboard.isKeyDown(Keyboard.KEY_W)) { playerMovementHelper.requestJumpMovement(); }
+		//if (Keyboard.isKeyDown(Keyboard.KEY_Z)) { playerMovementHelper.requestAttack(); }
 		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
 				
-				if (Keyboard.getEventKey() == Keyboard.KEY_T) {				// T key: Enter chat mode
+				if (Keyboard.getEventKey() == Keyboard.KEY_T ||
+						Keyboard.getEventKey() == Keyboard.KEY_RETURN) {	// T or Enter: Enter chat mode
 					Crissaegrim.getChatBox().enableTypingMode();
 					return; // Don't process any more keys!
+				} else if (Keyboard.getEventKey() == Keyboard.KEY_UP) {		// Up arrow: Select previous inventory item
+					Crissaegrim.getPlayer().getInventory().selectPreviousItem();
+				} else if (Keyboard.getEventKey() == Keyboard.KEY_DOWN) {	// Down arrow: Select next inventory item
+					Crissaegrim.getPlayer().getInventory().selectNextItem();
+				} else if (Keyboard.getEventKey() >= Keyboard.KEY_1 && Keyboard.getEventKey() <= Keyboard.KEY_8) { // 1-8: Select inventory item
+					Crissaegrim.getPlayer().getInventory().selectSpecificItem(Keyboard.getEventKey() - Keyboard.KEY_1);
 				} else if (Keyboard.getEventKey() == 41) {					// Backtick (`) key
 					Crissaegrim.toggleDebugMode();
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_TAB) {	// Tab key: toggle zoom
@@ -228,6 +236,22 @@ public class GameRunner {
 						}
 					}
 				}
+			}
+		}
+		
+		if (!Crissaegrim.getChatBox().isTypingMode()) {
+			while (Mouse.next()) {
+				if (Mouse.getEventButtonState()) { // Button was clicked (not released)
+					if (Mouse.getEventButton() == 0) {
+						playerMovementHelper.requestAttack();
+					}
+				}
+			}
+			int scrollDelta = Mouse.getDWheel();
+			if (scrollDelta < 0) {
+				Crissaegrim.getPlayer().getInventory().selectNextItem();
+			} else if (scrollDelta > 0) {
+				Crissaegrim.getPlayer().getInventory().selectPreviousItem();
 			}
 		}
 	}
