@@ -33,7 +33,7 @@ public final class ValmanwayDataPacketProcessor {
 		switch (packet.getPacketType()) {
 			
 			case DataPacketTypes.REQUEST_PLAYER_ID_PACKET:
-				System.out.println("Received player id request packet");
+				System.out.println(valmanwayUserData.getPlayerName() + " has joined");
 				valmanwayUserData.addOutgoingDataPacket(new ReceivePlayerIdPacket(valmanwayUserData.getPlayerId()));
 				break;
 			case DataPacketTypes.SEND_PLAYER_STATUS_PACKET:

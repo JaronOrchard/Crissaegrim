@@ -29,7 +29,7 @@ public class CrissaegrimWriterThread extends Thread {
     		}
     		
     	} catch (IOException e) {
-    		System.out.println("Crissaegrim writer thread ended - " + e.getMessage());
+    		System.out.println("Crissaegrim writer thread ended unexpectedly!");
 			e.printStackTrace();
 		}
     	

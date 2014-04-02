@@ -37,7 +37,7 @@ public class ValmanwayWriterThread extends Thread {
     				socketOut.writeObject(valmanwayUserData.popOutgoingDataPacket());
     			}
     			
-    			// Every 100 ms, send new data:
+    			// Every 50 ms, send new data:
     			//  - A list of all other player statuses
     			//  - New chat messages
     			if (Thunderbrand.getTime() - lastPlayerStatusSendTime > PLAYER_STATUS_SEND_INTERVAL) {
@@ -57,7 +57,7 @@ public class ValmanwayWriterThread extends Thread {
     		crissaegrimSocket.close();
     		
     	} catch (IOException e) {
-    		System.out.println("Valmanway writer thread ended - " + e.getMessage());
+    		System.out.println("Valmanway writer thread ended unexpectedly!");
 			e.printStackTrace();
 		}
     	

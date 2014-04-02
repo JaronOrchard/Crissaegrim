@@ -29,8 +29,7 @@ public class ValmanwayReaderThread extends Thread {
     		}
     		
     	} catch (IOException | ClassNotFoundException e) {
-    		System.out.println("Valmanway reader thread ended - " + e.getMessage());
-			e.printStackTrace();
+    		System.out.println(valmanwayUserData.getPlayerName() + " has left");
 		}
     	
     	try {

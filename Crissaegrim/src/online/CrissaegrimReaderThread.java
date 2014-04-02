@@ -27,8 +27,7 @@ public class CrissaegrimReaderThread extends Thread {
     		}
     		
     	} catch (IOException | ClassNotFoundException e) {
-    		System.out.println("Crissaegrim reader thread ended - " + e.getMessage());
-			e.printStackTrace();
+    		/* This is expected behavior when the window is closed. */
 		}
     	
     	try {
