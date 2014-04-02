@@ -1,14 +1,10 @@
 package chatbox;
 
-import static org.lwjgl.opengl.GL11.glColor3d;
-import static org.lwjgl.opengl.GL11.glTexCoord2d;
-
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
-import crissaegrim.Crissaegrim;
 
 public class ChatHistory {
 	
@@ -50,9 +46,9 @@ public class ChatHistory {
 					glTexCoord2d(0, 1);
 					glVertex2d(5, y);
 					glTexCoord2d(1, 1);
-					glVertex2d(5 + Crissaegrim.getWindowWidth(), y);
+					glVertex2d(5 + 1024, y);
 					glTexCoord2d(1, 0);
-					glVertex2d(5 + Crissaegrim.getWindowWidth(), y + 20);
+					glVertex2d(5 + 1024, y + 20);
 					glTexCoord2d(0, 0);
 					glVertex2d(5, y + 20);
 				glEnd();

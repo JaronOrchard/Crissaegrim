@@ -1,5 +1,7 @@
 package crissaegrim;
 
+import static org.lwjgl.opengl.GL11.glViewport;
+
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,6 +9,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 
 import online.ValmanwayConnection;
 import board.Board;
@@ -51,24 +57,43 @@ public class Crissaegrim {
 	public static void addSystemMessage(String message) { chatBox.addChatMessage(message, Color.GRAY); }
 	public static void addSystemMessageIfDebug(String message) { if (debugModeEnabled) chatBox.addChatMessage(message, Color.GRAY); }
 	
-	private static final int WINDOW_WIDTH = 1024;
-	private static final int WINDOW_HEIGHT = 768;
+	private static int windowWidth = 1024;
+	private static int windowHeight = 768;
 	private static final int CHUNK_SIDE_SIZE = 100;
 	
-	public static int getWindowWidth() { return WINDOW_WIDTH; }
-	public static int getWindowHeight() { return WINDOW_HEIGHT; }
+	public static int getWindowWidth() { return windowWidth; }
+	public static int getWindowHeight() { return windowHeight; }
 	public static int getChunkSideSize() { return CHUNK_SIDE_SIZE; }
 	
 	private static int pixelsPerTile = 32; // For best results, use multiples of 16
-	private static double windowWidthRadiusInTiles = ((double)WINDOW_WIDTH / 2.0 / (double)pixelsPerTile);
-	private static double windowHeightRadiusInTiles = ((double)WINDOW_HEIGHT / 2.0 / (double)pixelsPerTile);
+	private static double windowWidthRadiusInTiles = ((double)windowWidth / 2.0 / (double)pixelsPerTile);
+	private static double windowHeightRadiusInTiles = ((double)windowHeight / 2.0 / (double)pixelsPerTile);
 	public static double getWindowWidthRadiusInTiles() { return windowWidthRadiusInTiles; }
 	public static double getWindowHeightRadiusInTiles() { return windowHeightRadiusInTiles; }
 	
 	public static void toggleZoom() {
 		pixelsPerTile = (pixelsPerTile % 32) + 16;
-		windowWidthRadiusInTiles = ((double)WINDOW_WIDTH / 2.0 / (double)pixelsPerTile);
-		windowHeightRadiusInTiles = ((double)WINDOW_HEIGHT / 2.0 / (double)pixelsPerTile);
+		windowWidthRadiusInTiles = ((double)windowWidth / 2.0 / (double)pixelsPerTile);
+		windowHeightRadiusInTiles = ((double)windowHeight / 2.0 / (double)pixelsPerTile);
+	}
+	
+	public static void toggleWindowSize() {
+		// Toggles between 1024x768 and 800x640
+		if (windowWidth == 1024) {
+			windowWidth = 800;
+			windowHeight = 640;
+		} else {
+			windowWidth = 1024;
+			windowHeight = 768;
+		}
+		windowWidthRadiusInTiles = ((double)windowWidth / 2.0 / (double)pixelsPerTile);
+		windowHeightRadiusInTiles = ((double)windowHeight / 2.0 / (double)pixelsPerTile);
+		glViewport(0, 0, Crissaegrim.getWindowWidth(), Crissaegrim.getWindowHeight());
+		try {
+			Display.setDisplayMode(new DisplayMode(Crissaegrim.getWindowWidth(), Crissaegrim.getWindowHeight()));
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void main(String[] argv) throws IOException {

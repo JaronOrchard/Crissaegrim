@@ -79,7 +79,7 @@ public class TextureLoader {
 		synchronized(LOCK_1) {
 			textureId = NEXT_TEXT_TEXTURE_ID++;
 		}
-		BufferedImage textImg = new BufferedImage(Crissaegrim.getWindowWidth(), 20, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage textImg = new BufferedImage(1024, 20, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphTex = textImg.createGraphics();
 		graphTex.setColor(color);
 		Rectangle2D stringBounds = graphTex.getFontMetrics().getStringBounds(message, graphTex);

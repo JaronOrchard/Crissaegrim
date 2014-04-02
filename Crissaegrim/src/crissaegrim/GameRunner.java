@@ -222,8 +222,10 @@ public class GameRunner {
 					Crissaegrim.getPlayer().getInventory().selectSpecificItem(Keyboard.getEventKey() - Keyboard.KEY_1);
 				} else if (Keyboard.getEventKey() == 41) {					// Backtick (`) key
 					Crissaegrim.toggleDebugMode();
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_TAB) {	// Tab key: toggle zoom
+				} else if (Keyboard.getEventKey() == Keyboard.KEY_TAB) {	// Tab key: Toggle zoom
 					Crissaegrim.toggleZoom();
+				} else if (Keyboard.getEventKey() == Keyboard.KEY_M) {		// M key: Toggle window size
+					Crissaegrim.toggleWindowSize();
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_X) {		// X key: Enter door
 					for (Entity entity : Crissaegrim.getBoard().getEntityList()) {
 						if (!Crissaegrim.getPlayer().isBusy() && entity instanceof Door &&

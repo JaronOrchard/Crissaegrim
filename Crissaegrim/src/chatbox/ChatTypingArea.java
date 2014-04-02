@@ -58,9 +58,9 @@ public class ChatTypingArea {
 					glTexCoord2d(0, 1);
 					glVertex2d(5, 5);
 					glTexCoord2d(1, 1);
-					glVertex2d(5 + Crissaegrim.getWindowWidth(), 5);
+					glVertex2d(5 + 1024, 5);
 					glTexCoord2d(1, 0);
-					glVertex2d(5 + Crissaegrim.getWindowWidth(), 25);
+					glVertex2d(5 + 1024, 25);
 					glTexCoord2d(0, 0);
 					glVertex2d(5, 25);
 				glEnd();

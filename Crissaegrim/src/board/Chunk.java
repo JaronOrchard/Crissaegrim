@@ -61,8 +61,8 @@ public class Chunk {
 		double tileX, tileY;
 		
 		int startX, startY, endX, endY;
-		int xRange = (int)Crissaegrim.getWindowWidthRadiusInTiles() + 1;
-		int yRange = (int)Crissaegrim.getWindowHeightRadiusInTiles() + 1;
+		int xRange = (int)Math.ceil(Crissaegrim.getWindowWidthRadiusInTiles()) + 1;
+		int yRange = (int)Math.ceil(Crissaegrim.getWindowHeightRadiusInTiles()) + 1;
 		
 		int xOffset = (int)playerPosition.getX() - xOrigin;
 		int yOffset = (int)playerPosition.getY() - yOrigin;
