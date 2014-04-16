@@ -1,7 +1,7 @@
 package board.tiles;
 
+import entities.Entity;
 import geometry.Coordinate;
-import players.Player;
 import textures.Textures;
 
 public class TileBlank extends Tile {
@@ -15,17 +15,17 @@ public class TileBlank extends Tile {
 	}
 	
 	@Override
-	public boolean playerBodyCollides(int xPos, int yPos, Player player, Coordinate startingPosition, Coordinate endingPosition) {
+	public boolean playerBodyCollides(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition) {
 		return false; // You can never collide with empty space
 	}
 	
 	@Override
-	public Coordinate playerFeetCollide(int xPos, int yPos, Player player, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine) {
+	public Coordinate playerFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine) {
 		return null; // You can never collide with empty space
 	}
 	
 	@Override
-	protected Coordinate raisePositionToAboveTile(int xPos, int yPos, Coordinate position) {
+	protected Coordinate raisePositionToAboveTile(int xPos, int yPos, Entity entity, Coordinate position) {
 		return position; // You can never collide with empty space
 	}
 	

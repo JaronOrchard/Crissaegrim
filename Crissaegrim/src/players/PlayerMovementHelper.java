@@ -14,14 +14,6 @@ import busy.BusySwordSwing;
 
 public class PlayerMovementHelper {
 	
-	private static double GRAVITY_ACCELERATION = -0.0045f;
-	private static double TILE_COLLISION_PADDING = GRAVITY_ACCELERATION / -2;
-	private static double GRAVITY_TERMINAL_VELOCITY = -0.400;
-	
-	private static double HORIZONTAL_PENALTY_FACTOR = 0.3;
-	private static double HORIZONTAL_TAPER_OFF_FACTOR = 0.88;
-	private static double HORIZONTAL_TAPER_OFF_LIMIT = 0.01;
-	
 	private double verticalMomentum = 0;
 	private double horizontalMomentum = 0;
 	
@@ -35,8 +27,6 @@ public class PlayerMovementHelper {
 	private List<Attack> attackList;
 	
 	public List<Attack> getAttackList() { return attackList; }
-	
-	public static double getTileCollisionPadding() { return TILE_COLLISION_PADDING; }
 	
 	public PlayerMovementHelper() {
 		resetMovementRequests();
@@ -106,7 +96,7 @@ public class PlayerMovementHelper {
 			verticalMomentum = player.getJumpMomentum();
 			currentlyJumping = true;
 		}
-		verticalMomentum = Math.max(verticalMomentum + GRAVITY_ACCELERATION, GRAVITY_TERMINAL_VELOCITY);
+		verticalMomentum = Math.max(verticalMomentum + player.getGravityAcceleration(), player.getGravityTerminalVelocity());
 		if (!jumpMovementRequested && currentlyJumping && verticalMomentum > 0) {
 			verticalMomentum = 0;
 		}
@@ -166,17 +156,17 @@ public class PlayerMovementHelper {
 				if (leftMovementRequested) { horizontalMomentum = -player.getHorizontalMovementSpeed(); }
 				if (rightMovementRequested) { horizontalMomentum = player.getHorizontalMovementSpeed(); }
 			} else {
-				if (leftMovementRequested) { horizontalMomentum = -player.getHorizontalMovementSpeed() * HORIZONTAL_PENALTY_FACTOR; }
-				if (rightMovementRequested) { horizontalMomentum = player.getHorizontalMovementSpeed() * HORIZONTAL_PENALTY_FACTOR; }
+				if (leftMovementRequested) { horizontalMomentum = -player.getHorizontalMovementSpeed() * player.getHorizontalAirPenaltyFactor(); }
+				if (rightMovementRequested) { horizontalMomentum = player.getHorizontalMovementSpeed() * player.getHorizontalAirPenaltyFactor(); }
 			}
 		} else {
 			if (onTheGround) {
 				horizontalMomentum = 0;
 			} else {
-				if (horizontalMomentum <= HORIZONTAL_TAPER_OFF_LIMIT && horizontalMomentum >= -HORIZONTAL_TAPER_OFF_LIMIT) {
+				if (horizontalMomentum <= player.getHorizontalAirTaperOffLimit() && horizontalMomentum >= -player.getHorizontalAirTaperOffLimit()) {
 					horizontalMomentum = 0;
 				} else {
-					horizontalMomentum *= HORIZONTAL_TAPER_OFF_FACTOR;
+					horizontalMomentum *= player.getHorizontalAirTaperOffFactor();
 				}
 			}
 		}
@@ -222,11 +212,6 @@ public class PlayerMovementHelper {
 		
 		// 4) Reset movement requests for the next frame
 		resetMovementRequests();
-		
-		// 5) Temporarily - Stop the player from falling endlessly
-		if (player.getPosition().getY() < 9950) {
-			player.getPosition().setAll(10043, 10008);
-		}
 	}
 	
 }

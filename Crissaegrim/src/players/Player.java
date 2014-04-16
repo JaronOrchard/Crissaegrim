@@ -1,13 +1,19 @@
 package players;
 
 import static org.lwjgl.opengl.GL11.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import geometry.Coordinate;
+import geometry.Line;
 import geometry.Rect;
 import busy.Busy;
 import textures.Textures;
 import crissaegrim.Crissaegrim;
+import entities.Entity;
 
-public class Player {
+public class Player extends Entity {
 	private static double PLAYER_FEET_HEIGHT = 0.425;
 	private static double PLAYER_BODY_HEIGHT = 2.4;
 	private static double PLAYER_BODY_WIDTH = 0.6;
@@ -51,10 +57,49 @@ public class Player {
 	public Inventory getInventory() { return inventory; }
 	
 	public Player() {
+		super();
 		playerId = -1;
 		name = "UNASSIGNED";
 		position = new Coordinate(0, 0);
+		
+		gravityAcceleration = -0.0045;
+		tileCollisionPadding = gravityAcceleration / -2;
+		gravityTerminalVelocity = -0.400;
+		horizontalAirPenaltyFactor = 0.3;
+		horizontalAirTaperOffFactor = 0.88;
+		horizontalAirTaperOffLimit = 0.01;
 	}
+	
+	// === Entity functions:
+	
+	@Override
+	public Rect getEntityBoundingRect(Coordinate position) {
+		return new Rect(
+				new Coordinate(position.getX() - (Player.getPlayerBodyWidth() / 2), position.getY() + Player.getPlayerFeetHeight()),
+				new Coordinate(position.getX() + (Player.getPlayerBodyWidth() / 2), position.getY() + Player.getPlayerFeetHeight() + Player.getPlayerBodyHeight()));
+	}
+	
+	@Override
+	public List<Line> getEntityFeetLines(Coordinate position, boolean includeHorizontalFeetLine) {
+		List<Line> feetLines = new ArrayList<Line>();
+		feetLines.add(new Line(
+				new Coordinate(position.getX(), position.getY()),
+				new Coordinate(position.getX(), position.getY() + Player.getPlayerFeetHeight())));
+		if (includeHorizontalFeetLine) {
+			feetLines.add(new Line(
+					new Coordinate(position.getX() - (Player.getPlayerBodyWidth() / 2), position.getY()),
+					new Coordinate(position.getX() + (Player.getPlayerBodyWidth() / 2), position.getY())));
+			feetLines.add(new Line(
+					new Coordinate(position.getX() - (Player.getPlayerBodyWidth() / 2), position.getY()),
+					new Coordinate(position.getX() - (Player.getPlayerBodyWidth() / 2), position.getY() + Player.getPlayerFeetHeight())));
+			feetLines.add(new Line(
+					new Coordinate(position.getX() + (Player.getPlayerBodyWidth() / 2), position.getY()),
+					new Coordinate(position.getX() + (Player.getPlayerBodyWidth() / 2), position.getY() + Player.getPlayerFeetHeight())));
+		}
+		return feetLines;
+	}
+	
+	// ===
 	
 	public void assignPlayerId(int id) {
 		playerId = id;

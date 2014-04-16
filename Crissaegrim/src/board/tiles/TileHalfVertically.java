@@ -1,5 +1,6 @@
 package board.tiles;
 
+import entities.Entity;
 import geometry.Coordinate;
 import geometry.Line;
 import geometry.LineUtils;
@@ -8,9 +9,6 @@ import geometry.RectUtils;
 
 import java.util.List;
 
-import players.Player;
-import players.PlayerMovementHelper;
-import players.PlayerUtils;
 import textures.Textures;
 
 public class TileHalfVertically extends Tile {
@@ -24,9 +22,9 @@ public class TileHalfVertically extends Tile {
 	}
 	
 	@Override
-	public boolean playerBodyCollides(int xPos, int yPos, Player player, Coordinate startingPosition, Coordinate endingPosition) {
+	public boolean playerBodyCollides(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition) {
 		Rect tileBoundingBox = new Rect(new Coordinate(xPos, yPos), new Coordinate(xPos + 1, yPos + 0.5));
-		Rect playerBodyBox = PlayerUtils.getPlayerBodyRect(endingPosition);
+		Rect playerBodyBox = entity.getEntityBoundingRect(endingPosition);
 		
 		return (!(tileBoundingBox.getRight() < playerBodyBox.getLeft() ||
 				tileBoundingBox.getLeft() > playerBodyBox.getRight() ||
@@ -35,19 +33,19 @@ public class TileHalfVertically extends Tile {
 	}
 
 	@Override
-	public Coordinate playerFeetCollide(int xPos, int yPos, Player player, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine) {
+	public Coordinate playerFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine) {
 		List<Line> tileBoundingBoxLines = RectUtils.getLinesFromRect(new Rect(new Coordinate(xPos, yPos), new Coordinate(xPos + 1, yPos + 0.5)));
-		List<Line> playerFeetLines = PlayerUtils.getPlayerFeetLines(endingPosition, includeHorizontalFeetLine);
+		List<Line> playerFeetLines = entity.getEntityFeetLines(endingPosition, includeHorizontalFeetLine);
 		if (LineUtils.lineSetsIntersect(tileBoundingBoxLines, playerFeetLines)) {
-			return raisePositionToAboveTile(xPos, yPos, endingPosition);
+			return raisePositionToAboveTile(xPos, yPos, entity, endingPosition);
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	protected Coordinate raisePositionToAboveTile(int xPos, int yPos, Coordinate position) {
-		return new Coordinate(position.getX(), yPos + 0.5 + PlayerMovementHelper.getTileCollisionPadding());
+	protected Coordinate raisePositionToAboveTile(int xPos, int yPos, Entity entity, Coordinate position) {
+		return new Coordinate(position.getX(), yPos + 0.5 + entity.getTileCollisionPadding());
 	}
 	
 }
