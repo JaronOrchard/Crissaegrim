@@ -1,12 +1,12 @@
 package players;
 
+import geometry.Coordinate;
 import items.Weapon;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import crissaegrim.Coordinate;
 import crissaegrim.Crissaegrim;
 import attack.Attack;
 import board.tiles.CollisionDetectionTile;

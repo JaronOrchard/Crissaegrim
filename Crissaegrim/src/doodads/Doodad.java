@@ -1,14 +1,14 @@
-package entities;
+package doodads;
 
-import crissaegrim.Rect;
+import geometry.Rect;
 
-public abstract class Entity {
+public abstract class Doodad {
 	
 	protected Rect bounds;
 	
 	public Rect getBounds() { return bounds; }
 	
-	public Entity(Rect bounds) {
+	public Doodad(Rect bounds) {
 		this.bounds = bounds;
 	}
 	

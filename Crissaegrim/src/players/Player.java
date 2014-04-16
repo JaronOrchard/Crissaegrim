@@ -1,12 +1,11 @@
 package players;
 
 import static org.lwjgl.opengl.GL11.*;
-
+import geometry.Coordinate;
+import geometry.Rect;
 import busy.Busy;
 import textures.Textures;
-import crissaegrim.Coordinate;
 import crissaegrim.Crissaegrim;
-import crissaegrim.Rect;
 
 public class Player {
 	private static double PLAYER_FEET_HEIGHT = 0.425;

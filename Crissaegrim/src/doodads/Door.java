@@ -1,14 +1,14 @@
-package entities;
+package doodads;
 
 import static org.lwjgl.opengl.GL11.*;
+import geometry.Coordinate;
+import geometry.Rect;
 
 import org.lwjgl.opengl.GL11;
 
 import textures.Textures;
-import crissaegrim.Coordinate;
-import crissaegrim.Rect;
 
-public class Door extends Entity {
+public class Door extends Doodad {
 	
 	private static double DOOR_RADIUS = 0.5;
 	private static double DOOR_HEIGHT = 3;

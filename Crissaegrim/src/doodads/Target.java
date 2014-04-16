@@ -1,14 +1,14 @@
-package entities;
+package doodads;
 
 import static org.lwjgl.opengl.GL11.*;
+import geometry.Coordinate;
+import geometry.Rect;
 
 import org.lwjgl.opengl.GL11;
 
 import textures.Textures;
-import crissaegrim.Coordinate;
-import crissaegrim.Rect;
 
-public class Target extends Entity {
+public class Target extends Doodad {
 	
 	private static double TARGET_RADIUS = 0.5;
 	

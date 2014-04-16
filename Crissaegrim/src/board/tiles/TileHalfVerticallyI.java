@@ -1,15 +1,16 @@
 package board.tiles;
 
+import geometry.Coordinate;
+import geometry.Line;
+import geometry.LineUtils;
+import geometry.Rect;
+import geometry.RectUtils;
+
 import java.util.List;
 
 import players.Player;
 import players.PlayerMovementHelper;
 import players.PlayerUtils;
-import crissaegrim.Coordinate;
-import crissaegrim.Line;
-import crissaegrim.LineUtils;
-import crissaegrim.Rect;
-import crissaegrim.RectUtils;
 import textures.Textures;
 
 public class TileHalfVerticallyI extends Tile {

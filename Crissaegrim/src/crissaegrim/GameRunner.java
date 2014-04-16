@@ -19,9 +19,12 @@ import datapacket.ChunkPacket;
 import datapacket.NonexistentChunkPacket;
 import datapacket.RequestEntireBoardPacket;
 import datapacket.RequestPlayerIdPacket;
-import entities.Door;
-import entities.Entity;
-import entities.Target;
+import doodads.Doodad;
+import doodads.Door;
+import doodads.Target;
+import geometry.Coordinate;
+import geometry.LineUtils;
+import geometry.RectUtils;
 import player.PlayerStatus;
 import players.PlayerMovementHelper;
 import attack.Attack;
@@ -97,7 +100,7 @@ public class GameRunner {
 				if (Crissaegrim.currentlyLoading) { continue; }
 				actionAttackList();
 				Crissaegrim.getPlayer().update();
-				actionEntityList();
+				actionDoodadList();
 			
 				// Draw new scene:
 				drawScene();
@@ -139,11 +142,11 @@ public class GameRunner {
 			GameInitializer.initializeNewFrameForScene();
 			Crissaegrim.getBoard().draw(TileLayer.BACKGROUND);
 			Crissaegrim.getBoard().draw(TileLayer.MIDDLEGROUND);
-			for (Entity entity : Crissaegrim.getBoard().getEntityList()) {
+			for (Doodad doodad : Crissaegrim.getBoard().getDoodadList()) {
 				if (!Crissaegrim.getDebugMode()) {
-					entity.draw();
+					doodad.draw();
 				} else {
-					entity.drawDebugMode();
+					doodad.drawDebugMode();
 				}
 			}
 			Crissaegrim.getPlayer().draw();
@@ -170,13 +173,13 @@ public class GameRunner {
 		while (attackIter.hasNext()) {
 			Attack attack = attackIter.next();
 			
-			Iterator<Entity> entityIter = Crissaegrim.getBoard().getEntityList().iterator();
-			while (entityIter.hasNext()) {
-				Entity entity = entityIter.next();
-				if (entity instanceof Target) {
-					if (LineUtils.lineSetsIntersect(RectUtils.getLinesFromRect(attack.getBounds()), RectUtils.getLinesFromRect(entity.getBounds()))) {
+			Iterator<Doodad> doodadIter = Crissaegrim.getBoard().getDoodadList().iterator();
+			while (doodadIter.hasNext()) {
+				Doodad doodad = doodadIter.next();
+				if (doodad instanceof Target) {
+					if (LineUtils.lineSetsIntersect(RectUtils.getLinesFromRect(attack.getBounds()), RectUtils.getLinesFromRect(doodad.getBounds()))) {
 						System.out.println("USER ID " + attack.getAttackerId() + " BROKE A TARGET!");
-						entityIter.remove();
+						doodadIter.remove();
 					}
 				}
 			}
@@ -187,12 +190,12 @@ public class GameRunner {
 		}
 	}
 	
-	private void actionEntityList() {
-		Iterator<Entity> entityIter = Crissaegrim.getBoard().getEntityList().iterator();
-		while (entityIter.hasNext()) {
-			Entity entity = entityIter.next();
-			if (entity instanceof Door) {
-				if (RectUtils.coordinateIsInRect(Crissaegrim.getPlayer().getPosition(), entity.getBounds())) {
+	private void actionDoodadList() {
+		Iterator<Doodad> doodadIter = Crissaegrim.getBoard().getDoodadList().iterator();
+		while (doodadIter.hasNext()) {
+			Doodad doodad = doodadIter.next();
+			if (doodad instanceof Door) {
+				if (RectUtils.coordinateIsInRect(Crissaegrim.getPlayer().getPosition(), doodad.getBounds())) {
 					Crissaegrim.getPlayer().setIcon("X");
 				}
 			}
@@ -227,10 +230,10 @@ public class GameRunner {
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_M) {		// M key: Toggle window size
 					Crissaegrim.toggleWindowSize();
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_X) {		// X key: Enter door
-					for (Entity entity : Crissaegrim.getBoard().getEntityList()) {
-						if (!Crissaegrim.getPlayer().isBusy() && entity instanceof Door &&
-								RectUtils.coordinateIsInRect(Crissaegrim.getPlayer().getPosition(), entity.getBounds())) {
-							Door door = (Door)entity;
+					for (Doodad doodad : Crissaegrim.getBoard().getDoodadList()) {
+						if (!Crissaegrim.getPlayer().isBusy() && doodad instanceof Door &&
+								RectUtils.coordinateIsInRect(Crissaegrim.getPlayer().getPosition(), doodad.getBounds())) {
+							Door door = (Door)doodad;
 							playerMovementHelper.resetMovementRequests();
 							destinationBoard = door.getDestinationBoardName();
 							destinationCoordinate = door.getDestinationCoordinate();
@@ -414,9 +417,9 @@ public class GameRunner {
 			
 			// Temporarily set up entities since it's not set up in Badelaire yet:
 			if (boardName.equals("dawning")) {
-				boardMap.get("dawning").getEntityList().add(new Door(new Coordinate(10052.5, 10013), "tower_of_preludes", new Coordinate(10050.5, 10016)));
+				boardMap.get("dawning").getDoodadList().add(new Door(new Coordinate(10052.5, 10013), "tower_of_preludes", new Coordinate(10050.5, 10016)));
 			} else if (boardName.equals("tower_of_preludes")) {
-				boardMap.get("tower_of_preludes").getEntityList().add(new Door(new Coordinate(10050.5, 10016), "dawning", new Coordinate(10052.5, 10013)));
+				boardMap.get("tower_of_preludes").getDoodadList().add(new Door(new Coordinate(10050.5, 10016), "dawning", new Coordinate(10052.5, 10013)));
 			}
 		}
 	}

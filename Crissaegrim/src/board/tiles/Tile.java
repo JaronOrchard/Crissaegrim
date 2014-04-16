@@ -1,9 +1,9 @@
 package board.tiles;
 
+import geometry.Coordinate;
+import geometry.Line;
+import geometry.Rect;
 import players.Player;
-import crissaegrim.Coordinate;
-import crissaegrim.Rect;
-import crissaegrim.Line;
 
 public abstract class Tile {
 	

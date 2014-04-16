@@ -1,7 +1,7 @@
 package board.tiles;
 
+import geometry.Coordinate;
 import players.Player;
-import crissaegrim.Coordinate;
 import textures.Textures;
 
 public class TileBlank extends Tile {

@@ -1,11 +1,11 @@
 package players;
 
+import geometry.Coordinate;
+import geometry.Line;
+import geometry.Rect;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import crissaegrim.Coordinate;
-import crissaegrim.Line;
-import crissaegrim.Rect;
 
 public class PlayerUtils {
 	

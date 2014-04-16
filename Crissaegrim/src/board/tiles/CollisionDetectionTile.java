@@ -1,7 +1,7 @@
 package board.tiles;
 
+import geometry.Coordinate;
 import players.Player;
-import crissaegrim.Coordinate;
 
 public class CollisionDetectionTile {
 	private final int xPos;

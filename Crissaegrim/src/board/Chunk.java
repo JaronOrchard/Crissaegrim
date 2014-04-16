@@ -1,6 +1,7 @@
 package board;
 
 import static org.lwjgl.opengl.GL11.glTexCoord2d;
+import geometry.Coordinate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +11,7 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 
 import textures.Textures;
-import crissaegrim.Coordinate;
+import thunderbrand.Thunderbrand;
 import crissaegrim.Crissaegrim;
 import crissaegrim.GameRunner.TileLayer;
 import board.tiles.Tile;
@@ -29,16 +30,16 @@ public class Chunk {
 	public Chunk(int xOrig, int yOrig) {
 		xOrigin = xOrig;
 		yOrigin = yOrig;
-		tiles = new Tile[Crissaegrim.getChunkSideSize()][Crissaegrim.getChunkSideSize()];
+		tiles = new Tile[Thunderbrand.getChunkSideSize()][Thunderbrand.getChunkSideSize()];
 	}
 	
 	public Chunk(int xOrig, int yOrig, byte[] bytes) {
 		xOrigin = xOrig;
 		yOrigin = yOrig;
-		tiles = new Tile[Crissaegrim.getChunkSideSize()][Crissaegrim.getChunkSideSize()];
+		tiles = new Tile[Thunderbrand.getChunkSideSize()][Thunderbrand.getChunkSideSize()];
 		
-		for (int x = 0; x < Crissaegrim.getChunkSideSize(); x++) {
-			for (int y = 0; y < Crissaegrim.getChunkSideSize(); y++) {
+		for (int x = 0; x < Thunderbrand.getChunkSideSize(); x++) {
+			for (int y = 0; y < Thunderbrand.getChunkSideSize(); y++) {
 				int base = (x * 7) + (y * 100 * 7);
 				// The "& 0xff" basically converts signed bytes to unsigned to fix high textures.
 				tiles[y][x] = TileUtils.getTileType(bytes[base]);
@@ -68,11 +69,11 @@ public class Chunk {
 		int yOffset = (int)playerPosition.getY() - yOrigin;
 		if (coordinateIsInChunkColumn(playerPosition)) {
 			startX = Math.max(xOffset - xRange, 0);
-			endX = Math.min(xOffset + xRange, Crissaegrim.getChunkSideSize());
+			endX = Math.min(xOffset + xRange, Thunderbrand.getChunkSideSize());
 		} else {
 			if (xOffset >= 0) {
-				startX = Math.min(xOffset - xRange, Crissaegrim.getChunkSideSize());
-				endX = Crissaegrim.getChunkSideSize();
+				startX = Math.min(xOffset - xRange, Thunderbrand.getChunkSideSize());
+				endX = Thunderbrand.getChunkSideSize();
 			} else {
 				startX = 0;
 				endX = Math.max(xOffset + xRange, 0);
@@ -80,11 +81,11 @@ public class Chunk {
 		}
 		if (coordinateIsInChunkRow(playerPosition)) {
 			startY = Math.max(yOffset - yRange, 0);
-			endY = Math.min(yOffset + yRange, Crissaegrim.getChunkSideSize());
+			endY = Math.min(yOffset + yRange, Thunderbrand.getChunkSideSize());
 		} else {
 			if (yOffset >= 0) {
-				startY = Math.min(yOffset - yRange, Crissaegrim.getChunkSideSize());
-				endY = Crissaegrim.getChunkSideSize();
+				startY = Math.min(yOffset - yRange, Thunderbrand.getChunkSideSize());
+				endY = Thunderbrand.getChunkSideSize();
 			} else {
 				startY = 0;
 				endY = Math.max(yOffset + yRange, 0);
@@ -134,11 +135,11 @@ public class Chunk {
 	}
 	
 	private boolean coordinateIsInChunkColumn(Coordinate position) {
-		return (!(position.getX() < xOrigin || position.getX() >= xOrigin + Crissaegrim.getChunkSideSize()));
+		return (!(position.getX() < xOrigin || position.getX() >= xOrigin + Thunderbrand.getChunkSideSize()));
 	}
 	
 	private boolean coordinateIsInChunkRow(Coordinate position) {
-		return (!(position.getY() < yOrigin || position.getY() >= yOrigin + Crissaegrim.getChunkSideSize()));
+		return (!(position.getY() < yOrigin || position.getY() >= yOrigin + Thunderbrand.getChunkSideSize()));
 	}
 	
 }

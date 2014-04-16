@@ -6,14 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 import textures.Textures;
+import thunderbrand.Thunderbrand;
 import static org.lwjgl.opengl.GL11.*;
 import attack.Attack;
 import board.tiles.CollisionDetectionTile;
-import crissaegrim.Coordinate;
 import crissaegrim.Crissaegrim;
 import crissaegrim.GameRunner.TileLayer;
 import datapacket.RequestSpecificChunkPacket;
-import entities.Entity;
+import doodads.Doodad;
+import geometry.Coordinate;
 
 public class Board {
 	
@@ -21,23 +22,23 @@ public class Board {
 	private final String boardName;
 	
 	private List<Attack> attackList;
-	private List<Entity> entityList;
+	private List<Doodad> doodadList;
 	
 	public Map<String, Chunk> getChunkMap() { return chunkMap; }
 	public String getName() { return boardName; }
 	public List<Attack> getAttackList() { return attackList; }
-	public List<Entity> getEntityList() { return entityList; }
+	public List<Doodad> getDoodadList() { return doodadList; }
 	
 	public Board(String bName) {
 		chunkMap = new HashMap<String, Chunk>();
 		boardName = bName;
 		attackList = new ArrayList<Attack>();
-		entityList = new ArrayList<Entity>();
+		doodadList = new ArrayList<Doodad>();
 	}
 	
 	public void verifyChunksExist() {
 		Coordinate playerPosition = Crissaegrim.getPlayer().getPosition();
-		int chunkSideSize = Crissaegrim.getChunkSideSize();
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
 		// Get the coordinates of the Chunk the player is in:
 		int chunkXOrigin = (int)playerPosition.getX() - ((int)playerPosition.getX() % chunkSideSize);
 		int chunkYOrigin = (int)playerPosition.getY() - ((int)playerPosition.getY() % chunkSideSize);
@@ -57,7 +58,7 @@ public class Board {
 	
 	public void draw(TileLayer layer) {
 		Coordinate playerPosition = Crissaegrim.getPlayer().getPosition();
-		int chunkSideSize = Crissaegrim.getChunkSideSize();
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
 		int chunkXOrigin = (int)playerPosition.getX() - ((int)playerPosition.getX() % chunkSideSize);
 		int chunkYOrigin = (int)playerPosition.getY() - ((int)playerPosition.getY() % chunkSideSize);
 		List<Chunk> chunks = new ArrayList<Chunk>(9);
@@ -98,7 +99,7 @@ public class Board {
 	}
 	
 	public List<CollisionDetectionTile> getCollisionDetectionTilesNearPlayer(Coordinate playerPosition) {
-		int chunkSideSize = Crissaegrim.getChunkSideSize();
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
 		int chunkXOrigin = (int)playerPosition.getX() - ((int)playerPosition.getX() % chunkSideSize);
 		int chunkYOrigin = (int)playerPosition.getY() - ((int)playerPosition.getY() % chunkSideSize);
 		String chunkName = chunkXOrigin + "_" + chunkYOrigin;

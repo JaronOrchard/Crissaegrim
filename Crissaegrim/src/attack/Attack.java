@@ -1,6 +1,6 @@
 package attack;
 
-import crissaegrim.Rect;
+import geometry.Rect;
 
 public class Attack {
 	

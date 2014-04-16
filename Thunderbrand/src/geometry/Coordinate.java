@@ -1,4 +1,4 @@
-package crissaegrim;
+package geometry;
 
 public class Coordinate {
 	

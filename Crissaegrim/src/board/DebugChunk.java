@@ -1,5 +1,6 @@
 package board;
 
+import thunderbrand.Thunderbrand;
 import board.tiles.Tile1L;
 import board.tiles.Tile1LI;
 import board.tiles.Tile1R;
@@ -17,7 +18,6 @@ import board.tiles.TileFull;
 import board.tiles.TileHalfVertically;
 import board.tiles.TileHalfVerticallyI;
 import board.tiles.TilePassTop;
-import crissaegrim.Crissaegrim;
 
 public class DebugChunk extends Chunk {
 	
@@ -27,7 +27,7 @@ public class DebugChunk extends Chunk {
 	}
 	
 	private void createDebugBoard() {
-		int chunkSideSize = Crissaegrim.getChunkSideSize();
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
 		for (int i = 0; i < chunkSideSize; i++) {
 			for (int j = 0; j < chunkSideSize; j++) {
 				tiles[i][j] = new TileBlank();

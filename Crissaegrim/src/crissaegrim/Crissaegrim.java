@@ -59,11 +59,9 @@ public class Crissaegrim {
 	
 	private static int windowWidth = 1024;
 	private static int windowHeight = 768;
-	private static final int CHUNK_SIDE_SIZE = 100;
 	
 	public static int getWindowWidth() { return windowWidth; }
 	public static int getWindowHeight() { return windowHeight; }
-	public static int getChunkSideSize() { return CHUNK_SIDE_SIZE; }
 	
 	private static int pixelsPerTile = 32; // For best results, use multiples of 16
 	private static double windowWidthRadiusInTiles = ((double)windowWidth / 2.0 / (double)pixelsPerTile);

@@ -1,9 +1,9 @@
 package board;
 
 import textures.Textures;
+import thunderbrand.Thunderbrand;
 import board.tiles.TileBlank;
 import board.tiles.TileFull;
-import crissaegrim.Crissaegrim;
 
 public class MissingChunk extends Chunk {
 	
@@ -13,7 +13,7 @@ public class MissingChunk extends Chunk {
 	}
 	
 	private void createMissingChunk() {
-		int chunkSideSize = Crissaegrim.getChunkSideSize();
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
 		for (int i = 0; i < chunkSideSize; i++) {
 			tiles[i][0] = new TileFull(Textures.NONE, Textures.CHUNK_NOT_FOUND, Textures.NONE);
 			tiles[i][chunkSideSize-1] = new TileFull(Textures.NONE, Textures.CHUNK_NOT_FOUND, Textures.NONE);
