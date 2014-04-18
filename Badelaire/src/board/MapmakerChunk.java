@@ -5,19 +5,20 @@ import static org.lwjgl.opengl.GL11.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
 import textures.Textures;
 import badelaire.Badelaire;
-import board.tiles.MapmakerTile;
-import board.tiles.MapmakerTileBlank;
-import board.tiles.MapmakerTileUtils;
+import board.tiles.Tile;
+import board.tiles.TileBlank;
+import board.tiles.TileUtils;
 
 public class MapmakerChunk {
 	private final String boardName;
 	private final int xOrigin; // The origin of the chunk is
 	private final int yOrigin; //   its bottom-left corner
-	private MapmakerTile[][] tiles;
-	public MapmakerTile[][] getTiles() { return tiles; }
-	public MapmakerTile getTile(int x, int y) { return tiles[x][y]; }
+	private Tile[][] tiles;
+	public Tile[][] getTiles() { return tiles; }
+	public Tile getTile(int x, int y) { return tiles[x][y]; }
 	
 	public int getXOrigin() { return xOrigin; }
 	public int getYOrigin() { return yOrigin; }
@@ -26,15 +27,15 @@ public class MapmakerChunk {
 		boardName = bName;
 		xOrigin = xOrig;
 		yOrigin = yOrig;
-		tiles = new MapmakerTile[Badelaire.getChunkSideSize()][Badelaire.getChunkSideSize()];
+		tiles = new Tile[Badelaire.getChunkSideSize()][Badelaire.getChunkSideSize()];
 		for (int i = 0; i < Badelaire.getChunkSideSize(); i++) {
 			for (int j = 0; j < Badelaire.getChunkSideSize(); j++) {
-				tiles[i][j] = new MapmakerTileBlank();
+				tiles[i][j] = new TileBlank();
 			}
 		}
 	}
 	
-	public void setTile(int tileX, int tileY, MapmakerTile tile) { tiles[tileX][tileY] = tile; }
+	public void setTile(int tileX, int tileY, Tile tile) { tiles[tileX][tileY] = tile; }
 	
 	public void draw(boolean drawGrid, boolean drawBG, boolean drawMG, boolean drawFG, boolean drawDefaults) {
 		if (drawGrid) {
@@ -163,7 +164,7 @@ public class MapmakerChunk {
 		boolean chunkIsEmpty = true;
 		for (int i = 0; i < Badelaire.getChunkSideSize() && chunkIsEmpty; i++) {
 			for (int j = 0; j < Badelaire.getChunkSideSize() && chunkIsEmpty; j++) {
-				if (!(tiles[i][j] instanceof MapmakerTileBlank) ||
+				if (!(tiles[i][j] instanceof TileBlank) ||
 						tiles[i][j].getBackgroundTexture() != Textures.NONE ||
 						tiles[i][j].getMiddlegroundTexture() != Textures.NONE ||
 						tiles[i][j].getForegroundTexture() != Textures.NONE) {
@@ -188,7 +189,7 @@ public class MapmakerChunk {
 				for (int i = 0; i < Badelaire.getChunkSideSize(); i++) {
 					for (int j = 0; j < Badelaire.getChunkSideSize(); j++) {
 						byte[] tileBytes = new byte[7];
-						tileBytes[0] = (byte)(MapmakerTileUtils.getTileTypeInt(tiles[i][j]) & 0xFF);
+						tileBytes[0] = (byte)(TileUtils.getTileTypeInt(tiles[i][j]) & 0xFF);
 						tileBytes[1] = (byte)((tiles[i][j].getBackgroundTexture() >> 8) & 0xFF);
 						tileBytes[2] = (byte)(tiles[i][j].getBackgroundTexture() & 0xFF);
 						tileBytes[3] = (byte)((tiles[i][j].getMiddlegroundTexture() >> 8) & 0xFF);

@@ -15,8 +15,8 @@ import java.util.Map;
 import java.util.Set;
 
 import badelaire.Badelaire;
-import board.tiles.MapmakerTile;
-import board.tiles.MapmakerTileUtils;
+import board.tiles.Tile;
+import board.tiles.TileUtils;
 
 public class MapmakerBoard {
 	
@@ -73,7 +73,7 @@ public class MapmakerBoard {
 				for (int j = 0; j < Badelaire.getChunkSideSize(); j++) {
 					char[] tileChar = new char[7];
 					br.read(tileChar, 0, 7);
-					chunk.setTile(i, j, MapmakerTileUtils.getTileType(tileChar[0]));
+					chunk.setTile(i, j, TileUtils.getTileType(tileChar[0]));
 					chunk.getTile(i, j).setBackgroundTexture((tileChar[1] * 256) + tileChar[2]);
 					chunk.getTile(i, j).setMiddlegroundTexture((tileChar[3] * 256) + tileChar[4]);
 					chunk.getTile(i, j).setForegroundTexture((tileChar[5] * 256) + tileChar[6]);
@@ -179,13 +179,13 @@ public class MapmakerBoard {
 		}
 	}
 	
-	public void setTileType(int tileX, int tileY, MapmakerTile tile) {
+	public void setTileType(int tileX, int tileY, Tile tile) {
 		int chunkXOrigin = tileX - (tileX % Badelaire.getChunkSideSize());
 		int chunkYOrigin = tileY - (tileY % Badelaire.getChunkSideSize());
 		String chunkName = chunkXOrigin + "_" + chunkYOrigin;
 		MapmakerChunk chunk = chunkMap.get(chunkName);
 		if (chunk != null) {
-			MapmakerTile currentTile = chunk.getTile(tileX % Badelaire.getChunkSideSize(), tileY % Badelaire.getChunkSideSize());
+			Tile currentTile = chunk.getTile(tileX % Badelaire.getChunkSideSize(), tileY % Badelaire.getChunkSideSize());
 			if (currentTile.getMiddlegroundTexture() != currentTile.getDefaultTexture()) { // Non-default tile; keep its textures
 				tile.setForegroundTexture(currentTile.getForegroundTexture());
 				tile.setMiddlegroundTexture(currentTile.getMiddlegroundTexture());

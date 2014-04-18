@@ -1,6 +1,7 @@
 package badelaire;
 
 import static org.lwjgl.opengl.GL11.*;
+import geometry.Coordinate;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;

@@ -1,6 +1,7 @@
 package badelaire;
 
 import static org.lwjgl.opengl.GL11.*;
+import geometry.Coordinate;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,9 +11,9 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import board.MapmakerBoard;
-import board.tiles.MapmakerTile;
-import board.tiles.MapmakerTileBlank;
-import board.tiles.MapmakerTileUtils;
+import board.tiles.Tile;
+import board.tiles.TileBlank;
+import board.tiles.TileUtils;
 import textures.Textures;
 
 public class Mapmaker {
@@ -29,7 +30,7 @@ public class Mapmaker {
 	private MapmakerBoard mapmakerBoard;
 	private Coordinate center;
 	
-	private MapmakerTile currentTileType;
+	private Tile currentTileType;
 	private int currentTexture;
 	
 	public void run() throws InterruptedException, IOException {
@@ -39,7 +40,7 @@ public class Mapmaker {
 		
 		mapmakerBoard = new MapmakerBoard("dawning");
 		center = new Coordinate(10000, 10000);
-		currentTileType = new MapmakerTileBlank();
+		currentTileType = new TileBlank();
 		currentTexture = Textures.NONE;
 		updateDisplayTitle();
 		
@@ -206,7 +207,7 @@ public class Mapmaker {
 		double tileY = center.getY() + Badelaire.getWindowHeightRadiusInTiles() - 1;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glColor3d(1.0, 1.0, 1.0);
-		List<MapmakerTile> selectableTiles = MapmakerTileUtils.getSelectableTiles();
+		List<Tile> selectableTiles = TileUtils.getMapmakerSelectableTiles();
 		for (int i = 0; i < selectableTiles.size(); i++) {
 			glPushMatrix();
 				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -347,10 +348,10 @@ public class Mapmaker {
 				int tileX = Mouse.getX() / Badelaire.getPixelsPerTile();
 				int tileY = (Badelaire.getWindowHeight() / Badelaire.getPixelsPerTile()) - 1 - Mouse.getY() / Badelaire.getPixelsPerTile();
 				int indexSelected = ((Badelaire.getWindowWidth() / Badelaire.getPixelsPerTile()) * tileY) + tileX;
-				if (indexSelected >= MapmakerTileUtils.getSelectableTiles().size()) {
-					currentTileType = new MapmakerTileBlank();
+				if (indexSelected >= TileUtils.getMapmakerSelectableTiles().size()) {
+					currentTileType = new TileBlank();
 				} else {
-					currentTileType = MapmakerTileUtils.getSelectableTiles().get(indexSelected);
+					currentTileType = TileUtils.getMapmakerSelectableTiles().get(indexSelected);
 				}
 				if (Mouse.isButtonDown(1)) { tileTypeSelectionModeEnabled = false; }
 			}
