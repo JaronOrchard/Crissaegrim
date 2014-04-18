@@ -12,10 +12,10 @@ import org.lwjgl.opengl.GL11;
 
 import textures.Textures;
 import thunderbrand.Thunderbrand;
+import tiles.Tile;
+import tiles.TileUtils;
 import crissaegrim.Crissaegrim;
 import crissaegrim.GameRunner.TileLayer;
-import board.tiles.Tile;
-import board.tiles.TileUtils;
 
 public class Chunk {
 	protected int xOrigin; // The origin of the chunk is

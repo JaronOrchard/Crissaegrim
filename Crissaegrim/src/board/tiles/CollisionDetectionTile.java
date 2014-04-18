@@ -2,6 +2,7 @@ package board.tiles;
 
 import geometry.Coordinate;
 import players.Player;
+import tiles.Tile;
 
 public class CollisionDetectionTile {
 	private final int xPos;

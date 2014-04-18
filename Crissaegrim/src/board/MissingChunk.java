@@ -2,8 +2,8 @@ package board;
 
 import textures.Textures;
 import thunderbrand.Thunderbrand;
-import board.tiles.TileBlank;
-import board.tiles.TileFull;
+import tiles.TileBlank;
+import tiles.TileFull;
 
 public class MissingChunk extends Chunk {
 	
