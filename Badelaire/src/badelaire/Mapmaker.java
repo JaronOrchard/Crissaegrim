@@ -62,18 +62,18 @@ public class Mapmaker {
 		MapmakerInitializer.initializeNewFrameForScene(center);
 		if (!textureSelectionModeEnabled && !tileTypeSelectionModeEnabled) {
 			if (mode == 0 || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-				mapmakerBoard.drawAll(showGrid);
+				mapmakerBoard.drawAll(center, showGrid);
 			} else if (mode == 1) {
-				mapmakerBoard.drawBG(showGrid);
+				mapmakerBoard.drawBG(center, showGrid);
 				drawCurrentTileOutline(currentTexture);
 			} else if (mode == 2) {
-				mapmakerBoard.drawMG(showGrid);
+				mapmakerBoard.drawMG(center, showGrid);
 				drawCurrentTileOutline(currentTexture);
 			} else if (mode == 3) {
-				mapmakerBoard.drawFG(showGrid);
+				mapmakerBoard.drawFG(center, showGrid);
 				drawCurrentTileOutline(currentTexture);
 			} else if (mode == 4) {
-				mapmakerBoard.drawTileTypes(showGrid);
+				mapmakerBoard.drawTileTypes(center, showGrid);
 				drawCurrentTileOutline(currentTileType.getDefaultTexture());
 			}
 			if (!fillArea.isIdle()) {

@@ -53,19 +53,19 @@ public class Chunk {
 	
 	/**
 	 * Draw the entire chunk.
-	 * @param playerPosition The {@link Coordinate} of the center of vision, so we can avoid drawing unnecessary tiles
+	 * @param centerPosition The {@link Coordinate} of the center of vision, so we can avoid drawing unnecessary tiles
 	 * @param layer Whether to draw the foreground, middleground, or background
 	 * @param xRange The number of tiles to draw, width-wise
 	 * @param yRange The number of tiles to draw, height-wise
 	 */
-	public void draw(Coordinate playerPosition, TileLayer layer, int xRange, int yRange) {
+	public void draw(Coordinate centerPosition, TileLayer layer, int xRange, int yRange) {
 		Map<Integer, List<Coordinate>> tilesToDraw = new HashMap<Integer, List<Coordinate>>();
 		double tileX, tileY;
 		
 		int startX, startY, endX, endY;
-		int xOffset = (int)playerPosition.getX() - xOrigin;
-		int yOffset = (int)playerPosition.getY() - yOrigin;
-		if (coordinateIsInChunkColumn(playerPosition)) {
+		int xOffset = (int)centerPosition.getX() - xOrigin;
+		int yOffset = (int)centerPosition.getY() - yOrigin;
+		if (coordinateIsInChunkColumn(centerPosition)) {
 			startX = Math.max(xOffset - xRange, 0);
 			endX = Math.min(xOffset + xRange, Thunderbrand.getChunkSideSize());
 		} else {
@@ -77,7 +77,7 @@ public class Chunk {
 				endX = Math.max(xOffset + xRange, 0);
 			}
 		}
-		if (coordinateIsInChunkRow(playerPosition)) {
+		if (coordinateIsInChunkRow(centerPosition)) {
 			startY = Math.max(yOffset - yRange, 0);
 			endY = Math.min(yOffset + yRange, Thunderbrand.getChunkSideSize());
 		} else {
@@ -103,7 +103,8 @@ public class Chunk {
 				int texture;
 				if (layer == TileLayer.BACKGROUND) { texture = tiles[i][j].getBackgroundTexture(); }
 				else if (layer == TileLayer.MIDDLEGROUND) { texture = tiles[i][j].getMiddlegroundTexture(); }
-				else /*if (layer == TileLayer.FOREGROUND)*/ { texture = tiles[i][j].getForegroundTexture(); }
+				else if (layer == TileLayer.FOREGROUND) { texture = tiles[i][j].getForegroundTexture(); }
+				else /*if (layer == TileLayer.DEFAULT)*/ { texture = tiles[i][j].getDefaultTexture(); }
 				
 				if (!tilesToDraw.containsKey(texture)) {
 					tilesToDraw.put(texture, new ArrayList<Coordinate>());

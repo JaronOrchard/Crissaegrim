@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glColor3d;
+import geometry.Coordinate;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,6 +17,7 @@ import java.util.Set;
 
 import badelaire.Badelaire;
 import board.tiles.Tile;
+import board.tiles.Tile.TileLayer;
 import board.tiles.TileUtils;
 
 public class MapmakerBoard {
@@ -129,17 +131,24 @@ public class MapmakerBoard {
 		}
 	}
 	
-	public void drawAll(boolean drawGrid) { draw(drawGrid, true, true, true, false); }
-	public void drawBG(boolean drawGrid) { draw(drawGrid, true, false, false, false); }
-	public void drawMG(boolean drawGrid) { draw(drawGrid, false, true, false, false); }
-	public void drawFG(boolean drawGrid) { draw(drawGrid, false, false, true, false); }
-	public void drawTileTypes(boolean drawGrid) { draw(drawGrid, false, false, false, true); }
+	public void drawAll(Coordinate centerPosition, boolean drawGrid) { draw(centerPosition, drawGrid, true, true, true, false); }
+	public void drawBG(Coordinate centerPosition, boolean drawGrid) { draw(centerPosition, drawGrid, true, false, false, false); }
+	public void drawMG(Coordinate centerPosition, boolean drawGrid) { draw(centerPosition, drawGrid, false, true, false, false); }
+	public void drawFG(Coordinate centerPosition, boolean drawGrid) { draw(centerPosition, drawGrid, false, false, true, false); }
+	public void drawTileTypes(Coordinate centerPosition, boolean drawGrid) { draw(centerPosition, drawGrid, false, false, false, true); }
 	
-	private void draw(boolean drawGrid, boolean drawBG, boolean drawMG, boolean drawFG, boolean drawDefaults) {
+	private void draw(Coordinate centerPosition, boolean drawGrid, boolean drawBG, boolean drawMG, boolean drawFG, boolean drawDefaults) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glColor3d(1.0, 1.0, 1.0);
+		int xRange = (int)Math.ceil(Badelaire.getWindowWidthRadiusInTiles()) + 1;
+		int yRange = (int)Math.ceil(Badelaire.getWindowHeightRadiusInTiles()) + 1;
 		for (Map.Entry<String, MapmakerChunk> entry : chunkMap.entrySet()) {
-		    entry.getValue().draw(drawGrid, drawBG, drawMG, drawFG, drawDefaults);
+		    if (drawGrid) { entry.getValue().drawPreGrid(); }
+			if (drawDefaults) { entry.getValue().draw(centerPosition, TileLayer.DEFAULT, xRange, yRange); }
+			if (drawBG) { entry.getValue().draw(centerPosition, TileLayer.BACKGROUND, xRange, yRange); }
+			if (drawMG) { entry.getValue().draw(centerPosition, TileLayer.MIDDLEGROUND, xRange, yRange); }
+			if (drawFG) { entry.getValue().draw(centerPosition, TileLayer.FOREGROUND, xRange, yRange); }
+		    if (drawGrid) { entry.getValue().drawPostGrid(); }
 		}
 	}
 	

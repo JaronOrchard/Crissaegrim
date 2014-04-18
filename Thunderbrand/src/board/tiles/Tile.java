@@ -7,7 +7,7 @@ import geometry.Rect;
 
 public abstract class Tile {
 	
-	public enum TileLayer { BACKGROUND, MIDDLEGROUND, FOREGROUND }
+	public enum TileLayer { BACKGROUND, MIDDLEGROUND, FOREGROUND, DEFAULT }
 	
 	private int foregroundTexture;
 	private int middlegroundTexture;
