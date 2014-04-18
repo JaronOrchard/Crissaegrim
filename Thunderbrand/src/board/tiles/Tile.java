@@ -1,4 +1,4 @@
-package tiles;
+package board.tiles;
 
 import entities.Entity;
 import geometry.Coordinate;
@@ -6,6 +6,8 @@ import geometry.Line;
 import geometry.Rect;
 
 public abstract class Tile {
+	
+	public enum TileLayer { BACKGROUND, MIDDLEGROUND, FOREGROUND }
 	
 	private int foregroundTexture;
 	private int middlegroundTexture;

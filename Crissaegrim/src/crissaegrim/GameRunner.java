@@ -31,13 +31,12 @@ import attack.Attack;
 import board.Board;
 import board.Chunk;
 import board.MissingChunk;
+import board.tiles.Tile.TileLayer;
 import textures.Textures;
 import thunderbrand.TextBlock;
 import thunderbrand.Thunderbrand;
 
 public class GameRunner {
-	
-	public enum TileLayer { BACKGROUND, MIDDLEGROUND, FOREGROUND }
 	
 	private static final long FRAMES_PER_SECOND = 100;
 	private static final long MILLISECONDS_PER_FRAME = 1000 / FRAMES_PER_SECOND;

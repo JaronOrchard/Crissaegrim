@@ -1,23 +1,23 @@
 package board;
 
+import board.tiles.Tile1L;
+import board.tiles.Tile1LI;
+import board.tiles.Tile1R;
+import board.tiles.Tile1RI;
+import board.tiles.Tile2L;
+import board.tiles.Tile2LH;
+import board.tiles.Tile2LHI;
+import board.tiles.Tile2LI;
+import board.tiles.Tile2R;
+import board.tiles.Tile2RH;
+import board.tiles.Tile2RHI;
+import board.tiles.Tile2RI;
+import board.tiles.TileBlank;
+import board.tiles.TileFull;
+import board.tiles.TileHalfVertically;
+import board.tiles.TileHalfVerticallyI;
+import board.tiles.TilePassTop;
 import thunderbrand.Thunderbrand;
-import tiles.Tile1L;
-import tiles.Tile1LI;
-import tiles.Tile1R;
-import tiles.Tile1RI;
-import tiles.Tile2L;
-import tiles.Tile2LH;
-import tiles.Tile2LHI;
-import tiles.Tile2LI;
-import tiles.Tile2R;
-import tiles.Tile2RH;
-import tiles.Tile2RHI;
-import tiles.Tile2RI;
-import tiles.TileBlank;
-import tiles.TileFull;
-import tiles.TileHalfVertically;
-import tiles.TileHalfVerticallyI;
-import tiles.TilePassTop;
 
 public class DebugChunk extends Chunk {
 	

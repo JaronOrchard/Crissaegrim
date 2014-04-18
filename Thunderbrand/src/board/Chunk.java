@@ -10,12 +10,11 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
+import board.tiles.Tile;
+import board.tiles.TileUtils;
+import board.tiles.Tile.TileLayer;
 import textures.Textures;
 import thunderbrand.Thunderbrand;
-import tiles.Tile;
-import tiles.TileUtils;
-import crissaegrim.Crissaegrim;
-import crissaegrim.GameRunner.TileLayer;
 
 public class Chunk {
 	protected int xOrigin; // The origin of the chunk is
@@ -56,15 +55,14 @@ public class Chunk {
 	 * Draw the entire chunk.
 	 * @param playerPosition The {@link Coordinate} of the center of vision, so we can avoid drawing unnecessary tiles
 	 * @param layer Whether to draw the foreground, middleground, or background
+	 * @param xRange The number of tiles to draw, width-wise
+	 * @param yRange The number of tiles to draw, height-wise
 	 */
-	public void draw(Coordinate playerPosition, TileLayer layer) {
+	public void draw(Coordinate playerPosition, TileLayer layer, int xRange, int yRange) {
 		Map<Integer, List<Coordinate>> tilesToDraw = new HashMap<Integer, List<Coordinate>>();
 		double tileX, tileY;
 		
 		int startX, startY, endX, endY;
-		int xRange = (int)Math.ceil(Crissaegrim.getWindowWidthRadiusInTiles()) + 1;
-		int yRange = (int)Math.ceil(Crissaegrim.getWindowHeightRadiusInTiles()) + 1;
-		
 		int xOffset = (int)playerPosition.getX() - xOrigin;
 		int yOffset = (int)playerPosition.getY() - yOrigin;
 		if (coordinateIsInChunkColumn(playerPosition)) {

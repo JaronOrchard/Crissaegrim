@@ -1,4 +1,4 @@
-package tiles;
+package board.tiles;
 
 import entities.Entity;
 import geometry.Coordinate;
@@ -11,13 +11,13 @@ import java.util.List;
 
 import textures.Textures;
 
-public class Tile2LH extends Tile {
+public class Tile1R extends Tile {
 	
-	public Tile2LH() {
-		super(Textures.NONE, Textures.TILE_2LH, Textures.NONE);
+	public Tile1R() {
+		super(Textures.NONE, Textures.TILE_1R, Textures.NONE);
 	}
 	
-	public Tile2LH(int fgTexture, int mgTexture, int bgTexture) {
+	public Tile1R(int fgTexture, int mgTexture, int bgTexture) {
 		super(fgTexture, mgTexture, bgTexture);
 	}
 	
@@ -25,9 +25,8 @@ public class Tile2LH extends Tile {
 	public boolean playerBodyCollides(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition) {
 		List<Line> tileBoundaryLines = new ArrayList<Line>();
 		tileBoundaryLines.add(new Line(new Coordinate(xPos, yPos), new Coordinate(xPos + 1, yPos)));
-		tileBoundaryLines.add(new Line(new Coordinate(xPos + 1, yPos), new Coordinate(xPos + 1, yPos + 1)));
-		tileBoundaryLines.add(new Line(new Coordinate(xPos + 1, yPos + 1), new Coordinate(xPos, yPos + 0.5)));
-		tileBoundaryLines.add(new Line(new Coordinate(xPos, yPos + 0.5), new Coordinate(xPos, yPos)));
+		tileBoundaryLines.add(new Line(new Coordinate(xPos + 1, yPos), new Coordinate(xPos, yPos + 1)));
+		tileBoundaryLines.add(new Line(new Coordinate(xPos, yPos + 1), new Coordinate(xPos, yPos)));
 		
 		List<Line> playerBoundaryLines = RectUtils.getLinesFromRect(entity.getEntityBoundingRect(endingPosition));
 		
@@ -38,9 +37,8 @@ public class Tile2LH extends Tile {
 	public Coordinate playerFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine) {
 		List<Line> tileBoundaryLines = new ArrayList<Line>();
 		tileBoundaryLines.add(new Line(new Coordinate(xPos, yPos), new Coordinate(xPos + 1, yPos)));
-		tileBoundaryLines.add(new Line(new Coordinate(xPos + 1, yPos), new Coordinate(xPos + 1, yPos + 1)));
-		tileBoundaryLines.add(new Line(new Coordinate(xPos + 1, yPos + 1), new Coordinate(xPos, yPos + 0.5)));
-		tileBoundaryLines.add(new Line(new Coordinate(xPos, yPos + 0.5), new Coordinate(xPos, yPos)));
+		tileBoundaryLines.add(new Line(new Coordinate(xPos + 1, yPos), new Coordinate(xPos, yPos + 1)));
+		tileBoundaryLines.add(new Line(new Coordinate(xPos, yPos + 1), new Coordinate(xPos, yPos)));
 		
 		List<Line> playerFeetLines = entity.getEntityFeetLines(endingPosition, includeHorizontalFeetLine);
 		
@@ -53,7 +51,7 @@ public class Tile2LH extends Tile {
 	
 	@Override
 	protected Coordinate raisePositionToAboveTile(int xPos, int yPos, Entity entity, Coordinate position) {
-		return new Coordinate(position.getX(), yPos + Math.max(Math.min(((position.getX() - (double)xPos) / 2) + 0.5, 1), 0.5) + entity.getTileCollisionPadding());
+		return new Coordinate(position.getX(), yPos + Math.max(Math.min(1 - (position.getX() - (double)xPos), 1), 0) + entity.getTileCollisionPadding());
 	}
 	
 }

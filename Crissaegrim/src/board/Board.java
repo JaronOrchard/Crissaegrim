@@ -10,8 +10,8 @@ import thunderbrand.Thunderbrand;
 import static org.lwjgl.opengl.GL11.*;
 import attack.Attack;
 import board.tiles.CollisionDetectionTile;
+import board.tiles.Tile.TileLayer;
 import crissaegrim.Crissaegrim;
-import crissaegrim.GameRunner.TileLayer;
 import datapacket.RequestSpecificChunkPacket;
 import doodads.Doodad;
 import geometry.Coordinate;
@@ -72,10 +72,12 @@ public class Board {
 		chunks.add(chunkMap.get((chunkXOrigin+chunkSideSize) + "_" + (chunkYOrigin)));
 		chunks.add(chunkMap.get((chunkXOrigin+chunkSideSize) + "_" + (chunkYOrigin+chunkSideSize)));
 		
+		int xRange = (int)Math.ceil(Crissaegrim.getWindowWidthRadiusInTiles()) + 1;
+		int yRange = (int)Math.ceil(Crissaegrim.getWindowHeightRadiusInTiles()) + 1;
 		glColor3d(1.0, 1.0, 1.0);
 		for (Chunk chunk : chunks) {
 			if (chunk != null) {
-				chunk.draw(playerPosition, layer);
+				chunk.draw(playerPosition, layer, xRange, yRange);
 			}
 		}
 	}
