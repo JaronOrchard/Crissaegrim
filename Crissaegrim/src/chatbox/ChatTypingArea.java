@@ -36,7 +36,7 @@ public class ChatTypingArea {
 			chatMessage.delete();
 		}
 		messageEntryTextures.clear();
-		currentMessage = "<" + Crissaegrim.getPlayer().getName() + "> ";
+		currentMessage = "<" + (Crissaegrim.getPlayer() == null ? "NULL" : Crissaegrim.getPlayer().getName()) + "> ";
 		currentColor = Color.WHITE;
 	}
 	

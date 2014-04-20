@@ -22,14 +22,15 @@ import datapacket.RequestPlayerIdPacket;
 import doodads.Doodad;
 import doodads.Door;
 import doodads.Target;
+import entities.EntityMovementHelper;
 import geometry.Coordinate;
 import geometry.LineUtils;
 import geometry.RectUtils;
 import player.PlayerStatus;
-import players.PlayerMovementHelper;
 import attack.Attack;
 import board.Board;
 import board.Chunk;
+import board.ClientBoard;
 import board.MissingChunk;
 import board.tiles.Tile.TileLayer;
 import textures.Textures;
@@ -46,9 +47,8 @@ public class GameRunner {
 	private short framesRendered = 0;
 	
 	private Map<String, Board> boardMap = new HashMap<String, Board>();
-	private String destinationBoard = "";
+	private String destinationBoardName = "";
 	private Coordinate destinationCoordinate = null;
-	private PlayerMovementHelper playerMovementHelper;
 	private List<TextBlock> waitingChatMessages = Collections.synchronizedList(new ArrayList<TextBlock>());
 	
 	public void addWaitingChatMessage(TextBlock tb) { waitingChatMessages.add(tb); }
@@ -56,6 +56,7 @@ public class GameRunner {
 	public void run() throws InterruptedException, IOException {
 		GameInitializer.initializeDisplay();
 		Textures.initializeTextures();
+		Crissaegrim.initializePlayer(boardMap);
 		
 		Crissaegrim.getValmanwayConnection().connectToValmonwayServer();
 		if (Crissaegrim.connectionStable) { // Wait to get player id...
@@ -71,12 +72,10 @@ public class GameRunner {
 			return;
 		}
 		
-		destinationBoard = "tower_of_preludes";
+		destinationBoardName = "tower_of_preludes";
 		destinationCoordinate = new Coordinate(10044, 10084); // tower_of_preludes
 		//destinationPosition = new Coordinate(10044, 10020); // dawning
 		goToDestinationBoard();
-		
-		playerMovementHelper = new PlayerMovementHelper();
 		
 		//initializeGame();
 		
@@ -95,7 +94,7 @@ public class GameRunner {
 			
 			// Update the board, including all entities and bullets:
 			if (!Crissaegrim.currentlyLoading) {
-				Crissaegrim.getBoard().verifyChunksExist();
+				ClientBoard.verifyChunksExist(Crissaegrim.getBoard());
 				if (Crissaegrim.currentlyLoading) { continue; }
 				actionAttackList();
 				Crissaegrim.getPlayer().update();
@@ -110,8 +109,8 @@ public class GameRunner {
 				} else {
 					getKeyboardAndMouseInput();
 				}
-				playerMovementHelper.movePlayer();
-				Crissaegrim.getBoard().getAttackList().addAll(playerMovementHelper.getAttackList());
+				Crissaegrim.getPlayer().getMovementHelper().movePlayer();
+				Crissaegrim.getBoard().getAttackList().addAll(Crissaegrim.getPlayer().getMovementHelper().getAttackList());
 			
 				// Transmit data to the server
 				Crissaegrim.getValmanwayConnection().sendPlayerStatus();
@@ -133,14 +132,15 @@ public class GameRunner {
 	
 	private void drawScene() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		Board currentBoard = Crissaegrim.getBoard();
 		
 		if (Crissaegrim.getBoard() != null) {
 			GameInitializer.initializeNewFrameForWindow();
-			Crissaegrim.getBoard().drawBackground();
+			ClientBoard.drawBackground(currentBoard);
 			
 			GameInitializer.initializeNewFrameForScene();
-			Crissaegrim.getBoard().draw(TileLayer.BACKGROUND);
-			Crissaegrim.getBoard().draw(TileLayer.MIDDLEGROUND);
+			ClientBoard.draw(currentBoard, TileLayer.BACKGROUND);
+			ClientBoard.draw(currentBoard, TileLayer.MIDDLEGROUND);
 			for (Doodad doodad : Crissaegrim.getBoard().getDoodadList()) {
 				if (!Crissaegrim.getDebugMode()) {
 					doodad.draw();
@@ -153,7 +153,7 @@ public class GameRunner {
 				Crissaegrim.getPlayer().drawDebugMode();
 			}
 			drawGhosts();
-			Crissaegrim.getBoard().draw(TileLayer.FOREGROUND);
+			ClientBoard.draw(currentBoard, TileLayer.FOREGROUND);
 		}
 		
 		GameInitializer.initializeNewFrameForWindow();
@@ -205,9 +205,10 @@ public class GameRunner {
 	 * Detects keyboard and mouse input and makes the main player react accordingly.
 	 */
 	private void getKeyboardAndMouseInput() {
-		if (Keyboard.isKeyDown(Keyboard.KEY_A)) { playerMovementHelper.requestLeftMovement(); }
-		if (Keyboard.isKeyDown(Keyboard.KEY_D)) { playerMovementHelper.requestRightMovement(); }
-		if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_SPACE)) { playerMovementHelper.requestJumpMovement(); }
+		EntityMovementHelper pmh = Crissaegrim.getPlayer().getMovementHelper();
+		if (Keyboard.isKeyDown(Keyboard.KEY_A)) { pmh.requestLeftMovement(); }
+		if (Keyboard.isKeyDown(Keyboard.KEY_D)) { pmh.requestRightMovement(); }
+		if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_SPACE)) { pmh.requestJumpMovement(); }
 		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
@@ -233,8 +234,8 @@ public class GameRunner {
 						if (!Crissaegrim.getPlayer().isBusy() && doodad instanceof Door &&
 								RectUtils.coordinateIsInRect(Crissaegrim.getPlayer().getPosition(), doodad.getBounds())) {
 							Door door = (Door)doodad;
-							playerMovementHelper.resetMovementRequests();
-							destinationBoard = door.getDestinationBoardName();
+							pmh.resetMovementRequests();
+							destinationBoardName = door.getDestinationBoardName();
 							destinationCoordinate = door.getDestinationCoordinate();
 							goToDestinationBoard();
 						}
@@ -247,7 +248,7 @@ public class GameRunner {
 			while (Mouse.next()) {
 				if (Mouse.getEventButtonState()) { // Button was clicked (not released)
 					if (Mouse.getEventButton() == 0) {
-						playerMovementHelper.requestUseItem();
+						pmh.requestUseItem(Crissaegrim.getPlayer().getInventory().getCurrentItem());
 					}
 				}
 			}
@@ -382,15 +383,16 @@ public class GameRunner {
 	}
 	
 	public void goToDestinationBoard() {
-		if (!destinationBoard.isEmpty() && destinationCoordinate != null) {
-			if (boardMap.containsKey(destinationBoard)) {
-				Crissaegrim.setBoard(boardMap.get(destinationBoard));
+		if (!destinationBoardName.isEmpty() && destinationCoordinate != null) {
+			if (boardMap.containsKey(destinationBoardName)) {
+				Crissaegrim.getPlayer().setCurrentBoardName(destinationBoardName);
+				//Crissaegrim.setBoard(boardMap.get(destinationBoardName));
 				Crissaegrim.getPlayer().getPosition().setAll(destinationCoordinate.getX(), destinationCoordinate.getY());
-				destinationBoard = "";
+				destinationBoardName = "";
 				destinationCoordinate = null;
 				Crissaegrim.currentlyLoading = false;
 			} else {
-				Crissaegrim.addOutgoingDataPacket(new RequestEntireBoardPacket(destinationBoard));
+				Crissaegrim.addOutgoingDataPacket(new RequestEntireBoardPacket(destinationBoardName));
 				Crissaegrim.currentlyLoading = true;
 			}
 		}

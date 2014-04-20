@@ -5,21 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import textures.Textures;
 import thunderbrand.Thunderbrand;
-import static org.lwjgl.opengl.GL11.*;
 import attack.Attack;
 import board.tiles.CollisionDetectionTile;
-import board.tiles.Tile.TileLayer;
-import crissaegrim.Crissaegrim;
-import datapacket.RequestSpecificChunkPacket;
 import doodads.Doodad;
 import geometry.Coordinate;
 
 public class Board {
 	
-	private Map<String, Chunk> chunkMap;
-	private final String boardName;
+	protected Map<String, Chunk> chunkMap;
+	protected final String boardName;
 	
 	private List<Attack> attackList;
 	private List<Doodad> doodadList;
@@ -36,80 +31,16 @@ public class Board {
 		doodadList = new ArrayList<Doodad>();
 	}
 	
-	public void verifyChunksExist() {
-		Coordinate playerPosition = Crissaegrim.getPlayer().getPosition();
+	public List<CollisionDetectionTile> getCollisionDetectionTilesNearEntity(Coordinate entityPosition) {
 		int chunkSideSize = Thunderbrand.getChunkSideSize();
-		// Get the coordinates of the Chunk the player is in:
-		int chunkXOrigin = (int)playerPosition.getX() - ((int)playerPosition.getX() % chunkSideSize);
-		int chunkYOrigin = (int)playerPosition.getY() - ((int)playerPosition.getY() % chunkSideSize);
-		// Ensure that the current Chunk and the 8 around it exist:
-		for (int xOrig = chunkXOrigin - chunkSideSize; xOrig <= chunkXOrigin + chunkSideSize; xOrig += chunkSideSize) {
-			for (int yOrig = chunkYOrigin - chunkSideSize; yOrig <= chunkYOrigin + chunkSideSize; yOrig += chunkSideSize) {
-				if (!chunkMap.containsKey(xOrig + "_" + yOrig)) {
-					// Chunk is missing!  Request and set to loading, then break out.
-					Crissaegrim.addOutgoingDataPacket(new RequestSpecificChunkPacket(boardName, xOrig, yOrig));
-					Crissaegrim.currentlyLoading = true;
-					System.out.println("Warning!  Chunk '" + boardName + "@" + xOrig + "_" + yOrig + "' was missing!"); 
-					return;
-				}
-			}
-		}
-	}
-	
-	public void draw(TileLayer layer) {
-		Coordinate playerPosition = Crissaegrim.getPlayer().getPosition();
-		int chunkSideSize = Thunderbrand.getChunkSideSize();
-		int chunkXOrigin = (int)playerPosition.getX() - ((int)playerPosition.getX() % chunkSideSize);
-		int chunkYOrigin = (int)playerPosition.getY() - ((int)playerPosition.getY() % chunkSideSize);
-		List<Chunk> chunks = new ArrayList<Chunk>(9);
-		chunks.add(chunkMap.get((chunkXOrigin-chunkSideSize) + "_" + (chunkYOrigin-chunkSideSize)));
-		chunks.add(chunkMap.get((chunkXOrigin-chunkSideSize) + "_" + (chunkYOrigin)));
-		chunks.add(chunkMap.get((chunkXOrigin-chunkSideSize) + "_" + (chunkYOrigin+chunkSideSize)));
-		chunks.add(chunkMap.get((chunkXOrigin) + "_" + (chunkYOrigin-chunkSideSize)));
-		chunks.add(chunkMap.get((chunkXOrigin) + "_" + (chunkYOrigin)));
-		chunks.add(chunkMap.get((chunkXOrigin) + "_" + (chunkYOrigin+chunkSideSize)));
-		chunks.add(chunkMap.get((chunkXOrigin+chunkSideSize) + "_" + (chunkYOrigin-chunkSideSize)));
-		chunks.add(chunkMap.get((chunkXOrigin+chunkSideSize) + "_" + (chunkYOrigin)));
-		chunks.add(chunkMap.get((chunkXOrigin+chunkSideSize) + "_" + (chunkYOrigin+chunkSideSize)));
-		
-		int xRange = (int)Math.ceil(Crissaegrim.getWindowWidthRadiusInTiles()) + 1;
-		int yRange = (int)Math.ceil(Crissaegrim.getWindowHeightRadiusInTiles()) + 1;
-		glColor3d(1.0, 1.0, 1.0);
-		for (Chunk chunk : chunks) {
-			if (chunk != null) {
-				chunk.draw(playerPosition, layer, xRange, yRange);
-			}
-		}
-	}
-	
-	public void drawBackground() {
-		glColor3d(1.0, 1.0, 1.0);
-		glBindTexture(GL_TEXTURE_2D, Textures.BACKGROUND_SOTN);
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBegin(GL_QUADS);
-				glTexCoord2d(0, 1);
-				glVertex2d(0, 0);
-				glTexCoord2d(1, 1);
-				glVertex2d(Crissaegrim.getWindowWidth(), 0);
-				glTexCoord2d(1, 0);
-				glVertex2d(Crissaegrim.getWindowWidth(), Crissaegrim.getWindowHeight());
-				glTexCoord2d(0, 0);
-				glVertex2d(0, Crissaegrim.getWindowHeight());
-			glEnd();
-		glPopMatrix();
-	}
-	
-	public List<CollisionDetectionTile> getCollisionDetectionTilesNearPlayer(Coordinate playerPosition) {
-		int chunkSideSize = Thunderbrand.getChunkSideSize();
-		int chunkXOrigin = (int)playerPosition.getX() - ((int)playerPosition.getX() % chunkSideSize);
-		int chunkYOrigin = (int)playerPosition.getY() - ((int)playerPosition.getY() % chunkSideSize);
+		int chunkXOrigin = (int)entityPosition.getX() - ((int)entityPosition.getX() % chunkSideSize);
+		int chunkYOrigin = (int)entityPosition.getY() - ((int)entityPosition.getY() % chunkSideSize);
 		String chunkName = chunkXOrigin + "_" + chunkYOrigin;
 		Chunk chunk = chunkMap.get(chunkName);
 		
 		List<CollisionDetectionTile> nearbyTiles = new ArrayList<CollisionDetectionTile>();
-		int localizedPlayerTileX = (int)playerPosition.getX() - chunk.getXOrigin();
-		int localizedPlayerTileY = (int)playerPosition.getY() - chunk.getYOrigin();
+		int localizedPlayerTileX = (int)entityPosition.getX() - chunk.getXOrigin();
+		int localizedPlayerTileY = (int)entityPosition.getY() - chunk.getYOrigin();
 		
 		if (localizedPlayerTileX > 0 && localizedPlayerTileX < chunkSideSize - 1 &&
 				localizedPlayerTileY > 0 && localizedPlayerTileY < chunkSideSize - 4) {

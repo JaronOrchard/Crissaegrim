@@ -4,11 +4,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import geometry.Coordinate;
 import geometry.Line;
 import geometry.Rect;
-import busy.Busy;
+import board.Board;
 import textures.Textures;
 import crissaegrim.Crissaegrim;
 import entities.Entity;
@@ -28,26 +29,9 @@ public class Player extends Entity {
 	public static double getPlayerSwordHeight() { return PLAYER_SWORD_HEIGHT; }
 	public static double getPlayerSwordLength() { return PLAYER_SWORD_LENGTH; }
 	
-	private double horizontalMovementSpeed = 0.08;
-	private double jumpMomentum = 0.205;
-	private Coordinate position;
-	private boolean facingRight = true;
-	private Busy busyStatus = null;
+	
 	private String icon = null; // Appears when something is actionable, like entering a door
-	
-	public double getHorizontalMovementSpeed() { return horizontalMovementSpeed; }
-	public double getJumpMomentum() { return jumpMomentum; }
-	public Coordinate getPosition() { return position; }
-	public boolean getFacingRight() { return facingRight; }
-	public boolean isBusy() { return busyStatus != null; }
-	public Busy getBusyStatus() { return busyStatus; }
-	
-	public void setFacingRight(boolean fr) { facingRight = fr; }
-	public void setBusy(Busy busy) { busyStatus = busy; }
 	public void setIcon(String newIcon) { icon = newIcon; }
-	
-	private int playerId;
-	public int getId() { return playerId; }
 	
 	private String name;
 	public String getName() { return name; }
@@ -56,11 +40,9 @@ public class Player extends Entity {
 	private Inventory inventory = new Inventory();
 	public Inventory getInventory() { return inventory; }
 	
-	public Player() {
-		super();
-		playerId = -1;
+	public Player(Map<String, Board> boardMap) {
+		super(boardMap);
 		name = "UNASSIGNED";
-		position = new Coordinate(0, 0);
 		
 		gravityAcceleration = -0.0045;
 		tileCollisionPadding = gravityAcceleration / -2;
@@ -101,8 +83,8 @@ public class Player extends Entity {
 	
 	// ===
 	
-	public void assignPlayerId(int id) {
-		playerId = id;
+	public void assignPlayerId(int playerId) {
+		id = playerId;
 		name = "Player " + id;
 		Crissaegrim.addSystemMessageIfDebug("Assigned player ID: " + id);
 	}
