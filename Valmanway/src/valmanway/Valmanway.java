@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import thunderbrand.TextBlock;
+import world.WorldRunnerThread;
 
 public class Valmanway {
 	
@@ -27,7 +28,9 @@ public class Valmanway {
             System.err.println("Could not listen on port: " + VALMANWAY_SERVER_PORT + ".");
             System.exit(-1);
         }
-
+        
+        new WorldRunnerThread().start();
+        
         while (listening) {
         	Socket acceptedSocket = serverSocket.accept();
         	ValmanwayUserData valmanwayUserData = new ValmanwayUserData(

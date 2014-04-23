@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import thunderbrand.Thunderbrand;
 import badelaire.Badelaire;
 import board.tiles.Tile;
 import board.tiles.Tile.TileLayer;
@@ -63,6 +64,7 @@ public class MapmakerBoard {
 		int chunkXOrigin = Integer.parseInt(f.getName().substring(f.getName().indexOf('@') + 1, f.getName().lastIndexOf('_')));
 		int chunkYOrigin = Integer.parseInt(f.getName().substring(f.getName().lastIndexOf('_') + 1));
 		MapmakerChunk chunk = new MapmakerChunk(boardName, chunkXOrigin, chunkYOrigin);
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
 		
 		BufferedReader br = null;
 		try {
@@ -71,8 +73,8 @@ public class MapmakerBoard {
 			for (int i = 0; i < numEntities; i++) {
 				br.readLine(); // Skip entities
 			}
-			for (int i = 0; i < Badelaire.getChunkSideSize(); i++) {
-				for (int j = 0; j < Badelaire.getChunkSideSize(); j++) {
+			for (int i = 0; i < chunkSideSize; i++) {
+				for (int j = 0; j < chunkSideSize; j++) {
 					char[] tileChar = new char[7];
 					br.read(tileChar, 0, 7);
 					chunk.setTile(i, j, TileUtils.getTileType(tileChar[0]));
@@ -113,21 +115,22 @@ public class MapmakerBoard {
 	 * @param chunkYOrigin The chunk's y origin
 	 */
 	private void createBoundaryChunksIfNeeded(int chunkXOrigin, int chunkYOrigin) {
-		if (!chunkMap.containsKey((chunkXOrigin - Badelaire.getChunkSideSize()) + "_" + chunkYOrigin)) {
-			chunkMap.put((chunkXOrigin - Badelaire.getChunkSideSize()) + "_" + chunkYOrigin,
-					new MapmakerChunk(boardName, chunkXOrigin - Badelaire.getChunkSideSize(), chunkYOrigin)); 
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
+		if (!chunkMap.containsKey((chunkXOrigin - chunkSideSize) + "_" + chunkYOrigin)) {
+			chunkMap.put((chunkXOrigin - chunkSideSize) + "_" + chunkYOrigin,
+					new MapmakerChunk(boardName, chunkXOrigin - chunkSideSize, chunkYOrigin)); 
 		}
-		if (!chunkMap.containsKey((chunkXOrigin + Badelaire.getChunkSideSize()) + "_" + chunkYOrigin)) {
-			chunkMap.put((chunkXOrigin + Badelaire.getChunkSideSize()) + "_" + chunkYOrigin,
-					new MapmakerChunk(boardName, chunkXOrigin + Badelaire.getChunkSideSize(), chunkYOrigin)); 
+		if (!chunkMap.containsKey((chunkXOrigin + chunkSideSize) + "_" + chunkYOrigin)) {
+			chunkMap.put((chunkXOrigin + chunkSideSize) + "_" + chunkYOrigin,
+					new MapmakerChunk(boardName, chunkXOrigin + chunkSideSize, chunkYOrigin)); 
 		}
-		if (!chunkMap.containsKey(chunkXOrigin + "_" + (chunkYOrigin - Badelaire.getChunkSideSize()))) {
-			chunkMap.put(chunkXOrigin + "_" + (chunkYOrigin - Badelaire.getChunkSideSize()),
-					new MapmakerChunk(boardName, chunkXOrigin, chunkYOrigin - Badelaire.getChunkSideSize())); 
+		if (!chunkMap.containsKey(chunkXOrigin + "_" + (chunkYOrigin - chunkSideSize))) {
+			chunkMap.put(chunkXOrigin + "_" + (chunkYOrigin - chunkSideSize),
+					new MapmakerChunk(boardName, chunkXOrigin, chunkYOrigin - chunkSideSize)); 
 		}
-		if (!chunkMap.containsKey(chunkXOrigin + "_" + (chunkYOrigin + Badelaire.getChunkSideSize()))) {
-			chunkMap.put(chunkXOrigin + "_" + (chunkYOrigin + Badelaire.getChunkSideSize()),
-					new MapmakerChunk(boardName, chunkXOrigin, chunkYOrigin + Badelaire.getChunkSideSize())); 
+		if (!chunkMap.containsKey(chunkXOrigin + "_" + (chunkYOrigin + chunkSideSize))) {
+			chunkMap.put(chunkXOrigin + "_" + (chunkYOrigin + chunkSideSize),
+					new MapmakerChunk(boardName, chunkXOrigin, chunkYOrigin + chunkSideSize)); 
 		}
 	}
 	
@@ -153,54 +156,58 @@ public class MapmakerBoard {
 	}
 	
 	public void setBG(int tileX, int tileY, int texture) {
-		int chunkXOrigin = tileX - (tileX % Badelaire.getChunkSideSize());
-		int chunkYOrigin = tileY - (tileY % Badelaire.getChunkSideSize());
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
+		int chunkXOrigin = tileX - (tileX % chunkSideSize);
+		int chunkYOrigin = tileY - (tileY % chunkSideSize);
 		String chunkName = chunkXOrigin + "_" + chunkYOrigin;
 		MapmakerChunk chunk = chunkMap.get(chunkName);
 		if (chunk != null) {
-			chunk.getTile(tileX % Badelaire.getChunkSideSize(), tileY % Badelaire.getChunkSideSize()).setBackgroundTexture(texture);
+			chunk.getTile(tileX % chunkSideSize, tileY % chunkSideSize).setBackgroundTexture(texture);
 			modifiedChunks.add(chunkName);
 			createBoundaryChunksIfNeeded(chunkXOrigin, chunkYOrigin);
 		}
 	}
 	
 	public void setMG(int tileX, int tileY, int texture) {
-		int chunkXOrigin = tileX - (tileX % Badelaire.getChunkSideSize());
-		int chunkYOrigin = tileY - (tileY % Badelaire.getChunkSideSize());
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
+		int chunkXOrigin = tileX - (tileX % chunkSideSize);
+		int chunkYOrigin = tileY - (tileY % chunkSideSize);
 		String chunkName = chunkXOrigin + "_" + chunkYOrigin;
 		MapmakerChunk chunk = chunkMap.get(chunkName);
 		if (chunk != null) {
-			chunk.getTile(tileX % Badelaire.getChunkSideSize(), tileY % Badelaire.getChunkSideSize()).setMiddlegroundTexture(texture);
+			chunk.getTile(tileX % chunkSideSize, tileY % chunkSideSize).setMiddlegroundTexture(texture);
 			modifiedChunks.add(chunkName);
 			createBoundaryChunksIfNeeded(chunkXOrigin, chunkYOrigin);
 		}
 	}
 	
 	public void setFG(int tileX, int tileY, int texture) {
-		int chunkXOrigin = tileX - (tileX % Badelaire.getChunkSideSize());
-		int chunkYOrigin = tileY - (tileY % Badelaire.getChunkSideSize());
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
+		int chunkXOrigin = tileX - (tileX % chunkSideSize);
+		int chunkYOrigin = tileY - (tileY % chunkSideSize);
 		String chunkName = chunkXOrigin + "_" + chunkYOrigin;
 		MapmakerChunk chunk = chunkMap.get(chunkName);
 		if (chunk != null) {
-			chunk.getTile(tileX % Badelaire.getChunkSideSize(), tileY % Badelaire.getChunkSideSize()).setForegroundTexture(texture);
+			chunk.getTile(tileX % chunkSideSize, tileY % chunkSideSize).setForegroundTexture(texture);
 			modifiedChunks.add(chunkName);
 			createBoundaryChunksIfNeeded(chunkXOrigin, chunkYOrigin);
 		}
 	}
 	
 	public void setTileType(int tileX, int tileY, Tile tile) {
-		int chunkXOrigin = tileX - (tileX % Badelaire.getChunkSideSize());
-		int chunkYOrigin = tileY - (tileY % Badelaire.getChunkSideSize());
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
+		int chunkXOrigin = tileX - (tileX % chunkSideSize);
+		int chunkYOrigin = tileY - (tileY % chunkSideSize);
 		String chunkName = chunkXOrigin + "_" + chunkYOrigin;
 		MapmakerChunk chunk = chunkMap.get(chunkName);
 		if (chunk != null) {
-			Tile currentTile = chunk.getTile(tileX % Badelaire.getChunkSideSize(), tileY % Badelaire.getChunkSideSize());
+			Tile currentTile = chunk.getTile(tileX % chunkSideSize, tileY % chunkSideSize);
 			if (currentTile.getMiddlegroundTexture() != currentTile.getDefaultTexture()) { // Non-default tile; keep its textures
 				tile.setForegroundTexture(currentTile.getForegroundTexture());
 				tile.setMiddlegroundTexture(currentTile.getMiddlegroundTexture());
 				tile.setBackgroundTexture(currentTile.getBackgroundTexture());
 			}
-			chunk.setTile(tileX % Badelaire.getChunkSideSize(), tileY % Badelaire.getChunkSideSize(), tile);
+			chunk.setTile(tileX % chunkSideSize, tileY % chunkSideSize, tile);
 			modifiedChunks.add(chunkName);
 			createBoundaryChunksIfNeeded(chunkXOrigin, chunkYOrigin);
 		}

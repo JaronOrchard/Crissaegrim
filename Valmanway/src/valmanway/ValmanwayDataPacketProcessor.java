@@ -13,6 +13,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import thunderbrand.TextBlock;
+import thunderbrand.Thunderbrand;
 import datapacket.ChunkPacket;
 import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
@@ -127,7 +128,7 @@ public final class ValmanwayDataPacketProcessor {
 	
 	private static void sendEntireBoard(String boardName, ValmanwayUserData vud) {
 		Map<String, DataPacket> chunkPackets = new HashMap<String, DataPacket>();
-		int chunkSizeSide = 100;
+		int chunkSizeSide = Thunderbrand.getChunkSideSize();
 		
 		File chunksDir = new File("C:/CrissaegrimChunks/" + boardName);
 		for (File f : chunksDir.listFiles()) {
@@ -191,7 +192,7 @@ public final class ValmanwayDataPacketProcessor {
 		if (!f.exists() || f.isDirectory()) {
 			vud.addOutgoingDataPacket(new NonexistentChunkPacket(rscp.getBoardName(), rscp.getChunkXOrigin(), rscp.getChunkYOrigin()));
 		} else {
-			int chunkSizeSide = 100;
+			int chunkSizeSide = Thunderbrand.getChunkSideSize();
 			byte[] bytes = new byte[70000];
 			
 			BufferedReader br = null;

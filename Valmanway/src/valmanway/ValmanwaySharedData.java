@@ -6,13 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import board.Board;
 import player.PlayerStatus;
 import thunderbrand.TextBlock;
 
-class ValmanwaySharedData {
+public class ValmanwaySharedData {
 	
 	private static final int CHAT_MESSAGES_ARRAY_SIZE = 200;
 	
+	private Map<String, Board> boardMap;
 	private Map<Integer, PlayerStatus> playerStatusMap;
 	private Map<Integer, String> playerNameMap;
 	private int nextPlayerId;
@@ -20,6 +22,7 @@ class ValmanwaySharedData {
 	private int mostRecentChatMessageIndex;
 	
 	public ValmanwaySharedData() {
+		boardMap = new HashMap<String, Board>();
 		playerStatusMap = Collections.synchronizedMap(new HashMap<Integer, PlayerStatus>());
 		playerNameMap = Collections.synchronizedMap(new HashMap<Integer, String>());
 		nextPlayerId = 1;
@@ -28,6 +31,8 @@ class ValmanwaySharedData {
 		}
 		mostRecentChatMessageIndex = -1;
 	}
+	
+	public Map<String, Board> getBoardMap() { return boardMap; }
 	
 	public int getNextPlayerId() { return nextPlayerId++; }
 	public TextBlock getChatMessage(int index) { return chatMessages[index % CHAT_MESSAGES_ARRAY_SIZE]; }

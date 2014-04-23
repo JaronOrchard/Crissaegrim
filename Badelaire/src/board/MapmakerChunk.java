@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import textures.Textures;
-import badelaire.Badelaire;
+import thunderbrand.Thunderbrand;
 import board.tiles.TileBlank;
 import board.tiles.TileUtils;
 
@@ -16,25 +16,27 @@ public class MapmakerChunk extends Chunk {
 
 	public MapmakerChunk(String bName, int xOrig, int yOrig) {
 		super(xOrig, yOrig);
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
 		boardName = bName;
-		for (int i = 0; i < Badelaire.getChunkSideSize(); i++) {
-			for (int j = 0; j < Badelaire.getChunkSideSize(); j++) {
+		for (int i = 0; i < chunkSideSize; i++) {
+			for (int j = 0; j < chunkSideSize; j++) {
 				tiles[i][j] = new TileBlank();
 			}
 		}
 	}
 	
 	public void drawPreGrid() {
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
 		glDisable(GL_TEXTURE_2D);
 		glColor3d(0.2, 0.2, 0.2);
 		glBegin(GL_LINES);
-			for (double i = xOrigin + 1; i < xOrigin + Badelaire.getChunkSideSize(); i += 1) {
+			for (double i = xOrigin + 1; i < xOrigin + chunkSideSize; i += 1) {
 				glVertex2d(i, (double)yOrigin);
-				glVertex2d(i, (double)yOrigin + Badelaire.getChunkSideSize());
+				glVertex2d(i, (double)yOrigin + chunkSideSize);
 			}
-			for (double j = yOrigin + 1; j < yOrigin + Badelaire.getChunkSideSize(); j += 1) {
+			for (double j = yOrigin + 1; j < yOrigin + chunkSideSize; j += 1) {
 				glVertex2d((double)xOrigin, j);
-				glVertex2d((double)xOrigin + Badelaire.getChunkSideSize(), j);
+				glVertex2d((double)xOrigin + chunkSideSize, j);
 			}
 		glEnd();
 		glColor3d(1.0, 1.0, 1.0);
@@ -42,13 +44,14 @@ public class MapmakerChunk extends Chunk {
 	}
 	
 	public void drawPostGrid() {
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
 		glDisable(GL_TEXTURE_2D);
 		glColor3d(0.5, 0.4, 0.1);
 		glBegin(GL_LINE_LOOP);
 			glVertex2d(xOrigin, yOrigin);
-			glVertex2d(xOrigin + Badelaire.getChunkSideSize(), yOrigin);
-			glVertex2d(xOrigin + Badelaire.getChunkSideSize(), yOrigin + Badelaire.getChunkSideSize());
-			glVertex2d(xOrigin, yOrigin + Badelaire.getChunkSideSize());
+			glVertex2d(xOrigin + chunkSideSize, yOrigin);
+			glVertex2d(xOrigin + chunkSideSize, yOrigin + chunkSideSize);
+			glVertex2d(xOrigin, yOrigin + chunkSideSize);
 		glEnd();
 		glColor3d(1.0, 1.0, 1.0);
 		glEnable(GL_TEXTURE_2D);
@@ -58,6 +61,7 @@ public class MapmakerChunk extends Chunk {
 	 * Partially taken from http://stackoverflow.com/questions/2885173/java-how-to-create-and-write-to-a-file
 	 */
 	public void save() {
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
 		File chunksDir = new File("C:/CrissaegrimChunks/" + boardName);
 		chunksDir.mkdirs();
 		String chunkName = boardName + "@" + xOrigin + "_" + yOrigin;
@@ -65,8 +69,8 @@ public class MapmakerChunk extends Chunk {
 		
 		// If ENTIRE chunk is blank, then delete it!  Else save it.
 		boolean chunkIsEmpty = true;
-		for (int i = 0; i < Badelaire.getChunkSideSize() && chunkIsEmpty; i++) {
-			for (int j = 0; j < Badelaire.getChunkSideSize() && chunkIsEmpty; j++) {
+		for (int i = 0; i < chunkSideSize && chunkIsEmpty; i++) {
+			for (int j = 0; j < chunkSideSize && chunkIsEmpty; j++) {
 				if (!(tiles[i][j] instanceof TileBlank) ||
 						tiles[i][j].getBackgroundTexture() != Textures.NONE ||
 						tiles[i][j].getMiddlegroundTexture() != Textures.NONE ||
@@ -89,8 +93,8 @@ public class MapmakerChunk extends Chunk {
 				fileOutputStream = new FileOutputStream(chunkFile);
 				fileOutputStream.write((byte)('0')); // Number of entities to follow (none yet) (will need to convert to bytes)
 				fileOutputStream.write(System.getProperty("line.separator").getBytes());
-				for (int i = 0; i < Badelaire.getChunkSideSize(); i++) {
-					for (int j = 0; j < Badelaire.getChunkSideSize(); j++) {
+				for (int i = 0; i < chunkSideSize; i++) {
+					for (int j = 0; j < chunkSideSize; j++) {
 						byte[] tileBytes = new byte[7];
 						tileBytes[0] = (byte)(TileUtils.getTileTypeInt(tiles[i][j]) & 0xFF);
 						tileBytes[1] = (byte)((tiles[i][j].getBackgroundTexture() >> 8) & 0xFF);

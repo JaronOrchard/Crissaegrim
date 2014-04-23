@@ -4,11 +4,9 @@ import java.io.IOException;
 
 public class Badelaire {
 	
-	private static final int CHUNK_SIDE_SIZE = 100;
 	private static final int WINDOW_WIDTH = 1536; //1024;
 	private static final int WINDOW_HEIGHT = 768;
 	
-	public static int getChunkSideSize() { return CHUNK_SIDE_SIZE; }
 	public static int getWindowWidth() { return WINDOW_WIDTH; }
 	public static int getWindowHeight() { return WINDOW_HEIGHT; }
 	
