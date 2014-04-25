@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.Map;
 
 import datapacket.SendAllPlayerStatusesPacket;
-import player.PlayerStatus;
+import entities.EntityStatus;
 import thunderbrand.Thunderbrand;
 
 public class ValmanwayWriterThread extends Thread {
@@ -43,7 +43,7 @@ public class ValmanwayWriterThread extends Thread {
     			if (Thunderbrand.getTime() - lastPlayerStatusSendTime > PLAYER_STATUS_SEND_INTERVAL) {
     				lastPlayerStatusSendTime = Thunderbrand.getTime();
 					
-    				Map<Integer, PlayerStatus> ps = Valmanway.getSharedData().getPlayerStatuses();
+    				Map<Integer, EntityStatus> ps = Valmanway.getSharedData().getEntityStatuses();
 					ps.remove(valmanwayUserData.getPlayerId());
 					valmanwayUserData.addOutgoingDataPacket(new SendAllPlayerStatusesPacket(ps));
 					

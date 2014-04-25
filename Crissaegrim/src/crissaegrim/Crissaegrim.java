@@ -16,16 +16,16 @@ import org.lwjgl.opengl.DisplayMode;
 
 import online.ValmanwayConnection;
 import board.Board;
-import player.PlayerStatus;
 import players.Player;
 import chatbox.ChatBox;
 import datapacket.DataPacket;
+import entities.EntityStatus;
 
 public class Crissaegrim {
 	
 	private static volatile GameRunner gameRunner = new GameRunner();
 	private static volatile Player player = null;
-	private static volatile Map<Integer, PlayerStatus> ghosts = new HashMap<Integer, PlayerStatus>();
+	private static volatile Map<Integer, EntityStatus> ghosts = new HashMap<Integer, EntityStatus>();
 	private static volatile ChatBox chatBox = new ChatBox();
 	private static volatile ValmanwayConnection valmanwayConnection = new ValmanwayConnection();
 	private static volatile List<DataPacket> outgoingDataPackets = Collections.synchronizedList(new ArrayList<DataPacket>());
@@ -35,8 +35,8 @@ public class Crissaegrim {
 	public static GameRunner getGameRunner() { return gameRunner; }
 	public static Player getPlayer() { return player; }
 	public static void initializePlayer(Map<String, Board> boardMap) { player = new Player(boardMap); }
-	public static Map<Integer, PlayerStatus> getGhosts() { return ghosts; }
-	public static void setGhosts(Map<Integer, PlayerStatus> g) { synchronized(Crissaegrim.getGhosts()) { ghosts = g; } }
+	public static Map<Integer, EntityStatus> getGhosts() { return ghosts; }
+	public static void setGhosts(Map<Integer, EntityStatus> g) { synchronized(Crissaegrim.getGhosts()) { ghosts = g; } }
 	public static Board getBoard() { return player.getCurrentBoard(); }
 	public static ChatBox getChatBox() { return chatBox; }
 	public static ValmanwayConnection getValmanwayConnection() { return valmanwayConnection; }

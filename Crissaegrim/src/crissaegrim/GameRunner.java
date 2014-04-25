@@ -23,10 +23,10 @@ import doodads.Doodad;
 import doodads.Door;
 import doodads.Target;
 import entities.EntityMovementHelper;
+import entities.EntityStatus;
 import geometry.Coordinate;
 import geometry.LineUtils;
 import geometry.RectUtils;
-import player.PlayerStatus;
 import attack.Attack;
 import board.Board;
 import board.Chunk;
@@ -97,7 +97,7 @@ public class GameRunner {
 				ClientBoard.verifyChunksExist(Crissaegrim.getBoard());
 				if (Crissaegrim.currentlyLoading) { continue; }
 				actionAttackList();
-				Crissaegrim.getPlayer().update();
+				Crissaegrim.getPlayer().updateBusyAndIcon();
 				actionDoodadList();
 			
 				// Draw new scene:
@@ -109,7 +109,7 @@ public class GameRunner {
 				} else {
 					getKeyboardAndMouseInput();
 				}
-				Crissaegrim.getPlayer().getMovementHelper().movePlayer();
+				Crissaegrim.getPlayer().getMovementHelper().moveEntity();
 				Crissaegrim.getBoard().getAttackList().addAll(Crissaegrim.getPlayer().getMovementHelper().getAttackList());
 			
 				// Transmit data to the server
@@ -279,7 +279,7 @@ public class GameRunner {
 	private void drawGhosts() {
 		synchronized (Crissaegrim.getGhosts()) {
 			String currentBoardName = Crissaegrim.getBoard().getName();
-			for (Entry<Integer, PlayerStatus> ghost : Crissaegrim.getGhosts().entrySet()) {
+			for (Entry<Integer, EntityStatus> ghost : Crissaegrim.getGhosts().entrySet()) {
 				if (ghost.getValue().getBoardName().equalsIgnoreCase(currentBoardName)) {
 					drawGhost(ghost.getValue());
 				}
@@ -287,7 +287,7 @@ public class GameRunner {
 		}		
 	}
 	
-	private void drawGhost(PlayerStatus ghost) {
+	private void drawGhost(EntityStatus ghost) {
 		boolean facingRight = ghost.getFacingRight();
 		double xPos = ghost.getXPos();
 		double yPos = ghost.getYPos();

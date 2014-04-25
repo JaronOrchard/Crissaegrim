@@ -1,8 +1,8 @@
-package player;
+package entities;
 
 import java.io.Serializable;
 
-public class PlayerStatus implements Serializable {
+public class EntityStatus implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String boardName;
@@ -17,7 +17,7 @@ public class PlayerStatus implements Serializable {
 	public int getCurrentTexture() { return currentTexture; }
 	public boolean getFacingRight() { return facingRight; }
 	
-	public PlayerStatus(String boardName, double xPos, double yPos, int currentTexture, boolean facingRight) {
+	public EntityStatus(String boardName, double xPos, double yPos, int currentTexture, boolean facingRight) {
 		setAll(boardName, xPos, yPos, currentTexture, facingRight);
 	}
 	

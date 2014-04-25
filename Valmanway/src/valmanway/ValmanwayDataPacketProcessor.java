@@ -38,7 +38,7 @@ public final class ValmanwayDataPacketProcessor {
 				valmanwayUserData.addOutgoingDataPacket(new ReceivePlayerIdPacket(valmanwayUserData.getPlayerId()));
 				break;
 			case DataPacketTypes.SEND_PLAYER_STATUS_PACKET:
-				Valmanway.getSharedData().updatePlayerStatusMap(
+				Valmanway.getSharedData().updateEntityStatusMap(
 						valmanwayUserData.getPlayerId(),
 						((SendPlayerStatusPacket)(packet)).getPlayerStatus());
 				break;

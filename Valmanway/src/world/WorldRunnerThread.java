@@ -8,6 +8,10 @@ public class WorldRunnerThread extends Thread {
 
     public void run() {
     	WorldRunner worldRunner = new WorldRunner();
-    	worldRunner.run();
+    	try {
+			worldRunner.run();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
     }
 }

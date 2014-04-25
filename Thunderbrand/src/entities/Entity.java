@@ -66,4 +66,7 @@ public abstract class Entity {
 		entityMovementHelper = new EntityMovementHelper(this, boardMap);
 	}
 	
+	public abstract void update();
+	public abstract int getCurrentTexture();
+	
 }

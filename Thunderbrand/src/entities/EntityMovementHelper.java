@@ -68,7 +68,7 @@ public class EntityMovementHelper {
 		itemToUse = item;
 	}
 	
-	public void movePlayer() {
+	public void moveEntity() {
 		Coordinate startingPosition;
 		Coordinate endingPosition;
 		

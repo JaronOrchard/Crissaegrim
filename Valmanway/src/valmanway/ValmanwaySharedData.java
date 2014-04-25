@@ -6,8 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import entities.Entity;
+import entities.EntityStatus;
 import board.Board;
-import player.PlayerStatus;
 import thunderbrand.TextBlock;
 
 public class ValmanwaySharedData {
@@ -15,7 +16,9 @@ public class ValmanwaySharedData {
 	private static final int CHAT_MESSAGES_ARRAY_SIZE = 200;
 	
 	private Map<String, Board> boardMap;
-	private Map<Integer, PlayerStatus> playerStatusMap;
+	private List<Entity> entities; // NPCs only
+	
+	private Map<Integer, EntityStatus> entityStatusMap; // Players + NPCs
 	private Map<Integer, String> playerNameMap;
 	private int nextPlayerId;
 	private TextBlock[] chatMessages = new TextBlock[CHAT_MESSAGES_ARRAY_SIZE];
@@ -23,7 +26,8 @@ public class ValmanwaySharedData {
 	
 	public ValmanwaySharedData() {
 		boardMap = new HashMap<String, Board>();
-		playerStatusMap = Collections.synchronizedMap(new HashMap<Integer, PlayerStatus>());
+		entities = Collections.synchronizedList(new ArrayList<Entity>());
+		entityStatusMap = Collections.synchronizedMap(new HashMap<Integer, EntityStatus>());
 		playerNameMap = Collections.synchronizedMap(new HashMap<Integer, String>());
 		nextPlayerId = 1;
 		for (int i = 0; i < CHAT_MESSAGES_ARRAY_SIZE; i++) {
@@ -33,16 +37,17 @@ public class ValmanwaySharedData {
 	}
 	
 	public Map<String, Board> getBoardMap() { return boardMap; }
+	public List<Entity> getEntities() { return entities; }
 	
 	public int getNextPlayerId() { return nextPlayerId++; }
 	public TextBlock getChatMessage(int index) { return chatMessages[index % CHAT_MESSAGES_ARRAY_SIZE]; }
 	public int getMostRecentChatMessageIndex() { return mostRecentChatMessageIndex; }
 	
-	public void updatePlayerStatusMap(int playerId, PlayerStatus playerStatus) {
-		playerStatusMap.put(playerId, playerStatus);
+	public void updateEntityStatusMap(int entityId, EntityStatus entityStatus) {
+		entityStatusMap.put(entityId, entityStatus);
 	}
-	public int getPlayerStatusMapCount() { return playerStatusMap.size(); }
-	public Map<Integer, PlayerStatus> getPlayerStatuses() { return new HashMap<Integer, PlayerStatus>(playerStatusMap); }
+	public int getEntityStatusMapCount() { return entityStatusMap.size(); }
+	public Map<Integer, EntityStatus> getEntityStatuses() { return new HashMap<Integer, EntityStatus>(entityStatusMap); }
 	
 	public String getPlayerName(int playerId) { return playerNameMap.get(playerId); }
 	public void setPlayerName(int playerId, String playerName) { playerNameMap.put(playerId, playerName); }
@@ -61,7 +66,7 @@ public class ValmanwaySharedData {
 	}
 	
 	public void dropPlayer(int playerId) {
-		playerStatusMap.remove(playerId);
+		entityStatusMap.remove(playerId);
 		playerNameMap.remove(playerId);
 	}
 	

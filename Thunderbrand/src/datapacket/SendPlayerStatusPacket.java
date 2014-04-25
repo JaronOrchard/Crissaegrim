@@ -1,19 +1,19 @@
 package datapacket;
 
-import player.PlayerStatus;
+import entities.EntityStatus;
 
 public class SendPlayerStatusPacket extends DataPacket {
 	private static final long serialVersionUID = 1L;
 	
-	private final PlayerStatus playerStatus;
-	public PlayerStatus getPlayerStatus() { return playerStatus; }
+	private final EntityStatus playerStatus;
+	public EntityStatus getPlayerStatus() { return playerStatus; }
 	
 	public SendPlayerStatusPacket(String boardName, double xPos, double yPos, int currentTexture, boolean facingRight) {
 		super(DataPacketTypes.SEND_PLAYER_STATUS_PACKET);
-		playerStatus = new PlayerStatus(boardName, xPos, yPos, currentTexture, facingRight);
+		playerStatus = new EntityStatus(boardName, xPos, yPos, currentTexture, facingRight);
 	}
 	
-	public SendPlayerStatusPacket(PlayerStatus ps) {
+	public SendPlayerStatusPacket(EntityStatus ps) {
 		super(DataPacketTypes.SEND_PLAYER_STATUS_PACKET);
 		playerStatus = ps;
 	}

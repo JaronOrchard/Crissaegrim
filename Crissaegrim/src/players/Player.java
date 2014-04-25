@@ -57,8 +57,8 @@ public class Player extends Entity {
 	@Override
 	public Rect getEntityBoundingRect(Coordinate position) {
 		return new Rect(
-				new Coordinate(position.getX() - (Player.getPlayerBodyWidth() / 2), position.getY() + Player.getPlayerFeetHeight()),
-				new Coordinate(position.getX() + (Player.getPlayerBodyWidth() / 2), position.getY() + Player.getPlayerFeetHeight() + Player.getPlayerBodyHeight()));
+				new Coordinate(position.getX() - (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight()),
+				new Coordinate(position.getX() + (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight() + getPlayerBodyHeight()));
 	}
 	
 	@Override
@@ -66,17 +66,17 @@ public class Player extends Entity {
 		List<Line> feetLines = new ArrayList<Line>();
 		feetLines.add(new Line(
 				new Coordinate(position.getX(), position.getY()),
-				new Coordinate(position.getX(), position.getY() + Player.getPlayerFeetHeight())));
+				new Coordinate(position.getX(), position.getY() + getPlayerFeetHeight())));
 		if (includeHorizontalFeetLine) {
 			feetLines.add(new Line(
-					new Coordinate(position.getX() - (Player.getPlayerBodyWidth() / 2), position.getY()),
-					new Coordinate(position.getX() + (Player.getPlayerBodyWidth() / 2), position.getY())));
+					new Coordinate(position.getX() - (getPlayerBodyWidth() / 2), position.getY()),
+					new Coordinate(position.getX() + (getPlayerBodyWidth() / 2), position.getY())));
 			feetLines.add(new Line(
-					new Coordinate(position.getX() - (Player.getPlayerBodyWidth() / 2), position.getY()),
-					new Coordinate(position.getX() - (Player.getPlayerBodyWidth() / 2), position.getY() + Player.getPlayerFeetHeight())));
+					new Coordinate(position.getX() - (getPlayerBodyWidth() / 2), position.getY()),
+					new Coordinate(position.getX() - (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight())));
 			feetLines.add(new Line(
-					new Coordinate(position.getX() + (Player.getPlayerBodyWidth() / 2), position.getY()),
-					new Coordinate(position.getX() + (Player.getPlayerBodyWidth() / 2), position.getY() + Player.getPlayerFeetHeight())));
+					new Coordinate(position.getX() + (getPlayerBodyWidth() / 2), position.getY()),
+					new Coordinate(position.getX() + (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight())));
 		}
 		return feetLines;
 	}
@@ -92,7 +92,7 @@ public class Player extends Entity {
 	/**
 	 * Update the player's various statuses.
 	 */
-	public void update() {
+	public void updateBusyAndIcon() {
 		if (isBusy() && busyStatus.hasExpired()) {
 			busyStatus = null;
 		}
@@ -173,6 +173,7 @@ public class Player extends Entity {
 		glEnable(GL_TEXTURE_2D);
 	}
 	
+	@Override
 	public int getCurrentTexture() {
 		if (isBusy()) {
 			return busyStatus.getTexture();
@@ -180,6 +181,11 @@ public class Player extends Entity {
 			return Textures.STICK_PLAYER_TYPING;
 		}
 		return Textures.STICK_PLAYER;
+	}
+	
+	@Override
+	public void update() {
+		// Do nothing (normally a server call for Entities)
 	}
 	
 }
