@@ -14,6 +14,10 @@ public class Coordinate {
 		this.x = x;
 		this.y = y;
 	}
+	public void setAll(Coordinate c) {
+		x = c.getX();
+		y = c.getY();
+	}
 	
 	public void incrementX(double v) { x += v; }
 	public void incrementY(double v) { y += v; }
@@ -26,6 +30,10 @@ public class Coordinate {
 	public Coordinate(Coordinate clone) {
 		this.x = clone.getX();
 		this.y = clone.getY();
+	}
+	
+	public boolean matchesCoordinate(Coordinate c) {
+		return (x == c.getX() && y == c.getY());
 	}
 	
 }

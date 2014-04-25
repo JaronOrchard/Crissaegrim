@@ -135,7 +135,7 @@ public class EntityMovementHelper {
 				// If there was no feet collision, ending position is good to go.
 				// Otherwise, we must check to make sure the bumped-up ending position doesn't collide with something new.
 				if (raisedEndingPosition == null) {
-					parentEntity.getPosition().setAll(endingPosition.getX(), endingPosition.getY());
+					parentEntity.getPosition().setAll(endingPosition);
 				} else {
 					boolean adjustedHeadBodyCollisionDetected = false;
 					for (CollisionDetectionTile collisionDetectionTile : nearbyTiles) {
@@ -146,7 +146,7 @@ public class EntityMovementHelper {
 						}
 					}
 					if (!adjustedHeadBodyCollisionDetected) {
-						parentEntity.getPosition().setAll(raisedEndingPosition.getX(), raisedEndingPosition.getY());
+						parentEntity.getPosition().setAll(raisedEndingPosition);
 						verticalMomentum = 0;
 						onTheGround = true;
 						currentlyJumping = false;
@@ -203,7 +203,7 @@ public class EntityMovementHelper {
 				// If there was no feet collision, ending position is good to go.
 				// Otherwise, we must check to make sure the bumped-up ending position doesn't collide with something new.
 				if (raisedEndingPosition == null) {
-					parentEntity.getPosition().setAll(endingPosition.getX(), endingPosition.getY());
+					parentEntity.getPosition().setAll(endingPosition);
 				} else if (onTheGround) {
 					boolean adjustedHeadBodyCollisionDetected = false;
 					for (CollisionDetectionTile collisionDetectionTile : nearbyTiles) {
@@ -214,7 +214,7 @@ public class EntityMovementHelper {
 						}
 					}
 					if (!adjustedHeadBodyCollisionDetected) {
-						parentEntity.getPosition().setAll(raisedEndingPosition.getX(), raisedEndingPosition.getY());
+						parentEntity.getPosition().setAll(raisedEndingPosition);
 					}
 				}
 			}

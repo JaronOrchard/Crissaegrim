@@ -71,7 +71,7 @@ public class NPC extends Entity {
 	// Currently a hack to get NPCs initially working.
 	// Preferably each type of NPC would be its own subclass or something.
 	long tempTime = Thunderbrand.getTime();
-	Coordinate posHalfSecondAgo = new Coordinate(0,0);
+	Coordinate prevPosition = new Coordinate(0,0);
 	boolean goLeft = true;
 	boolean jump = true;
 	boolean jumpedAlready = false;
@@ -92,11 +92,11 @@ public class NPC extends Entity {
 			emh.moveEntity();
 			if (currentTime - tempTime > 500) {
 				Coordinate currentPosition = getPosition();
-				if (posHalfSecondAgo.getX() == currentPosition.getX() && posHalfSecondAgo.getY() == currentPosition.getY()) {
+				if (prevPosition.matchesCoordinate(currentPosition)) {
 					goLeft = !goLeft;
 					jump = false;
 				} else {
-					posHalfSecondAgo.setAll(currentPosition.getX(), currentPosition.getY());
+					prevPosition.setAll(currentPosition);
 				}
 				tempTime = currentTime;
 			}
@@ -113,7 +113,7 @@ public class NPC extends Entity {
 			emh.moveEntity();
 			if (currentTime - tempTime > 1500) {
 				Coordinate currentPosition = getPosition();
-				if (posHalfSecondAgo.getX() == currentPosition.getX() && posHalfSecondAgo.getY() == currentPosition.getY()) {
+				if (prevPosition.matchesCoordinate(currentPosition)) {
 					if (jumpedAlready) {
 						goLeft = !goLeft;
 						jumpedAlready = false;
@@ -122,7 +122,7 @@ public class NPC extends Entity {
 						jumpedAlready = true;
 					}
 				} else {
-					posHalfSecondAgo.setAll(currentPosition.getX(), currentPosition.getY());
+					prevPosition.setAll(currentPosition);
 					jumpedAlready = false;
 				}
 				tempTime = currentTime;

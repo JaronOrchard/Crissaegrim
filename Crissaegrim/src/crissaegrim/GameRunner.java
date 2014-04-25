@@ -387,7 +387,7 @@ public class GameRunner {
 			if (boardMap.containsKey(destinationBoardName)) {
 				Crissaegrim.getPlayer().setCurrentBoardName(destinationBoardName);
 				//Crissaegrim.setBoard(boardMap.get(destinationBoardName));
-				Crissaegrim.getPlayer().getPosition().setAll(destinationCoordinate.getX(), destinationCoordinate.getY());
+				Crissaegrim.getPlayer().getPosition().setAll(destinationCoordinate);
 				destinationBoardName = "";
 				destinationCoordinate = null;
 				Crissaegrim.currentlyLoading = false;
