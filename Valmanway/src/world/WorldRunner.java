@@ -134,8 +134,8 @@ public class WorldRunner {
 	}
 	
 	private void createNPCs() {
-		Valmanway.getSharedData().getEntities().add(new NPC(1000000, new Coordinate(10047, 10084), "tower_of_preludes", 0, Valmanway.getSharedData().getBoardMap()));
 		Valmanway.getSharedData().getEntities().add(new NPC(1000001, new Coordinate(10042, 10084), "tower_of_preludes", 1, Valmanway.getSharedData().getBoardMap()));
+		Valmanway.getSharedData().getEntities().add(new NPC(1000000, new Coordinate(10050, 10023), "dawning", 2, Valmanway.getSharedData().getBoardMap()));
 	}
 	
 }

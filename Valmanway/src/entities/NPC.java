@@ -72,8 +72,9 @@ public class NPC extends Entity {
 	// Preferably each type of NPC would be its own subclass or something.
 	long tempTime = Thunderbrand.getTime();
 	Coordinate posHalfSecondAgo = new Coordinate(0,0);
-	boolean goLeft = false;
+	boolean goLeft = true;
 	boolean jump = true;
+	boolean jumpedAlready = false;
 	@Override
 	public void update() {
 		long currentTime = Thunderbrand.getTime();
@@ -88,17 +89,44 @@ public class NPC extends Entity {
 				emh.requestJumpMovement();
 			}
 			jump = true;
-		}
-		emh.moveEntity();
-		if (currentTime - tempTime > 500) {
-			Coordinate currentPosition = getPosition();
-			if (posHalfSecondAgo.getX() == currentPosition.getX() && posHalfSecondAgo.getY() == currentPosition.getY()) {
-				goLeft = !goLeft;
-				jump = false;
-			} else {
-				posHalfSecondAgo.setAll(currentPosition.getX(), currentPosition.getY());
+			emh.moveEntity();
+			if (currentTime - tempTime > 500) {
+				Coordinate currentPosition = getPosition();
+				if (posHalfSecondAgo.getX() == currentPosition.getX() && posHalfSecondAgo.getY() == currentPosition.getY()) {
+					goLeft = !goLeft;
+					jump = false;
+				} else {
+					posHalfSecondAgo.setAll(currentPosition.getX(), currentPosition.getY());
+				}
+				tempTime = currentTime;
 			}
-			tempTime = currentTime;
+		} else if (npc_type == 2) {
+			if (goLeft) {
+				emh.requestLeftMovement();
+			} else {
+				emh.requestRightMovement();
+			}
+			if (jump) {
+				emh.requestJumpMovement();
+			}
+			jump = true;
+			emh.moveEntity();
+			if (currentTime - tempTime > 1500) {
+				Coordinate currentPosition = getPosition();
+				if (posHalfSecondAgo.getX() == currentPosition.getX() && posHalfSecondAgo.getY() == currentPosition.getY()) {
+					if (jumpedAlready) {
+						goLeft = !goLeft;
+						jumpedAlready = false;
+					} else {
+						jump = false;
+						jumpedAlready = true;
+					}
+				} else {
+					posHalfSecondAgo.setAll(currentPosition.getX(), currentPosition.getY());
+					jumpedAlready = false;
+				}
+				tempTime = currentTime;
+			}
 		}
 	}
 
