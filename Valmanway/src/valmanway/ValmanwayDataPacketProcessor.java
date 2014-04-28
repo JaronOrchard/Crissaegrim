@@ -130,7 +130,7 @@ public final class ValmanwayDataPacketProcessor {
 		Map<String, DataPacket> chunkPackets = new HashMap<String, DataPacket>();
 		int chunkSizeSide = Thunderbrand.getChunkSideSize();
 		
-		File chunksDir = new File("C:/CrissaegrimChunks/" + boardName);
+		File chunksDir = new File((Thunderbrand.isLinuxBuild() ? "./" : "C:/") + "CrissaegrimChunks/" + boardName);
 		for (File f : chunksDir.listFiles()) {
 			if (!f.isDirectory() && f.getName().startsWith(boardName + "@")) {
 				int chunkXOrigin = Integer.parseInt(f.getName().substring(f.getName().indexOf('@') + 1, f.getName().lastIndexOf('_')));
@@ -187,7 +187,7 @@ public final class ValmanwayDataPacketProcessor {
 	}
 	
 	private static void sendSpecificChunk(RequestSpecificChunkPacket rscp, ValmanwayUserData vud) {
-		File chunksDir = new File("C:/CrissaegrimChunks/" + rscp.getBoardName());
+		File chunksDir = new File((Thunderbrand.isLinuxBuild() ? "./" : "C:/") + "CrissaegrimChunks/" + rscp.getBoardName());
 		File f = new File(chunksDir, rscp.getBoardName() + "@" + rscp.getChunkXOrigin() + "_" + rscp.getChunkYOrigin());
 		if (!f.exists() || f.isDirectory()) {
 			vud.addOutgoingDataPacket(new NonexistentChunkPacket(rscp.getBoardName(), rscp.getChunkXOrigin(), rscp.getChunkYOrigin()));

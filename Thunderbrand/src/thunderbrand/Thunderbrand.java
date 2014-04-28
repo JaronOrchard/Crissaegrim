@@ -4,6 +4,10 @@ import org.lwjgl.Sys;
 
 public final class Thunderbrand {
 	
+	// Change to true when deploying to the VM server, keep false if on my Windows machine
+	private static final boolean LINUX_BUILD = false;
+	public static boolean isLinuxBuild() { return LINUX_BUILD; }
+	
 	private static final int CHUNK_SIDE_SIZE = 100;
 	public static int getChunkSideSize() { return CHUNK_SIDE_SIZE; }
 	

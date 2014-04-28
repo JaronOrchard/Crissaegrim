@@ -89,7 +89,7 @@ public class WorldRunner {
 		int chunkSizeSide = Thunderbrand.getChunkSideSize();
 		for (String boardName : boards) {
 			Board curBoard = new Board(boardName);
-			File chunksDir = new File("C:/CrissaegrimChunks/" + boardName);
+			File chunksDir = new File((Thunderbrand.isLinuxBuild() ? "./" : "C:/") + "CrissaegrimChunks/" + boardName);
 			for (File f : chunksDir.listFiles()) {
 				if (!f.isDirectory() && f.getName().startsWith(boardName + "@")) {
 					int chunkXOrigin = Integer.parseInt(f.getName().substring(f.getName().indexOf('@') + 1, f.getName().lastIndexOf('_')));

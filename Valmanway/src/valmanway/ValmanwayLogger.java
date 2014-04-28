@@ -9,11 +9,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import thunderbrand.TextBlock;
+import thunderbrand.Thunderbrand;
 
 public class ValmanwayLogger {
 	
 	private static final DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
-	private static final File logDirectory = new File("C:/CrissaegrimChunks/logs/");
+	private static final File logDirectory = new File((Thunderbrand.isLinuxBuild() ? "./" : "C:/") + "CrissaegrimLogs/");
 	private final File logFile;
 	private BufferedWriter logWriter;
 	

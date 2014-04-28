@@ -25,8 +25,12 @@ public class ValmanwayConnection {
 	private static long PLAYER_STATUS_SEND_INTERVAL = 50;
 	
 	public ValmanwayConnection() {
-		VALMANWAY_HOSTNAMES.add("garnet");		// Laptop computer
-		VALMANWAY_HOSTNAMES.add("96.35.6.105");	// Home desktop computer
+		if (Thunderbrand.isLinuxBuild()) {
+			VALMANWAY_HOSTNAMES.add("199.204.23.93"); // VPS
+		} else {
+			VALMANWAY_HOSTNAMES.add("garnet");		// Laptop computer
+			VALMANWAY_HOSTNAMES.add("96.35.6.105");	// Home desktop computer
+		}
 		VALMANWAY_PORT = 22112;
 	}
 	
