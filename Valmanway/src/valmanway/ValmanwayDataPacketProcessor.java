@@ -89,25 +89,30 @@ public final class ValmanwayDataPacketProcessor {
 					} else {
 						vud.setPlayerName(newName);
 						vud.addOutgoingDataPacket(new ReceivePlayerNamePacket(newName));
+						System.out.println("\"" + origName + "\" is now known as \"" + newName + "\".");
 						sendRegularMessage("\"" + origName + "\" is now known as \"" + newName + "\".", Color.GRAY);
 					}
 				}
 			} else if (lowercaseMessage.startsWith("/players")) {		// "/players"
 				List<String> names = Valmanway.getSharedData().getPlayerNamesSorted();
-				StringBuilder sb = new StringBuilder("There are " + names.size() + " players online: ");
-				for (int i = 0; i < names.size(); i++) {
-					if (sb.length() + names.get(i).length() > LIST_PLAYERS_LINE_MAX_CHARS) {
-						sb.append(",");
-						sendSystemMessage(sb.toString(), vud);
-						sb = new StringBuilder("     " + names.get(i));
-					} else {
-						if (i != 0) {
-							sb.append(", ");
+				if (names.size() == 1) {
+					sendSystemMessage("There is one player online: " + names.get(0), vud);
+				} else {
+					StringBuilder sb = new StringBuilder("There are " + names.size() + " players online: ");
+					for (int i = 0; i < names.size(); i++) {
+						if (sb.length() + names.get(i).length() > LIST_PLAYERS_LINE_MAX_CHARS) {
+							sb.append(",");
+							sendSystemMessage(sb.toString(), vud);
+							sb = new StringBuilder("     " + names.get(i));
+						} else {
+							if (i != 0) {
+								sb.append(", ");
+							}
+							sb.append(names.get(i));
 						}
-						sb.append(names.get(i));
 					}
+					sendSystemMessage(sb.toString(), vud);
 				}
-				sendSystemMessage(sb.toString(), vud);
 			} else {													// Invalid /command
 				sendSystemMessage("Unrecognized command: " + message, vud);
 				sendSystemMessage("Type \"/help\" to see the list of commands.", vud);
