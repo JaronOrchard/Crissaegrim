@@ -11,10 +11,12 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import board.MapmakerBoard;
+import board.MapmakerChunk;
 import board.tiles.Tile;
 import board.tiles.TileBlank;
 import board.tiles.TileUtils;
 import textures.Textures;
+import thunderbrand.Thunderbrand;
 
 public class Mapmaker {
 	
@@ -33,6 +35,29 @@ public class Mapmaker {
 	private Tile currentTileType;
 	private int currentTexture;
 	
+	/**
+	 * Dangerous, important function.
+	 * Used for a one-time remapping of texture values.
+	 */
+	@SuppressWarnings("unused")
+	private void textureRemap() {
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
+		for (MapmakerChunk mc : mapmakerBoard.getChunkMap().values()) {
+			for (int x = 0; x < chunkSideSize; x++) {
+				for (int y = 0; y < chunkSideSize; y++) {
+					if (mc.getTile(x, y).getBackgroundTexture() > 19 && mc.getTile(x, y).getBackgroundTexture() < 105)
+						mc.getTile(x, y).setBackgroundTexture(mc.getTile(x, y).getBackgroundTexture() + 100);
+					if (mc.getTile(x, y).getMiddlegroundTexture() > 19 && mc.getTile(x, y).getMiddlegroundTexture() < 105)
+						mc.getTile(x, y).setMiddlegroundTexture(mc.getTile(x, y).getMiddlegroundTexture() + 100);
+					if (mc.getTile(x, y).getForegroundTexture() > 19 && mc.getTile(x, y).getForegroundTexture() < 105)
+						mc.getTile(x, y).setForegroundTexture(mc.getTile(x, y).getForegroundTexture() + 100);
+					
+				}
+			}
+			mc.save();
+		}
+	}
+	
 	public void run() throws InterruptedException, IOException {
 		MapmakerInitializer.initializeDisplay();
 		Textures.initializeTextures();
@@ -40,6 +65,9 @@ public class Mapmaker {
 		
 		//mapmakerBoard = new MapmakerBoard("dawning");
 		mapmakerBoard = new MapmakerBoard("tower_of_preludes");
+		
+		//textureRemap(); if(true) return;
+		
 		center = new Coordinate(10050, 10000);
 		currentTileType = new TileBlank();
 		currentTexture = Textures.NONE;

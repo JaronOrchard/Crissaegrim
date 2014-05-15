@@ -24,63 +24,63 @@ public class Textures {
 	public static final int TILE_HALF_VERTICALLY_I = 15;
 	public static final int TILE_PASS_TOP = 16;
 	
-	public static final int TOWER_OF_PRELUDES_BLOCK_NONE = 20;
-	public static final int TOWER_OF_PRELUDES_BLOCK_T = 21;
-	public static final int TOWER_OF_PRELUDES_BLOCK_TR = 22;
-	public static final int TOWER_OF_PRELUDES_BLOCK_TRB = 23;
-	public static final int TOWER_OF_PRELUDES_BLOCK_TRBL = 24;
-	public static final int TOWER_OF_PRELUDES_BLOCK_TRL = 25;
-	public static final int TOWER_OF_PRELUDES_BLOCK_TB = 26;
-	public static final int TOWER_OF_PRELUDES_BLOCK_TBL = 27;
-	public static final int TOWER_OF_PRELUDES_BLOCK_TL = 28;
-	public static final int TOWER_OF_PRELUDES_BLOCK_R = 29;
-	public static final int TOWER_OF_PRELUDES_BLOCK_RB = 30;
-	public static final int TOWER_OF_PRELUDES_BLOCK_RBL = 31;
-	public static final int TOWER_OF_PRELUDES_BLOCK_RL = 32;
-	public static final int TOWER_OF_PRELUDES_BLOCK_B = 33;
-	public static final int TOWER_OF_PRELUDES_BLOCK_BL = 34;
-	public static final int TOWER_OF_PRELUDES_BLOCK_L = 35;
-	public static final int TOWER_OF_PRELUDES_1L_NONE = 36;
-	public static final int TOWER_OF_PRELUDES_1L_B = 37;
-	public static final int TOWER_OF_PRELUDES_1R_NONE = 38;
-	public static final int TOWER_OF_PRELUDES_1R_B = 39;
-	public static final int TOWER_OF_PRELUDES_1R_L = 40;
-	public static final int TOWER_OF_PRELUDES_1RI_NONE = 41;
-	public static final int TOWER_OF_PRELUDES_1RI_T = 42;
-	public static final int TOWER_OF_PRELUDES_1LI_NONE = 43;
-	public static final int TOWER_OF_PRELUDES_HALF_VERTICALLY_TB = 44;
-	public static final int TOWER_OF_PRELUDES_HALF_VERTICALLY_TBR = 45;
-	public static final int TOWER_OF_PRELUDES_HALF_VERTICALLY_TBL = 46;
-	public static final int TOWER_OF_PRELUDES_BACKGROUND = 47;
+	public static final int TOWER_OF_PRELUDES_BLOCK_NONE = 120;
+	public static final int TOWER_OF_PRELUDES_BLOCK_T = 121;
+	public static final int TOWER_OF_PRELUDES_BLOCK_TR = 122;
+	public static final int TOWER_OF_PRELUDES_BLOCK_TRB = 123;
+	public static final int TOWER_OF_PRELUDES_BLOCK_TRBL = 124;
+	public static final int TOWER_OF_PRELUDES_BLOCK_TRL = 125;
+	public static final int TOWER_OF_PRELUDES_BLOCK_TB = 126;
+	public static final int TOWER_OF_PRELUDES_BLOCK_TBL = 127;
+	public static final int TOWER_OF_PRELUDES_BLOCK_TL = 128;
+	public static final int TOWER_OF_PRELUDES_BLOCK_R = 129;
+	public static final int TOWER_OF_PRELUDES_BLOCK_RB = 130;
+	public static final int TOWER_OF_PRELUDES_BLOCK_RBL = 131;
+	public static final int TOWER_OF_PRELUDES_BLOCK_RL = 132;
+	public static final int TOWER_OF_PRELUDES_BLOCK_B = 133;
+	public static final int TOWER_OF_PRELUDES_BLOCK_BL = 134;
+	public static final int TOWER_OF_PRELUDES_BLOCK_L = 135;
+	public static final int TOWER_OF_PRELUDES_1L_NONE = 136;
+	public static final int TOWER_OF_PRELUDES_1L_B = 137;
+	public static final int TOWER_OF_PRELUDES_1R_NONE = 138;
+	public static final int TOWER_OF_PRELUDES_1R_B = 139;
+	public static final int TOWER_OF_PRELUDES_1R_L = 140;
+	public static final int TOWER_OF_PRELUDES_1RI_NONE = 141;
+	public static final int TOWER_OF_PRELUDES_1RI_T = 142;
+	public static final int TOWER_OF_PRELUDES_1LI_NONE = 143;
+	public static final int TOWER_OF_PRELUDES_HALF_VERTICALLY_TB = 144;
+	public static final int TOWER_OF_PRELUDES_HALF_VERTICALLY_TBR = 145;
+	public static final int TOWER_OF_PRELUDES_HALF_VERTICALLY_TBL = 146;
+	public static final int TOWER_OF_PRELUDES_BACKGROUND = 147;
 	
-	public static final int KIKORI_DG_1L = 60;
-	public static final int KIKORI_DG_1R = 61;
-	public static final int KIKORI_DG_2L = 62;
-	public static final int KIKORI_DG_2LH = 63;
-	public static final int KIKORI_DG_2R = 64;
-	public static final int KIKORI_DG_2RH = 65;
-	public static final int KIKORI_DG_FULL = 66;
-	public static final int KIKORI_DG_FULL_L = 67;
-	public static final int KIKORI_DG_FULL_OFL = 68;
-	public static final int KIKORI_DG_FULL_OFR = 69;
-	public static final int KIKORI_DG_FULL_R = 70;
-	public static final int KIKORI_DG_HALF_VERTICALLY = 71;
-	public static final int KIKORI_DG_TL = 72;
-	public static final int KIKORI_DG_TR = 73;
-	public static final int KIKORI_D_FULL = 74;
-	public static final int KIKORI_D_FULL_L = 75;
-	public static final int KIKORI_D_FULL_OFL = 76;
-	public static final int KIKORI_D_FULL_OFR = 77;
-	public static final int KIKORI_D_FULL_R = 78;
-	public static final int KIKORI_GRASS_SPRIG_1 = 79;
-	public static final int KIKORI_GRASS_SPRIG_2 = 80;
-	public static final int KIKORI_GRASS_SPRIG_3 = 81;
+	public static final int KIKORI_DG_1L = 160;
+	public static final int KIKORI_DG_1R = 161;
+	public static final int KIKORI_DG_2L = 162;
+	public static final int KIKORI_DG_2LH = 163;
+	public static final int KIKORI_DG_2R = 164;
+	public static final int KIKORI_DG_2RH = 165;
+	public static final int KIKORI_DG_FULL = 166;
+	public static final int KIKORI_DG_FULL_L = 167;
+	public static final int KIKORI_DG_FULL_OFL = 168;
+	public static final int KIKORI_DG_FULL_OFR = 169;
+	public static final int KIKORI_DG_FULL_R = 170;
+	public static final int KIKORI_DG_HALF_VERTICALLY = 171;
+	public static final int KIKORI_DG_TL = 172;
+	public static final int KIKORI_DG_TR = 173;
+	public static final int KIKORI_D_FULL = 174;
+	public static final int KIKORI_D_FULL_L = 175;
+	public static final int KIKORI_D_FULL_OFL = 176;
+	public static final int KIKORI_D_FULL_OFR = 177;
+	public static final int KIKORI_D_FULL_R = 178;
+	public static final int KIKORI_GRASS_SPRIG_1 = 179;
+	public static final int KIKORI_GRASS_SPRIG_2 = 180;
+	public static final int KIKORI_GRASS_SPRIG_3 = 181;
 	
-	public static final int DAWNING_BRIDGE_2RH = 100;
-	public static final int DAWNING_BRIDGE_2R = 101;
-	public static final int DAWNING_BRIDGE_2RU = 102;
-	public static final int DAWNING_BRIDGE_POST_L = 103;
-	public static final int DAWNING_BRIDGE_POST_R = 104;
+	public static final int DAWNING_BRIDGE_2RH = 200;
+	public static final int DAWNING_BRIDGE_2R = 201;
+	public static final int DAWNING_BRIDGE_2RU = 202;
+	public static final int DAWNING_BRIDGE_POST_L = 203;
+	public static final int DAWNING_BRIDGE_POST_R = 204;
 	
 	public static final int CHUNK_NOT_FOUND = 999;
 	
@@ -210,9 +210,9 @@ public class Textures {
 	
 	private static List<Integer> selectableTextures = Arrays.asList(
 			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-			20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
-			60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81,
-			100, 101, 102, 103, 104,
+			120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147,
+			160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181,
+			200, 201, 202, 203, 204,
 			999,
 			2000
 			);

@@ -25,6 +25,11 @@ public class MapmakerChunk extends Chunk {
 		}
 	}
 	
+	public MapmakerChunk(String bName, int xOrig, int yOrig, byte[] bytes) {
+		super(xOrig, yOrig, bytes);
+		boardName = bName;
+	}
+	
 	public void drawPreGrid() {
 		int chunkSideSize = Thunderbrand.getChunkSideSize();
 		glDisable(GL_TEXTURE_2D);

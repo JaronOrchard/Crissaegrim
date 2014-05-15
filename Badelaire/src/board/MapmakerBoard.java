@@ -6,9 +6,8 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glColor3d;
 import geometry.Coordinate;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,7 +18,6 @@ import thunderbrand.Thunderbrand;
 import badelaire.Badelaire;
 import board.tiles.Tile;
 import board.tiles.Tile.TileLayer;
-import board.tiles.TileUtils;
 
 public class MapmakerBoard {
 	
@@ -27,6 +25,8 @@ public class MapmakerBoard {
 	
 	private Map<String, MapmakerChunk> chunkMap;
 	private Set<String> modifiedChunks;
+	
+	public Map<String, MapmakerChunk> getChunkMap() { return chunkMap; }
 	
 	public MapmakerBoard(String bName) {
 		boardName = bName;
@@ -63,33 +63,23 @@ public class MapmakerBoard {
 	private void loadChunkFile(File f) {
 		int chunkXOrigin = Integer.parseInt(f.getName().substring(f.getName().indexOf('@') + 1, f.getName().lastIndexOf('_')));
 		int chunkYOrigin = Integer.parseInt(f.getName().substring(f.getName().lastIndexOf('_') + 1));
-		MapmakerChunk chunk = new MapmakerChunk(boardName, chunkXOrigin, chunkYOrigin);
-		int chunkSideSize = Thunderbrand.getChunkSideSize();
+		MapmakerChunk chunk = null;
 		
-		BufferedReader br = null;
+		FileInputStream fin = null;
 		try {
-			br = new BufferedReader(new FileReader(f));
-			int numEntities = Integer.parseInt(br.readLine());
-			for (int i = 0; i < numEntities; i++) {
-				br.readLine(); // Skip entities
-			}
-			for (int i = 0; i < chunkSideSize; i++) {
-				for (int j = 0; j < chunkSideSize; j++) {
-					char[] tileChar = new char[7];
-					br.read(tileChar, 0, 7);
-					chunk.setTile(i, j, TileUtils.getTileType(tileChar[0]));
-					chunk.getTile(i, j).setBackgroundTexture((tileChar[1] * 256) + tileChar[2]);
-					chunk.getTile(i, j).setMiddlegroundTexture((tileChar[3] * 256) + tileChar[4]);
-					chunk.getTile(i, j).setForegroundTexture((tileChar[5] * 256) + tileChar[6]);
-				}
-			}
+			fin = new FileInputStream(f);
+			byte[] dummyEntitiesHeader = new byte[3];
+			byte[] chunkData = new byte[70000];
+			fin.read(dummyEntitiesHeader);
+			fin.read(chunkData);
+			chunk = new MapmakerChunk(boardName, chunkXOrigin, chunkYOrigin, chunkData);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Failed to load chunk " + chunkXOrigin + "_" + chunkYOrigin + "!");
 		} finally {
-			if (br != null) {
+			if (fin != null) {
 				try {
-					br.close();
+					fin.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

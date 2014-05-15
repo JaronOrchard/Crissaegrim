@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -140,40 +141,28 @@ public final class ValmanwayDataPacketProcessor {
 			if (!f.isDirectory() && f.getName().startsWith(boardName + "@")) {
 				int chunkXOrigin = Integer.parseInt(f.getName().substring(f.getName().indexOf('@') + 1, f.getName().lastIndexOf('_')));
 				int chunkYOrigin = Integer.parseInt(f.getName().substring(f.getName().lastIndexOf('_') + 1));
-				byte[] bytes = new byte[70000];
+				byte[] chunkData = new byte[70000];
 				
-				BufferedReader br = null;
+				FileInputStream fin = null;
 				try {
-					br = new BufferedReader(new FileReader(f));
-					int numEntities = Integer.parseInt(br.readLine());
-					for (int i = 0; i < numEntities; i++) {
-						br.readLine(); // Skip entities
-					}
-					ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-					char[] tileChar = new char[7];
-					for (int i = 0; i < chunkSizeSide; i++) {
-						for (int j = 0; j < chunkSizeSide; j++) {
-							br.read(tileChar, 0, 7);
-							for (int k = 0; k < 7; k++) {
-								outStream.write(tileChar[k]);
-							}
-						}
-					}
-					bytes = outStream.toByteArray();
+					fin = new FileInputStream(f);
+					byte[] dummyEntitiesHeader = new byte[3];
+					fin.read(dummyEntitiesHeader);
+					fin.read(chunkData);
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.out.println("Failed to load chunk " + chunkXOrigin + "_" + chunkYOrigin + "!");
 				} finally {
-					if (br != null) {
+					if (fin != null) {
 						try {
-							br.close();
+							fin.close();
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
 					}
 				}
 				
-				chunkPackets.put(chunkXOrigin + "_" + chunkYOrigin, new ChunkPacket(boardName, chunkXOrigin, chunkYOrigin, bytes));
+				chunkPackets.put(chunkXOrigin + "_" + chunkYOrigin, new ChunkPacket(boardName, chunkXOrigin, chunkYOrigin, chunkData));
 				
 				// Create 8 neighboring NonexistentChunks if there's not already data there:
 				for (int xOrig = chunkXOrigin - chunkSizeSide; xOrig <= chunkXOrigin + chunkSizeSide; xOrig += chunkSizeSide) {
