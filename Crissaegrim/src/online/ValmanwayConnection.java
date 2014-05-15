@@ -14,10 +14,10 @@ import datapacket.SendPlayerStatusPacket;
 
 public class ValmanwayConnection {
 	
-	private static int CONNECTION_TIMEOUT_MILLIS = 1000; // Milliseconds to attempted connection timeout
+	private int CONNECTION_TIMEOUT_MILLIS = 5000; // Milliseconds to attempted connection timeout
+	public int getConnectionTimeoutMillis() { return CONNECTION_TIMEOUT_MILLIS; }
 	
 	private List<String> VALMANWAY_HOSTNAMES = new ArrayList<String>();
-	private int VALMANWAY_PORT;
 	
 	private Socket valmanwaySocket = null;
 	
@@ -31,7 +31,6 @@ public class ValmanwayConnection {
 			VALMANWAY_HOSTNAMES.add("garnet");		// Laptop computer
 			VALMANWAY_HOSTNAMES.add("96.35.6.105");	// Home desktop computer
 		}
-		VALMANWAY_PORT = 22112;
 	}
 	
 	public void connectToValmonwayServer() throws IOException {
@@ -39,7 +38,7 @@ public class ValmanwayConnection {
 		for (String hostname : VALMANWAY_HOSTNAMES) {
 			try {
 				valmanwaySocket = new Socket();
-				valmanwaySocket.connect(new InetSocketAddress(hostname, VALMANWAY_PORT), CONNECTION_TIMEOUT_MILLIS);
+				valmanwaySocket.connect(new InetSocketAddress(hostname, Thunderbrand.getValmanwayServerPort()), CONNECTION_TIMEOUT_MILLIS);
 				new CrissaegrimWriterThread(valmanwaySocket).start();
 				new CrissaegrimReaderThread(valmanwaySocket).start();
 				gotOnline = true;

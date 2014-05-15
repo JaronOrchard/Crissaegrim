@@ -5,27 +5,28 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import thunderbrand.TextBlock;
+import thunderbrand.Thunderbrand;
 import world.WorldRunnerThread;
 
 public class Valmanway {
 	
-	private static int VALMANWAY_SERVER_PORT = 22112;
 	private static volatile ValmanwaySharedData sharedData = new ValmanwaySharedData();
 	public static ValmanwaySharedData getSharedData() { return sharedData; }
 	
 	private static ValmanwayLogger logger = new ValmanwayLogger();
 	
 	public static void main(String[] argv) throws IOException {
+		int valmanwayServerPort = Thunderbrand.getValmanwayServerPort();
 		ServerSocket serverSocket = null;
         boolean listening = true;
         
-        System.out.println("Starting Valmanway server on port " + VALMANWAY_SERVER_PORT + "...");
+        System.out.println("Starting Valmanway server on port " + valmanwayServerPort + "...");
         logger.log("=== Server started ===");
         
         try {
-            serverSocket = new ServerSocket(VALMANWAY_SERVER_PORT);
+            serverSocket = new ServerSocket(valmanwayServerPort);
         } catch (IOException e) {
-            System.err.println("Could not listen on port: " + VALMANWAY_SERVER_PORT + ".");
+            System.err.println("Could not listen on port: " + valmanwayServerPort + ".");
             System.exit(-1);
         }
         

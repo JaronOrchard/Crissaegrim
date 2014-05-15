@@ -62,7 +62,7 @@ public class GameRunner {
 		if (Crissaegrim.connectionStable) { // Wait to get player id...
 			long lastSend = 0;
 			while (Crissaegrim.getPlayer().getId() == -1) {
-				if (Thunderbrand.getTime() - lastSend > 1000) {
+				if (Thunderbrand.getTime() - lastSend > Crissaegrim.getValmanwayConnection().getConnectionTimeoutMillis()) {
 					lastSend = Thunderbrand.getTime();
 					Crissaegrim.addOutgoingDataPacket(new RequestPlayerIdPacket());
 				}
