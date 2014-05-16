@@ -2,12 +2,9 @@ package players;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import geometry.Coordinate;
-import geometry.Line;
 import geometry.Rect;
 import board.Board;
 import textures.Textures;
@@ -15,16 +12,10 @@ import crissaegrim.Crissaegrim;
 import entities.Entity;
 
 public class Player extends Entity {
-	private static double PLAYER_FEET_HEIGHT = 0.425;
-	private static double PLAYER_BODY_HEIGHT = 2.4;
-	private static double PLAYER_BODY_WIDTH = 0.6;
 	private static double PLAYER_SWORD_ALTITUDE = 1.74;
 	private static double PLAYER_SWORD_HEIGHT = 0.15;
 	private static double PLAYER_SWORD_LENGTH = 1.0;
 	
-	public static double getPlayerFeetHeight() { return PLAYER_FEET_HEIGHT; }
-	public static double getPlayerBodyHeight() { return PLAYER_BODY_HEIGHT; }
-	public static double getPlayerBodyWidth() { return PLAYER_BODY_WIDTH; }
 	public static double getPlayerSwordAltitude() { return PLAYER_SWORD_ALTITUDE; }
 	public static double getPlayerSwordHeight() { return PLAYER_SWORD_HEIGHT; }
 	public static double getPlayerSwordLength() { return PLAYER_SWORD_LENGTH; }
@@ -52,37 +43,6 @@ public class Player extends Entity {
 		horizontalAirTaperOffLimit = 0.01;
 	}
 	
-	// === Entity functions:
-	
-	@Override
-	public Rect getEntityBoundingRect(Coordinate position) {
-		return new Rect(
-				new Coordinate(position.getX() - (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight()),
-				new Coordinate(position.getX() + (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight() + getPlayerBodyHeight()));
-	}
-	
-	@Override
-	public List<Line> getEntityFeetLines(Coordinate position, boolean includeHorizontalFeetLine) {
-		List<Line> feetLines = new ArrayList<Line>();
-		feetLines.add(new Line(
-				new Coordinate(position.getX(), position.getY()),
-				new Coordinate(position.getX(), position.getY() + getPlayerFeetHeight())));
-		if (includeHorizontalFeetLine) {
-			feetLines.add(new Line(
-					new Coordinate(position.getX() - (getPlayerBodyWidth() / 2), position.getY()),
-					new Coordinate(position.getX() + (getPlayerBodyWidth() / 2), position.getY())));
-			feetLines.add(new Line(
-					new Coordinate(position.getX() - (getPlayerBodyWidth() / 2), position.getY()),
-					new Coordinate(position.getX() - (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight())));
-			feetLines.add(new Line(
-					new Coordinate(position.getX() + (getPlayerBodyWidth() / 2), position.getY()),
-					new Coordinate(position.getX() + (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight())));
-		}
-		return feetLines;
-	}
-	
-	// ===
-	
 	public void assignPlayerId(int playerId) {
 		id = playerId;
 		name = "Player " + id;
@@ -102,12 +62,12 @@ public class Player extends Entity {
 	public Rect getSwordSwingRect() {
 		if (facingRight) {
 			return new Rect(
-					new Coordinate(position.getX() + getPlayerBodyWidth() / 2, position.getY() + getPlayerSwordAltitude()),
-					new Coordinate(position.getX() + getPlayerBodyWidth() / 2 + getPlayerSwordLength(), position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight()));
+					new Coordinate(position.getX() + getBodyWidth() / 2, position.getY() + getPlayerSwordAltitude()),
+					new Coordinate(position.getX() + getBodyWidth() / 2 + getPlayerSwordLength(), position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight()));
 		} else {
 			return new Rect(
-					new Coordinate(position.getX() - getPlayerBodyWidth() / 2 - getPlayerSwordLength(), position.getY() + getPlayerSwordAltitude()),
-					new Coordinate(position.getX() - getPlayerBodyWidth() / 2, position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight()));
+					new Coordinate(position.getX() - getBodyWidth() / 2 - getPlayerSwordLength(), position.getY() + getPlayerSwordAltitude()),
+					new Coordinate(position.getX() - getBodyWidth() / 2, position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight()));
 		}
 	}
 	
@@ -147,28 +107,28 @@ public class Player extends Entity {
 		glDisable(GL_TEXTURE_2D);
 		glColor3d(0, 0, 1);
 		glBegin(GL_LINE_STRIP);
-			glVertex2d(position.getX() - (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight());
-			glVertex2d(position.getX() - (getPlayerBodyWidth() / 2), position.getY());
-			glVertex2d(position.getX() + (getPlayerBodyWidth() / 2), position.getY());
-			glVertex2d(position.getX() + (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight());
+			glVertex2d(position.getX() - (getBodyWidth() / 2), position.getY() + getFeetHeight());
+			glVertex2d(position.getX() - (getBodyWidth() / 2), position.getY());
+			glVertex2d(position.getX() + (getBodyWidth() / 2), position.getY());
+			glVertex2d(position.getX() + (getBodyWidth() / 2), position.getY() + getFeetHeight());
 		glEnd();
 		glColor3d(1, 0, 0);
 		glBegin(GL_LINES);	
 			glVertex2d(position.getX(), position.getY());
-			glVertex2d(position.getX(), position.getY() + getPlayerFeetHeight());
+			glVertex2d(position.getX(), position.getY() + getFeetHeight());
 		glEnd();
 		glBegin(GL_LINE_LOOP);
-			glVertex2d(position.getX() - (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight());
-			glVertex2d(position.getX() + (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight());
-			glVertex2d(position.getX() + (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight() + getPlayerBodyHeight());
-			glVertex2d(position.getX() - (getPlayerBodyWidth() / 2), position.getY() + getPlayerFeetHeight() + getPlayerBodyHeight());
+			glVertex2d(position.getX() - (getBodyWidth() / 2), position.getY() + getFeetHeight());
+			glVertex2d(position.getX() + (getBodyWidth() / 2), position.getY() + getFeetHeight());
+			glVertex2d(position.getX() + (getBodyWidth() / 2), position.getY() + getFeetHeight() + getBodyHeight());
+			glVertex2d(position.getX() - (getBodyWidth() / 2), position.getY() + getFeetHeight() + getBodyHeight());
 		glEnd();
 		glColor3d(0, 1, 0);
 		glBegin(GL_LINE_STRIP);	
-			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * (getPlayerBodyWidth() / 2)), position.getY() + getPlayerSwordAltitude());
-			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * ((getPlayerBodyWidth() / 2) + getPlayerSwordLength())), position.getY() + getPlayerSwordAltitude());
-			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * ((getPlayerBodyWidth() / 2) + getPlayerSwordLength())), position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight());
-			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * ((getPlayerBodyWidth() / 2))), position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight());
+			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * (getBodyWidth() / 2)), position.getY() + getPlayerSwordAltitude());
+			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * ((getBodyWidth() / 2) + getPlayerSwordLength())), position.getY() + getPlayerSwordAltitude());
+			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * ((getBodyWidth() / 2) + getPlayerSwordLength())), position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight());
+			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * ((getBodyWidth() / 2))), position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight());
 		glEnd();
 		glEnable(GL_TEXTURE_2D);
 	}

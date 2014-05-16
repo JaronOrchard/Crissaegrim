@@ -23,6 +23,16 @@ public class Textures {
 	public static final int TILE_2RHI = 14;
 	public static final int TILE_HALF_VERTICALLY_I = 15;
 	public static final int TILE_PASS_TOP = 16;
+	public static final int TILE_PASS_LEFT = 17;
+	public static final int TILE_PASS_RIGHT = 18;
+	public static final int TILE_PASS_BOTTOM = 19;
+	public static final int TILE_PASS_1L = 20;
+	public static final int TILE_PASS_1R = 21;
+	public static final int TILE_PASS_2L = 22;
+	public static final int TILE_PASS_2LH = 23;
+	public static final int TILE_PASS_2R = 24;
+	public static final int TILE_PASS_2RH = 25;
+	public static final int TILE_PASS_HALF_VERTICALLY = 26;
 	
 	public static final int TOWER_OF_PRELUDES_BLOCK_NONE = 120;
 	public static final int TOWER_OF_PRELUDES_BLOCK_T = 121;
@@ -125,6 +135,16 @@ public class Textures {
 		TextureLoader.loadTexture(TILE_2RHI, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/Tile2RHI.png")));
 		TextureLoader.loadTexture(TILE_HALF_VERTICALLY_I, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/TileHalfVerticallyI.png")));
 		TextureLoader.loadTexture(TILE_PASS_TOP, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/TilePassTop.png")));
+		TextureLoader.loadTexture(TILE_PASS_LEFT, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/TilePassLeft.png")));
+		TextureLoader.loadTexture(TILE_PASS_RIGHT, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/TilePassRight.png")));
+		TextureLoader.loadTexture(TILE_PASS_BOTTOM, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/TilePassBottom.png")));
+		TextureLoader.loadTexture(TILE_PASS_1L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/TilePass1L.png")));
+		TextureLoader.loadTexture(TILE_PASS_1R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/TilePass1R.png")));
+		TextureLoader.loadTexture(TILE_PASS_2L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/TilePass2L.png")));
+		TextureLoader.loadTexture(TILE_PASS_2LH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/TilePass2LH.png")));
+		TextureLoader.loadTexture(TILE_PASS_2R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/TilePass2R.png")));
+		TextureLoader.loadTexture(TILE_PASS_2RH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/TilePass2RH.png")));
+		TextureLoader.loadTexture(TILE_PASS_HALF_VERTICALLY, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/TilePassHalfVertically.png")));
 		
 		TextureLoader.loadTexture(TOWER_OF_PRELUDES_BLOCK_NONE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/tower_of_preludes/blockNone.png")));
 		TextureLoader.loadTexture(TOWER_OF_PRELUDES_BLOCK_T, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/tower_of_preludes/blockT.png")));
@@ -209,7 +229,7 @@ public class Textures {
 	}
 	
 	private static List<Integer> selectableTextures = Arrays.asList(
-			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
 			120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147,
 			160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181,
 			200, 201, 202, 203, 204,
