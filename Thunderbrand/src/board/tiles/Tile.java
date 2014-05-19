@@ -39,7 +39,7 @@ public abstract class Tile {
 	 * @param endingPosition The player's desired ending {@link Coordinate}
 	 * @return {@code true} if the Player's head line or body rect collides with the given Tile, {@code false} otherwise
 	 */
-	public abstract boolean playerBodyCollides(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition);
+	public abstract boolean entityBodyCollides(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition);
 	
 	/**
 	 * Checks to see if the {@link Player}'s feet collide with the given {@link Tile}, returning
@@ -53,7 +53,7 @@ public abstract class Tile {
 	 * 		or {@code false} if only the vertical feet line should be considered
 	 * @return {@code null} if there was no collision, or a raised Coordinate if there was 
 	 */
-	public abstract Coordinate playerFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine);
+	public abstract Coordinate entityFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine);
 	
 	protected abstract Coordinate raisePositionToAboveTile(int xPos, int yPos, Entity entity, Coordinate position);
 	

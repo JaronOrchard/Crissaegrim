@@ -23,7 +23,7 @@ public class TilePassTop extends Tile {
 	}
 	
 	@Override
-	public boolean playerBodyCollides(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition) {
+	public boolean entityBodyCollides(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition) {
 		if (!CoordinateUtils.isMovingDown(startingPosition, endingPosition)) { return false; }
 		
 		Rect tileBoundingBox = new Rect(new Coordinate(xPos, yPos), new Coordinate(xPos + 1, yPos + 1));
@@ -39,7 +39,7 @@ public class TilePassTop extends Tile {
 	}
 
 	@Override
-	public Coordinate playerFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine) {
+	public Coordinate entityFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine) {
 		List<Line> tileBoundingBoxLines = RectUtils.getLinesFromRect(new Rect(new Coordinate(xPos, yPos), new Coordinate(xPos + 1, yPos + 1)));
 		List<Line> playerFeetLines = entity.getEntityFeetLines(endingPosition, includeHorizontalFeetLine);
 		if (startingPosition.getY() > yPos + 1 && endingPosition.getY() < yPos + 1 && LineUtils.lineSetsIntersect(tileBoundingBoxLines, playerFeetLines)) {

@@ -15,12 +15,12 @@ public class CollisionDetectionTile {
 	}
 	
 	public boolean entityBodyCollides(Entity entity, Coordinate startingPosition, Coordinate endingPosition) {
-		return tile.playerBodyCollides(xPos, yPos, entity, startingPosition, endingPosition);
+		return tile.entityBodyCollides(xPos, yPos, entity, startingPosition, endingPosition);
 	}
 	
 	// Returns null if no collision, or a coordinate for a raised position if they do
 	public Coordinate entityFeetCollide(Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine) {
-		return tile.playerFeetCollide(xPos, yPos, entity, startingPosition, endingPosition, includeHorizontalFeetLine);
+		return tile.entityFeetCollide(xPos, yPos, entity, startingPosition, endingPosition, includeHorizontalFeetLine);
 	}
 	
 }
