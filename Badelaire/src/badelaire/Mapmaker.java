@@ -359,6 +359,12 @@ public class Mapmaker {
 						e.printStackTrace();
 					}
 				}
+			} else if (Mouse.isButtonDown(1)) { // Right mouse button down
+				int tileX = (int)center.getX() - (Badelaire.getWindowWidth() / 2 / Badelaire.getPixelsPerTile()) + (Mouse.getX() / Badelaire.getPixelsPerTile());
+				int tileY = (int)center.getY() - (Badelaire.getWindowHeight() / 2 / Badelaire.getPixelsPerTile()) + (Mouse.getY() / Badelaire.getPixelsPerTile());
+				System.out.println("(X,Y) = (" + tileX + "," + tileY + ")");
+				drawStickPlayer(tileX+0.5, tileY);
+				drawStickPlayer(tileX+0.5, (double)(tileY) + 4.5);
 			}
 		} else if (textureSelectionModeEnabled) {
 			if (Mouse.isButtonDown(0) || Mouse.isButtonDown(1)) {
@@ -385,6 +391,24 @@ public class Mapmaker {
 				if (Mouse.isButtonDown(1)) { tileTypeSelectionModeEnabled = false; }
 			}
 		}
+	}
+	
+	private void drawStickPlayer(double x, double y) {
+		MapmakerInitializer.initializeNewFrameForScene(center);
+		glPushMatrix();
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBindTexture(GL_TEXTURE_2D, Textures.STICK_PLAYER);
+			glBegin(GL_QUADS);
+				glTexCoord2d(0, 1);
+				glVertex2d(x - 1.5, y);
+				glTexCoord2d(1, 1);
+				glVertex2d(x + 1.5, y);
+				glTexCoord2d(1, 0);
+				glVertex2d(x + 1.5, y + 3);
+				glTexCoord2d(0, 0);
+				glVertex2d(x - 1.5, y + 3);
+			glEnd();
+		glPopMatrix();
 	}
 	
 }
