@@ -47,7 +47,7 @@ public class TilePass2LH extends Tile {
 		
 		double slopeYatX = yPos + Math.max(Math.min(((startingPosition.getX() - (double)xPos) / 2) + 0.5, 1), 0.5);
 		double playerYatX = startingPosition.getY();
-		if (startingPosition.getY() < yPos) { playerYatX += entity.getFeetHeight(); }
+		if (startingPosition.getY() < yPos + 0.5) { playerYatX += entity.getFeetHeight(); }
 		
 		if (playerYatX >= slopeYatX && LineUtils.lineSetsIntersect(tileBoundaryLines, playerFeetLines)) {
 			return raisePositionToAboveTile(xPos, yPos, entity, endingPosition);

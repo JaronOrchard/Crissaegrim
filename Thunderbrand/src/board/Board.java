@@ -31,6 +31,19 @@ public class Board {
 		doodadList = new ArrayList<Doodad>();
 	}
 	
+	/**
+	 * 
+	 * @param entityPosition
+	 * @return
+	 * <code>
+	 * 15 16 17<br/>
+	 * 12 13 14<br/>
+	 * 09 10 11<br/>
+	 * 06 07 08<br/>
+	 * 03 04 05<br/>
+	 * 00 01 02
+	 * </code>
+	 */
 	public List<CollisionDetectionTile> getCollisionDetectionTilesNearEntity(Coordinate entityPosition) {
 		int chunkSideSize = Thunderbrand.getChunkSideSize();
 		int chunkXOrigin = (int)entityPosition.getX() - ((int)entityPosition.getX() % chunkSideSize);
