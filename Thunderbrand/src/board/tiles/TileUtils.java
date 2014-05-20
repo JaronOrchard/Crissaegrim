@@ -27,7 +27,7 @@ public class TileUtils {
 		if (tile instanceof TilePassLeft)			return 18;
 		if (tile instanceof TilePassRight)			return 19;
 		if (tile instanceof TilePassBottom)			return 20;
-//		if (tile instanceof TilePass1L)				return 21;
+		if (tile instanceof TilePass1L)				return 21;
 //		if (tile instanceof TilePass1R)				return 22;
 //		if (tile instanceof TilePass2L)				return 23;
 //		if (tile instanceof TilePass2LH)			return 24;
@@ -58,7 +58,7 @@ public class TileUtils {
 		if (tileType == 18)	return new TilePassLeft();
 		if (tileType == 19) return new TilePassRight();
 		if (tileType == 20) return new TilePassBottom();
-//		if (tileType == 21) return new TilePass1L();
+		if (tileType == 21) return new TilePass1L();
 //		if (tileType == 22) return new TilePass1R();
 //		if (tileType == 23) return new TilePass2L();
 //		if (tileType == 24) return new TilePass2LH();
@@ -88,13 +88,13 @@ public class TileUtils {
 			new TilePassTop(),
 			new TilePassLeft(),
 			new TilePassRight(),
-			new TilePassBottom()
-//			new TilePass1L(),
-//			new TilePass1R(),
-//			new TilePass2L(),
-//			new TilePass2LH(),
-//			new TilePass2R(),
-//			new TilePass2RH(),
+			new TilePassBottom(),
+			new TilePass1L()
+//			new TilePass1R()
+//			new TilePass2L()
+//			new TilePass2LH()
+//			new TilePass2R()
+//			new TilePass2RH()
 //			new TilePassHalfVertically()
 			);
 	
