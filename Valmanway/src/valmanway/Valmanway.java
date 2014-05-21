@@ -10,6 +10,9 @@ import world.WorldRunnerThread;
 
 public class Valmanway {
 	
+	private static final int SERVER_VERSION = 20140521;
+	public static int getServerVersion() { return SERVER_VERSION; }
+	
 	private static volatile ValmanwaySharedData sharedData = new ValmanwaySharedData();
 	public static ValmanwaySharedData getSharedData() { return sharedData; }
 	

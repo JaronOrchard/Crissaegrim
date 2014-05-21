@@ -13,5 +13,6 @@ public class DataPacketTypes {
 	public static final int CHUNK_PACKET =						9;	// Valmanway -> Crissaegrim
 	public static final int	NONEXISTENT_CHUNK_PACKET =			10;	// Valmanway -> Crissaegrim
 	public static final int DONE_SENDING_CHUNKS_PACKET =		11;	// Valmanway -> Crissaegrim
+	public static final int CLIENT_IS_OUTDATED_PACKET =			12; // Valmanway -> Crissaegrim
 	
 }

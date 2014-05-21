@@ -37,6 +37,9 @@ public final class CrissaegrimDataPacketProcessor {
 				Crissaegrim.currentlyLoading = false;
 				Crissaegrim.getGameRunner().goToDestinationBoard();
 				break;
+			case DataPacketTypes.CLIENT_IS_OUTDATED_PACKET:
+				Crissaegrim.getPlayer().assignPlayerId(-2); // playerId of -2 signifies outdated version
+				break;
 			default:
 				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());
 		}

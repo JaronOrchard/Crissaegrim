@@ -114,6 +114,7 @@ public class Textures {
 	public static final int LOADING_MESSAGE = 17900;
 	public static final int NO_CONNECTION_MESSAGE = 17901;
 	public static final int LOST_CONNECTION_MESSAGE = 17902;
+	public static final int CLIENT_OUTDATED_MESSAGE = 17903;
 	
 	public static final int BACKGROUND_SOTN = 17960;
 	
@@ -231,6 +232,7 @@ public class Textures {
 		TextureLoader.loadTexture(LOADING_MESSAGE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/LoadingMessage.png")));
 		TextureLoader.loadTexture(NO_CONNECTION_MESSAGE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NoConnectionMessage.png")));
 		TextureLoader.loadTexture(LOST_CONNECTION_MESSAGE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/LostConnectionMessage.png")));
+		TextureLoader.loadTexture(CLIENT_OUTDATED_MESSAGE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ClientOutdatedMessage.png")));
 		
 		TextureLoader.loadTexture(BACKGROUND_SOTN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/SotNCastle.png")));
 		

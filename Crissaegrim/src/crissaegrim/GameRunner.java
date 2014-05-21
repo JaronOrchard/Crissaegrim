@@ -64,11 +64,15 @@ public class GameRunner {
 			while (Crissaegrim.getPlayer().getId() == -1) {
 				if (Thunderbrand.getTime() - lastSend > Crissaegrim.getValmanwayConnection().getConnectionTimeoutMillis()) {
 					lastSend = Thunderbrand.getTime();
-					Crissaegrim.addOutgoingDataPacket(new RequestPlayerIdPacket());
+					Crissaegrim.addOutgoingDataPacket(new RequestPlayerIdPacket(Crissaegrim.getClientVersion()));
 				}
 			}
 		} else { // Couldn't connect + offline mode disallowed; display error and quit
 			displayNoConnectionMessageForever();
+			return;
+		}
+		if (Crissaegrim.getPlayer().getId() == -2) { // playerId of -2 signifies outdated version
+			displayOutdatedClientMessageForever();
 			return;
 		}
 		
@@ -372,6 +376,34 @@ public class GameRunner {
 					glVertex2d(455, Crissaegrim.getWindowHeight() - 96);
 					glTexCoord2d(1, 0);
 					glVertex2d(455, Crissaegrim.getWindowHeight() - 32);
+					glTexCoord2d(0, 0);
+					glVertex2d(32, Crissaegrim.getWindowHeight() - 32);
+				glEnd();
+			glPopMatrix();
+			
+			Display.update();
+			Thread.sleep(100);
+		}
+		Display.destroy();
+	}
+	
+	private void displayOutdatedClientMessageForever() throws InterruptedException {
+		GameInitializer.setWindowTitle("Your version is outdated!");
+		while (!Display.isCloseRequested()) {
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			GameInitializer.initializeNewFrameForWindow();
+			// Client outdated message texture size is 595 x 102
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, Textures.CLIENT_OUTDATED_MESSAGE);
+			glPushMatrix();
+				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+				glBegin(GL_QUADS);
+					glTexCoord2d(0, 1);
+					glVertex2d(32, Crissaegrim.getWindowHeight() - 134);
+					glTexCoord2d(1, 1);
+					glVertex2d(627, Crissaegrim.getWindowHeight() - 134);
+					glTexCoord2d(1, 0);
+					glVertex2d(627, Crissaegrim.getWindowHeight() - 32);
 					glTexCoord2d(0, 0);
 					glVertex2d(32, Crissaegrim.getWindowHeight() - 32);
 				glEnd();

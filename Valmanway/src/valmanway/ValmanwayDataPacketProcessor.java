@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import thunderbrand.TextBlock;
 import thunderbrand.Thunderbrand;
 import datapacket.ChunkPacket;
+import datapacket.ClientIsOutdatedPacket;
 import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
 import datapacket.DoneSendingChunksPacket;
@@ -23,6 +24,7 @@ import datapacket.NonexistentChunkPacket;
 import datapacket.ReceivePlayerIdPacket;
 import datapacket.ReceivePlayerNamePacket;
 import datapacket.RequestEntireBoardPacket;
+import datapacket.RequestPlayerIdPacket;
 import datapacket.RequestSpecificChunkPacket;
 import datapacket.SendChatMessagePacket;
 import datapacket.SendPlayerStatusPacket;
@@ -35,8 +37,12 @@ public final class ValmanwayDataPacketProcessor {
 		switch (packet.getPacketType()) {
 			
 			case DataPacketTypes.REQUEST_PLAYER_ID_PACKET:
-				System.out.println(valmanwayUserData.getPlayerName() + " has joined");
-				valmanwayUserData.addOutgoingDataPacket(new ReceivePlayerIdPacket(valmanwayUserData.getPlayerId()));
+				if (((RequestPlayerIdPacket)(packet)).getClientVersion() < Valmanway.getServerVersion()) {
+					valmanwayUserData.addOutgoingDataPacket(new ClientIsOutdatedPacket());
+				} else {
+					System.out.println(valmanwayUserData.getPlayerName() + " has joined");
+					valmanwayUserData.addOutgoingDataPacket(new ReceivePlayerIdPacket(valmanwayUserData.getPlayerId()));
+				}
 				break;
 			case DataPacketTypes.SEND_PLAYER_STATUS_PACKET:
 				Valmanway.getSharedData().updateEntityStatusMap(

@@ -23,6 +23,9 @@ import entities.EntityStatus;
 
 public class Crissaegrim {
 	
+	private static final int CLIENT_VERSION = 20140521;
+	public static int getClientVersion() { return CLIENT_VERSION; }
+	
 	private static volatile GameRunner gameRunner = new GameRunner();
 	private static volatile Player player = null;
 	private static volatile Map<Integer, EntityStatus> ghosts = new HashMap<Integer, EntityStatus>();
