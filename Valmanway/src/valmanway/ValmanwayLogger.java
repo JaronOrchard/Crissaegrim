@@ -14,14 +14,15 @@ import thunderbrand.Thunderbrand;
 public class ValmanwayLogger {
 	
 	private static final DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+	private static final DateFormat dayFormatter = new SimpleDateFormat("yyyy-MM-dd");
 	private static final File logDirectory = new File((Thunderbrand.isLinuxBuild() ? "./" : "C:/") + "CrissaegrimLogs/");
-	private final File logFile;
+	private String currentDay;
+	private File logFile;
 	private BufferedWriter logWriter;
 	
 	public ValmanwayLogger() {
-		DateFormat dayFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		String logFileName = dayFormatter.format(new Date()) + "-log.txt";
-		logFile = new File(logDirectory, logFileName);
+		currentDay = dayFormatter.format(new Date());
+		logFile = new File(logDirectory, currentDay + "-log.txt");
 		try {
 			logDirectory.mkdirs();
 			logFile.createNewFile(); // Only creates if non-existent
@@ -32,7 +33,7 @@ public class ValmanwayLogger {
 		}
 	}
 	
-	public void close() {
+	public synchronized void close() {
 		try {
 			logWriter.close();
 		} catch (IOException e) {
@@ -40,11 +41,12 @@ public class ValmanwayLogger {
 		}
 	}
 	
-	public void log(TextBlock tb) {
+	public synchronized void log(TextBlock tb) {
 		log(tb.getMessage());
 	}
 	
-	public void log(String message) {
+	public synchronized void log(String message) {
+		makeNewFileIfNecessary();
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
 		sb.append(timeFormatter.format(new Date()));
@@ -56,6 +58,23 @@ public class ValmanwayLogger {
 			logWriter.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private synchronized void makeNewFileIfNecessary() {
+		String today = dayFormatter.format(new Date());
+		if (!currentDay.equals(today)) {
+			close();
+			currentDay = today;
+			logFile = new File(logDirectory, currentDay + "-log.txt");
+			try {
+				logDirectory.mkdirs();
+				logFile.createNewFile(); // Only creates if non-existent
+				FileWriter fileWriter = new FileWriter(logFile, true);
+				logWriter = new BufferedWriter(fileWriter);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
