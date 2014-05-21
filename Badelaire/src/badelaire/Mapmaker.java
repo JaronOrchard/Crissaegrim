@@ -63,6 +63,8 @@ public class Mapmaker {
 		Textures.initializeTextures();
 		MapmakerInitializer.initializeOpenGLFor2D();
 		
+		//mapmakerBoard = new MapmakerBoard("sotn_clock_tower");
+		//mapmakerBoard = new MapmakerBoard("dawning_interior");
 		mapmakerBoard = new MapmakerBoard("dawning");
 		//mapmakerBoard = new MapmakerBoard("tower_of_preludes");
 		
@@ -362,7 +364,7 @@ public class Mapmaker {
 			} else if (Mouse.isButtonDown(1)) { // Right mouse button down
 				int tileX = (int)center.getX() - (Badelaire.getWindowWidth() / 2 / Badelaire.getPixelsPerTile()) + (Mouse.getX() / Badelaire.getPixelsPerTile());
 				int tileY = (int)center.getY() - (Badelaire.getWindowHeight() / 2 / Badelaire.getPixelsPerTile()) + (Mouse.getY() / Badelaire.getPixelsPerTile());
-				System.out.println("(X,Y) = (" + tileX + "," + tileY + ")");
+				System.out.println("(X, Y) = (" + tileX + ", " + tileY + ")");
 				drawStickPlayer(tileX+0.5, tileY);
 				drawStickPlayer(tileX+0.5, (double)(tileY) + 4.5);
 			}

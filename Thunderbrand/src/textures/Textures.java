@@ -92,6 +92,11 @@ public class Textures {
 	public static final int DAWNING_BRIDGE_POST_L = 203;
 	public static final int DAWNING_BRIDGE_POST_R = 204;
 	
+	public static final int WINDOW_TL = 210;
+	public static final int WINDOW_TR = 211;
+	public static final int WINDOW_BL = 212;
+	public static final int WINDOW_BR = 213;
+	
 	public static final int CHUNK_NOT_FOUND = 999;
 	
 	public static final int STICK_PLAYER = 1000;
@@ -204,6 +209,11 @@ public class Textures {
 		TextureLoader.loadTexture(DAWNING_BRIDGE_POST_L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/bridge/BridgePostL.png")));
 		TextureLoader.loadTexture(DAWNING_BRIDGE_POST_R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/bridge/BridgePostR.png")));
 		
+		TextureLoader.loadTexture(WINDOW_TL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/window/windowTL.png")));
+		TextureLoader.loadTexture(WINDOW_TR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/window/windowTR.png")));
+		TextureLoader.loadTexture(WINDOW_BL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/window/windowBL.png")));
+		TextureLoader.loadTexture(WINDOW_BR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/window/windowBR.png")));
+		
 		TextureLoader.loadTexture(CHUNK_NOT_FOUND, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ChunkNotFound.png")));
 				
 		TextureLoader.loadTexture(STICK_PLAYER, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayer.png")));
@@ -233,6 +243,7 @@ public class Textures {
 			120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147,
 			160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181,
 			200, 201, 202, 203, 204,
+			210, 211, 212, 213,
 			999,
 			2000
 			);

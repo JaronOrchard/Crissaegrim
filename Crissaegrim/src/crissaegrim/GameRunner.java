@@ -74,6 +74,7 @@ public class GameRunner {
 		
 		destinationBoardName = "tower_of_preludes";
 		destinationCoordinate = new Coordinate(10044, 10084); // tower_of_preludes
+		
 		//destinationPosition = new Coordinate(10044, 10020); // dawning
 		goToDestinationBoard();
 		
@@ -416,11 +417,24 @@ public class GameRunner {
 		if (!boardMap.containsKey(boardName)) {
 			boardMap.put(boardName, new Board(boardName));
 			
-			// Temporarily set up entities since it's not set up in Badelaire yet:
+			// Temporarily set up doodads since it's not set up in Badelaire yet:
 			if (boardName.equals("dawning")) {
 				boardMap.get("dawning").getDoodadList().add(new Door(new Coordinate(10052.5, 10013), "tower_of_preludes", new Coordinate(10050.5, 10016)));
+				boardMap.get("dawning").getDoodadList().add(new Door(new Coordinate(10214.5, 10004), "dawning_interior", new Coordinate(10043.5, 10019)));
+				boardMap.get("dawning").getDoodadList().add(new Door(new Coordinate(10232.5, 10004), "dawning_interior", new Coordinate(10061.5, 10019)));
+				boardMap.get("dawning").getDoodadList().add(new Door(new Coordinate(10251.5, 10003), "dawning_interior", new Coordinate(10139.5, 10027)));
+				boardMap.get("dawning").getDoodadList().add(new Door(new Coordinate(10258.5, 10009), "dawning_interior", new Coordinate(10139.5, 10033)));
+				boardMap.get("dawning").getDoodadList().add(new Door(new Coordinate(10283.5, 9999), "sotn_clock_tower", new Coordinate(10177.5, 10033)));
+			} else if (boardName.equals("dawning_interior")) {
+				boardMap.get("dawning_interior").getDoodadList().add(new Door(new Coordinate(10043.5, 10019), "dawning", new Coordinate(10214.5, 10004)));
+				boardMap.get("dawning_interior").getDoodadList().add(new Door(new Coordinate(10061.5, 10019), "dawning", new Coordinate(10232.5, 10004)));
+				boardMap.get("dawning_interior").getDoodadList().add(new Door(new Coordinate(10139.5, 10027), "dawning", new Coordinate(10251.5, 10003)));
+				boardMap.get("dawning_interior").getDoodadList().add(new Door(new Coordinate(10139.5, 10033), "dawning", new Coordinate(10258.5, 10009)));
+				boardMap.get("dawning_interior").getDoodadList().add(new Door(new Coordinate(10036.5, 10014), "dawning", new Coordinate(10207.5, 9999)));
 			} else if (boardName.equals("tower_of_preludes")) {
 				boardMap.get("tower_of_preludes").getDoodadList().add(new Door(new Coordinate(10050.5, 10016), "dawning", new Coordinate(10052.5, 10013)));
+			} else if (boardName.equals("sotn_clock_tower")) {
+				boardMap.get("sotn_clock_tower").getDoodadList().add(new Door(new Coordinate(9860.5, 10096), "dawning", new Coordinate(10280.5, 9992)));
 			}
 		}
 	}
