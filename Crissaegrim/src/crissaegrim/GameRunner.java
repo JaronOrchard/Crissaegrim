@@ -68,11 +68,11 @@ public class GameRunner {
 				}
 			}
 		} else { // Couldn't connect + offline mode disallowed; display error and quit
-			displayNoConnectionMessageForever();
+			displayMessageForever(Textures.NO_CONNECTION_MESSAGE, 458, 64, null);
 			return;
 		}
 		if (Crissaegrim.getPlayer().getId() == -2) { // playerId of -2 signifies outdated version
-			displayOutdatedClientMessageForever();
+			displayMessageForever(Textures.CLIENT_OUTDATED_MESSAGE, 595, 102, "Your version is outdated!");
 			return;
 		}
 		
@@ -93,7 +93,7 @@ public class GameRunner {
 			
 			if (!Crissaegrim.connectionStable) { // Lost connection to server
 				Crissaegrim.getValmanwayConnection().closeConnections();
-				displayLostConnectionMessageForever();
+				displayMessageForever(Textures.LOST_CONNECTION_MESSAGE, 423, 64, "Connection lost - Please restart");
 				return;
 			}
 			
@@ -332,78 +332,32 @@ public class GameRunner {
 		glPopMatrix();
 	}
 	
-	private void displayNoConnectionMessageForever() throws InterruptedException {
-		while (!Display.isCloseRequested()) {
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			GameInitializer.initializeNewFrameForWindow();
-			// No connection message texture size is 458 x 64
-			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, Textures.NO_CONNECTION_MESSAGE);
-			glPushMatrix();
-				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-				glBegin(GL_QUADS);
-					glTexCoord2d(0, 1);
-					glVertex2d(32, Crissaegrim.getWindowHeight() - 96);
-					glTexCoord2d(1, 1);
-					glVertex2d(490, Crissaegrim.getWindowHeight() - 96);
-					glTexCoord2d(1, 0);
-					glVertex2d(490, Crissaegrim.getWindowHeight() - 32);
-					glTexCoord2d(0, 0);
-					glVertex2d(32, Crissaegrim.getWindowHeight() - 32);
-				glEnd();
-			glPopMatrix();
-			
-			Display.update();
-			Thread.sleep(100);
+	/**
+	 * Displays one of the message textures made in MSPaint until the client is closed.
+	 * @param texture The texture id of the message to display
+	 * @param width The width of the texture
+	 * @param height The height of the texture
+	 * @param optionalTitleChange This message will be shown on the title bar.  A {@code null} or empty string will be ignored.
+	 * @throws InterruptedException
+	 */
+	private void displayMessageForever(int texture, int width, int height, String optionalTitleChange) throws InterruptedException {
+		if (optionalTitleChange != null && !optionalTitleChange.trim().isEmpty()) {
+			GameInitializer.setWindowTitle(optionalTitleChange);
 		}
-		Display.destroy();
-	}
-	
-	private void displayLostConnectionMessageForever() throws InterruptedException {
-		GameInitializer.setWindowTitle("Connection lost - Please restart");
 		while (!Display.isCloseRequested()) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			GameInitializer.initializeNewFrameForWindow();
-			// Lost connection message texture size is 423 x 64
 			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, Textures.LOST_CONNECTION_MESSAGE);
+			glBindTexture(GL_TEXTURE_2D, texture);
 			glPushMatrix();
 				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 				glBegin(GL_QUADS);
 					glTexCoord2d(0, 1);
-					glVertex2d(32, Crissaegrim.getWindowHeight() - 96);
+					glVertex2d(32, Crissaegrim.getWindowHeight() - (32 + height));
 					glTexCoord2d(1, 1);
-					glVertex2d(455, Crissaegrim.getWindowHeight() - 96);
+					glVertex2d((32 + width), Crissaegrim.getWindowHeight() - (32 + height));
 					glTexCoord2d(1, 0);
-					glVertex2d(455, Crissaegrim.getWindowHeight() - 32);
-					glTexCoord2d(0, 0);
-					glVertex2d(32, Crissaegrim.getWindowHeight() - 32);
-				glEnd();
-			glPopMatrix();
-			
-			Display.update();
-			Thread.sleep(100);
-		}
-		Display.destroy();
-	}
-	
-	private void displayOutdatedClientMessageForever() throws InterruptedException {
-		GameInitializer.setWindowTitle("Your version is outdated!");
-		while (!Display.isCloseRequested()) {
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			GameInitializer.initializeNewFrameForWindow();
-			// Client outdated message texture size is 595 x 102
-			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, Textures.CLIENT_OUTDATED_MESSAGE);
-			glPushMatrix();
-				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-				glBegin(GL_QUADS);
-					glTexCoord2d(0, 1);
-					glVertex2d(32, Crissaegrim.getWindowHeight() - 134);
-					glTexCoord2d(1, 1);
-					glVertex2d(627, Crissaegrim.getWindowHeight() - 134);
-					glTexCoord2d(1, 0);
-					glVertex2d(627, Crissaegrim.getWindowHeight() - 32);
+					glVertex2d((32 + width), Crissaegrim.getWindowHeight() - 32);
 					glTexCoord2d(0, 0);
 					glVertex2d(32, Crissaegrim.getWindowHeight() - 32);
 				glEnd();
