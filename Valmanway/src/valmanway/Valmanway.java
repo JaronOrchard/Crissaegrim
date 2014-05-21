@@ -30,7 +30,9 @@ public class Valmanway {
             System.exit(-1);
         }
         
-        new WorldRunnerThread().start();
+        if (Thunderbrand.isLinuxBuild() || Thunderbrand.getStartWorldRunner()) {
+        	new WorldRunnerThread().start();
+        }
         
         while (listening) {
         	Socket acceptedSocket = serverSocket.accept();

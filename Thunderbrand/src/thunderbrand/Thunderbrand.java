@@ -6,9 +6,11 @@ public final class Thunderbrand {
 	
 	private static final boolean LINUX_BUILD = false; // Change to true when deploying to the VM server, keep false if on my Windows machine
 	private static final int VALMANWAY_SERVER_PORT = 22112;
+	private static final boolean START_WORLD_RUNNER = false; // If false, doesn't start the WorldRunner in Valmanway
 	
 	public static boolean isLinuxBuild() { return LINUX_BUILD; }
 	public static int getValmanwayServerPort() { return VALMANWAY_SERVER_PORT; }
+	public static boolean getStartWorldRunner() { return START_WORLD_RUNNER; }
 	
 	private static final int CHUNK_SIDE_SIZE = 100;
 	public static int getChunkSideSize() { return CHUNK_SIDE_SIZE; }
