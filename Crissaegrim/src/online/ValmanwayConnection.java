@@ -14,7 +14,7 @@ import datapacket.SendPlayerStatusPacket;
 
 public class ValmanwayConnection {
 	
-	private int CONNECTION_TIMEOUT_MILLIS = 5000; // Milliseconds to attempted connection timeout
+	private int CONNECTION_TIMEOUT_MILLIS = 4000; // Milliseconds to attempted connection timeout
 	public int getConnectionTimeoutMillis() { return CONNECTION_TIMEOUT_MILLIS; }
 	
 	private List<String> VALMANWAY_HOSTNAMES = new ArrayList<String>();
