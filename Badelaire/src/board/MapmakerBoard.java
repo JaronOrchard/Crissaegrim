@@ -18,6 +18,7 @@ import thunderbrand.Thunderbrand;
 import badelaire.Badelaire;
 import board.tiles.Tile;
 import board.tiles.Tile.TileLayer;
+import board.tiles.TileBlank;
 
 public class MapmakerBoard {
 	
@@ -200,6 +201,17 @@ public class MapmakerBoard {
 			chunk.setTile(tileX % chunkSideSize, tileY % chunkSideSize, tile);
 			modifiedChunks.add(chunkName);
 			createBoundaryChunksIfNeeded(chunkXOrigin, chunkYOrigin);
+		}
+	}
+	
+	public void resetTile(int tileX, int tileY) {
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
+		int chunkXOrigin = tileX - (tileX % chunkSideSize);
+		int chunkYOrigin = tileY - (tileY % chunkSideSize);
+		String chunkName = chunkXOrigin + "_" + chunkYOrigin;
+		MapmakerChunk chunk = chunkMap.get(chunkName);
+		if (chunk != null) {
+			chunk.getTiles()[tileX % chunkSideSize][tileY % chunkSideSize] = new TileBlank();
 		}
 	}
 	

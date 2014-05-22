@@ -334,6 +334,20 @@ public class Mapmaker {
 						}
 						fillArea.nextState(0, 0);
 					}
+				} else if (Keyboard.getEventKey() == Keyboard.KEY_C) {
+					if (fillArea.readyToFill()) {
+						// This needs refactoring obvs.
+						int leftmostTile = fillArea.getPoint1TileX() < fillArea.getPoint2TileX() ? fillArea.getPoint1TileX() : fillArea.getPoint2TileX();
+						int rightmostTile = fillArea.getPoint1TileX() < fillArea.getPoint2TileX() ? fillArea.getPoint2TileX() : fillArea.getPoint1TileX();
+						int topmostTile = fillArea.getPoint1TileY() < fillArea.getPoint2TileY() ? fillArea.getPoint2TileY() : fillArea.getPoint1TileY();
+						int bottommostTile = fillArea.getPoint1TileY() < fillArea.getPoint2TileY() ? fillArea.getPoint1TileY() : fillArea.getPoint2TileY();
+						for (int tileX = leftmostTile; tileX <= rightmostTile; tileX++) {
+							for (int tileY = bottommostTile; tileY <= topmostTile; tileY++) {
+								mapmakerBoard.resetTile(tileX, tileY);
+							}
+						}
+						fillArea.nextState(0, 0);
+					}
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_E) {
 					if (mode == 1 || mode == 2 || mode == 3) {
 						textureSelectionModeEnabled = !textureSelectionModeEnabled;
