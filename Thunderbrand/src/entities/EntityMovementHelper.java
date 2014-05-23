@@ -29,6 +29,7 @@ public class EntityMovementHelper {
 	private boolean holdingJumpButton;
 	private List<Attack> attackList;
 	
+	public boolean isOnTheGround() { return onTheGround; }
 	public List<Attack> getAttackList() { return attackList; }
 	
 	private final Entity parentEntity;

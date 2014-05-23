@@ -15,6 +15,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
+import players.Player;
 import datapacket.ChunkPacket;
 import datapacket.NonexistentChunkPacket;
 import datapacket.RequestEntireBoardPacket;
@@ -210,10 +211,17 @@ public class GameRunner {
 	 * Detects keyboard and mouse input and makes the main player react accordingly.
 	 */
 	private void getKeyboardAndMouseInput() {
-		EntityMovementHelper pmh = Crissaegrim.getPlayer().getMovementHelper();
-		if (Keyboard.isKeyDown(Keyboard.KEY_A)) { pmh.requestLeftMovement(); }
-		if (Keyboard.isKeyDown(Keyboard.KEY_D)) { pmh.requestRightMovement(); }
-		if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_SPACE)) { pmh.requestJumpMovement(); }
+		Player player = Crissaegrim.getPlayer();
+		EntityMovementHelper pmh = player.getMovementHelper();
+		if (Keyboard.isKeyDown(Keyboard.KEY_A)) { // Move left requested
+			if (!player.isBusy() || !pmh.isOnTheGround()) pmh.requestLeftMovement();
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_D)) { // Move right requested
+			if (!player.isBusy() || !pmh.isOnTheGround()) pmh.requestRightMovement();
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_SPACE)) { // Jump requested
+			if (!player.isBusy() || !pmh.isOnTheGround()) pmh.requestJumpMovement();
+		}
 		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
@@ -223,11 +231,11 @@ public class GameRunner {
 					Crissaegrim.getChatBox().enableTypingMode();
 					return; // Don't process any more keys!
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_UP) {		// Up arrow: Select previous inventory item
-					Crissaegrim.getPlayer().getInventory().selectPreviousItem();
+					player.getInventory().selectPreviousItem();
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_DOWN) {	// Down arrow: Select next inventory item
-					Crissaegrim.getPlayer().getInventory().selectNextItem();
+					player.getInventory().selectNextItem();
 				} else if (Keyboard.getEventKey() >= Keyboard.KEY_1 && Keyboard.getEventKey() <= Keyboard.KEY_8) { // 1-8: Select inventory item
-					Crissaegrim.getPlayer().getInventory().selectSpecificItem(Keyboard.getEventKey() - Keyboard.KEY_1);
+					player.getInventory().selectSpecificItem(Keyboard.getEventKey() - Keyboard.KEY_1);
 				} else if (Keyboard.getEventKey() == 41) {					// Backtick (`) key
 					Crissaegrim.toggleDebugMode();
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_TAB) {	// Tab key: Toggle zoom
@@ -236,8 +244,8 @@ public class GameRunner {
 					Crissaegrim.toggleWindowSize();
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_X) {		// X key: Enter door
 					for (Doodad doodad : Crissaegrim.getBoard().getDoodadList()) {
-						if (!Crissaegrim.getPlayer().isBusy() && doodad instanceof Door &&
-								RectUtils.coordinateIsInRect(Crissaegrim.getPlayer().getPosition(), doodad.getBounds())) {
+						if (!player.isBusy() && doodad instanceof Door &&
+								RectUtils.coordinateIsInRect(player.getPosition(), doodad.getBounds())) {
 							Door door = (Door)doodad;
 							pmh.resetMovementRequests();
 							destinationBoardName = door.getDestinationBoardName();
