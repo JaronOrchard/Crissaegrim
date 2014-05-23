@@ -1,6 +1,9 @@
 package geometry;
 
-public class Coordinate {
+import java.io.Serializable;
+
+public class Coordinate implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	private double x;
 	private double y;

@@ -1,11 +1,9 @@
 package entities;
 
 import geometry.Coordinate;
-import geometry.Rect;
 import items.Item;
 import items.Weapon;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +25,8 @@ public class EntityMovementHelper {
 	private boolean onTheGround;
 	private boolean currentlyJumping;
 	private boolean holdingJumpButton;
-	private List<Attack> attackList;
 	
 	public boolean isOnTheGround() { return onTheGround; }
-	public List<Attack> getAttackList() { return attackList; }
 	
 	private final Entity parentEntity;
 	private final Map<String, Board> boardMap;
@@ -41,7 +37,6 @@ public class EntityMovementHelper {
 		onTheGround = false;
 		currentlyJumping = false;
 		holdingJumpButton = false;
-		attackList = new ArrayList<Attack>();
 		parentEntity = entity;
 		boardMap = boards;
 	}
@@ -69,18 +64,16 @@ public class EntityMovementHelper {
 		itemToUse = item;
 	}
 	
-	public void moveEntity() {
+	public Attack moveEntity() {
+		Attack returnedAttack = null;
 		Coordinate startingPosition;
 		Coordinate endingPosition;
 		
-		attackList.clear();
 		if (itemToUse != null && !parentEntity.isBusy() && itemToUse instanceof Weapon) {
+			// TODO: This should be split up depending upon the weapon and attack type
+			// TODO: Bounding rect of sword swing should not be entire entity
 			parentEntity.setBusy(new BusySwordSwing());
-		}
-		if (parentEntity.isBusy() && parentEntity.getBusyStatus() instanceof BusySwordSwing) {
-			//attackList.add(new Attack(parentEntity.getId(), /*parentEntity.getSwordSwingRect()*/, true));
-			attackList.add(new Attack(parentEntity.getId(), new Rect(new Coordinate(1,1), new Coordinate(2,2)), true));
-			// Going to just nullify sword swings here until Weapons are fleshed out more
+			returnedAttack = new Attack(parentEntity.getId(), parentEntity.getSwordSwingRect(), 1);
 		}
 		
 		// Planned movement rules:
@@ -223,6 +216,9 @@ public class EntityMovementHelper {
 		
 		// 4) Reset movement requests for the next frame
 		resetMovementRequests();
+		
+		// 5) Return generated Attack (or null if none)
+		return returnedAttack;
 	}
 	
 }

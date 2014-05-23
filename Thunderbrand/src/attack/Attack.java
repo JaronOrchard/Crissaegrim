@@ -1,21 +1,24 @@
 package attack;
 
+import java.io.Serializable;
+
 import geometry.Rect;
 
-public class Attack {
+public class Attack implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	private int attackerId;
 	private Rect bounds;
-	private boolean oneFrameLifetime;
+	private int framesLeftToLive;
 	
 	public int getAttackerId() { return attackerId; }
 	public Rect getBounds() { return bounds; }
-	public boolean getOneFrameLifetime() { return oneFrameLifetime; }
+	public int getFramesLeftToLive() { return framesLeftToLive; }
 	
-	public Attack(int attackerId, Rect bounds, boolean oneFrameLifetime) {
+	public Attack(int attackerId, Rect bounds, int framesLeftToLive) {
 		this.attackerId = attackerId;
 		this.bounds = bounds;
-		this.oneFrameLifetime = oneFrameLifetime;
+		this.framesLeftToLive = framesLeftToLive;
 	}
 	
 }

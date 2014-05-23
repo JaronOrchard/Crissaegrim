@@ -16,17 +16,16 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import players.Player;
+import datapacket.AttackPacket;
 import datapacket.ChunkPacket;
 import datapacket.NonexistentChunkPacket;
 import datapacket.RequestEntireBoardPacket;
 import datapacket.RequestPlayerIdPacket;
 import doodads.Doodad;
 import doodads.Door;
-import doodads.Target;
 import entities.EntityMovementHelper;
 import entities.EntityStatus;
 import geometry.Coordinate;
-import geometry.LineUtils;
 import geometry.RectUtils;
 import attack.Attack;
 import board.Board;
@@ -102,7 +101,6 @@ public class GameRunner {
 			if (!Crissaegrim.currentlyLoading) {
 				ClientBoard.verifyChunksExist(Crissaegrim.getBoard());
 				if (Crissaegrim.currentlyLoading) { continue; }
-				actionAttackList();
 				Crissaegrim.getPlayer().updateBusyAndIcon();
 				actionDoodadList();
 			
@@ -115,8 +113,8 @@ public class GameRunner {
 				} else {
 					getKeyboardAndMouseInput();
 				}
-				Crissaegrim.getPlayer().getMovementHelper().moveEntity();
-				Crissaegrim.getBoard().getAttackList().addAll(Crissaegrim.getPlayer().getMovementHelper().getAttackList());
+				Attack playerAttack = Crissaegrim.getPlayer().getMovementHelper().moveEntity();
+				if (playerAttack != null) { Crissaegrim.addOutgoingDataPacket(new AttackPacket(playerAttack)); }
 			
 				// Transmit data to the server
 				Crissaegrim.getValmanwayConnection().sendPlayerStatus();
@@ -168,31 +166,6 @@ public class GameRunner {
 			Crissaegrim.getChatBox().addChatMessage(waitingChatMessages.remove(0));
 		}
 		Crissaegrim.getChatBox().draw();
-	}
-	
-	/**
-	 * Goes through the {@link Attack} list, actioning Attacks if necessary
-	 */
-	private void actionAttackList() {
-		Iterator<Attack> attackIter = Crissaegrim.getBoard().getAttackList().iterator();
-		while (attackIter.hasNext()) {
-			Attack attack = attackIter.next();
-			
-			Iterator<Doodad> doodadIter = Crissaegrim.getBoard().getDoodadList().iterator();
-			while (doodadIter.hasNext()) {
-				Doodad doodad = doodadIter.next();
-				if (doodad instanceof Target) {
-					if (LineUtils.lineSetsIntersect(RectUtils.getLinesFromRect(attack.getBounds()), RectUtils.getLinesFromRect(doodad.getBounds()))) {
-						System.out.println("USER ID " + attack.getAttackerId() + " BROKE A TARGET!");
-						doodadIter.remove();
-					}
-				}
-			}
-			
-			if (attack.getOneFrameLifetime()) {
-				attackIter.remove();
-			}
-		}
 	}
 	
 	private void actionDoodadList() {
