@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import thunderbrand.TextBlock;
 import crissaegrim.Crissaegrim;
@@ -107,6 +108,9 @@ public class ChatTypingArea {
 					}
 				}
 			}
+		}
+		while (Mouse.next()) {
+			// Accept and then ignore all mouse clicks while in typing mode
 		}
 	}
 	
