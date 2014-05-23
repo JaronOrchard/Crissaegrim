@@ -100,9 +100,10 @@ public class Textures {
 	public static final int CHUNK_NOT_FOUND = 999;
 	
 	public static final int STICK_PLAYER = 1000;
-	public static final int STICK_PLAYER_ATTACK_1 = 1001;
-	public static final int STICK_PLAYER_ATTACK_2 = 1002;
-	public static final int STICK_PLAYER_TYPING = 1003;
+	public static final int STICK_PLAYER_TYPING = 1001;
+	public static final int STICK_PLAYER_SWORD_SWING_1 = 1002;
+	public static final int STICK_PLAYER_SWORD_SWING_2 = 1003;
+	public static final int STICK_PLAYER_SWORD_SWING_3 = 1004;
 	
 	public static final int NPC = 1100;
 	
@@ -218,9 +219,10 @@ public class Textures {
 		TextureLoader.loadTexture(CHUNK_NOT_FOUND, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ChunkNotFound.png")));
 				
 		TextureLoader.loadTexture(STICK_PLAYER, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayer.png")));
-		TextureLoader.loadTexture(STICK_PLAYER_ATTACK_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerAttack1.png")));
-		TextureLoader.loadTexture(STICK_PLAYER_ATTACK_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerAttack2.png")));
 		TextureLoader.loadTexture(STICK_PLAYER_TYPING, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerTyping.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_SWORD_SWING_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerSwordSwing1.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_SWORD_SWING_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerSwordSwing2.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_SWORD_SWING_3, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerSwordSwing3.png")));
 		
 		TextureLoader.loadTexture(NPC, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NPC.png")));
 		
