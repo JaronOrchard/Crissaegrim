@@ -2,12 +2,12 @@ package busy;
 
 import textures.Textures;
 
-public class BusySwordSwing extends Busy {
+public class SwordSwingBusy extends Busy {
 
 	private static long SWORD_SWING_TOTAL_TIME = 500;
 	
-	public BusySwordSwing() {
-		super(SWORD_SWING_TOTAL_TIME);
+	public SwordSwingBusy() {
+		super(SWORD_SWING_TOTAL_TIME, ImmobilizingType.CANNOT_WALK);
 	}
 
 	@Override

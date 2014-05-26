@@ -36,7 +36,7 @@ public abstract class Entity {
 	
 	protected Coordinate position = new Coordinate(0, 0);
 	protected String currentBoardName = null;
-	protected Busy busyStatus = null;
+	protected Busy busy = null;
 	
 	public double getFeetHeight() { return entityFeetHeight; }
 	public double getBodyHeight() { return entityBodyHeight; }
@@ -57,12 +57,12 @@ public abstract class Entity {
 	
 	public Coordinate getPosition() { return position; }
 	public String getCurrentBoardName() { return currentBoardName; }
-	public boolean isBusy() { return busyStatus != null; }
-	public Busy getBusyStatus() { return busyStatus; }
+	public boolean isBusy() { return busy != null; }
+	public Busy getBusy() { return busy; }
 	
 	public void setFacingRight(boolean fr) { facingRight = fr; }
 	public void setCurrentBoardName(String boardName) { currentBoardName = boardName; }
-	public void setBusy(Busy busy) { busyStatus = busy; }
+	public void setBusy(Busy busyStatus) { busy = busyStatus; }
 	
 	public Board getCurrentBoard() { return entityMovementHelper.getBoardMap().get(currentBoardName); }
 	

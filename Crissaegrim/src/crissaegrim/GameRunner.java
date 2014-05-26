@@ -33,6 +33,7 @@ import board.Chunk;
 import board.ClientBoard;
 import board.MissingChunk;
 import board.tiles.Tile.TileLayer;
+import busy.GotHitByAttackBusy;
 import textures.Textures;
 import thunderbrand.TextBlock;
 import thunderbrand.Thunderbrand;
@@ -186,18 +187,16 @@ public class GameRunner {
 	private void getKeyboardAndMouseInput() {
 		Player player = Crissaegrim.getPlayer();
 		EntityMovementHelper pmh = player.getMovementHelper();
-		if (Keyboard.isKeyDown(Keyboard.KEY_A)) { // Move left requested
-			if (!player.isBusy() || !pmh.isOnTheGround()) pmh.requestLeftMovement();
-		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_D)) { // Move right requested
-			if (!player.isBusy() || !pmh.isOnTheGround()) pmh.requestRightMovement();
-		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_SPACE)) { // Jump requested
-			if (!player.isBusy() || !pmh.isOnTheGround()) pmh.requestJumpMovement();
-		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_A)) { pmh.requestLeftMovement(); }
+		if (Keyboard.isKeyDown(Keyboard.KEY_D)) { pmh.requestRightMovement(); }
+		if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_SPACE)) { pmh.requestJumpMovement(); }
 		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
+				
+				if (Keyboard.getEventKey() == Keyboard.KEY_B) {
+					player.setBusy(new GotHitByAttackBusy());
+				}
 				
 				if (Keyboard.getEventKey() == Keyboard.KEY_T ||
 						Keyboard.getEventKey() == Keyboard.KEY_RETURN) {	// T or Enter: Enter chat mode

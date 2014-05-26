@@ -11,7 +11,8 @@ import java.util.Map;
 import attack.Attack;
 import board.Board;
 import board.tiles.CollisionDetectionTile;
-import busy.BusySwordSwing;
+import busy.Busy;
+import busy.SwordSwingBusy;
 
 public class EntityMovementHelper {
 	
@@ -25,8 +26,6 @@ public class EntityMovementHelper {
 	private boolean onTheGround;
 	private boolean currentlyJumping;
 	private boolean holdingJumpButton;
-	
-	public boolean isOnTheGround() { return onTheGround; }
 	
 	private final Entity parentEntity;
 	private final Map<String, Board> boardMap;
@@ -69,10 +68,17 @@ public class EntityMovementHelper {
 		Coordinate startingPosition;
 		Coordinate endingPosition;
 		
+		Busy parentEntityBusy = parentEntity.getBusy();
+		if (parentEntityBusy != null) {
+			if (parentEntityBusy.getCompletelyImmobilized() || (parentEntityBusy.getCannotWalk() && onTheGround)) {
+				resetMovementRequests();
+			}
+		}
+		
 		if (itemToUse != null && !parentEntity.isBusy() && itemToUse instanceof Weapon) {
 			// TODO: This should be split up depending upon the weapon and attack type
 			// TODO: Bounding rect of sword swing should not be entire entity
-			parentEntity.setBusy(new BusySwordSwing());
+			parentEntity.setBusy(new SwordSwingBusy());
 			returnedAttack = new Attack(parentEntity.getId(), parentEntity.getSwordSwingRect(), 1);
 		}
 		

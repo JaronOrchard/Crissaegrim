@@ -104,6 +104,7 @@ public class Textures {
 	public static final int STICK_PLAYER_SWORD_SWING_1 = 1002;
 	public static final int STICK_PLAYER_SWORD_SWING_2 = 1003;
 	public static final int STICK_PLAYER_SWORD_SWING_3 = 1004;
+	public static final int STICK_PLAYER_STUNNED = 1005;
 	
 	public static final int NPC = 1100;
 	
@@ -223,6 +224,7 @@ public class Textures {
 		TextureLoader.loadTexture(STICK_PLAYER_SWORD_SWING_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerSwordSwing1.png")));
 		TextureLoader.loadTexture(STICK_PLAYER_SWORD_SWING_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerSwordSwing2.png")));
 		TextureLoader.loadTexture(STICK_PLAYER_SWORD_SWING_3, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerSwordSwing3.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_STUNNED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerStunned.png")));
 		
 		TextureLoader.loadTexture(NPC, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NPC.png")));
 		

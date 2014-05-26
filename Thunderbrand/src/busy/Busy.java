@@ -4,14 +4,25 @@ import java.util.Date;
 
 public abstract class Busy {
 	
+	protected enum ImmobilizingType { COMPLETELY_IMMOBILIZED, CANNOT_WALK, NOT_IMMOBILIZED }
+	public boolean getCompletelyImmobilized() {
+		return (immobilizingType == ImmobilizingType.COMPLETELY_IMMOBILIZED);
+	}
+	public boolean getCannotWalk() {
+		return (immobilizingType == ImmobilizingType.COMPLETELY_IMMOBILIZED ||
+				immobilizingType == ImmobilizingType.CANNOT_WALK);
+	}
+	
 	private long startTime;
 	private long duration;
 	private long endTime;
+	private ImmobilizingType immobilizingType;
 	
-	public Busy(long dur) {
+	public Busy(long dur, ImmobilizingType immobilizingType) {
 		startTime = new Date().getTime();
 		duration = dur;
 		endTime = startTime + duration;
+		this.immobilizingType = immobilizingType;
 	}
 	
 	/**

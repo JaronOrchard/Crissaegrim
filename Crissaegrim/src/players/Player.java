@@ -43,8 +43,8 @@ public class Player extends Entity {
 	 * Update the player's various statuses.
 	 */
 	public void updateBusyAndIcon() {
-		if (isBusy() && busyStatus.hasExpired()) {
-			busyStatus = null;
+		if (isBusy() && busy.hasExpired()) {
+			busy = null;
 		}
 		icon = null;
 	}
@@ -114,7 +114,7 @@ public class Player extends Entity {
 	@Override
 	public int getCurrentTexture() {
 		if (isBusy()) {
-			return busyStatus.getTexture();
+			return busy.getTexture();
 		} else if (Crissaegrim.getChatBox().isTypingMode()) {
 			return Textures.STICK_PLAYER_TYPING;
 		}
