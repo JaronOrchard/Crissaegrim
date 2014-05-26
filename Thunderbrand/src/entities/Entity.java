@@ -19,9 +19,9 @@ public abstract class Entity {
 	public int getId() { return id; }
 	
 	// Default values to Player's:
-	protected double entityFeetHeight = 0.425;
-	protected double entityBodyHeight = 2.4;
-	protected double entityBodyWidth = 0.6;
+	protected double entityFeetHeight = 0.425;	// NOTE: If these values change,
+	protected double entityBodyHeight = 2.4;	//       be sure to change
+	protected double entityBodyWidth = 0.6;		//       ValmanwayDataPacketProcessor, too.
 	
 	protected double gravityAcceleration = -0.0045;
 	protected double tileCollisionPadding = gravityAcceleration / -2;

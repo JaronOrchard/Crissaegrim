@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.commons.lang3.StringUtils;
 
 import busy.GotHitByAttackBusy;
@@ -22,6 +24,7 @@ import datapacket.ClientIsOutdatedPacket;
 import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
 import datapacket.DoneSendingChunksPacket;
+import datapacket.GotHitByAttackPacket;
 import datapacket.NonexistentChunkPacket;
 import datapacket.ReceivePlayerIdPacket;
 import datapacket.ReceivePlayerNamePacket;
@@ -31,6 +34,9 @@ import datapacket.RequestSpecificChunkPacket;
 import datapacket.SendChatMessagePacket;
 import datapacket.SendPlayerStatusPacket;
 import entities.Entity;
+import entities.EntityStatus;
+import geometry.Coordinate;
+import geometry.Rect;
 import geometry.RectUtils;
 
 public final class ValmanwayDataPacketProcessor {
@@ -63,25 +69,46 @@ public final class ValmanwayDataPacketProcessor {
 				sendSpecificChunk( (RequestSpecificChunkPacket)packet, valmanwayUserData);
 				break;
 			case DataPacketTypes.ATTACK_PACKET:
-				Attack attack = ((AttackPacket)packet).getAttack();
-				for (Entity npc : Valmanway.getSharedData().getEntities()) {
-					if (npc.getCurrentBoardName().equals(attack.getBoardName()) &&
-							!npc.isBusy() &&
-							RectUtils.rectsOverlap(npc.getEntityBoundingRect(npc.getPosition()), attack.getBounds())) {
-						npc.setBusy(new GotHitByAttackBusy(true));
-					}
-				}
-//				for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getEntityStatuses().entrySet()) {
-//					if (isPlayerId(entityStatus.getKey()) &&
-//							entityStatus.getValue().getBoardName().equals(attack.getBoardName()) &&
-//							// erm, we need to have data about the players' bounding boxes here...
-//				}
+				processAttackPacket( (AttackPacket)packet, valmanwayUserData);
 				break;
 			default:
 				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());
 				break;
 		}
 		
+	}
+	
+	private static boolean isPlayerId(int id) { return id < 1000000; }
+	
+	private static void processAttackPacket(AttackPacket attackPacket, ValmanwayUserData vud) {
+		Attack attack = attackPacket.getAttack();
+		// Compare this attack to all NPCs:
+		for (Entity npc : Valmanway.getSharedData().getEntities()) {
+			if (npc.getCurrentBoardName().equals(attack.getBoardName()) &&
+					!npc.isBusy() &&
+					RectUtils.rectsOverlap(npc.getEntityBoundingRect(npc.getPosition()), attack.getBounds())) {
+				npc.setBusy(new GotHitByAttackBusy(true));
+			}
+		}
+		// Compare this attack to all Players:
+		// This is rather hackish for now but it will be redone when/if there are different Entity sizes.
+		// Default Entity values:
+		double feetHeight = 0.425;
+		double bodyHeight = 2.4;
+		double bodyWidth = 0.6;
+		
+		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getEntityStatuses().entrySet()) {
+			if (entityStatus.getKey() != vud.getPlayerId() && isPlayerId(entityStatus.getKey()) &&
+					entityStatus.getValue().getBoardName().equals(attack.getBoardName())) {
+				Coordinate position = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
+				Rect entityBounds = new Rect(
+						new Coordinate(position.getX() - (bodyWidth / 2), position.getY() + feetHeight),
+						new Coordinate(position.getX() + (bodyWidth / 2), position.getY() + feetHeight + bodyHeight));
+				if (RectUtils.rectsOverlap(entityBounds, attack.getBounds())) {
+					Valmanway.sendPacketToPlayer(entityStatus.getKey(), new GotHitByAttackPacket(vud.getPlayerId()));
+				}
+			}
+		}
 	}
 	
 	private static void processChatMessage(TextBlock textBlock, ValmanwayUserData vud) {
@@ -248,7 +275,5 @@ public final class ValmanwayDataPacketProcessor {
 		}
 		vud.addOutgoingDataPacket(new DoneSendingChunksPacket());
 	}
-	
-	private static boolean isPlayerId(int id) { return id < 1000000; }
 		
 }

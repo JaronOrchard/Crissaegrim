@@ -3,7 +3,10 @@ package valmanway;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
+import datapacket.DataPacket;
 import thunderbrand.TextBlock;
 import thunderbrand.Thunderbrand;
 import world.WorldRunnerThread;
@@ -15,6 +18,15 @@ public class Valmanway {
 	
 	private static volatile ValmanwaySharedData sharedData = new ValmanwaySharedData();
 	public static ValmanwaySharedData getSharedData() { return sharedData; }
+	
+	private static Map<Integer, ValmanwayUserData> users = new HashMap<Integer, ValmanwayUserData>();
+	public static void sendPacketToPlayer(int playerId, DataPacket packet) {
+		if (users.containsKey(playerId)) {
+			users.get(playerId).addOutgoingDataPacket(packet);
+		} else {
+			System.out.println("Cannot send packet--player " + playerId + " does not exist!");
+		}
+	}
 	
 	private static ValmanwayLogger logger = new ValmanwayLogger();
 	
@@ -41,6 +53,7 @@ public class Valmanway {
         	Socket acceptedSocket = serverSocket.accept();
         	ValmanwayUserData valmanwayUserData = new ValmanwayUserData(
         			Valmanway.getSharedData().getNextPlayerId(), Valmanway.getSharedData().getMostRecentChatMessageIndex());
+        	users.put(valmanwayUserData.getPlayerId(), valmanwayUserData);
         	new ValmanwayWriterThread(acceptedSocket, valmanwayUserData).start();
         	new ValmanwayReaderThread(acceptedSocket, valmanwayUserData).start();
         }

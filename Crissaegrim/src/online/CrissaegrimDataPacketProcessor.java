@@ -1,5 +1,6 @@
 package online;
 
+import busy.GotHitByAttackBusy;
 import crissaegrim.Crissaegrim;
 import datapacket.ChunkPacket;
 import datapacket.DataPacket;
@@ -39,6 +40,11 @@ public final class CrissaegrimDataPacketProcessor {
 				break;
 			case DataPacketTypes.CLIENT_IS_OUTDATED_PACKET:
 				Crissaegrim.getPlayer().assignPlayerId(-2); // playerId of -2 signifies outdated version
+				break;
+			case DataPacketTypes.GOT_HIT_BY_ATTACK_PACKET:
+				if (!Crissaegrim.getPlayer().isBusy()) {
+					Crissaegrim.getPlayer().setBusy(new GotHitByAttackBusy(false));
+				}
 				break;
 			default:
 				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());
