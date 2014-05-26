@@ -26,10 +26,7 @@ public class TileFull extends Tile {
 		Rect tileBoundingBox = new Rect(new Coordinate(xPos, yPos), new Coordinate(xPos + 1, yPos + 1));
 		Rect playerBodyBox = entity.getEntityBodyRect(endingPosition);
 		
-		return (!(tileBoundingBox.getRight() < playerBodyBox.getLeft() ||
-				tileBoundingBox.getLeft() > playerBodyBox.getRight() ||
-				tileBoundingBox.getTop() < playerBodyBox.getBottom() ||
-				tileBoundingBox.getBottom() > playerBodyBox.getTop()));
+		return (RectUtils.rectsOverlap(tileBoundingBox, playerBodyBox));
 	}
 
 	@Override

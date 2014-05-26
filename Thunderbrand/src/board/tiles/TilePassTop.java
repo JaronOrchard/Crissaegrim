@@ -29,12 +29,7 @@ public class TilePassTop extends Tile {
 		Rect tileBoundingBox = new Rect(new Coordinate(xPos, yPos), new Coordinate(xPos + 1, yPos + 1));
 		Rect playerBodyBox = entity.getEntityBodyRect(endingPosition);
 		
-		if (tileBoundingBox.getRight() < playerBodyBox.getLeft() ||
-				tileBoundingBox.getLeft() > playerBodyBox.getRight() ||
-				tileBoundingBox.getTop() < playerBodyBox.getBottom() ||
-				tileBoundingBox.getBottom() > playerBodyBox.getTop()) {
-			return false;
-		}
+		if (!RectUtils.rectsOverlap(tileBoundingBox, playerBodyBox)) { return false; }
 		return (startingPosition.getY() > yPos + 1 && endingPosition.getY() <= yPos + 1);
 	}
 
