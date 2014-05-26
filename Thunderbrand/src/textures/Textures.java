@@ -107,6 +107,7 @@ public class Textures {
 	public static final int STICK_PLAYER_STUNNED = 1005;
 	
 	public static final int NPC = 1100;
+	public static final int NPC_STUNNED = 1101;
 	
 	public static final int ICON_X = 1800;
 	
@@ -227,6 +228,7 @@ public class Textures {
 		TextureLoader.loadTexture(STICK_PLAYER_STUNNED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerStunned.png")));
 		
 		TextureLoader.loadTexture(NPC, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NPC.png")));
+		TextureLoader.loadTexture(NPC_STUNNED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NPCStunned.png")));
 		
 		TextureLoader.loadTexture(ICON_X, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/IconX.png")));
 		

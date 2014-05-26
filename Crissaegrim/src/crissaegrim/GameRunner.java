@@ -102,7 +102,7 @@ public class GameRunner {
 			if (!Crissaegrim.currentlyLoading) {
 				ClientBoard.verifyChunksExist(Crissaegrim.getBoard());
 				if (Crissaegrim.currentlyLoading) { continue; }
-				Crissaegrim.getPlayer().updateBusyAndIcon();
+				Crissaegrim.getPlayer().update();
 				actionDoodadList();
 			
 				// Draw new scene:
@@ -195,7 +195,7 @@ public class GameRunner {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
 				
 				if (Keyboard.getEventKey() == Keyboard.KEY_B) {
-					player.setBusy(new GotHitByAttackBusy());
+					player.setBusy(new GotHitByAttackBusy(false));
 				}
 				
 				if (Keyboard.getEventKey() == Keyboard.KEY_T ||

@@ -113,4 +113,11 @@ public final class RectUtils {
 				coord.getY() > rect.getTop()));
 	}
 	
+	public static boolean rectsOverlap(Rect rect1, Rect rect2) {
+		return (!(rect1.getRight() < rect2.getLeft() ||
+				rect1.getLeft() > rect2.getRight() ||
+				rect1.getTop() < rect2.getBottom() ||
+				rect1.getBottom() > rect2.getTop()));
+	}
+	
 }

@@ -39,16 +39,6 @@ public class Player extends Entity {
 		Crissaegrim.addSystemMessageIfDebug("Assigned player ID: " + id);
 	}
 	
-	/**
-	 * Update the player's various statuses.
-	 */
-	public void updateBusyAndIcon() {
-		if (isBusy() && busy.hasExpired()) {
-			busy = null;
-		}
-		icon = null;
-	}
-	
 	public void draw() {
 		glColor3d(1.0, 1.0, 1.0);
 		glPushMatrix();
@@ -123,7 +113,10 @@ public class Player extends Entity {
 	
 	@Override
 	public void update() {
-		// Do nothing (normally a server call for Entities)
+		if (isBusy() && busy.hasExpired()) {
+			busy = null;
+		}
+		icon = null;
 	}
 	
 }

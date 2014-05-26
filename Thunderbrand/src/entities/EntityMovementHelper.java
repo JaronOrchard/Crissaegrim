@@ -79,7 +79,7 @@ public class EntityMovementHelper {
 			// TODO: This should be split up depending upon the weapon and attack type
 			// TODO: Bounding rect of sword swing should not be entire entity
 			parentEntity.setBusy(new SwordSwingBusy());
-			returnedAttack = new Attack(parentEntity.getId(), parentEntity.getSwordSwingRect(), 1);
+			returnedAttack = new Attack(parentEntity.getId(), parentEntity.getCurrentBoardName(), parentEntity.getSwordSwingRect(), 1);
 		}
 		
 		// Planned movement rules:

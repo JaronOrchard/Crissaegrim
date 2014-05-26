@@ -40,6 +40,10 @@ public class NPC extends Entity {
 	boolean jumpedAlready = false;
 	@Override
 	public void update() {
+		if (isBusy() && busy.hasExpired()) {
+			busy = null;
+		}
+		
 		long currentTime = Thunderbrand.getTime();
 		EntityMovementHelper emh = getMovementHelper();
 		if (npc_type == 1) {
@@ -95,6 +99,7 @@ public class NPC extends Entity {
 
 	@Override
 	public int getCurrentTexture() {
+		if (isBusy()) return busy.getTexture();
 		return Textures.NPC;
 	}
 	
