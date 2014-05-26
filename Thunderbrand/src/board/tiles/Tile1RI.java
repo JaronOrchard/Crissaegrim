@@ -28,7 +28,7 @@ public class Tile1RI extends Tile {
 		tileBoundaryLines.add(new Line(new Coordinate(xPos + 1, yPos + 1), new Coordinate(xPos, yPos)));
 		tileBoundaryLines.add(new Line(new Coordinate(xPos, yPos), new Coordinate(xPos, yPos + 1)));
 		
-		List<Line> playerBoundaryLines = RectUtils.getLinesFromRect(entity.getEntityBoundingRect(endingPosition));
+		List<Line> playerBoundaryLines = RectUtils.getLinesFromRect(entity.getEntityBodyRect(endingPosition));
 		
 		return LineUtils.lineSetsIntersect(tileBoundaryLines, playerBoundaryLines);
 	}

@@ -86,7 +86,7 @@ public final class ValmanwayDataPacketProcessor {
 		for (Entity npc : Valmanway.getSharedData().getEntities()) {
 			if (npc.getCurrentBoardName().equals(attack.getBoardName()) &&
 					!npc.isBusy() &&
-					RectUtils.rectsOverlap(npc.getEntityBoundingRect(npc.getPosition()), attack.getBounds())) {
+					RectUtils.rectsOverlap(npc.getEntityBodyRect(npc.getPosition()), attack.getBounds())) {
 				npc.setBusy(new GotHitByAttackBusy(true));
 			}
 		}
@@ -102,7 +102,7 @@ public final class ValmanwayDataPacketProcessor {
 					entityStatus.getValue().getBoardName().equals(attack.getBoardName())) {
 				Coordinate position = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
 				Rect entityBounds = new Rect(
-						new Coordinate(position.getX() - (bodyWidth / 2), position.getY() + feetHeight),
+						new Coordinate(position.getX() - (bodyWidth / 2), position.getY()),
 						new Coordinate(position.getX() + (bodyWidth / 2), position.getY() + feetHeight + bodyHeight));
 				if (RectUtils.rectsOverlap(entityBounds, attack.getBounds())) {
 					Valmanway.sendPacketToPlayer(entityStatus.getKey(), new GotHitByAttackPacket(vud.getPlayerId()));

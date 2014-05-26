@@ -29,7 +29,7 @@ public class Tile2LH extends Tile {
 		tileBoundaryLines.add(new Line(new Coordinate(xPos + 1, yPos + 1), new Coordinate(xPos, yPos + 0.5)));
 		tileBoundaryLines.add(new Line(new Coordinate(xPos, yPos + 0.5), new Coordinate(xPos, yPos)));
 		
-		List<Line> playerBoundaryLines = RectUtils.getLinesFromRect(entity.getEntityBoundingRect(endingPosition));
+		List<Line> playerBoundaryLines = RectUtils.getLinesFromRect(entity.getEntityBodyRect(endingPosition));
 		
 		return LineUtils.lineSetsIntersect(tileBoundaryLines, playerBoundaryLines);
 	}

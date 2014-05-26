@@ -29,7 +29,7 @@ public class TilePass1L extends Tile {
 		List<Line> tileBoundaryLines = new ArrayList<Line>();
 		tileBoundaryLines.add(new Line(new Coordinate(xPos, yPos), new Coordinate(xPos + 1, yPos + 1)));
 		
-		List<Line> playerBoundaryLines = RectUtils.getLinesFromRect(entity.getEntityBoundingRect(endingPosition));
+		List<Line> playerBoundaryLines = RectUtils.getLinesFromRect(entity.getEntityBodyRect(endingPosition));
 		
 		double slopeYatX = yPos + Math.max(Math.min(startingPosition.getX() - (double)xPos, 1), 0);
 		

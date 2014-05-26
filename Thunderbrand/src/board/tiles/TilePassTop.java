@@ -27,7 +27,7 @@ public class TilePassTop extends Tile {
 		if (!CoordinateUtils.isMovingDown(startingPosition, endingPosition)) { return false; }
 		
 		Rect tileBoundingBox = new Rect(new Coordinate(xPos, yPos), new Coordinate(xPos + 1, yPos + 1));
-		Rect playerBodyBox = entity.getEntityBoundingRect(endingPosition);
+		Rect playerBodyBox = entity.getEntityBodyRect(endingPosition);
 		
 		if (tileBoundingBox.getRight() < playerBodyBox.getLeft() ||
 				tileBoundingBox.getLeft() > playerBodyBox.getRight() ||

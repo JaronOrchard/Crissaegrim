@@ -66,27 +66,35 @@ public abstract class Entity {
 	
 	public Board getCurrentBoard() { return entityMovementHelper.getBoardMap().get(currentBoardName); }
 	
-	public Rect getEntityBoundingRect(Coordinate position) {
+	public Rect getEntityBodyRect() { return getEntityBodyRect(position); }
+	public Rect getEntityBodyRect(Coordinate pos) {
 		return new Rect(
-				new Coordinate(position.getX() - (getBodyWidth() / 2), position.getY() + getFeetHeight()),
-				new Coordinate(position.getX() + (getBodyWidth() / 2), position.getY() + getFeetHeight() + getBodyHeight()));
+				new Coordinate(pos.getX() - (getBodyWidth() / 2), pos.getY() + getFeetHeight()),
+				new Coordinate(pos.getX() + (getBodyWidth() / 2), pos.getY() + getFeetHeight() + getBodyHeight()));
 	}
 	
-	public List<Line> getEntityFeetLines(Coordinate position, boolean includeHorizontalFeetLine) {
+	public Rect getEntityEntireRect() { return getEntityEntireRect(position); }
+	public Rect getEntityEntireRect(Coordinate pos) {
+		return new Rect(
+				new Coordinate(pos.getX() - (getBodyWidth() / 2), pos.getY()),
+				new Coordinate(pos.getX() + (getBodyWidth() / 2), pos.getY() + getFeetHeight() + getBodyHeight()));
+	}
+	
+	public List<Line> getEntityFeetLines(Coordinate pos, boolean includeHorizontalFeetLine) {
 		List<Line> feetLines = new ArrayList<Line>();
 		feetLines.add(new Line(
-				new Coordinate(position.getX(), position.getY()),
-				new Coordinate(position.getX(), position.getY() + getFeetHeight())));
+				new Coordinate(pos.getX(), pos.getY()),
+				new Coordinate(pos.getX(), pos.getY() + getFeetHeight())));
 		if (includeHorizontalFeetLine) {
 			feetLines.add(new Line(
-					new Coordinate(position.getX() - getBodyRadius(), position.getY()),
-					new Coordinate(position.getX() + getBodyRadius(), position.getY())));
+					new Coordinate(pos.getX() - getBodyRadius(), pos.getY()),
+					new Coordinate(pos.getX() + getBodyRadius(), pos.getY())));
 			feetLines.add(new Line(
-					new Coordinate(position.getX() - getBodyRadius(), position.getY()),
-					new Coordinate(position.getX() - getBodyRadius(), position.getY() + getFeetHeight())));
+					new Coordinate(pos.getX() - getBodyRadius(), pos.getY()),
+					new Coordinate(pos.getX() - getBodyRadius(), pos.getY() + getFeetHeight())));
 			feetLines.add(new Line(
-					new Coordinate(position.getX() + getBodyRadius(), position.getY()),
-					new Coordinate(position.getX() + getBodyRadius(), position.getY() + getFeetHeight())));
+					new Coordinate(pos.getX() + getBodyRadius(), pos.getY()),
+					new Coordinate(pos.getX() + getBodyRadius(), pos.getY() + getFeetHeight())));
 		}
 		return feetLines;
 	}
