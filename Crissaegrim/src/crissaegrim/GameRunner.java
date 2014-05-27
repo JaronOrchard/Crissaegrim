@@ -34,8 +34,8 @@ import board.ClientBoard;
 import board.MissingChunk;
 import board.tiles.Tile.TileLayer;
 import busy.GotHitByAttackBusy;
+import textblock.TextBlock;
 import textures.Textures;
-import thunderbrand.TextBlock;
 import thunderbrand.Thunderbrand;
 
 public class GameRunner {

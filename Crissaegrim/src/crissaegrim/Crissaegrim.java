@@ -17,6 +17,7 @@ import org.lwjgl.opengl.DisplayMode;
 import online.ValmanwayConnection;
 import board.Board;
 import players.Player;
+import textures.CommonTextures;
 import chatbox.ChatBox;
 import datapacket.DataPacket;
 import entities.EntityStatus;
@@ -30,6 +31,7 @@ public class Crissaegrim {
 	private static volatile Player player = null;
 	private static volatile Map<Integer, EntityStatus> ghosts = new HashMap<Integer, EntityStatus>();
 	private static volatile ChatBox chatBox = new ChatBox();
+	private static volatile CommonTextures commonTextures = new CommonTextures();
 	private static volatile ValmanwayConnection valmanwayConnection = new ValmanwayConnection();
 	private static volatile List<DataPacket> outgoingDataPackets = Collections.synchronizedList(new ArrayList<DataPacket>());
 	public static volatile boolean connectionStable = true;
@@ -42,6 +44,7 @@ public class Crissaegrim {
 	public static void setGhosts(Map<Integer, EntityStatus> g) { synchronized(Crissaegrim.getGhosts()) { ghosts = g; } }
 	public static Board getBoard() { return player.getCurrentBoard(); }
 	public static ChatBox getChatBox() { return chatBox; }
+	public static CommonTextures getCommonTextures() { return commonTextures; }
 	public static ValmanwayConnection getValmanwayConnection() { return valmanwayConnection; }
 	
 	public static void addOutgoingDataPacket(DataPacket dp) { outgoingDataPackets.add(dp); }

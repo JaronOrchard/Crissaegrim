@@ -1,4 +1,4 @@
-package thunderbrand;
+package textblock;
 
 import java.awt.Color;
 import java.io.Serializable;

@@ -8,7 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import thunderbrand.TextBlock;
+import textblock.TextBlock;
 import thunderbrand.Thunderbrand;
 
 public class ValmanwayLogger {

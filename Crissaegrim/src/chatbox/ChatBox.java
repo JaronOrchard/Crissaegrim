@@ -3,7 +3,7 @@ package chatbox;
 import java.awt.Color;
 
 import static org.lwjgl.opengl.GL11.*;
-import thunderbrand.TextBlock;
+import textblock.TextBlock;
 
 public class ChatBox {
 	

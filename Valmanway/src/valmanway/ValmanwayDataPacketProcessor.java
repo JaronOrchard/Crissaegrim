@@ -16,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import busy.GotHitByAttackBusy;
 import attack.Attack;
-import thunderbrand.TextBlock;
+import textblock.TextBlock;
 import thunderbrand.Thunderbrand;
 import datapacket.AttackPacket;
 import datapacket.ChunkPacket;

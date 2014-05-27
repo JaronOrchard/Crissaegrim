@@ -35,7 +35,7 @@ public class ChatHistory {
 		double alpha = 1.0;
 		glColor3d(1.0, 1.0, 1.0);
 		for (int i = 0; i < chatMessages.size(); i++) {
-			glBindTexture(GL_TEXTURE_2D, chatMessages.get(i).getTexture());
+			glBindTexture(GL_TEXTURE_2D, chatMessages.get(i).getTextureId());
 			if (!parentChatBox.isTypingMode()) {
 				alpha = chatMessages.get(i).getAlpha();
 				glColor4d(1.0, 1.0, 1.0, alpha);
@@ -46,9 +46,9 @@ public class ChatHistory {
 					glTexCoord2d(0, 1);
 					glVertex2d(5, y);
 					glTexCoord2d(1, 1);
-					glVertex2d(5 + 1024, y);
+					glVertex2d(5 + chatMessages.get(i).getWidth(), y);
 					glTexCoord2d(1, 0);
-					glVertex2d(5 + 1024, y + 20);
+					glVertex2d(5 + chatMessages.get(i).getWidth(), y + 20);
 					glTexCoord2d(0, 0);
 					glVertex2d(5, y + 20);
 				glEnd();

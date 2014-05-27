@@ -1,6 +1,6 @@
 package datapacket;
 
-import thunderbrand.TextBlock;
+import textblock.TextBlock;
 
 public class SendChatMessagePacket extends DataPacket {
 	private static final long serialVersionUID = 1L;

@@ -4,6 +4,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import textblock.TextTexture;
 import textures.Textures;
 import crissaegrim.Crissaegrim;
 import items.Item;
@@ -18,12 +21,17 @@ public class Inventory {
 	private final static long MILLIS_TO_SLIDE_RIGHT = 300;
 	
 	private static final int INVENTORY_SIZE = 8;
+	private TextTexture solaiiTextTexture; // Update this whenever the user's amount of Solaii changes
+	
 	private Item[] items;
+	private int solaii;
 	private int selectedItemIndex;
 	private long lastTouchedTime = 0;
 	
 	public Inventory() {
 		items = new Item[INVENTORY_SIZE];
+		solaii = 0;
+		solaiiTextTexture = Crissaegrim.getCommonTextures().getTextTexture("Solaii: " + Integer.toString(solaii));
 		selectedItemIndex = 0;
 		
 		items[0] = new Weapon("Starter Sword", Textures.ITEM_STARTER_SWORD);
@@ -64,6 +72,24 @@ public class Inventory {
 					amtSlid*(Crissaegrim.getWindowWidth() + BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2));
 		}
 		
+		// Draw "Solaii: ###":
+		int solaiiLabelLeft = rightX - solaiiTextTexture.getWidth();
+		glBindTexture(GL_TEXTURE_2D, solaiiTextTexture.getTextureId());
+		glPushMatrix();
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBegin(GL_QUADS);
+				glTexCoord2d(0, 1);
+				glVertex2d(solaiiLabelLeft, topY - 20);
+				glTexCoord2d(1, 1);
+				glVertex2d(solaiiLabelLeft + solaiiTextTexture.getWidth(), topY - 20);
+				glTexCoord2d(1, 0);
+				glVertex2d(solaiiLabelLeft + solaiiTextTexture.getWidth(), topY);
+				glTexCoord2d(0, 0);
+				glVertex2d(solaiiLabelLeft, topY);
+			glEnd();
+		glPopMatrix();
+		topY -= 24;
+		
 		// Draw item box outlines:
 		glDisable(GL_TEXTURE_2D);
 		for (int i = 0; i < selectedItemIndex; i++) {
@@ -97,7 +123,7 @@ public class Inventory {
 		glEnable(GL_TEXTURE_2D);
 		
 		// Draw items in boxes:
-		topY = Crissaegrim.getWindowHeight() - OUTER_PADDING_PIXELS;
+		topY = Crissaegrim.getWindowHeight() - OUTER_PADDING_PIXELS - 24;
 		for (int i = 0; i < selectedItemIndex; i++) {
 			if (items[i] != null) {
 				glBindTexture(GL_TEXTURE_2D, items[i].getTexture());

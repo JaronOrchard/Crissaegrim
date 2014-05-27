@@ -10,6 +10,7 @@ import java.nio.ByteBuffer;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL12;
 
@@ -73,19 +74,29 @@ public class TextureLoader {
 		return null;
 	}
 	
-	public static int createTextTexture(String message, Color color) {
+	/**
+	 * 
+	 * @param message
+	 * @param color
+	 * @return A Pair of Integers, where the left one is the texture id and the right one is the texture width
+	 */
+	public static Pair<Integer, Integer> createTextTexture(String message, Color color) {
+		Pair<Integer, Integer> idAndWidth;
 		int textureId;
 		synchronized(LOCK_1) {
 			textureId = NEXT_TEXT_TEXTURE_ID++;
 		}
-		BufferedImage textImg = new BufferedImage(1024, 20, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage textImg = new BufferedImage(1024, 25, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphTex = textImg.createGraphics();
 		graphTex.setColor(color);
-		Rectangle2D stringBounds = graphTex.getFontMetrics().getStringBounds(message, graphTex);
 		graphTex.setFont(TEXT_FONT);
+		Rectangle2D stringBounds = graphTex.getFontMetrics().getStringBounds(message, graphTex);
 		graphTex.drawString(message, 0, (float)stringBounds.getHeight());
-		loadTexture(textureId, textImg);
-		return textureId;
+		int width = (int)Math.ceil(stringBounds.getWidth());
+		idAndWidth = Pair.of(textureId, width);
+		BufferedImage croppedImg = textImg.getSubimage(0, 5, Math.min(width, 1024), 20);
+		loadTexture(textureId, croppedImg);
+		return idAndWidth;
 	}
 	
 }

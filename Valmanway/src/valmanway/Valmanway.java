@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import datapacket.DataPacket;
-import thunderbrand.TextBlock;
+import textblock.TextBlock;
 import thunderbrand.Thunderbrand;
 import world.WorldRunnerThread;
 

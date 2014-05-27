@@ -9,7 +9,7 @@ import java.util.Map;
 import entities.Entity;
 import entities.EntityStatus;
 import board.Board;
-import thunderbrand.TextBlock;
+import textblock.TextBlock;
 
 public class ValmanwaySharedData {
 	

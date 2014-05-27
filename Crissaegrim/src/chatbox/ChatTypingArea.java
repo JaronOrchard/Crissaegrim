@@ -9,7 +9,7 @@ import java.util.Map;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import thunderbrand.TextBlock;
+import textblock.TextBlock;
 import crissaegrim.Crissaegrim;
 import datapacket.SendChatMessagePacket;
 
@@ -43,25 +43,24 @@ public class ChatTypingArea {
 	
 	public void draw() {
 		if (typingModeEnabled) {
-			int texture;
+			ChatMessage chatMessage;
 			String hashMapKey = currentColor.getRGB() + currentMessage;
 			if (messageEntryTextures.containsKey(hashMapKey)) {
-				texture = messageEntryTextures.get(hashMapKey).getTexture();
+				chatMessage = messageEntryTextures.get(hashMapKey);
 			} else {
-				ChatMessage tempMsg = new ChatMessage(currentMessage, currentColor);
-				messageEntryTextures.put(hashMapKey, tempMsg);
-				texture = tempMsg.getTexture();
+				chatMessage = new ChatMessage(currentMessage, currentColor);
+				messageEntryTextures.put(hashMapKey, chatMessage);
 			}
-			glBindTexture(GL_TEXTURE_2D, texture);
+			glBindTexture(GL_TEXTURE_2D, chatMessage.getTextureId());
 			glPushMatrix();
 				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 				glBegin(GL_QUADS);
 					glTexCoord2d(0, 1);
 					glVertex2d(5, 5);
 					glTexCoord2d(1, 1);
-					glVertex2d(5 + 1024, 5);
+					glVertex2d(5 + chatMessage.getWidth(), 5);
 					glTexCoord2d(1, 0);
-					glVertex2d(5 + 1024, 25);
+					glVertex2d(5 + chatMessage.getWidth(), 25);
 					glTexCoord2d(0, 0);
 					glVertex2d(5, 25);
 				glEnd();

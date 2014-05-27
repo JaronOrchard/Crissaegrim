@@ -1,4 +1,4 @@
-package chatbox;
+package textblock;
 
 import java.awt.Color;
 import java.util.Date;
@@ -8,9 +8,7 @@ import org.lwjgl.opengl.GL11;
 
 import textures.TextureLoader;
 
-public class ChatMessage {
-	private final static long MILLIS_AT_FULL_ALPHA = 10000;
-	private final static long MILLIS_TO_FADE_OUT = 1500;
+public class TextTexture {
 	
 	private final int textureId;
 	private final int width;
@@ -18,8 +16,16 @@ public class ChatMessage {
 	
 	public int getTextureId() { return textureId; }
 	public int getWidth() { return width; }
+	public long getCreationTime() { return creationTime; }
 	
-	public ChatMessage(String message, Color color) {
+	public TextTexture(TextBlock tb) {
+		Pair<Integer, Integer> idAndWidth = TextureLoader.createTextTexture(tb.getMessage(), tb.getColor());
+		textureId = idAndWidth.getLeft();
+		width = idAndWidth.getRight();
+		creationTime = new Date().getTime();
+	}
+	
+	public TextTexture(String message, Color color) {
 		Pair<Integer, Integer> idAndWidth = TextureLoader.createTextTexture(message, color);
 		textureId = idAndWidth.getLeft();
 		width = idAndWidth.getRight();
@@ -29,12 +35,5 @@ public class ChatMessage {
 	public void delete() {
 		GL11.glDeleteTextures(textureId);
 	}
-	
-	public double getAlpha() {
-		if (new Date().getTime() - creationTime < MILLIS_AT_FULL_ALPHA) {
-			return 1;
-		}
-		return Math.max(0, (double)(MILLIS_TO_FADE_OUT - (new Date().getTime() - creationTime - MILLIS_AT_FULL_ALPHA)) / (double)MILLIS_TO_FADE_OUT);
-	}
-	
+		
 }
