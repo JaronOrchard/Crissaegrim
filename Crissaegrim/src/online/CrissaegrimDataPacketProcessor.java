@@ -5,6 +5,7 @@ import crissaegrim.Crissaegrim;
 import datapacket.ChunkPacket;
 import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
+import datapacket.IncomingChunkCountPacket;
 import datapacket.NonexistentChunkPacket;
 import datapacket.ReceivePlayerIdPacket;
 import datapacket.ReceivePlayerNamePacket;
@@ -30,9 +31,11 @@ public final class CrissaegrimDataPacketProcessor {
 				break;
 			case DataPacketTypes.CHUNK_PACKET:
 				Crissaegrim.getGameRunner().addChunk( ((ChunkPacket)(packet)) );
+				Crissaegrim.numPacketsReceived++;
 				break;
 			case DataPacketTypes.NONEXISTENT_CHUNK_PACKET:
 				Crissaegrim.getGameRunner().addNonexistentChunk( ((NonexistentChunkPacket)(packet)) );
+				Crissaegrim.numPacketsReceived++;
 				break;
 			case DataPacketTypes.DONE_SENDING_CHUNKS_PACKET:
 				Crissaegrim.currentlyLoading = false;
@@ -46,6 +49,10 @@ public final class CrissaegrimDataPacketProcessor {
 					Crissaegrim.getPlayer().setBusy(new GotHitByAttackBusy(false));
 				}
 				break;
+			case DataPacketTypes.INCOMING_CHUNK_COUNT_PACKET:
+				Crissaegrim.numPacketsToReceive = ((IncomingChunkCountPacket)(packet)).getIncomingChunkCount();
+				break;
+			
 			default:
 				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());
 		}

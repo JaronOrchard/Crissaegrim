@@ -40,6 +40,8 @@ public class ClientBoard {
 					// Chunk is missing!  Request and set to loading, then break out.
 					Crissaegrim.addOutgoingDataPacket(new RequestSpecificChunkPacket(board.getName(), xOrig, yOrig));
 					Crissaegrim.currentlyLoading = true;
+					Crissaegrim.numPacketsReceived = 0;
+					Crissaegrim.numPacketsToReceive = 0;
 					System.out.println("Warning!  Chunk '" + board.getName() + "@" + xOrig + "_" + yOrig + "' was missing!"); 
 					return;
 				}

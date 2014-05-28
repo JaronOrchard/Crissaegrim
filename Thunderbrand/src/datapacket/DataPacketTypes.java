@@ -16,5 +16,6 @@ public class DataPacketTypes {
 	public static final int CLIENT_IS_OUTDATED_PACKET =			12; // Valmanway -> Crissaegrim
 	public static final int ATTACK_PACKET =						13; // Crissaegrim -> Valmanway
 	public static final int GOT_HIT_BY_ATTACK_PACKET =			14; // Valmanway -> Crissaegrim
+	public static final int INCOMING_CHUNK_COUNT_PACKET =		15; // Valmanway -> Crissaegrim
 	
 }

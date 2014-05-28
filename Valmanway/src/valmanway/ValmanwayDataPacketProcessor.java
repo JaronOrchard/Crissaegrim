@@ -25,6 +25,7 @@ import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
 import datapacket.DoneSendingChunksPacket;
 import datapacket.GotHitByAttackPacket;
+import datapacket.IncomingChunkCountPacket;
 import datapacket.NonexistentChunkPacket;
 import datapacket.ReceivePlayerIdPacket;
 import datapacket.ReceivePlayerNamePacket;
@@ -226,6 +227,8 @@ public final class ValmanwayDataPacketProcessor {
 				}
 			}
 		}
+		
+		vud.addOutgoingDataPacket(new IncomingChunkCountPacket(chunkPackets.size()));
 		for (DataPacket chunkPacket : chunkPackets.values()) {
 			vud.addOutgoingDataPacket(chunkPacket);
 		}

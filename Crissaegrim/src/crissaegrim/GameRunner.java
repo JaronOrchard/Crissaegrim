@@ -123,6 +123,7 @@ public class GameRunner {
 			} else {
 				drawScene();
 				drawLoadingMessage();
+				drawLoadingProgressBar();
 			}
 			
 			Display.update();
@@ -313,6 +314,33 @@ public class GameRunner {
 		glPopMatrix();
 	}
 	
+	private void drawLoadingProgressBar() {
+		if (Crissaegrim.numPacketsToReceive != 0) {
+			// Loading message texture size is 372 x 64, so use that width...
+			double amtLoaded = (double)Crissaegrim.numPacketsReceived / (double)Crissaegrim.numPacketsToReceive;
+			int progressBarRight = (int)(((1.0 - amtLoaded) * 32.0) + (amtLoaded * 404));  
+			GameInitializer.initializeNewFrameForWindow();
+			glDisable(GL_TEXTURE_2D);
+			glColor3d(0.15, 0.45, 0.15);
+			glBegin(GL_QUADS);
+				glVertex2d(32, Crissaegrim.getWindowHeight() - 106);
+				glVertex2d(progressBarRight, Crissaegrim.getWindowHeight() - 106);
+				glVertex2d(progressBarRight, Crissaegrim.getWindowHeight() - 136);
+				glVertex2d(32, Crissaegrim.getWindowHeight() - 136);
+			glEnd();
+			glColor3d(0.66, 0.66, 0.66);
+			glLineWidth(2);
+			glBegin(GL_LINE_LOOP);
+				glVertex2d(32, Crissaegrim.getWindowHeight() - 106);
+				glVertex2d(404, Crissaegrim.getWindowHeight() - 106);
+				glVertex2d(404, Crissaegrim.getWindowHeight() - 136);
+				glVertex2d(32, Crissaegrim.getWindowHeight() - 136);
+			glEnd();
+			glLineWidth(1);
+			glEnable(GL_TEXTURE_2D);
+		}
+	}
+	
 	/**
 	 * Displays one of the message textures made in MSPaint until the client is closed.
 	 * @param texture The texture id of the message to display
@@ -362,6 +390,8 @@ public class GameRunner {
 			} else {
 				Crissaegrim.addOutgoingDataPacket(new RequestEntireBoardPacket(destinationBoardName));
 				Crissaegrim.currentlyLoading = true;
+				Crissaegrim.numPacketsReceived = 0;
+				Crissaegrim.numPacketsToReceive = 0;
 			}
 		}
 	}
