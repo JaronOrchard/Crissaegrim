@@ -25,8 +25,9 @@ public class ValmanwayWriterThread extends Thread {
 
     public void run() {
     	
+    	ObjectOutputStream socketOut = null;
     	try {
-    		ObjectOutputStream socketOut = new ObjectOutputStream(crissaegrimSocket.getOutputStream());
+    		socketOut = new ObjectOutputStream(crissaegrimSocket.getOutputStream());
     		socketOut.flush();
     		
     		ValmanwayDataPacketProcessor.sendRegularMessage(valmanwayUserData.getPlayerName() + " has logged in.", Color.GRAY);
@@ -52,14 +53,14 @@ public class ValmanwayWriterThread extends Thread {
     		}
     		
     		ValmanwayDataPacketProcessor.sendRegularMessage(valmanwayUserData.getPlayerName() + " has logged out.", Color.GRAY);
-    		
-    		socketOut.close();
-    		crissaegrimSocket.close();
-    		
     	} catch (IOException e) {
-    		System.out.println("Valmanway writer thread ended unexpectedly!");
-			e.printStackTrace();
-		}
+    		System.out.println(valmanwayUserData.getPlayerName() + " has left");
+    	}
+    	
+    	try {
+	    	socketOut.close();
+			crissaegrimSocket.close();
+	    } catch (IOException e) { e.printStackTrace(); }
     	
     	valmanwayUserData.connectionStable = false;
     	Valmanway.getSharedData().dropPlayer(valmanwayUserData.getPlayerId());
