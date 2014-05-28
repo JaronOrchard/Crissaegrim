@@ -4,8 +4,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import textblock.TextTexture;
 import textures.Textures;
 import crissaegrim.Crissaegrim;
@@ -61,15 +59,22 @@ public class Inventory {
 	
 	public void draw() {
 		long now = new Date().getTime();
-		if (now - lastTouchedTime > MILLIS_AT_FULL_EXTENDED + MILLIS_TO_SLIDE_RIGHT) { return; } // Inventory is out of view
+		if (items[selectedItemIndex] == null && now - lastTouchedTime > MILLIS_AT_FULL_EXTENDED + MILLIS_TO_SLIDE_RIGHT) {
+			return; // Inventory is out of view
+		}
 		int topY = Crissaegrim.getWindowHeight() - OUTER_PADDING_PIXELS;
+		int selectedItemRightX = Crissaegrim.getWindowWidth() - OUTER_PADDING_PIXELS;
 		int rightX;
 		if (now - lastTouchedTime < MILLIS_AT_FULL_EXTENDED) {
-			rightX = Crissaegrim.getWindowWidth() - OUTER_PADDING_PIXELS;
+			rightX = selectedItemRightX;
 		} else {
 			double amtSlid = ((double)(now - lastTouchedTime - MILLIS_AT_FULL_EXTENDED)) / (double)MILLIS_TO_SLIDE_RIGHT;
-			rightX = (int)((1.0 - amtSlid)*(Crissaegrim.getWindowWidth() - OUTER_PADDING_PIXELS) +
+			rightX = (int)((1.0 - amtSlid)*(selectedItemRightX) +
 					amtSlid*(Crissaegrim.getWindowWidth() + BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2));
+			if (items[selectedItemIndex] == null) {
+				selectedItemRightX = (int)((1.0 - amtSlid)*(selectedItemRightX) +
+						amtSlid*(Crissaegrim.getWindowWidth() + BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2));
+			}
 		}
 		
 		// Draw "Solaii: ###":
@@ -104,10 +109,10 @@ public class Inventory {
 		}
 		setGlColorForItem(selectedItemIndex);
 		glBegin(GL_LINE_LOOP);
-			glVertex2d(rightX, topY);
-			glVertex2d(rightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2, topY);
-			glVertex2d(rightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2, topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2);
-			glVertex2d(rightX, topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2);
+			glVertex2d(selectedItemRightX, topY);
+			glVertex2d(selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2, topY);
+			glVertex2d(selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2, topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2);
+			glVertex2d(selectedItemRightX, topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2);
 		glEnd();
 		topY -= BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		for (int i = selectedItemIndex + 1; i < INVENTORY_SIZE; i++) {
@@ -149,13 +154,13 @@ public class Inventory {
 				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 				glBegin(GL_QUADS);
 					glTexCoord2d(0, 1);
-					glVertex2d(rightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS, topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS);
+					glVertex2d(selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS, topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS);
 					glTexCoord2d(1, 1);
-					glVertex2d(rightX - INNER_PADDING_PIXELS, topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS);
+					glVertex2d(selectedItemRightX - INNER_PADDING_PIXELS, topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS);
 					glTexCoord2d(1, 0);
-					glVertex2d(rightX - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
+					glVertex2d(selectedItemRightX - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
 					glTexCoord2d(0, 0);
-					glVertex2d(rightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
+					glVertex2d(selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
 				glEnd();
 			glPopMatrix();
 		}
