@@ -15,18 +15,21 @@ public class Board {
 	
 	protected Map<String, Chunk> chunkMap;
 	protected final String boardName;
+	private final int backgroundTextureId;
 	
 	private List<Attack> attackList;
 	private List<Doodad> doodadList;
 	
 	public Map<String, Chunk> getChunkMap() { return chunkMap; }
 	public String getName() { return boardName; }
+	public int getBackgroundTextureId() { return backgroundTextureId; }
 	public List<Attack> getAttackList() { return attackList; }
 	public List<Doodad> getDoodadList() { return doodadList; }
 	
 	public Board(String bName) {
 		chunkMap = new HashMap<String, Chunk>();
 		boardName = bName;
+		backgroundTextureId = BoardInfo.getBackgroundTextureIdForBoard(boardName);
 		attackList = new ArrayList<Attack>();
 		doodadList = new ArrayList<Doodad>();
 	}

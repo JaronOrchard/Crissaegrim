@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import crissaegrim.Crissaegrim;
-import textures.Textures;
 import thunderbrand.Thunderbrand;
 import board.tiles.Tile.TileLayer;
 import datapacket.RequestSpecificChunkPacket;
@@ -77,7 +76,7 @@ public class ClientBoard {
 	
 	public static void drawBackground(Board board) {
 		glColor3d(1.0, 1.0, 1.0);
-		glBindTexture(GL_TEXTURE_2D, Textures.BACKGROUND_SOTN);
+		glBindTexture(GL_TEXTURE_2D, board.getBackgroundTextureId());
 		glPushMatrix();
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 			glBegin(GL_QUADS);
