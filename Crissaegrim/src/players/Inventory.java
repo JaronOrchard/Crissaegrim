@@ -127,7 +127,8 @@ public class Inventory {
 		}
 		glEnable(GL_TEXTURE_2D);
 		
-		// Draw items in boxes:
+		glColor3d(1, 1, 1);
+		// Draw items in boxes and item label if applicable:
 		topY = Crissaegrim.getWindowHeight() - OUTER_PADDING_PIXELS - 24;
 		for (int i = 0; i < selectedItemIndex; i++) {
 			if (items[i] != null) {
@@ -163,6 +164,24 @@ public class Inventory {
 					glVertex2d(selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
 				glEnd();
 			glPopMatrix();
+			if (now - lastTouchedTime < MILLIS_AT_FULL_EXTENDED) {
+				TextTexture selectedItemLabel = Crissaegrim.getCommonTextures().getTextTexture(items[selectedItemIndex].getName());
+				int selectedItemLabelLeft = selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2 - OUTER_PADDING_PIXELS - selectedItemLabel.getWidth();
+				glBindTexture(GL_TEXTURE_2D, selectedItemLabel.getTextureId());
+				glPushMatrix();
+					glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+					glBegin(GL_QUADS);
+						glTexCoord2d(0, 1);
+						glVertex2d(selectedItemLabelLeft, topY - 45);
+						glTexCoord2d(1, 1);
+						glVertex2d(selectedItemLabelLeft + selectedItemLabel.getWidth(), topY - 45);
+						glTexCoord2d(1, 0);
+						glVertex2d(selectedItemLabelLeft + selectedItemLabel.getWidth(), topY - 25);
+						glTexCoord2d(0, 0);
+						glVertex2d(selectedItemLabelLeft, topY - 25);
+					glEnd();
+				glPopMatrix();
+			}
 		}
 		topY -= BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		for (int i = selectedItemIndex + 1; i < INVENTORY_SIZE; i++) {
