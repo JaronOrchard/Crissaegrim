@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import vitals.HealthBar;
 import board.Board;
 import busy.Busy;
 import geometry.Coordinate;
@@ -17,6 +18,9 @@ public abstract class Entity {
 	
 	protected int id;
 	public int getId() { return id; }
+	
+	private final HealthBar healthBar;
+	public HealthBar getHealthBar() { return healthBar; }
 	
 	// Default values to Player's:
 	protected double entityFeetHeight = 0.425;	// NOTE: If these values change,
@@ -106,9 +110,10 @@ public abstract class Entity {
 	private final EntityMovementHelper entityMovementHelper;
 	public EntityMovementHelper getMovementHelper() { return entityMovementHelper; }
 	
-	public Entity(Map<String, Board> boardMap) {
+	public Entity(int maxHealth, Map<String, Board> boardMap) {
 		id = -1;
 		entityMovementHelper = new EntityMovementHelper(this, boardMap);
+		healthBar = new HealthBar(maxHealth);
 	}
 	
 	public abstract void update();

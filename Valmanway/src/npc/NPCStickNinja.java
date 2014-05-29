@@ -10,10 +10,11 @@ import entities.EntityMovementHelper;
 
 public class NPCStickNinja extends NPC {
 	
+	private static final int MAX_HEALTH = 10;
 	private final int npc_type;
 	
 	public NPCStickNinja(int npc_id, Coordinate startingPosition, String boardName, Map<String, Board> boardMap, int type) {
-		super(npc_id, startingPosition, boardName, boardMap);
+		super(npc_id, MAX_HEALTH, startingPosition, boardName, boardMap);
 		npc_type = type;
 		
 		// TODO: Make a required function that sets all the movement parameters up

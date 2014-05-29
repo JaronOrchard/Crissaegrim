@@ -11,6 +11,8 @@ import entities.Entity;
 
 public class Player extends Entity {
 	
+	private static final int MAX_HEALTH = 100;
+	
 	private String icon = null; // Appears when something is actionable, like entering a door
 	public void setIcon(String newIcon) { icon = newIcon; }
 	
@@ -22,7 +24,7 @@ public class Player extends Entity {
 	public Inventory getInventory() { return inventory; }
 	
 	public Player(Map<String, Board> boardMap) {
-		super(boardMap);
+		super(MAX_HEALTH, boardMap);
 		name = "UNASSIGNED";
 		
 		gravityAcceleration = -0.0045;
