@@ -11,6 +11,7 @@ import players.Player;
 import thunderbrand.Thunderbrand;
 import crissaegrim.Crissaegrim;
 import datapacket.SendPlayerStatusPacket;
+import entities.EntityStatus;
 
 public class ValmanwayConnection {
 	
@@ -60,12 +61,14 @@ public class ValmanwayConnection {
 		if (Thunderbrand.getTime() - lastPlayerStatusSendTime > PLAYER_STATUS_SEND_INTERVAL) {
 			lastPlayerStatusSendTime = Thunderbrand.getTime();
 			Player player = Crissaegrim.getPlayer();
-			Crissaegrim.addOutgoingDataPacket(new SendPlayerStatusPacket(
+			Crissaegrim.addOutgoingDataPacket(new SendPlayerStatusPacket(new EntityStatus(
 					Crissaegrim.getBoard().getName(),
 					player.getPosition().getX(),
 					player.getPosition().getY(),
 					player.getCurrentTexture(),
-					player.getFacingRight()));
+					player.getFacingRight(),
+					player.getTextureHalfWidth(),
+					player.getTextureHeight())));
 		}
 	}
 	

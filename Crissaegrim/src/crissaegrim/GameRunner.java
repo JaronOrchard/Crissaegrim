@@ -81,6 +81,9 @@ public class GameRunner {
 		destinationBoardName = "tower_of_preludes";
 		destinationCoordinate = new Coordinate(10044, 10084); // tower_of_preludes
 		
+		destinationBoardName = "sotn_clock_tower";
+		destinationCoordinate = new Coordinate(10132, 10038);
+		
 		//destinationPosition = new Coordinate(10044, 10020); // dawning
 		goToDestinationBoard();
 		
@@ -197,7 +200,7 @@ public class GameRunner {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
 				
 				if (Keyboard.getEventKey() == Keyboard.KEY_B) {
-					player.setBusy(new GotHitByAttackBusy(false));
+					player.setBusy(new GotHitByAttackBusy(player.getStunnedTexture()));
 				}
 				
 				if (Keyboard.getEventKey() == Keyboard.KEY_T ||
@@ -278,19 +281,21 @@ public class GameRunner {
 		boolean facingRight = ghost.getFacingRight();
 		double xPos = ghost.getXPos();
 		double yPos = ghost.getYPos();
+		double textureHalfWidth = ghost.getTextureHalfWidth();
+		double textureHeight = ghost.getTextureHeight();
 		glColor3d(1.0, 1.0, 1.0);
 		glPushMatrix();
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 			glBindTexture(GL_TEXTURE_2D, ghost.getCurrentTexture());
 			glBegin(GL_QUADS);
 				glTexCoord2d(facingRight ? 0 : 1, 0);
-				glVertex2d(xPos - 1.5, yPos + 3);
+				glVertex2d(xPos - textureHalfWidth, yPos + textureHeight);
 				glTexCoord2d(facingRight ? 1 : 0, 0);
-				glVertex2d(xPos + 1.5, yPos + 3);
+				glVertex2d(xPos + textureHalfWidth, yPos + textureHeight);
 				glTexCoord2d(facingRight ? 1 : 0, 1);
-				glVertex2d(xPos + 1.5, yPos);
+				glVertex2d(xPos + textureHalfWidth, yPos);
 				glTexCoord2d(facingRight ? 0 : 1, 1);
-				glVertex2d(xPos - 1.5, yPos);
+				glVertex2d(xPos - textureHalfWidth, yPos);
 			glEnd();
 		glPopMatrix();
 	}

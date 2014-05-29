@@ -22,6 +22,8 @@ public abstract class Entity {
 	protected double entityFeetHeight = 0.425;	// NOTE: If these values change,
 	protected double entityBodyHeight = 2.4;	//       be sure to change
 	protected double entityBodyWidth = 0.6;		//       ValmanwayDataPacketProcessor, too.
+	protected double textureHalfWidth = 1.5;
+	protected double textureHeight = 3;
 	
 	protected double gravityAcceleration = -0.0045;
 	protected double tileCollisionPadding = gravityAcceleration / -2;
@@ -43,6 +45,8 @@ public abstract class Entity {
 	public double getEntireHeight() { return entityBodyHeight + entityFeetHeight; }
 	public double getBodyWidth() { return entityBodyWidth; }
 	public double getBodyRadius() { return entityBodyWidth / 2; }
+	public double getTextureHalfWidth() { return textureHalfWidth; }
+	public double getTextureHeight() { return textureHeight; }
 	
 	public double getGravityAcceleration() { return gravityAcceleration; }
 	public double getTileCollisionPadding() { return tileCollisionPadding; }
@@ -109,6 +113,7 @@ public abstract class Entity {
 	
 	public abstract void update();
 	public abstract int getCurrentTexture();
+	public abstract int getStunnedTexture();
 	
 	// --- TEMPORARY CODE/METHOD to test Attacks; bounding rect will be built into the weapon later
 	private static double PLAYER_SWORD_ALTITUDE = 1.74;

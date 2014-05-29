@@ -9,9 +9,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import npc.NPCPhanto;
+import npc.NPCStickNinja;
 import entities.Entity;
 import entities.EntityStatus;
-import entities.NPC;
 import geometry.Coordinate;
 import thunderbrand.Thunderbrand;
 import valmanway.Valmanway;
@@ -51,7 +52,7 @@ public class WorldRunner {
 					entity.update();
 			    	Valmanway.getSharedData().updateEntityStatusMap(entity.getId(),
 			    			new EntityStatus(entity.getCurrentBoardName(), entity.getPosition().getX(), entity.getPosition().getY(),
-			    					entity.getCurrentTexture(), entity.getFacingRight()));
+			    					entity.getCurrentTexture(), entity.getFacingRight(), entity.getTextureHalfWidth(), entity.getTextureHeight()));
 				}
 			}
 
@@ -134,8 +135,12 @@ public class WorldRunner {
 	}
 	
 	private void createNPCs() {
-		Valmanway.getSharedData().getEntities().add(new NPC(1000001, new Coordinate(10042, 10084), "tower_of_preludes", 1, Valmanway.getSharedData().getBoardMap()));
-		Valmanway.getSharedData().getEntities().add(new NPC(1000000, new Coordinate(10050, 10023), "dawning", 2, Valmanway.getSharedData().getBoardMap()));
+		//Valmanway.getSharedData().getEntities().add(new NPCStickNinja(1000001, new Coordinate(10042, 10084), "tower_of_preludes", Valmanway.getSharedData().getBoardMap(), 1));
+		//Valmanway.getSharedData().getEntities().add(new NPCStickNinja(1000000, new Coordinate(10050, 10023), "dawning", Valmanway.getSharedData().getBoardMap(), 2));
+		
+		Valmanway.getSharedData().getEntities().add(new NPCPhanto(1000002, new Coordinate(10087, 10038), "sotn_clock_tower", Valmanway.getSharedData().getBoardMap()));
+		
+		
 	}
 	
 }

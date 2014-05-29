@@ -112,6 +112,9 @@ public class Player extends Entity {
 	}
 	
 	@Override
+	public int getStunnedTexture() { return Textures.STICK_PLAYER_STUNNED; }
+	
+	@Override
 	public void update() {
 		if (isBusy() && busy.hasExpired()) {
 			busy = null;

@@ -46,7 +46,7 @@ public final class CrissaegrimDataPacketProcessor {
 				break;
 			case DataPacketTypes.GOT_HIT_BY_ATTACK_PACKET:
 				if (!Crissaegrim.getPlayer().isBusy()) {
-					Crissaegrim.getPlayer().setBusy(new GotHitByAttackBusy(false));
+					Crissaegrim.getPlayer().setBusy(new GotHitByAttackBusy(Crissaegrim.getPlayer().getStunnedTexture()));
 				}
 				break;
 			case DataPacketTypes.INCOMING_CHUNK_COUNT_PACKET:

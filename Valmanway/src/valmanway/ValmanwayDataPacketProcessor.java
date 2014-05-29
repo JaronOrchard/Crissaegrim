@@ -88,7 +88,7 @@ public final class ValmanwayDataPacketProcessor {
 			if (npc.getCurrentBoardName().equals(attack.getBoardName()) &&
 					!npc.isBusy() &&
 					RectUtils.rectsOverlap(npc.getEntityBodyRect(npc.getPosition()), attack.getBounds())) {
-				npc.setBusy(new GotHitByAttackBusy(true));
+				npc.setBusy(new GotHitByAttackBusy(npc.getStunnedTexture()));
 			}
 		}
 		// Compare this attack to all Players:

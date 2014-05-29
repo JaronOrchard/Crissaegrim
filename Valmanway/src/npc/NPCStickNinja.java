@@ -1,4 +1,4 @@
-package entities;
+package npc;
 
 import java.util.Map;
 
@@ -6,30 +6,28 @@ import geometry.Coordinate;
 import board.Board;
 import textures.Textures;
 import thunderbrand.Thunderbrand;
-import entities.Entity;
+import entities.EntityMovementHelper;
 
-public class NPC extends Entity {
-	
-	private static double NPC_SWORD_ALTITUDE = 1.74;
-	private static double NPC_SWORD_HEIGHT = 0.15;
-	private static double NPC_SWORD_LENGTH = 1.0;
-	
-	public static double getNPCSwordAltitude() { return NPC_SWORD_ALTITUDE; }
-	public static double getNPCSwordHeight() { return NPC_SWORD_HEIGHT; }
-	public static double getNPCSwordLength() { return NPC_SWORD_LENGTH; }
+public class NPCStickNinja extends NPC {
 	
 	private final int npc_type;
 	
-	public NPC(int npc_id, Coordinate startingPosition, String boardName, int type, Map<String, Board> boardMap) {
-		super(boardMap);
-		id = npc_id;
-		currentBoardName = boardName;
-		position = startingPosition;
+	public NPCStickNinja(int npc_id, Coordinate startingPosition, String boardName, Map<String, Board> boardMap, int type) {
+		super(npc_id, startingPosition, boardName, boardMap);
 		npc_type = type;
 		
 		// TODO: Make a required function that sets all the movement parameters up
 		
 	}
+	
+	@Override
+	public int getCurrentTexture() {
+		if (isBusy()) return busy.getTexture();
+		return Textures.NPC_STICK_NINJA;
+	}
+	
+	@Override
+	public int getStunnedTexture() { return Textures.NPC_STICK_NINJA_STUNNED; }
 	
 	// Currently a hack to get NPCs initially working.
 	// Preferably each type of NPC would be its own subclass or something.
@@ -95,12 +93,6 @@ public class NPC extends Entity {
 				tempTime = currentTime;
 			}
 		}
-	}
-
-	@Override
-	public int getCurrentTexture() {
-		if (isBusy()) return busy.getTexture();
-		return Textures.NPC;
 	}
 	
 }
