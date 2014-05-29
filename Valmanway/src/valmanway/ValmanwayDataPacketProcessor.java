@@ -79,15 +79,13 @@ public final class ValmanwayDataPacketProcessor {
 		
 	}
 	
-	private static boolean isPlayerId(int id) { return id < 1000000; }
-	
 	private static void processAttackPacket(AttackPacket attackPacket, ValmanwayUserData vud) {
 		Attack attack = attackPacket.getAttack();
 		// Compare this attack to all NPCs:
 		for (Entity npc : Valmanway.getSharedData().getEntities()) {
 			if (npc.getCurrentBoardName().equals(attack.getBoardName()) &&
 					!npc.isBusy() &&
-					RectUtils.rectsOverlap(npc.getEntityBodyRect(npc.getPosition()), attack.getBounds())) {
+					RectUtils.rectsOverlap(npc.getEntityEntireRect(npc.getPosition()), attack.getBounds())) {
 				npc.setBusy(new GotHitByAttackBusy(npc.getStunnedTexture()));
 			}
 		}
@@ -99,14 +97,14 @@ public final class ValmanwayDataPacketProcessor {
 		double bodyWidth = 0.6;
 		
 		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getEntityStatuses().entrySet()) {
-			if (entityStatus.getKey() != vud.getPlayerId() && isPlayerId(entityStatus.getKey()) &&
+			if (entityStatus.getKey() != vud.getPlayerId() && entityStatus.getKey() < 1000000 &&
 					entityStatus.getValue().getBoardName().equals(attack.getBoardName())) {
 				Coordinate position = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
 				Rect entityBounds = new Rect(
 						new Coordinate(position.getX() - (bodyWidth / 2), position.getY()),
 						new Coordinate(position.getX() + (bodyWidth / 2), position.getY() + feetHeight + bodyHeight));
 				if (RectUtils.rectsOverlap(entityBounds, attack.getBounds())) {
-					Valmanway.sendPacketToPlayer(entityStatus.getKey(), new GotHitByAttackPacket(vud.getPlayerId()));
+					Valmanway.sendPacketToPlayer(entityStatus.getKey(), new GotHitByAttackPacket(vud.getPlayerId(), attack.getAttackPower()));
 				}
 			}
 		}

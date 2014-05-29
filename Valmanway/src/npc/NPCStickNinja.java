@@ -21,6 +21,9 @@ public class NPCStickNinja extends NPC {
 	}
 	
 	@Override
+	public int getAttackPower() { return 1; }
+	
+	@Override
 	public int getCurrentTexture() {
 		if (isBusy()) return busy.getTexture();
 		return Textures.NPC_STICK_NINJA;

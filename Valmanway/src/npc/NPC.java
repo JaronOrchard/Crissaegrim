@@ -15,4 +15,6 @@ public abstract class NPC extends Entity {
 		position = startingPosition;
 	}
 	
+	public abstract int getAttackPower();
+	
 }
