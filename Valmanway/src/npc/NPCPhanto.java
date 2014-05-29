@@ -14,6 +14,11 @@ import valmanway.Valmanway;
 
 public class NPCPhanto extends NPC {
 	
+	double angle = 0;
+	double angleIncrement = 2*Math.PI / 360.0; // 1 degree
+	double radius = 7;
+	Coordinate currentCenter;
+	
 	public NPCPhanto(int npc_id, Coordinate startingPosition, String boardName, Map<String, Board> boardMap) {
 		super(npc_id, startingPosition, boardName, boardMap);
 		textureHalfWidth = 1;
@@ -22,6 +27,8 @@ public class NPCPhanto extends NPC {
 		entityFeetHeight = 0;
 		entityBodyHeight = 2;
 		entityBodyWidth = 2;
+		
+		currentCenter = startingPosition;
 		// TODO: Make a required function that sets all the movement parameters up
 		
 	}
@@ -48,13 +55,16 @@ public class NPCPhanto extends NPC {
 			}
 		}
 		
-		// Compare this attack to all Players:
+		// Move Phanto:
+		angle = (angle + angleIncrement) % (2*Math.PI);
+		position = new Coordinate(currentCenter.getX() + (Math.cos(angle) * radius), currentCenter.getY() + (Math.sin(angle) * radius));
+		
+		// Colliding with a player hurts him/her:
 		// This is rather hackish for now but it will be redone when/if there are different Entity sizes.
 		// Default Entity values:
 		double feetHeight = 0.425;
 		double bodyHeight = 2.4;
 		double bodyWidth = 0.6;
-		
 		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getEntityStatuses().entrySet()) {
 			if (entityStatus.getKey() < 1000000 && entityStatus.getValue().getBoardName().equals(getCurrentBoardName())) {
 				Coordinate esPosition = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());

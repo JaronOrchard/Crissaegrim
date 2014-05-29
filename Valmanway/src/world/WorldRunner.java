@@ -139,6 +139,7 @@ public class WorldRunner {
 		//Valmanway.getSharedData().getEntities().add(new NPCStickNinja(1000000, new Coordinate(10050, 10023), "dawning", Valmanway.getSharedData().getBoardMap(), 2));
 		
 		Valmanway.getSharedData().getEntities().add(new NPCPhanto(1000002, new Coordinate(10097, 10039), "sotn_clock_tower", Valmanway.getSharedData().getBoardMap()));
+		Valmanway.getSharedData().getEntities().add(new NPCPhanto(1000003, new Coordinate(10035, 10056), "sotn_clock_tower", Valmanway.getSharedData().getBoardMap()));
 		
 		
 	}
