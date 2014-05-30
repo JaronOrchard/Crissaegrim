@@ -11,7 +11,7 @@ import entities.Entity;
 
 public class Player extends Entity {
 	
-	private static final int MAX_HEALTH = 100;
+	private static final int MAX_HEALTH = 32;
 	
 	private String icon = null; // Appears when something is actionable, like entering a door
 	public void setIcon(String newIcon) { icon = newIcon; }

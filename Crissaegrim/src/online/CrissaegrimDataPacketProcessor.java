@@ -5,6 +5,7 @@ import crissaegrim.Crissaegrim;
 import datapacket.ChunkPacket;
 import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
+import datapacket.GotHitByAttackPacket;
 import datapacket.IncomingChunkCountPacket;
 import datapacket.NonexistentChunkPacket;
 import datapacket.ReceivePlayerIdPacket;
@@ -46,7 +47,11 @@ public final class CrissaegrimDataPacketProcessor {
 				break;
 			case DataPacketTypes.GOT_HIT_BY_ATTACK_PACKET:
 				if (!Crissaegrim.getPlayer().isBusy()) {
-					Crissaegrim.getPlayer().setBusy(new GotHitByAttackBusy(Crissaegrim.getPlayer().getStunnedTexture()));
+					if (!Crissaegrim.getPlayer().getHealthBar().takeDamage( ((GotHitByAttackPacket)(packet)).getDamage() )) {
+						Crissaegrim.getPlayer().setBusy(new GotHitByAttackBusy(Crissaegrim.getPlayer().getStunnedTexture()));
+					} else {
+						// TODO: PLAYER DIED!
+					}
 				}
 				break;
 			case DataPacketTypes.INCOMING_CHUNK_COUNT_PACKET:

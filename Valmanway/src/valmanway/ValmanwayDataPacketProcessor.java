@@ -86,7 +86,11 @@ public final class ValmanwayDataPacketProcessor {
 			if (npc.getCurrentBoardName().equals(attack.getBoardName()) &&
 					!npc.isBusy() &&
 					RectUtils.rectsOverlap(npc.getEntityEntireRect(npc.getPosition()), attack.getBounds())) {
-				npc.setBusy(new GotHitByAttackBusy(npc.getStunnedTexture()));
+				if (!npc.getHealthBar().takeDamage(attack.getAttackPower())) {
+					npc.setBusy(new GotHitByAttackBusy(npc.getStunnedTexture()));
+				} else {
+					// TODO: NPC DIED!
+				}
 			}
 		}
 		// Compare this attack to all Players:

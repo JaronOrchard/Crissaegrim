@@ -11,6 +11,7 @@ import entities.EntityMovementHelper;
 public class NPCStickNinja extends NPC {
 	
 	private static final int MAX_HEALTH = 10;
+	private static int ATTACK_POWER = 1;
 	private final int npc_type;
 	
 	public NPCStickNinja(int npc_id, Coordinate startingPosition, String boardName, Map<String, Board> boardMap, int type) {
@@ -22,7 +23,7 @@ public class NPCStickNinja extends NPC {
 	}
 	
 	@Override
-	public int getAttackPower() { return 1; }
+	public int getAttackPower() { return ATTACK_POWER; }
 	
 	@Override
 	public int getCurrentTexture() {

@@ -14,4 +14,14 @@ public class HealthBar {
 		this.maxHealth = maxHealth;
 	}
 	
+	/**
+	 * Takes damage by subtracting {@code damage} from {@code currentHealth}.
+	 * @param damage The amount of damage to take
+	 * @return {@code true} if HP reaches 0 as a result, {@code false} otherwise
+	 */
+	public boolean takeDamage(int damage) {
+		currentHealth = Math.max(currentHealth - damage, 0);
+		return currentHealth == 0;
+	}
+	
 }
