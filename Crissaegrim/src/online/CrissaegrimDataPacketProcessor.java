@@ -1,6 +1,11 @@
 package online;
 
+import java.awt.Color;
+
+import textblock.TextBlock;
+import textures.Textures;
 import busy.GotHitByAttackBusy;
+import busy.PlayerDiedBusy;
 import crissaegrim.Crissaegrim;
 import datapacket.ChunkPacket;
 import datapacket.DataPacket;
@@ -49,8 +54,10 @@ public final class CrissaegrimDataPacketProcessor {
 				if (!Crissaegrim.getPlayer().isBusy()) {
 					if (!Crissaegrim.getPlayer().getHealthBar().takeDamage( ((GotHitByAttackPacket)(packet)).getDamage() )) {
 						Crissaegrim.getPlayer().setBusy(new GotHitByAttackBusy(Crissaegrim.getPlayer().getStunnedTexture()));
-					} else {
-						// TODO: PLAYER DIED!
+					} else { // The Player died from this attack!
+						Crissaegrim.getGameRunner().addWaitingChatMessage(
+								new TextBlock("You have been killed by " + ((GotHitByAttackPacket)(packet)).getAttackerName() + "!", Color.RED));
+						Crissaegrim.getPlayer().setBusy(new PlayerDiedBusy(Textures.STICK_PLAYER_DEAD));
 					}
 				}
 				break;

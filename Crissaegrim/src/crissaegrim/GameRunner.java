@@ -79,13 +79,7 @@ public class GameRunner {
 			return;
 		}
 		
-		destinationBoardName = "tower_of_preludes";
-		destinationCoordinate = new Coordinate(10044, 10084); // tower_of_preludes
-		
-		destinationBoardName = "sotn_clock_tower";
-		destinationCoordinate = new Coordinate(10132, 10038);
-		
-		//destinationPosition = new Coordinate(10044, 10020); // dawning
+		setNewDestinationToSpawn();
 		goToDestinationBoard();
 		
 		//initializeGame();
@@ -272,8 +266,7 @@ public class GameRunner {
 								RectUtils.coordinateIsInRect(player.getPosition(), doodad.getBounds())) {
 							Door door = (Door)doodad;
 							pmh.resetMovementRequests();
-							destinationBoardName = door.getDestinationBoardName();
-							destinationCoordinate = door.getDestinationCoordinate();
+							setNewDestination(door.getDestinationBoardName(), door.getDestinationCoordinate());
 							goToDestinationBoard();
 						}
 					}
@@ -434,14 +427,23 @@ public class GameRunner {
 		Display.destroy();
 	}
 	
+	public void setNewDestination(String destBoardName, Coordinate destCoordinate) {
+		destinationBoardName = destBoardName;
+		destinationCoordinate = destCoordinate;
+	}
+	
+	public void setNewDestinationToSpawn() {
+		setNewDestination("tower_of_preludes", new Coordinate(10044, 10084)); // tower_of_preludes
+		setNewDestination("sotn_clock_tower", new Coordinate(10132, 10038));
+	}
+	
 	public void goToDestinationBoard() {
 		if (!destinationBoardName.isEmpty() && destinationCoordinate != null) {
 			if (boardMap.containsKey(destinationBoardName)) {
 				Crissaegrim.getPlayer().setCurrentBoardName(destinationBoardName);
 				//Crissaegrim.setBoard(boardMap.get(destinationBoardName));
 				Crissaegrim.getPlayer().getPosition().setAll(destinationCoordinate);
-				destinationBoardName = "";
-				destinationCoordinate = null;
+				setNewDestination("", null);
 				Crissaegrim.currentlyLoading = false;
 			} else {
 				Crissaegrim.addOutgoingDataPacket(new RequestEntireBoardPacket(destinationBoardName));

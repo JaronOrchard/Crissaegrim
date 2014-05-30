@@ -5,9 +5,11 @@ import static org.lwjgl.opengl.GL11.*;
 import java.util.Map;
 
 import board.Board;
+import busy.PlayerDiedBusy;
 import textures.Textures;
 import crissaegrim.Crissaegrim;
 import entities.Entity;
+import geometry.Coordinate;
 
 public class Player extends Entity {
 	
@@ -122,6 +124,11 @@ public class Player extends Entity {
 	@Override
 	public void update() {
 		if (isBusy() && busy.hasExpired()) {
+			if (busy instanceof PlayerDiedBusy) {
+				getHealthBar().healDamage(getHealthBar().getMaxHealth());
+				Crissaegrim.getGameRunner().setNewDestinationToSpawn();
+				Crissaegrim.getGameRunner().goToDestinationBoard();
+			}
 			busy = null;
 		}
 		icon = null;

@@ -24,4 +24,12 @@ public class HealthBar {
 		return currentHealth == 0;
 	}
 	
+	/**
+	 * Heals damage by adding {@code amtHealed} to {@code currentHealth}.
+	 * @param amtHealed The amount of damage to heal
+	 */
+	public void healDamage(int amtHealed) {
+		currentHealth = Math.min(currentHealth + amtHealed, maxHealth);
+	}
+	
 }

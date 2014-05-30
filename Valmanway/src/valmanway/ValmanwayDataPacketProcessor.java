@@ -108,7 +108,7 @@ public final class ValmanwayDataPacketProcessor {
 						new Coordinate(position.getX() - (bodyWidth / 2), position.getY()),
 						new Coordinate(position.getX() + (bodyWidth / 2), position.getY() + feetHeight + bodyHeight));
 				if (RectUtils.rectsOverlap(entityBounds, attack.getBounds())) {
-					Valmanway.sendPacketToPlayer(entityStatus.getKey(), new GotHitByAttackPacket(vud.getPlayerId(), attack.getAttackPower()));
+					Valmanway.sendPacketToPlayer(entityStatus.getKey(), new GotHitByAttackPacket(vud.getPlayerName(), attack.getAttackPower()));
 				}
 			}
 		}

@@ -3,14 +3,14 @@ package datapacket;
 public class GotHitByAttackPacket extends DataPacket {
 	private static final long serialVersionUID = 1L;
 	
-	private final int attackerId;
+	private final String attackerName;
 	private final int damage;
-	public int getAttackerId() { return attackerId; }
+	public String getAttackerName() { return attackerName; }
 	public int getDamage() { return damage; }
 	
-	public GotHitByAttackPacket(int attackerId, int damage) {
+	public GotHitByAttackPacket(String attackerName, int damage) {
 		super(DataPacketTypes.GOT_HIT_BY_ATTACK_PACKET);
-		this.attackerId = attackerId;
+		this.attackerName = attackerName;
 		this.damage = damage;
 	}
 	

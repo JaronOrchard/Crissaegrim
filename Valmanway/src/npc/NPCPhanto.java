@@ -75,7 +75,7 @@ public class NPCPhanto extends NPC {
 						new Coordinate(esPosition.getX() - (bodyWidth / 2), esPosition.getY()),
 						new Coordinate(esPosition.getX() + (bodyWidth / 2), esPosition.getY() + feetHeight + bodyHeight));
 				if (RectUtils.rectsOverlap(entityBounds, this.getEntityEntireRect())) {
-					Valmanway.sendPacketToPlayer(entityStatus.getKey(), new GotHitByAttackPacket(getId(), getAttackPower()));
+					Valmanway.sendPacketToPlayer(entityStatus.getKey(), new GotHitByAttackPacket("NPC Phanto", getAttackPower()));
 				}
 			}
 		}
