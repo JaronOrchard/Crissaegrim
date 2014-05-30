@@ -67,6 +67,7 @@ public class ValmanwayConnection {
 					player.getPosition().getY(),
 					player.getCurrentTexture(),
 					player.getFacingRight(),
+					player.getHealthBar().getAmtHealth(),
 					player.getTextureHalfWidth(),
 					player.getTextureHeight())));
 		}

@@ -1,5 +1,14 @@
 package entities;
 
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glColor3d;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glVertex2d;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +123,30 @@ public abstract class Entity {
 		id = -1;
 		entityMovementHelper = new EntityMovementHelper(this, boardMap);
 		healthBar = new HealthBar(maxHealth);
+	}
+	
+	public static void drawMiniHealthBar(double xPos, double yPosPlusTextureHeight, double amtHealth) {
+		if (amtHealth < 1.0) {
+			double healthBarMiddle = ((1.0 - amtHealth) * (xPos - 0.5)) + (amtHealth * (xPos + 0.5));
+			double healthBarBottom = yPosPlusTextureHeight + 0.15;
+			double healthBarTop = yPosPlusTextureHeight + 0.35;
+			glDisable(GL_TEXTURE_2D);
+			glColor3d(0.855, 0.188, 0.204);
+			glBegin(GL_QUADS); // Draw red backing
+				glVertex2d(xPos - 0.5, healthBarTop);
+				glVertex2d(xPos + 0.5, healthBarTop);
+				glVertex2d(xPos + 0.5, healthBarBottom);
+				glVertex2d(xPos - 0.5, healthBarBottom);
+			glEnd();
+			glColor3d(0.161, 0.714, 0.314);
+			glBegin(GL_QUADS); // Draw green remaining
+				glVertex2d(xPos - 0.5, healthBarTop);
+				glVertex2d(healthBarMiddle, healthBarTop);
+				glVertex2d(healthBarMiddle, healthBarBottom);
+				glVertex2d(xPos - 0.5, healthBarBottom);
+			glEnd();
+			glEnable(GL_TEXTURE_2D);
+		}
 	}
 	
 	public abstract void update();

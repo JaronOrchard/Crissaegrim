@@ -42,6 +42,9 @@ public class Player extends Entity {
 	}
 	
 	public void draw() {
+		
+		drawMiniHealthBar(position.getX(), position.getY() + textureHeight, getHealthBar().getAmtHealth());
+		
 		glColor3d(1.0, 1.0, 1.0);
 		glPushMatrix();
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);

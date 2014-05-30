@@ -52,7 +52,8 @@ public class WorldRunner {
 					entity.update();
 			    	Valmanway.getSharedData().updateEntityStatusMap(entity.getId(),
 			    			new EntityStatus(entity.getCurrentBoardName(), entity.getPosition().getX(), entity.getPosition().getY(),
-			    					entity.getCurrentTexture(), entity.getFacingRight(), entity.getTextureHalfWidth(), entity.getTextureHeight()));
+			    					entity.getCurrentTexture(), entity.getFacingRight(), entity.getHealthBar().getAmtHealth(),
+			    					entity.getTextureHalfWidth(), entity.getTextureHeight()));
 				}
 			}
 

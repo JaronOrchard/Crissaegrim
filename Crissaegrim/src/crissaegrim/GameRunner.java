@@ -23,6 +23,7 @@ import datapacket.RequestEntireBoardPacket;
 import datapacket.RequestPlayerIdPacket;
 import doodads.Doodad;
 import doodads.Door;
+import entities.Entity;
 import entities.EntityMovementHelper;
 import entities.EntityStatus;
 import geometry.Coordinate;
@@ -120,7 +121,9 @@ public class GameRunner {
 				}
 				Attack playerAttack = Crissaegrim.getPlayer().getMovementHelper().moveEntity();
 				if (playerAttack != null) { Crissaegrim.addOutgoingDataPacket(new AttackPacket(playerAttack)); }
-			
+				
+				drawHUD();
+				
 				// Transmit data to the server
 				Crissaegrim.getValmanwayConnection().sendPlayerStatus();
 			} else {
@@ -174,6 +177,50 @@ public class GameRunner {
 		Crissaegrim.getChatBox().draw();
 	}
 	
+	private void drawHUD() {
+		drawPlayerHealthBar();
+	}
+	
+	private void drawPlayerHealthBar() {
+		int healthBarRight = Crissaegrim.getWindowWidth() - 10;
+		int healthBarLeft = healthBarRight - 120;
+		int healthBarBottom = 10;
+		int healthBarTop = healthBarBottom + 25;
+		double amtHealth = Crissaegrim.getPlayer().getHealthBar().getAmtHealth();
+		int healthBarMiddle = (int)(((1.0 - amtHealth) * healthBarLeft) + (amtHealth * healthBarRight));
+		
+		// Above-the-head health bar colors:
+		//glColor3d(0.855, 0.188, 0.204);
+		//glColor3d(0.161, 0.714, 0.314);
+		
+		GameInitializer.initializeNewFrameForWindow();
+		glDisable(GL_TEXTURE_2D);
+		glColor3d(0.812, 0.188, 0.188);
+		glBegin(GL_QUADS); // Draw red backing
+			glVertex2d(healthBarLeft, healthBarTop);
+			glVertex2d(healthBarRight, healthBarTop);
+			glVertex2d(healthBarRight, healthBarBottom);
+			glVertex2d(healthBarLeft, healthBarBottom);
+		glEnd();
+		glColor3d(0.102, 0.533, 0.227);
+		glBegin(GL_QUADS); // Draw green remaining
+			glVertex2d(healthBarLeft, healthBarTop);
+			glVertex2d(healthBarMiddle, healthBarTop);
+			glVertex2d(healthBarMiddle, healthBarBottom);
+			glVertex2d(healthBarLeft, healthBarBottom);
+		glEnd();
+		glColor3d(0.686, 0.741, 0.686);
+		glLineWidth(2);
+		glBegin(GL_LINE_LOOP); // Draw outline
+			glVertex2d(healthBarLeft, healthBarTop);
+			glVertex2d(healthBarRight, healthBarTop);
+			glVertex2d(healthBarRight, healthBarBottom);
+			glVertex2d(healthBarLeft, healthBarBottom);
+		glEnd();
+		glLineWidth(1);
+		glEnable(GL_TEXTURE_2D);
+	}
+	
 	private void actionDoodadList() {
 		Iterator<Doodad> doodadIter = Crissaegrim.getBoard().getDoodadList().iterator();
 		while (doodadIter.hasNext()) {
@@ -185,7 +232,7 @@ public class GameRunner {
 			}
 		}
 	}
-	int x = 0;
+	
 	/**
 	 * Detects keyboard and mouse input and makes the main player react accordingly.
 	 */
@@ -298,10 +345,13 @@ public class GameRunner {
 				glVertex2d(xPos - textureHalfWidth, yPos);
 			glEnd();
 		glPopMatrix();
+		
+		Entity.drawMiniHealthBar(xPos, yPos + textureHeight, ghost.getAmtHealth());
 	}
 	
 	private void drawLoadingMessage() {
 		GameInitializer.initializeNewFrameForWindow();
+		glColor3d(1.0, 1.0, 1.0);
 		// Loading message texture size is 372 x 64
 		glBindTexture(GL_TEXTURE_2D, Textures.LOADING_MESSAGE);
 		glPushMatrix();
@@ -360,6 +410,7 @@ public class GameRunner {
 		}
 		while (!Display.isCloseRequested()) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glColor3d(1.0, 1.0, 1.0);
 			GameInitializer.initializeNewFrameForWindow();
 			glEnable(GL_TEXTURE_2D);
 			glBindTexture(GL_TEXTURE_2D, texture);
