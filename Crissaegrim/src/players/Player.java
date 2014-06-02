@@ -9,7 +9,6 @@ import busy.PlayerDiedBusy;
 import textures.Textures;
 import crissaegrim.Crissaegrim;
 import entities.Entity;
-import geometry.Coordinate;
 
 public class Player extends Entity {
 	

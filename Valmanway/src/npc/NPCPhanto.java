@@ -14,16 +14,18 @@ import valmanway.Valmanway;
 
 public class NPCPhanto extends NPC {
 	
-	private static final int MAX_HEALTH = 5;
-	private static int ATTACK_POWER = 10;
+	public static long getMillisToRespawn() { return 5000; }
+	
+	private static final int MAX_HEALTH = 3;
+	private static int ATTACK_POWER = 5;
 	
 	double angle = 0;
 	double angleIncrement = 2*Math.PI / 360.0; // 1 degree
 	double radius = 7;
 	Coordinate currentCenter;
 	
-	public NPCPhanto(int npc_id, Coordinate startingPosition, String boardName, Map<String, Board> boardMap) {
-		super(npc_id, MAX_HEALTH, startingPosition, boardName, boardMap);
+	public NPCPhanto(int npc_id, SpawnCondition spawnCondition, String boardName, Map<String, Board> boardMap) {
+		super(npc_id, MAX_HEALTH, spawnCondition, boardName, boardMap);
 		textureHalfWidth = 1;
 		textureHeight = 2;
 		
@@ -31,9 +33,13 @@ public class NPCPhanto extends NPC {
 		entityBodyHeight = 2;
 		entityBodyWidth = 2;
 		
-		currentCenter = startingPosition;
 		// TODO: Make a required function that sets all the movement parameters up
-		
+	}
+	
+	@Override
+	protected void respawn(Coordinate respawnPoint) {
+		position = new Coordinate(respawnPoint);
+		currentCenter = new Coordinate(respawnPoint);
 	}
 	
 	@Override
@@ -49,7 +55,7 @@ public class NPCPhanto extends NPC {
 	public int getStunnedTexture() { return Textures.NPC_PHANTO; }
 	
 	@Override
-	public void update() {
+	protected void updateNPC() {
 		if (isBusy()) {
 			if (busy.hasExpired()) {
 				busy = null;

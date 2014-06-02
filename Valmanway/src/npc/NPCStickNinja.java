@@ -10,16 +10,22 @@ import entities.EntityMovementHelper;
 
 public class NPCStickNinja extends NPC {
 	
+	public static long getMillisToRespawn() { return 5000; }
+	
 	private static final int MAX_HEALTH = 10;
 	private static int ATTACK_POWER = 1;
 	private final int npc_type;
 	
-	public NPCStickNinja(int npc_id, Coordinate startingPosition, String boardName, Map<String, Board> boardMap, int type) {
-		super(npc_id, MAX_HEALTH, startingPosition, boardName, boardMap);
+	public NPCStickNinja(int npc_id, SpawnCondition spawnCondition, String boardName, Map<String, Board> boardMap, int type) {
+		super(npc_id, MAX_HEALTH, spawnCondition, boardName, boardMap);
 		npc_type = type;
 		
 		// TODO: Make a required function that sets all the movement parameters up
-		
+	}
+	
+	@Override
+	protected void respawn(Coordinate respawnPoint) {
+		position = new Coordinate(respawnPoint);
 	}
 	
 	@Override
@@ -42,7 +48,7 @@ public class NPCStickNinja extends NPC {
 	boolean jump = true;
 	boolean jumpedAlready = false;
 	@Override
-	public void update() {
+	protected void updateNPC() {
 		if (isBusy() && busy.hasExpired()) {
 			busy = null;
 		}

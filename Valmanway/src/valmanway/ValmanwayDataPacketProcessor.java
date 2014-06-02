@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import npc.NPC;
+
 import org.apache.commons.lang3.StringUtils;
 
 import busy.GotHitByAttackBusy;
@@ -82,24 +84,27 @@ public final class ValmanwayDataPacketProcessor {
 	private static void processAttackPacket(AttackPacket attackPacket, ValmanwayUserData vud) {
 		Attack attack = attackPacket.getAttack();
 		// Compare this attack to all NPCs:
-		for (Entity npc : Valmanway.getSharedData().getEntities()) {
+		for (Entity entity : Valmanway.getSharedData().getEntities()) {
+			NPC npc = (NPC)entity; // TODO: Remove cast when getEntities is changed to getNPCs
 			if (npc.getCurrentBoardName().equals(attack.getBoardName()) &&
-					!npc.isBusy() &&
+					npc.isAlive() && !npc.isBusy() &&
 					RectUtils.rectsOverlap(npc.getEntityEntireRect(npc.getPosition()), attack.getBounds())) {
 				if (!npc.getHealthBar().takeDamage(attack.getAttackPower())) {
 					npc.setBusy(new GotHitByAttackBusy(npc.getStunnedTexture()));
-				} else {
-					// TODO: NPC DIED!
+				} else { // The NPC died from this attack!
+					npc.killNPC(); // Set NPC to dead and scheduled to respawn
+					// Give the player who killed it an item from the drop table
+					// Send a particle system to all players to show it exploded
 				}
 			}
 		}
+		
 		// Compare this attack to all Players:
 		// This is rather hackish for now but it will be redone when/if there are different Entity sizes.
 		// Default Entity values:
 		double feetHeight = 0.425;
 		double bodyHeight = 2.4;
 		double bodyWidth = 0.6;
-		
 		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getEntityStatuses().entrySet()) {
 			if (entityStatus.getKey() != vud.getPlayerId() && entityStatus.getKey() < 1000000 &&
 					entityStatus.getValue().getBoardName().equals(attack.getBoardName())) {
