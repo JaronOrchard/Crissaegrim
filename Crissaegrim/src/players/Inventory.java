@@ -19,20 +19,26 @@ public class Inventory {
 	private final static long MILLIS_TO_SLIDE_RIGHT = 300;
 	
 	private static final int INVENTORY_SIZE = 8;
-	private TextTexture solaiiTextTexture; // Update this whenever the user's amount of Solaii changes
+	private TextTexture solaisTextTexture; // Update this whenever the user's amount of Solais changes
 	
 	private Item[] items;
-	private int solaii;
+	private int solais;
+	private int solaisCountOnTextTexture; // Used to determine when the Solais count changes
 	private int selectedItemIndex;
 	private long lastTouchedTime = 0;
 	
 	public Inventory() {
 		items = new Item[INVENTORY_SIZE];
-		solaii = 0;
-		solaiiTextTexture = Crissaegrim.getCommonTextures().getTextTexture("Solaii: " + Integer.toString(solaii));
+		solais = 0;
+		solaisCountOnTextTexture = 0;
+		updateSolaisTextTexture();
 		selectedItemIndex = 0;
 		
 		items[0] = new Weapon("Starter Sword", Textures.ITEM_STARTER_SWORD);
+	}
+	
+	private void updateSolaisTextTexture() {
+		solaisTextTexture = Crissaegrim.getCommonTextures().getTextTexture("Solais: " + Integer.toString(solais));
 	}
 	
 	public Item getCurrentItem() { return items[selectedItemIndex]; }
@@ -57,10 +63,31 @@ public class Inventory {
 	}
 	private void updateLastTouchedTime() { lastTouchedTime = new Date().getTime(); }
 	
+	public void addSolais(int amount) { solais += amount; }
+	
+	/**
+	 * Adds the {@link Item} to the Inventory.  If the Inventory is full, returns {@code false}.
+	 * @param item The {@link Item} to add to the Inventory
+	 * @return {@code true} if the Item was added, {@code false} otherwise
+	 */
+	public boolean addItem(Item item) {
+		for (int i = 0; i < INVENTORY_SIZE; i++) {
+			if (items[i] == null) {
+				items[i] = item;
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void draw() {
 		long now = new Date().getTime();
 		if (items[selectedItemIndex] == null && now - lastTouchedTime > MILLIS_AT_FULL_EXTENDED + MILLIS_TO_SLIDE_RIGHT) {
 			return; // Inventory is out of view
+		}
+		if (solaisCountOnTextTexture != solais) {
+			solaisCountOnTextTexture = solais;
+			updateSolaisTextTexture();
 		}
 		int topY = Crissaegrim.getWindowHeight() - OUTER_PADDING_PIXELS;
 		int selectedItemRightX = Crissaegrim.getWindowWidth() - OUTER_PADDING_PIXELS;
@@ -77,20 +104,20 @@ public class Inventory {
 			}
 		}
 		
-		// Draw "Solaii: ###":
-		int solaiiLabelLeft = rightX - solaiiTextTexture.getWidth();
-		glBindTexture(GL_TEXTURE_2D, solaiiTextTexture.getTextureId());
+		// Draw "Solais: ###":
+		int solaisLabelLeft = rightX - solaisTextTexture.getWidth();
+		glBindTexture(GL_TEXTURE_2D, solaisTextTexture.getTextureId());
 		glPushMatrix();
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 			glBegin(GL_QUADS);
 				glTexCoord2d(0, 1);
-				glVertex2d(solaiiLabelLeft, topY - 20);
+				glVertex2d(solaisLabelLeft, topY - 20);
 				glTexCoord2d(1, 1);
-				glVertex2d(solaiiLabelLeft + solaiiTextTexture.getWidth(), topY - 20);
+				glVertex2d(solaisLabelLeft + solaisTextTexture.getWidth(), topY - 20);
 				glTexCoord2d(1, 0);
-				glVertex2d(solaiiLabelLeft + solaiiTextTexture.getWidth(), topY);
+				glVertex2d(solaisLabelLeft + solaisTextTexture.getWidth(), topY);
 				glTexCoord2d(0, 0);
-				glVertex2d(solaiiLabelLeft, topY);
+				glVertex2d(solaisLabelLeft, topY);
 			glEnd();
 		glPopMatrix();
 		topY -= 24;

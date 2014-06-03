@@ -1,6 +1,9 @@
 package online;
 
+import items.Item;
+
 import java.awt.Color;
+import java.util.List;
 
 import textblock.TextBlock;
 import textures.Textures;
@@ -13,6 +16,7 @@ import datapacket.DataPacketTypes;
 import datapacket.GotHitByAttackPacket;
 import datapacket.IncomingChunkCountPacket;
 import datapacket.NonexistentChunkPacket;
+import datapacket.ReceiveItemsPacket;
 import datapacket.ReceivePlayerIdPacket;
 import datapacket.ReceivePlayerNamePacket;
 import datapacket.SendAllPlayerStatusesPacket;
@@ -64,7 +68,13 @@ public final class CrissaegrimDataPacketProcessor {
 			case DataPacketTypes.INCOMING_CHUNK_COUNT_PACKET:
 				Crissaegrim.numPacketsToReceive = ((IncomingChunkCountPacket)(packet)).getIncomingChunkCount();
 				break;
-			
+			case DataPacketTypes.RECEIVE_ITEMS_PACKET:
+				List<Item> items = ((ReceiveItemsPacket)(packet)).getItems();
+				for (Item item : items) {
+					Crissaegrim.getPlayer().receiveItem(item);
+				}
+				break;
+				
 			default:
 				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());
 		}

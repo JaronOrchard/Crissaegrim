@@ -1,7 +1,11 @@
 package npc;
 
-import java.util.Map;
+import items.Item;
+import items.ItemSolais;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import geometry.Coordinate;
 import board.Board;
 import textures.Textures;
@@ -35,6 +39,16 @@ public class NPCStickNinja extends NPC {
 	public int getCurrentTexture() {
 		if (isBusy()) return busy.getTexture();
 		return Textures.NPC_STICK_NINJA;
+	}
+	
+	@Override
+	public List<Item> dropItems() {
+		List<Item> items = new ArrayList<Item>();
+		
+		// Solais return: 100% = 1
+		items.add(new ItemSolais(1));
+		
+		return items;
 	}
 	
 	@Override

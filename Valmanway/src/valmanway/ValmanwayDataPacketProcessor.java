@@ -29,6 +29,7 @@ import datapacket.DoneSendingChunksPacket;
 import datapacket.GotHitByAttackPacket;
 import datapacket.IncomingChunkCountPacket;
 import datapacket.NonexistentChunkPacket;
+import datapacket.ReceiveItemsPacket;
 import datapacket.ReceivePlayerIdPacket;
 import datapacket.ReceivePlayerNamePacket;
 import datapacket.RequestEntireBoardPacket;
@@ -93,7 +94,7 @@ public final class ValmanwayDataPacketProcessor {
 					npc.setBusy(new GotHitByAttackBusy(npc.getStunnedTexture()));
 				} else { // The NPC died from this attack!
 					npc.killNPC(); // Set NPC to dead and scheduled to respawn
-					// Give the player who killed it an item from the drop table
+					Valmanway.sendPacketToPlayer(attack.getAttackerId(), new ReceiveItemsPacket(npc.dropItems())); // Give the killer the dropped items
 					// Send a particle system to all players to show it exploded
 				}
 			}
@@ -151,7 +152,7 @@ public final class ValmanwayDataPacketProcessor {
 						vud.setPlayerName(newName);
 						vud.addOutgoingDataPacket(new ReceivePlayerNamePacket(newName));
 						System.out.println("\"" + origName + "\" is now known as \"" + newName + "\".");
-						sendRegularMessage("\"" + origName + "\" is now known as \"" + newName + "\".", Color.GRAY);
+						sendRegularMessage("\"" + origName + "\" is now known as \"" + newName + "\".", Color.YELLOW);
 					}
 				}
 			} else if (lowercaseMessage.startsWith("/players")) {		// "/players"
@@ -185,7 +186,7 @@ public final class ValmanwayDataPacketProcessor {
 	}
 	
 	public static void sendSystemMessage(String message, ValmanwayUserData vud) {
-		vud.addOutgoingDataPacket(new SendChatMessagePacket(new TextBlock(message, Color.GRAY)));
+		vud.addOutgoingDataPacket(new SendChatMessagePacket(new TextBlock(message, Color.YELLOW)));
 	}
 	
 	public static void sendRegularMessage(String message, Color color) {

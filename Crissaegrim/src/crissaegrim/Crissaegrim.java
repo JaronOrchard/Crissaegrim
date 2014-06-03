@@ -17,6 +17,7 @@ import org.lwjgl.opengl.DisplayMode;
 import online.ValmanwayConnection;
 import board.Board;
 import players.Player;
+import textblock.TextBlock;
 import textures.CommonTextures;
 import chatbox.ChatBox;
 import datapacket.DataPacket;
@@ -61,9 +62,9 @@ public class Crissaegrim {
 		addSystemMessage("Debug mode is now " + (debugModeEnabled ? "ON" : "OFF"));
 	}
 	
-	public static void addErrorMessage(String message) { chatBox.addChatMessage(message, Color.RED); }
-	public static void addSystemMessage(String message) { chatBox.addChatMessage(message, Color.GRAY); }
-	public static void addSystemMessageIfDebug(String message) { if (debugModeEnabled) chatBox.addChatMessage(message, Color.GRAY); }
+	public static void addErrorMessage(String message) { gameRunner.addWaitingChatMessage(new TextBlock(message, Color.RED)); }
+	public static void addSystemMessage(String message) { gameRunner.addWaitingChatMessage(new TextBlock(message, Color.YELLOW)); }
+	public static void addSystemMessageIfDebug(String message) { if (debugModeEnabled) gameRunner.addWaitingChatMessage(new TextBlock(message, Color.GRAY)); }
 	
 	private static int windowWidth = 1024;
 	private static int windowHeight = 768;

@@ -1,5 +1,8 @@
 package npc;
 
+import items.Item;
+
+import java.util.List;
 import java.util.Map;
 
 import board.Board;
@@ -44,5 +47,6 @@ public abstract class NPC extends Entity {
 	
 	protected abstract void updateNPC();
 	protected abstract void respawn(Coordinate respawnPoint);
+	public abstract List<Item> dropItems();
 	
 }

@@ -1,6 +1,7 @@
 package items;
 
 public class Weapon extends Item {
+	private static final long serialVersionUID = 1L;
 	
 	private final int attackPower;
 	

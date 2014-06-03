@@ -1,6 +1,8 @@
 package players;
 
 import static org.lwjgl.opengl.GL11.*;
+import items.Item;
+import items.ItemSolais;
 
 import java.util.Map;
 
@@ -12,7 +14,7 @@ import entities.Entity;
 
 public class Player extends Entity {
 	
-	private static final int MAX_HEALTH = 32;
+	private static final int MAX_HEALTH = 22;
 	
 	private String icon = null; // Appears when something is actionable, like entering a door
 	public void setIcon(String newIcon) { icon = newIcon; }
@@ -105,6 +107,20 @@ public class Player extends Entity {
 			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * ((getBodyWidth() / 2))), position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight());
 		glEnd();
 		glEnable(GL_TEXTURE_2D);
+	}
+	
+	public void receiveItem(Item item) {
+		if (item instanceof ItemSolais) {
+			int numSolais = ((ItemSolais)(item)).getNumSolais();
+			getInventory().addSolais(numSolais);
+			Crissaegrim.addSystemMessage("You received " + numSolais + " Solais.");
+		} else {
+			if (getInventory().addItem(item)) {
+				Crissaegrim.addSystemMessage("You received a " + item.getName() + ".");
+			} else {
+				Crissaegrim.addSystemMessage("You dropped a " + item.getName() + " because your inventory was full!");
+			}
+		}
 	}
 	
 	@Override

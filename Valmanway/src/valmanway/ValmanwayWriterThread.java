@@ -30,7 +30,7 @@ public class ValmanwayWriterThread extends Thread {
     		socketOut = new ObjectOutputStream(crissaegrimSocket.getOutputStream());
     		socketOut.flush();
     		
-    		ValmanwayDataPacketProcessor.sendRegularMessage(valmanwayUserData.getPlayerName() + " has logged in.", Color.GRAY);
+    		ValmanwayDataPacketProcessor.sendRegularMessage(valmanwayUserData.getPlayerName() + " has logged in.", Color.YELLOW);
     		
     		while (valmanwayUserData.connectionStable) {
     			if (valmanwayUserData.outgoingDataPacketsExist()) {
@@ -52,7 +52,7 @@ public class ValmanwayWriterThread extends Thread {
     			}
     		}
     		
-    		ValmanwayDataPacketProcessor.sendRegularMessage(valmanwayUserData.getPlayerName() + " has logged out.", Color.GRAY);
+    		ValmanwayDataPacketProcessor.sendRegularMessage(valmanwayUserData.getPlayerName() + " has logged out.", Color.YELLOW);
     	} catch (IOException e) {
     		System.out.println(valmanwayUserData.getPlayerName() + " has left");
     	}

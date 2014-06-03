@@ -1,6 +1,13 @@
 package npc;
 
+import items.Item;
+import items.ItemSolais;
+import items.Weapon;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Map.Entry;
 
 import datapacket.GotHitByAttackPacket;
@@ -49,6 +56,23 @@ public class NPCPhanto extends NPC {
 	public int getCurrentTexture() {
 		if (isBusy()) return busy.getTexture();
 		return Textures.NPC_PHANTO;
+	}
+	
+	@Override
+	public List<Item> dropItems() {
+		List<Item> items = new ArrayList<Item>();
+		Random random = new Random();
+		
+		// Solais return: 50% = 3, 30% = 4, 15% = 6, 5% = 10
+		double randSolais = random.nextDouble();
+		if (randSolais < 0.5) items.add(new ItemSolais(3));
+		else if (randSolais < 0.8) items.add(new ItemSolais(4));
+		else if (randSolais < 0.95) items.add(new ItemSolais(6));
+		else items.add(new ItemSolais(10));
+		
+		// Item return: None currently
+		
+		return items;
 	}
 	
 	@Override
