@@ -48,7 +48,7 @@ public class ValmanwayWriterThread extends Thread {
 					ps.remove(valmanwayUserData.getPlayerId());
 					valmanwayUserData.addOutgoingDataPacket(new SendAllPlayerStatusesPacket(ps));
 					
-					valmanwayUserData.sendNewChatMessages();
+					valmanwayUserData.sendNewDataPackets();
     			}
     		}
     		

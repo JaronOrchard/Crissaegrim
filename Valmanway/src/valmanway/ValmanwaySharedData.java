@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import datapacket.DataPacket;
+import datapacket.SendChatMessagePacket;
 import entities.Entity;
 import entities.EntityStatus;
 import board.Board;
@@ -13,7 +15,7 @@ import textblock.TextBlock;
 
 public class ValmanwaySharedData {
 	
-	private static final int CHAT_MESSAGES_ARRAY_SIZE = 200;
+	private static final int DATAPACKETS_ARRAY_SIZE = 1000;
 	
 	private Map<String, Board> boardMap;
 	private List<Entity> entities; // NPCs only
@@ -21,8 +23,8 @@ public class ValmanwaySharedData {
 	private Map<Integer, EntityStatus> entityStatusMap; // Players + NPCs
 	private Map<Integer, String> playerNameMap;
 	private int nextPlayerId;
-	private TextBlock[] chatMessages = new TextBlock[CHAT_MESSAGES_ARRAY_SIZE];
-	private int mostRecentChatMessageIndex;
+	private DataPacket[] dataPackets = new DataPacket[DATAPACKETS_ARRAY_SIZE];
+	private int mostRecentDataPacketIndex;
 	
 	public ValmanwaySharedData() {
 		boardMap = new HashMap<String, Board>();
@@ -30,18 +32,18 @@ public class ValmanwaySharedData {
 		entityStatusMap = Collections.synchronizedMap(new HashMap<Integer, EntityStatus>());
 		playerNameMap = Collections.synchronizedMap(new HashMap<Integer, String>());
 		nextPlayerId = 1;
-		for (int i = 0; i < CHAT_MESSAGES_ARRAY_SIZE; i++) {
-			chatMessages[i] = null;
+		for (int i = 0; i < DATAPACKETS_ARRAY_SIZE; i++) {
+			dataPackets[i] = null;
 		}
-		mostRecentChatMessageIndex = -1;
+		mostRecentDataPacketIndex = -1;
 	}
 	
 	public Map<String, Board> getBoardMap() { return boardMap; }
 	public List<Entity> getEntities() { return entities; }
 	
 	public int getNextPlayerId() { return nextPlayerId++; }
-	public TextBlock getChatMessage(int index) { return chatMessages[index % CHAT_MESSAGES_ARRAY_SIZE]; }
-	public int getMostRecentChatMessageIndex() { return mostRecentChatMessageIndex; }
+	public DataPacket getDataPacket(int index) { return dataPackets[index % DATAPACKETS_ARRAY_SIZE]; }
+	public int getMostRecentDataPacketIndex() { return mostRecentDataPacketIndex; }
 	
 	public void updateEntityStatusMap(int entityId, EntityStatus entityStatus) {
 		entityStatusMap.put(entityId, entityStatus);
@@ -66,11 +68,16 @@ public class ValmanwaySharedData {
 		return names;
 	}
 	
-	public synchronized void addChatMessage(TextBlock tb) {
-		// In this order to avoid synchronization issues:
-		chatMessages[(mostRecentChatMessageIndex + 1) % CHAT_MESSAGES_ARRAY_SIZE] = tb;
-		mostRecentChatMessageIndex++;
+	public void addChatMessage(TextBlock tb) {
+		DataPacket packet = new SendChatMessagePacket(tb);
+		addDataPacket(packet);
 		Valmanway.logMessage(tb);
+	}
+	
+	public synchronized void addDataPacket(DataPacket packet) {
+		// In this order to avoid synchronization issues:
+		dataPackets[(mostRecentDataPacketIndex + 1) % DATAPACKETS_ARRAY_SIZE] = packet;
+		mostRecentDataPacketIndex++;
 	}
 	
 	public void dropPlayer(int playerId) {

@@ -52,7 +52,7 @@ public class Valmanway {
         while (listening) {
         	Socket acceptedSocket = serverSocket.accept();
         	ValmanwayUserData valmanwayUserData = new ValmanwayUserData(
-        			Valmanway.getSharedData().getNextPlayerId(), Valmanway.getSharedData().getMostRecentChatMessageIndex());
+        			Valmanway.getSharedData().getNextPlayerId(), Valmanway.getSharedData().getMostRecentDataPacketIndex());
         	users.put(valmanwayUserData.getPlayerId(), valmanwayUserData);
         	new ValmanwayWriterThread(acceptedSocket, valmanwayUserData).start();
         	new ValmanwayReaderThread(acceptedSocket, valmanwayUserData).start();
