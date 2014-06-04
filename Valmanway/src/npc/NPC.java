@@ -2,6 +2,7 @@ package npc;
 
 import items.Item;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,6 @@ public abstract class NPC extends Entity {
 	
 	public void killNPC() {
 		alive = false;
-		position.setAll(0, 0);
 		spawnCondition.setTimeOfDeath();
 	}
 	
@@ -48,5 +48,6 @@ public abstract class NPC extends Entity {
 	protected abstract void updateNPC();
 	protected abstract void respawn(Coordinate respawnPoint);
 	public abstract List<Item> dropItems();
+	public abstract Color getMainColor();
 	
 }

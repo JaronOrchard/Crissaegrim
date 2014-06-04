@@ -16,11 +16,13 @@ import datapacket.DataPacketTypes;
 import datapacket.GotHitByAttackPacket;
 import datapacket.IncomingChunkCountPacket;
 import datapacket.NonexistentChunkPacket;
+import datapacket.ParticleSystemPacket;
 import datapacket.ReceiveItemsPacket;
 import datapacket.ReceivePlayerIdPacket;
 import datapacket.ReceivePlayerNamePacket;
 import datapacket.SendAllPlayerStatusesPacket;
 import datapacket.SendChatMessagePacket;
+import effects.ParticleSystem;
 
 public final class CrissaegrimDataPacketProcessor {
 	
@@ -74,6 +76,13 @@ public final class CrissaegrimDataPacketProcessor {
 					Crissaegrim.getPlayer().receiveItem(item);
 				}
 				break;
+			case DataPacketTypes.PARTICLE_SYSTEM_PACKET:
+				ParticleSystemPacket psp = (ParticleSystemPacket)(packet);
+				Crissaegrim.getGameRunner().addParticleSystem(
+						new ParticleSystem(psp.getNumParticles(), psp.getSystemCenter(), psp.getBoardName(), psp.getSystemColor()));
+				break;
+				
+				
 				
 			default:
 				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());

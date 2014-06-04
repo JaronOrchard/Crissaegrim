@@ -105,6 +105,7 @@ public class Inventory {
 		}
 		
 		// Draw "Solais: ###":
+		glColor3d(1, 1, 1);
 		int solaisLabelLeft = rightX - solaisTextTexture.getWidth();
 		glBindTexture(GL_TEXTURE_2D, solaisTextTexture.getTextureId());
 		glPushMatrix();

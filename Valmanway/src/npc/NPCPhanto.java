@@ -2,8 +2,8 @@ package npc;
 
 import items.Item;
 import items.ItemSolais;
-import items.Weapon;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +74,9 @@ public class NPCPhanto extends NPC {
 		
 		return items;
 	}
+	
+	@Override
+	public Color getMainColor() { return new Color(182, 57, 0); }
 	
 	@Override
 	public int getStunnedTexture() { return Textures.NPC_PHANTO; }

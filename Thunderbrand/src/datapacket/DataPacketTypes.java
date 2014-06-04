@@ -18,5 +18,6 @@ public class DataPacketTypes {
 	public static final int GOT_HIT_BY_ATTACK_PACKET =			14; // Valmanway -> Crissaegrim
 	public static final int INCOMING_CHUNK_COUNT_PACKET =		15; // Valmanway -> Crissaegrim
 	public static final int RECEIVE_ITEMS_PACKET =				16; // Valmanway -> Crissaegrim
+	public static final int PARTICLE_SYSTEM_PACKET =			17; // (Crissaegrim ->) Valmanway -> Crissaegrim
 	
 }

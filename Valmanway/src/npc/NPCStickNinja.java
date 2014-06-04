@@ -3,9 +3,11 @@ package npc;
 import items.Item;
 import items.ItemSolais;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import geometry.Coordinate;
 import board.Board;
 import textures.Textures;
@@ -50,6 +52,9 @@ public class NPCStickNinja extends NPC {
 		
 		return items;
 	}
+	
+	@Override
+	public Color getMainColor() { return new Color(131, 182, 174); }
 	
 	@Override
 	public int getStunnedTexture() { return Textures.NPC_STICK_NINJA_STUNNED; }

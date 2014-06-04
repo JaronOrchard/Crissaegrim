@@ -2,6 +2,7 @@ package crissaegrim;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +24,7 @@ import datapacket.RequestEntireBoardPacket;
 import datapacket.RequestPlayerIdPacket;
 import doodads.Doodad;
 import doodads.Door;
+import effects.ParticleSystem;
 import entities.Entity;
 import entities.EntityMovementHelper;
 import entities.EntityStatus;
@@ -35,7 +37,6 @@ import board.Chunk;
 import board.ClientBoard;
 import board.MissingChunk;
 import board.tiles.Tile.TileLayer;
-import busy.GotHitByAttackBusy;
 import textblock.TextBlock;
 import textures.Textures;
 import thunderbrand.Thunderbrand;
@@ -53,8 +54,10 @@ public class GameRunner {
 	private String destinationBoardName = "";
 	private Coordinate destinationCoordinate = null;
 	private List<TextBlock> waitingChatMessages = Collections.synchronizedList(new ArrayList<TextBlock>());
+	private List<ParticleSystem> particleSystems = Collections.synchronizedList(new ArrayList<ParticleSystem>());
 	
 	public void addWaitingChatMessage(TextBlock tb) { waitingChatMessages.add(tb); }
+	public void addParticleSystem(ParticleSystem ps) { particleSystems.add(ps); }
 	
 	public void run() throws InterruptedException, IOException {
 		GameInitializer.initializeDisplay();
@@ -161,6 +164,7 @@ public class GameRunner {
 			}
 			drawGhosts();
 			ClientBoard.draw(currentBoard, TileLayer.FOREGROUND);
+			drawParticleSystems();
 		}
 		
 		GameInitializer.initializeNewFrameForWindow();
@@ -240,9 +244,9 @@ public class GameRunner {
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
 				
-				if (Keyboard.getEventKey() == Keyboard.KEY_B) {
-					player.setBusy(new GotHitByAttackBusy(player.getStunnedTexture()));
-				}
+//				if (Keyboard.getEventKey() == Keyboard.KEY_P) {
+//					particleSystems.add(new ParticleSystem(125, new Coordinate(player.getPosition().getX(), player.getPosition().getY() + 4), player.getCurrentBoardName(), Color.CYAN));
+//				}
 				
 				if (Keyboard.getEventKey() == Keyboard.KEY_T ||
 						Keyboard.getEventKey() == Keyboard.KEY_RETURN) {	// T or Enter: Enter chat mode
@@ -340,6 +344,21 @@ public class GameRunner {
 		glPopMatrix();
 		
 		Entity.drawMiniHealthBar(xPos, yPos + textureHeight, ghost.getAmtHealth());
+	}
+	
+	private void drawParticleSystems() {
+		synchronized (particleSystems) {
+			Iterator<ParticleSystem> particleSystemIter = particleSystems.iterator();
+			while (particleSystemIter.hasNext()) {
+				ParticleSystem particleSystem = particleSystemIter.next();
+				if (particleSystem.getBoardName().equals(Crissaegrim.getPlayer().getCurrentBoardName())) {
+					particleSystem.draw();
+				}
+				if (particleSystem.update()) {
+					particleSystemIter.remove();
+				}
+			}
+		}
 	}
 	
 	private void drawLoadingMessage() {

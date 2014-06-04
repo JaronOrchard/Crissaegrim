@@ -29,6 +29,7 @@ import datapacket.DoneSendingChunksPacket;
 import datapacket.GotHitByAttackPacket;
 import datapacket.IncomingChunkCountPacket;
 import datapacket.NonexistentChunkPacket;
+import datapacket.ParticleSystemPacket;
 import datapacket.ReceiveItemsPacket;
 import datapacket.ReceivePlayerIdPacket;
 import datapacket.ReceivePlayerNamePacket;
@@ -95,7 +96,11 @@ public final class ValmanwayDataPacketProcessor {
 				} else { // The NPC died from this attack!
 					npc.killNPC(); // Set NPC to dead and scheduled to respawn
 					Valmanway.sendPacketToPlayer(attack.getAttackerId(), new ReceiveItemsPacket(npc.dropItems())); // Give the killer the dropped items
-					// Send a particle system to all players to show it exploded
+					Valmanway.sendPacketToPlayer(attack.getAttackerId(), new ParticleSystemPacket(
+							125,
+							new Coordinate(npc.getPosition().getX(), npc.getPosition().getY() + (npc.getEntireHeight() / 2)),
+							npc.getCurrentBoardName(),
+							npc.getMainColor().brighter()));
 				}
 			}
 		}
