@@ -1,8 +1,10 @@
 package crissaegrim;
 
 import static org.lwjgl.opengl.GL11.*;
+import items.Item;
+import items.ItemPartyPopper;
+import items.Weapon;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,6 +22,7 @@ import players.Player;
 import datapacket.AttackPacket;
 import datapacket.ChunkPacket;
 import datapacket.NonexistentChunkPacket;
+import datapacket.ParticleSystemPacket;
 import datapacket.RequestEntireBoardPacket;
 import datapacket.RequestPlayerIdPacket;
 import doodads.Doodad;
@@ -37,6 +40,7 @@ import board.Chunk;
 import board.ClientBoard;
 import board.MissingChunk;
 import board.tiles.Tile.TileLayer;
+import busy.SwordSwingBusy;
 import textblock.TextBlock;
 import textures.Textures;
 import thunderbrand.Thunderbrand;
@@ -63,11 +67,13 @@ public class GameRunner {
 		GameInitializer.initializeDisplay();
 		Textures.initializeTextures();
 		Crissaegrim.initializePlayer(boardMap);
+		Player player = Crissaegrim.getPlayer();
+		EntityMovementHelper playerMovementHelper = player.getMovementHelper();
 		
 		Crissaegrim.getValmanwayConnection().connectToValmonwayServer();
 		if (Crissaegrim.connectionStable) { // Wait to get player id...
 			long lastSend = 0;
-			while (Crissaegrim.getPlayer().getId() == -1) {
+			while (player.getId() == -1) {
 				if (Thunderbrand.getTime() - lastSend > Crissaegrim.getValmanwayConnection().getConnectionTimeoutMillis()) {
 					lastSend = Thunderbrand.getTime();
 					Crissaegrim.addOutgoingDataPacket(new RequestPlayerIdPacket(Crissaegrim.getClientVersion()));
@@ -77,7 +83,7 @@ public class GameRunner {
 			displayMessageForever(Textures.NO_CONNECTION_MESSAGE, 458, 64, null);
 			return;
 		}
-		if (Crissaegrim.getPlayer().getId() == -2) { // playerId of -2 signifies outdated version
+		if (player.getId() == -2) { // playerId of -2 signifies outdated version
 			displayMessageForever(Textures.CLIENT_OUTDATED_MESSAGE, 595, 102, "Your version is outdated!");
 			return;
 		}
@@ -104,7 +110,7 @@ public class GameRunner {
 			if (!Crissaegrim.currentlyLoading) {
 				ClientBoard.verifyChunksExist(Crissaegrim.getBoard());
 				if (Crissaegrim.currentlyLoading) { continue; }
-				Crissaegrim.getPlayer().update();
+				player.update();
 				actionDoodadList();
 			
 				// Draw new scene:
@@ -116,8 +122,26 @@ public class GameRunner {
 				} else {
 					getKeyboardAndMouseInput();
 				}
-				Attack playerAttack = Crissaegrim.getPlayer().getMovementHelper().moveEntity();
-				if (playerAttack != null) { Crissaegrim.addOutgoingDataPacket(new AttackPacket(playerAttack)); }
+				playerMovementHelper.moveEntityPre();
+				Item itemToUse = playerMovementHelper.getItemToUse();
+				if (itemToUse != null && !player.isBusy()) {
+					if (itemToUse instanceof Weapon) {
+						// TODO: This should be split up depending upon the weapon and attack type
+						// TODO: Bounding rect of sword swing should not be entire entity
+						player.setBusy(new SwordSwingBusy());
+						Crissaegrim.addOutgoingDataPacket(new AttackPacket(new Attack(
+								player.getId(), player.getCurrentBoardName(), player.getSwordSwingRect(), ((Weapon)(itemToUse)).getAttackPower(), 1)));
+					} else if (itemToUse instanceof ItemPartyPopper) {
+						ItemPartyPopper popper = (ItemPartyPopper)(itemToUse);
+						Crissaegrim.addOutgoingDataPacket(new ParticleSystemPacket(
+								125, playerMovementHelper.getCoordinateClicked(), player.getCurrentBoardName(), popper.getColor()));
+						popper.decrementUses();
+						if (popper.getUsesLeft() <= 0) {
+							player.getInventory().removeCurrentItem();
+						}
+					}
+				}
+				playerMovementHelper.moveEntityPost();
 				
 				drawHUD();
 				
@@ -186,10 +210,6 @@ public class GameRunner {
 		int healthBarTop = healthBarBottom + 25;
 		double amtHealth = Crissaegrim.getPlayer().getHealthBar().getAmtHealth();
 		int healthBarMiddle = (int)(((1.0 - amtHealth) * healthBarLeft) + (amtHealth * healthBarRight));
-		
-		// Above-the-head health bar colors:
-		//glColor3d(0.855, 0.188, 0.204);
-		//glColor3d(0.161, 0.714, 0.314);
 		
 		GameInitializer.initializeNewFrameForWindow();
 		glDisable(GL_TEXTURE_2D);
@@ -282,7 +302,7 @@ public class GameRunner {
 			while (Mouse.next()) {
 				if (Mouse.getEventButtonState()) { // Button was clicked (not released)
 					if (Mouse.getEventButton() == 0) {
-						pmh.requestUseItem(Crissaegrim.getPlayer().getInventory().getCurrentItem());
+						pmh.requestUseItem(getCoordinatesForMouse(), Crissaegrim.getPlayer().getInventory().getCurrentItem());
 					}
 				}
 			}
@@ -293,6 +313,17 @@ public class GameRunner {
 				Crissaegrim.getPlayer().getInventory().selectPreviousItem();
 			}
 		}
+	}
+	
+	/**
+	 * @return A {@link Coordinate} in world coordinates for the spot where the mouse pointer is currently located
+	 */
+	public Coordinate getCoordinatesForMouse() {
+		Player player = Crissaegrim.getPlayer();
+		double pixelsPerTile = (double)Crissaegrim.getPixelsPerTile();
+		double ptX = player.getPosition().getX() - (Crissaegrim.getWindowWidth() / 2 / pixelsPerTile) + (Mouse.getX() / pixelsPerTile);
+		double ptY = player.getPosition().getY() - (Crissaegrim.getWindowHeight() / 2 / pixelsPerTile) + (Mouse.getY() / pixelsPerTile);
+		return new Coordinate(ptX, ptY);
 	}
 	
 	/**

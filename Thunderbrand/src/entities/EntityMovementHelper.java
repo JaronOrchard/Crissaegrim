@@ -2,17 +2,13 @@ package entities;
 
 import geometry.Coordinate;
 import items.Item;
-import items.Weapon;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import attack.Attack;
 import board.Board;
 import board.tiles.CollisionDetectionTile;
 import busy.Busy;
-import busy.SwordSwingBusy;
 
 public class EntityMovementHelper {
 	
@@ -23,12 +19,16 @@ public class EntityMovementHelper {
 	private boolean rightMovementRequested;
 	private boolean jumpMovementRequested;
 	private Item itemToUse;
+	private Coordinate coordinateClicked;
 	private boolean onTheGround;
 	private boolean currentlyJumping;
 	private boolean holdingJumpButton;
 	
 	private final Entity parentEntity;
 	private final Map<String, Board> boardMap;
+	
+	public Item getItemToUse() { return itemToUse; }
+	public Coordinate getCoordinateClicked() { return coordinateClicked; }
 	public Map<String, Board> getBoardMap() { return boardMap; }
 	
 	public EntityMovementHelper(Entity entity, Map<String, Board> boards) {
@@ -45,6 +45,7 @@ public class EntityMovementHelper {
 		rightMovementRequested = false;
 		jumpMovementRequested = false;
 		itemToUse = null;
+		coordinateClicked = null;
 	}
 	
 	public void requestLeftMovement() {
@@ -59,28 +60,28 @@ public class EntityMovementHelper {
 		jumpMovementRequested = true;
 	}
 	
-	public void requestUseItem(Item item) {
+	public void requestUseItem(Coordinate coordinate, Item item) {
+		coordinateClicked = coordinate;
 		itemToUse = item;
 	}
 	
-	public Attack moveEntity() {
-		Attack returnedAttack = null;
-		Coordinate startingPosition;
-		Coordinate endingPosition;
-		
+	public void moveEntity() {
+		moveEntityPre();
+		moveEntityPost();
+	}
+	
+	public void moveEntityPre() {
 		Busy parentEntityBusy = parentEntity.getBusy();
 		if (parentEntityBusy != null) {
 			if (parentEntityBusy.getCompletelyImmobilized() || (parentEntityBusy.getCannotWalk() && onTheGround)) {
 				resetMovementRequests();
 			}
 		}
-		
-		if (itemToUse != null && !parentEntity.isBusy() && itemToUse instanceof Weapon) {
-			// TODO: This should be split up depending upon the weapon and attack type
-			// TODO: Bounding rect of sword swing should not be entire entity
-			parentEntity.setBusy(new SwordSwingBusy());
-			returnedAttack = new Attack(parentEntity.getId(), parentEntity.getCurrentBoardName(), parentEntity.getSwordSwingRect(), ((Weapon)(itemToUse)).getAttackPower(), 1);
-		}
+	}
+	
+	public void moveEntityPost() {
+		Coordinate startingPosition;
+		Coordinate endingPosition;
 		
 		// Planned movement rules:
 		// 
@@ -222,9 +223,6 @@ public class EntityMovementHelper {
 		
 		// 4) Reset movement requests for the next frame
 		resetMovementRequests();
-		
-		// 5) Return generated Attack (or null if none)
-		return returnedAttack;
 	}
 	
 }

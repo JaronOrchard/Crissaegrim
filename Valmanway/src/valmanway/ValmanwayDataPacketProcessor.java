@@ -76,6 +76,11 @@ public final class ValmanwayDataPacketProcessor {
 			case DataPacketTypes.ATTACK_PACKET:
 				processAttackPacket( (AttackPacket)packet, valmanwayUserData);
 				break;
+			case DataPacketTypes.PARTICLE_SYSTEM_PACKET:
+				Valmanway.getSharedData().addDataPacket(packet);
+				break;
+				
+				
 			default:
 				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());
 				break;

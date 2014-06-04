@@ -75,6 +75,7 @@ public class Crissaegrim {
 	private static int pixelsPerTile = 32; // For best results, use multiples of 16
 	private static double windowWidthRadiusInTiles = ((double)windowWidth / 2.0 / (double)pixelsPerTile);
 	private static double windowHeightRadiusInTiles = ((double)windowHeight / 2.0 / (double)pixelsPerTile);
+	public static int getPixelsPerTile() { return pixelsPerTile; }
 	public static double getWindowWidthRadiusInTiles() { return windowWidthRadiusInTiles; }
 	public static double getWindowHeightRadiusInTiles() { return windowHeightRadiusInTiles; }
 	

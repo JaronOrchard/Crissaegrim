@@ -124,6 +124,11 @@ public class Textures {
 	public static final int BACKGROUND_SOTN = 17960;
 	
 	public static final int ITEM_STARTER_SWORD = 20000;
+	public static final int ITEM_PARTY_POPPER_BLUE = 20001;
+	public static final int ITEM_PARTY_POPPER_GREEN = 20002;
+	public static final int ITEM_PARTY_POPPER_RED = 20003;
+	public static final int ITEM_PARTY_POPPER_WHITE = 20004;
+	public static final int ITEM_PARTY_POPPER_YELLOW = 20005;
 	
 	// (Texture IDs 100000 and up are reserved for text)
 	
@@ -247,6 +252,11 @@ public class Textures {
 		TextureLoader.loadTexture(BACKGROUND_SOTN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/SotNCastle.png")));
 		
 		TextureLoader.loadTexture(ITEM_STARTER_SWORD, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ItemStarterSword.png")));
+		TextureLoader.loadTexture(ITEM_PARTY_POPPER_BLUE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperBlue.png")));
+		TextureLoader.loadTexture(ITEM_PARTY_POPPER_GREEN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperGreen.png")));
+		TextureLoader.loadTexture(ITEM_PARTY_POPPER_RED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperRed.png")));
+		TextureLoader.loadTexture(ITEM_PARTY_POPPER_WHITE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperWhite.png")));
+		TextureLoader.loadTexture(ITEM_PARTY_POPPER_YELLOW, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperYellow.png")));
 		
 	}
 	

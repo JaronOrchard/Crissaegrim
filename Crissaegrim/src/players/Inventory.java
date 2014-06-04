@@ -43,6 +43,8 @@ public class Inventory {
 	
 	public Item getCurrentItem() { return items[selectedItemIndex]; }
 	
+	public void removeCurrentItem() { items[selectedItemIndex] = null; }
+	
 	public void selectPreviousItem() {
 		selectedItemIndex = (selectedItemIndex + INVENTORY_SIZE - 1) % INVENTORY_SIZE;
 		updateLastTouchedTime();

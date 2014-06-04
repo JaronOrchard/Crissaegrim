@@ -1,6 +1,7 @@
 package npc;
 
 import items.Item;
+import items.ItemPartyPopper;
 import items.ItemSolais;
 
 import java.awt.Color;
@@ -70,7 +71,13 @@ public class NPCPhanto extends NPC {
 		else if (randSolais < 0.95) items.add(new ItemSolais(6));
 		else items.add(new ItemSolais(10));
 		
-		// Item return: None currently
+		// Item return (party poppers): 30% = Blue, 20% = Green, 12.5% = Red, 7.5% = Yellow, 5% = White
+		double randItem = random.nextDouble();
+		if (randItem < 0.3) items.add(new ItemPartyPopper("Blue", Textures.ITEM_PARTY_POPPER_BLUE));
+		else if (randItem < 0.5) items.add(new ItemPartyPopper("Green", Textures.ITEM_PARTY_POPPER_GREEN));
+		else if (randItem < 0.625) items.add(new ItemPartyPopper("Red", Textures.ITEM_PARTY_POPPER_RED));
+		else if (randItem < 0.7) items.add(new ItemPartyPopper("Yellow", Textures.ITEM_PARTY_POPPER_YELLOW));
+		else if (randItem < 0.75) items.add(new ItemPartyPopper("White", Textures.ITEM_PARTY_POPPER_WHITE));
 		
 		return items;
 	}
