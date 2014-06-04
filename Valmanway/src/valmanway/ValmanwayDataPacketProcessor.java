@@ -94,13 +94,13 @@ public final class ValmanwayDataPacketProcessor {
 				if (!npc.getHealthBar().takeDamage(attack.getAttackPower())) {
 					npc.setBusy(new GotHitByAttackBusy(npc.getStunnedTexture()));
 				} else { // The NPC died from this attack!
-					npc.killNPC(); // Set NPC to dead and scheduled to respawn
 					Valmanway.sendPacketToPlayer(attack.getAttackerId(), new ReceiveItemsPacket(npc.dropItems())); // Give the killer the dropped items
 					Valmanway.sendPacketToPlayer(attack.getAttackerId(), new ParticleSystemPacket(
 							125,
 							new Coordinate(npc.getPosition().getX(), npc.getPosition().getY() + (npc.getEntireHeight() / 2)),
 							npc.getCurrentBoardName(),
 							npc.getMainColor().brighter()));
+					npc.killNPC(); // Set NPC to dead and scheduled to respawn (must be last as it changes position)
 				}
 			}
 		}

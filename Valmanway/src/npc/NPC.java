@@ -29,13 +29,14 @@ public abstract class NPC extends Entity {
 		alive = true;
 	}
 	
-	public void killNPC() {
+	public synchronized void killNPC() {
 		alive = false;
+		position.setAll(0, 0);
 		spawnCondition.setTimeOfDeath();
 	}
 	
 	@Override
-	public final void update() {
+	public synchronized final void update() {
 		if (!alive) {
 			if (!spawnCondition.getRevivedYet()) { return; }
 			getHealthBar().healDamage(getHealthBar().getMaxHealth());
