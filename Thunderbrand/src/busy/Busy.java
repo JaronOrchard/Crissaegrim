@@ -13,16 +13,23 @@ public abstract class Busy {
 				immobilizingType == ImmobilizingType.CANNOT_WALK);
 	}
 	
+	protected enum AttackableType { CAN_BE_ATTACKED, IMMUNE_TO_ATTACKS }
+	public boolean isImmuneToAttacks() {
+		return (attackableType == AttackableType.IMMUNE_TO_ATTACKS);
+	}
+	
 	private long startTime;
 	private long duration;
 	private long endTime;
-	private ImmobilizingType immobilizingType;
+	private final ImmobilizingType immobilizingType;
+	private final AttackableType attackableType;
 	
-	public Busy(long dur, ImmobilizingType immobilizingType) {
+	public Busy(long dur, ImmobilizingType immobilizingType, AttackableType attackableType) {
 		startTime = new Date().getTime();
 		duration = dur;
 		endTime = startTime + duration;
 		this.immobilizingType = immobilizingType;
+		this.attackableType = attackableType;
 	}
 	
 	/**

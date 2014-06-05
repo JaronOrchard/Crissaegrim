@@ -8,7 +8,7 @@ public class GotHitByAttackBusy extends Busy {
 	private final int stunnedTexture;
 	
 	public GotHitByAttackBusy(int stunnedTexture) {
-		super(STUNNED_TOTAL_TIME, ImmobilizingType.COMPLETELY_IMMOBILIZED);
+		super(STUNNED_TOTAL_TIME, ImmobilizingType.COMPLETELY_IMMOBILIZED, AttackableType.IMMUNE_TO_ATTACKS);
 		this.stunnedTexture = stunnedTexture;
 	}
 	

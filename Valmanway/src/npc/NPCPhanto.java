@@ -25,7 +25,7 @@ public class NPCPhanto extends NPC {
 	public static long getMillisToRespawn() { return 5000; }
 	
 	private static final int MAX_HEALTH = 3;
-	private static int ATTACK_POWER = 5;
+	private static int ATTACK_POWER = 4;
 	
 	double angle = 0;
 	double angleIncrement = 2*Math.PI / 360.0; // 1 degree

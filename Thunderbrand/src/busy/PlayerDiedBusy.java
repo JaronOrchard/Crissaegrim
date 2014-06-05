@@ -6,7 +6,7 @@ public class PlayerDiedBusy extends Busy {
 	private final int deadTexture;
 	
 	public PlayerDiedBusy(int deadTexture) {
-		super(STUNNED_TOTAL_TIME, ImmobilizingType.COMPLETELY_IMMOBILIZED);
+		super(STUNNED_TOTAL_TIME, ImmobilizingType.COMPLETELY_IMMOBILIZED, AttackableType.IMMUNE_TO_ATTACKS);
 		this.deadTexture = deadTexture;
 	}
 	

@@ -59,7 +59,7 @@ public final class CrissaegrimDataPacketProcessor {
 				Crissaegrim.getPlayer().assignPlayerId(-2); // playerId of -2 signifies outdated version
 				break;
 			case DataPacketTypes.GOT_HIT_BY_ATTACK_PACKET:
-				if (!Crissaegrim.getPlayer().isBusy()) {
+				if (!Crissaegrim.getPlayer().isBusy() || !Crissaegrim.getPlayer().getBusy().isImmuneToAttacks()) {
 					if (!Crissaegrim.getPlayer().getHealthBar().takeDamage( ((GotHitByAttackPacket)(packet)).getDamage() )) {
 						Crissaegrim.getPlayer().setBusy(new GotHitByAttackBusy(Crissaegrim.getPlayer().getStunnedTexture()));
 					} else { // The Player died from this attack!
