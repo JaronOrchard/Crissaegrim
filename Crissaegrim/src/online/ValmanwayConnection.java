@@ -62,6 +62,7 @@ public class ValmanwayConnection {
 			lastPlayerStatusSendTime = Thunderbrand.getTime();
 			Player player = Crissaegrim.getPlayer();
 			Crissaegrim.addOutgoingDataPacket(new SendPlayerStatusPacket(new EntityStatus(
+					player.getName(),
 					Crissaegrim.getBoard().getName(),
 					player.getPosition().getX(),
 					player.getPosition().getY(),

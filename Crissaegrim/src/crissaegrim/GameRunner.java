@@ -34,6 +34,7 @@ import entities.Entity;
 import entities.EntityMovementHelper;
 import entities.EntityStatus;
 import geometry.Coordinate;
+import geometry.Rect;
 import geometry.RectUtils;
 import attack.Attack;
 import board.Board;
@@ -44,6 +45,7 @@ import board.MissingChunk;
 import board.tiles.Tile.TileLayer;
 import busy.SwordSwingBusy;
 import textblock.TextBlock;
+import textblock.TextTexture;
 import textures.Textures;
 import thunderbrand.Thunderbrand;
 
@@ -130,6 +132,7 @@ public class GameRunner {
 				} else {
 					getKeyboardAndMouseInput();
 				}
+				drawMouseHoverStatus();
 				playerMovementHelper.moveEntityPre();
 				Item itemToUse = playerMovementHelper.getItemToUse();
 				if (itemToUse != null && !player.isBusy()) {
@@ -323,6 +326,46 @@ public class GameRunner {
 		}
 	}
 	
+	private void drawMouseHoverStatus() {
+		Coordinate mouseCoords = getCoordinatesForMouse();
+		double feetHeight = 0.425;
+		double bodyHeight = 2.4;
+		double bodyWidth = 0.6;
+		String players = "";
+		synchronized (Crissaegrim.getGhosts()) {
+			String currentBoardName = Crissaegrim.getBoard().getName();
+			for (Entry<Integer, EntityStatus> ghost : Crissaegrim.getGhosts().entrySet()) {
+				// TODO: This is hackish and relies on Player's width being known
+				if (ghost.getKey() < 1000000 && ghost.getValue().getBoardName().equals(currentBoardName)) {
+					Rect playerBounds = new Rect(
+							new Coordinate(ghost.getValue().getXPos() - (bodyWidth / 2), ghost.getValue().getYPos()),
+							new Coordinate(ghost.getValue().getXPos() + (bodyWidth / 2), ghost.getValue().getYPos() + feetHeight + bodyHeight));
+					if (RectUtils.coordinateIsInRect(mouseCoords, playerBounds)) {
+						players += ", " + ghost.getValue().getName();
+					}
+				}
+			}
+		}
+		if (!players.isEmpty()) {
+			TextTexture mouseHoverStatus = Crissaegrim.getCommonTextures().getTextTexture(players.substring(2));
+			int top = Crissaegrim.getWindowHeight() - 5;
+			glBindTexture(GL_TEXTURE_2D, mouseHoverStatus.getTextureId());
+			glPushMatrix();
+				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+				glBegin(GL_QUADS);
+					glTexCoord2d(0, 1);
+					glVertex2d(5, top - 20);
+					glTexCoord2d(1, 1);
+					glVertex2d(5 + mouseHoverStatus.getWidth(), top - 20);
+					glTexCoord2d(1, 0);
+					glVertex2d(5 + mouseHoverStatus.getWidth(), top);
+					glTexCoord2d(0, 0);
+					glVertex2d(5, top);
+				glEnd();
+			glPopMatrix();
+		}
+	}
+	
 	/**
 	 * @return A {@link Coordinate} in world coordinates for the spot where the mouse pointer is currently located
 	 */
@@ -353,11 +396,11 @@ public class GameRunner {
 		synchronized (Crissaegrim.getGhosts()) {
 			String currentBoardName = Crissaegrim.getBoard().getName();
 			for (Entry<Integer, EntityStatus> ghost : Crissaegrim.getGhosts().entrySet()) {
-				if (ghost.getValue().getBoardName().equalsIgnoreCase(currentBoardName)) {
+				if (ghost.getValue().getBoardName().equals(currentBoardName)) {
 					drawGhost(ghost.getValue());
 				}
 			}
-		}		
+		}
 	}
 	
 	private void drawGhost(EntityStatus ghost) {

@@ -53,7 +53,8 @@ public class WorldRunner {
 					Entity entity = i.next();
 					entity.update();
 			    	Valmanway.getSharedData().updateEntityStatusMap(entity.getId(),
-			    			new EntityStatus(entity.getCurrentBoardName(), entity.getPosition().getX(), entity.getPosition().getY(),
+			    			new EntityStatus(Valmanway.getSharedData().getPlayerName(entity.getId()),
+			    					entity.getCurrentBoardName(), entity.getPosition().getX(), entity.getPosition().getY(),
 			    					entity.getCurrentTexture(), entity.getFacingRight(), entity.getHealthBar().getAmtHealth(),
 			    					entity.getTextureHalfWidth(), entity.getTextureHeight()));
 				}

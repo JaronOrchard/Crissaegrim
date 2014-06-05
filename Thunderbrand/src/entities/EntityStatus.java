@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class EntityStatus implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	private String name; // TODO: Is it possible to remove this?  Crissaegrim needs it, but perhaps it could keep track of it in a client-side map.
 	private String boardName;
 	private double xPos;
 	private double yPos;
@@ -14,6 +15,7 @@ public class EntityStatus implements Serializable {
 	private final double textureHalfWidth;
 	private final double textureHeight;
 	
+	public String getName() { return name; }
 	public String getBoardName() { return boardName; }
 	public double getXPos() { return xPos; }
 	public double getYPos() { return yPos; }
@@ -23,14 +25,15 @@ public class EntityStatus implements Serializable {
 	public double getTextureHalfWidth() { return textureHalfWidth; }
 	public double getTextureHeight() { return textureHeight; }
 	
-	public EntityStatus(String boardName, double xPos, double yPos, int currentTexture, boolean facingRight, double amtHealth,
+	public EntityStatus(String name, String boardName, double xPos, double yPos, int currentTexture, boolean facingRight, double amtHealth,
 			double textureHalfWidth, double textureHeight) {
-		setAll(boardName, xPos, yPos, currentTexture, facingRight, amtHealth);
+		setAll(name, boardName, xPos, yPos, currentTexture, facingRight, amtHealth);
 		this.textureHalfWidth = textureHalfWidth;
 		this.textureHeight = textureHeight;
 	}
 	
-	public void setAll(String boardName, double xPos, double yPos, int currentTexture, boolean facingRight, double amtHealth) {
+	public void setAll(String name, String boardName, double xPos, double yPos, int currentTexture, boolean facingRight, double amtHealth) {
+		this.name = name;
 		this.boardName = boardName;
 		this.xPos = xPos;
 		this.yPos = yPos;
