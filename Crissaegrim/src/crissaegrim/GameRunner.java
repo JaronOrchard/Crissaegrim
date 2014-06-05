@@ -5,6 +5,7 @@ import items.Item;
 import items.ItemPartyPopper;
 import items.Weapon;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +26,7 @@ import datapacket.NonexistentChunkPacket;
 import datapacket.ParticleSystemPacket;
 import datapacket.RequestEntireBoardPacket;
 import datapacket.RequestPlayerIdPacket;
+import datapacket.SendChatMessagePacket;
 import doodads.Doodad;
 import doodads.Door;
 import effects.ParticleSystem;
@@ -90,6 +92,12 @@ public class GameRunner {
 		
 		setNewDestinationToSpawn();
 		goToDestinationBoard();
+		
+		// Set name to last used username if applicable:
+		String lastUsername = Crissaegrim.getPreferenceHandler().getLastUsername();
+		if (lastUsername != null) {
+			Crissaegrim.addOutgoingDataPacket(new SendChatMessagePacket(new TextBlock("/setname " + lastUsername, Color.WHITE)));
+		}
 		
 		//initializeGame();
 		

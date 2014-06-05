@@ -157,7 +157,7 @@ public final class ValmanwayDataPacketProcessor {
 					} else if (!StringUtils.isAlphanumericSpace(newName)) {
 						sendSystemMessage("Names can only contain letters, numbers, and spaces.", vud);
 					} else if (Valmanway.getSharedData().isPlayerNameInUse(newName)) {
-						sendSystemMessage("Someone else is already using that name.", vud);
+						sendSystemMessage("Someone else is already using the name \"" + newName + "\".", vud);
 					} else {
 						vud.setPlayerName(newName);
 						vud.addOutgoingDataPacket(new ReceivePlayerNamePacket(newName));

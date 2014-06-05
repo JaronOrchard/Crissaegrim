@@ -33,7 +33,9 @@ public final class CrissaegrimDataPacketProcessor {
 				Crissaegrim.getPlayer().assignPlayerId( ((ReceivePlayerIdPacket)(packet)).getReceivedPlayerId() );
 				break;
 			case DataPacketTypes.RECEIVE_PLAYER_NAME_PACKET:
-				Crissaegrim.getPlayer().setName( ((ReceivePlayerNamePacket)(packet)).getReceivedPlayerName() );
+				String newName = ((ReceivePlayerNamePacket)(packet)).getReceivedPlayerName();
+				Crissaegrim.getPlayer().setName(newName);
+				Crissaegrim.getPreferenceHandler().setLastUsername(newName);
 				break;
 			case DataPacketTypes.SEND_ALL_PLAYER_STATUSES_PACKET:
 				Crissaegrim.setGhosts( ((SendAllPlayerStatusesPacket)(packet)).getPlayerStatuses() );
