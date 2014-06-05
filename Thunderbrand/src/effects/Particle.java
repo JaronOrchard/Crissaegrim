@@ -4,6 +4,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
 
+import random.RandomNumbers;
+import thunderbrand.Thunderbrand;
 import geometry.Coordinate;
 
 public class Particle {
@@ -27,21 +29,22 @@ public class Particle {
 	private static final double GRAVITY_ACCELERATION = -0.0001;
 	
 	public Particle(Coordinate startingPosition, Color startingColor) {
+		RandomNumbers randomNumbers = Thunderbrand.getRandomNumbers();
 		position = new Coordinate(startingPosition);
 		
-		int redChange = (int)((Math.random() * MAX_COLOR_CHANGE * 2) - MAX_COLOR_CHANGE);
-		int greenChange = (int)((Math.random() * MAX_COLOR_CHANGE * 2) - MAX_COLOR_CHANGE);
-		int blueChange = (int)((Math.random() * MAX_COLOR_CHANGE * 2) - MAX_COLOR_CHANGE);
+		int redChange = randomNumbers.getIntInRange(-MAX_COLOR_CHANGE, MAX_COLOR_CHANGE);
+		int greenChange = randomNumbers.getIntInRange(-MAX_COLOR_CHANGE, MAX_COLOR_CHANGE);
+		int blueChange = randomNumbers.getIntInRange(-MAX_COLOR_CHANGE, MAX_COLOR_CHANGE);
 		red = (double)(Math.max(0, Math.min(255, startingColor.getRed() + redChange))) / 255.0;
 		green = (double)(Math.max(0, Math.min(255, startingColor.getGreen() + greenChange))) / 255.0;
 		blue = (double)(Math.max(0, Math.min(255, startingColor.getBlue() + blueChange))) / 255.0;
 		
-		framesToLive = (int)(Math.random() * (MAX_FRAMES - MIN_FRAMES) + MIN_FRAMES);
+		framesToLive = randomNumbers.getIntInRange(MIN_FRAMES, MAX_FRAMES);
 		framesLeft = framesToLive;
-		halfWidth = (Math.random() * (MAX_WIDTH - MIN_WIDTH) + MIN_WIDTH) / 2;
+		halfWidth = randomNumbers.getDoubleInRange(MIN_WIDTH, MAX_WIDTH) / 2;
 		
-		double angle = Math.random() * 2 * Math.PI;
-		double velocity = Math.random() * MAX_INITIAL_VELOCITY;
+		double angle = randomNumbers.getDoubleInRange(0, 2 * Math.PI);
+		double velocity = randomNumbers.getDoubleInRange(0, MAX_INITIAL_VELOCITY);
 		deltaX = Math.cos(angle) * velocity;
 		deltaY = Math.sin(angle) * velocity;
 	}

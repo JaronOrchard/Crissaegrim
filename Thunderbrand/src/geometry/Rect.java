@@ -2,6 +2,8 @@ package geometry;
 
 import java.io.Serializable;
 
+import thunderbrand.Thunderbrand;
+
 public class Rect implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -32,7 +34,7 @@ public class Rect implements Serializable {
 	
 	public Coordinate getRandomizedPointInRect() {
 		return new Coordinate(
-				Math.random() * (getRight() - getLeft()) + getLeft(),
-				Math.random() * (getTop() - getBottom()) + getBottom());
+				Thunderbrand.getRandomNumbers().getDoubleInRange(getLeft(), getRight()),
+				Thunderbrand.getRandomNumbers().getDoubleInRange(getBottom(), getTop()));
 	}
 }

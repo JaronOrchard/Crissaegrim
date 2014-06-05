@@ -2,6 +2,8 @@ package thunderbrand;
 
 import org.lwjgl.Sys;
 
+import random.RandomNumbers;
+
 public final class Thunderbrand {
 	
 	private static final boolean LINUX_BUILD = false; // Change to true when deploying to the VM server, keep false if on my Windows machine
@@ -11,6 +13,10 @@ public final class Thunderbrand {
 	public static boolean isLinuxBuild() { return LINUX_BUILD; }
 	public static int getValmanwayServerPort() { return VALMANWAY_SERVER_PORT; }
 	public static boolean getStartWorldRunner() { return START_WORLD_RUNNER; }
+	
+	private static final RandomNumbers randomNumbers = new RandomNumbers();
+	
+	public static RandomNumbers getRandomNumbers() { return randomNumbers; }
 	
 	private static final int CHUNK_SIDE_SIZE = 100;
 	public static int getChunkSideSize() { return CHUNK_SIDE_SIZE; }

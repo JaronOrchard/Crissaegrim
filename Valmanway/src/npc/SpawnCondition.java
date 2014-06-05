@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import thunderbrand.Thunderbrand;
+
 public class SpawnCondition {
 	
 	/**
@@ -39,7 +41,7 @@ public class SpawnCondition {
 	public boolean getRevivedYet() { return getTimeUntilRevived() <= 0; }
 	
 	public Coordinate getNewRespawnPoint() {
-		double ratio = Math.random();
+		double ratio = Thunderbrand.getRandomNumbers().getDouble();
 		for (int i = 0; i < spawningAreaChanceRatios.size(); i++) {
 			if (ratio <= spawningAreaChanceRatios.get(i)) {
 				return spawningAreas.get(i).getRandomizedPointInRect();
