@@ -28,7 +28,7 @@ public class NPCPhanto extends NPC {
 	private static int ATTACK_POWER = 4;
 	
 	double angle = 0;
-	double angleIncrement = 2*Math.PI / 360.0; // 1 degree
+	double angleIncrement = 2*Math.PI / 360.0 / 2.0; // 0.5 degrees/frame
 	double radius = 7;
 	Coordinate currentCenter;
 	
