@@ -22,6 +22,7 @@ import datapacket.ReceivePlayerIdPacket;
 import datapacket.ReceivePlayerNamePacket;
 import datapacket.SendAllPlayerStatusesPacket;
 import datapacket.SendChatMessagePacket;
+import datapacket.SendSystemMessagePacket;
 import effects.ParticleSystem;
 
 public final class CrissaegrimDataPacketProcessor {
@@ -43,6 +44,9 @@ public final class CrissaegrimDataPacketProcessor {
 			case DataPacketTypes.SEND_CHAT_MESSAGE_PACKET:
 				Crissaegrim.getGameRunner().addWaitingChatMessage( ((SendChatMessagePacket)(packet)).getTextBlock() );
 				break;
+			case DataPacketTypes.INCOMING_CHUNK_COUNT_PACKET:
+				Crissaegrim.numPacketsToReceive = ((IncomingChunkCountPacket)(packet)).getIncomingChunkCount();
+				break;
 			case DataPacketTypes.CHUNK_PACKET:
 				Crissaegrim.getGameRunner().addChunk( ((ChunkPacket)(packet)) );
 				Crissaegrim.numPacketsReceived++;
@@ -63,14 +67,11 @@ public final class CrissaegrimDataPacketProcessor {
 					if (!Crissaegrim.getPlayer().getHealthBar().takeDamage( ((GotHitByAttackPacket)(packet)).getDamage() )) {
 						Crissaegrim.getPlayer().setBusy(new GotHitByAttackBusy(Crissaegrim.getPlayer().getStunnedTexture()));
 					} else { // The Player died from this attack!
-						Crissaegrim.getGameRunner().addWaitingChatMessage(
-								new TextBlock("You have been killed by " + ((GotHitByAttackPacket)(packet)).getAttackerName() + "!", Color.RED));
+						Crissaegrim.addOutgoingDataPacket(new SendSystemMessagePacket(new TextBlock(
+								Crissaegrim.getPlayer().getName() + " has been killed by " + ((GotHitByAttackPacket)(packet)).getAttackerName() + "!", Color.RED)));
 						Crissaegrim.getPlayer().setBusy(new PlayerDiedBusy(Textures.STICK_PLAYER_DEAD));
 					}
 				}
-				break;
-			case DataPacketTypes.INCOMING_CHUNK_COUNT_PACKET:
-				Crissaegrim.numPacketsToReceive = ((IncomingChunkCountPacket)(packet)).getIncomingChunkCount();
 				break;
 			case DataPacketTypes.RECEIVE_ITEMS_PACKET:
 				List<Item> items = ((ReceiveItemsPacket)(packet)).getItems();

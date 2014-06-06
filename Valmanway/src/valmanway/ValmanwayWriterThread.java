@@ -60,7 +60,7 @@ public class ValmanwayWriterThread extends Thread {
     	try {
 	    	socketOut.close();
 			crissaegrimSocket.close();
-	    } catch (IOException e) { e.printStackTrace(); }
+	    } catch (IOException e) { /*e.printStackTrace();*/ }
     	
     	valmanwayUserData.connectionStable = false;
     	Valmanway.getSharedData().dropPlayer(valmanwayUserData.getPlayerId());

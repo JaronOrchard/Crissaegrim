@@ -38,6 +38,7 @@ import datapacket.RequestPlayerIdPacket;
 import datapacket.RequestSpecificChunkPacket;
 import datapacket.SendChatMessagePacket;
 import datapacket.SendPlayerStatusPacket;
+import datapacket.SendSystemMessagePacket;
 import entities.Entity;
 import entities.EntityStatus;
 import geometry.Coordinate;
@@ -66,6 +67,10 @@ public final class ValmanwayDataPacketProcessor {
 				break;
 			case DataPacketTypes.SEND_CHAT_MESSAGE_PACKET:
 				processChatMessage( ((SendChatMessagePacket)(packet)).getTextBlock(), valmanwayUserData);
+				break;
+			case DataPacketTypes.SEND_SYSTEM_MESSAGE_PACKET:
+				TextBlock tb = ((SendSystemMessagePacket)(packet)).getTextBlock();
+				sendRegularMessage(tb.getMessage(), tb.getColor());
 				break;
 			case DataPacketTypes.REQUEST_ENTIRE_BOARD_PACKET:
 				sendEntireBoard( ((RequestEntireBoardPacket)(packet)).getBoardName(), valmanwayUserData);
