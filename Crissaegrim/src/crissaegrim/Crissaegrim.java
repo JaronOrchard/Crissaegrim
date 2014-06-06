@@ -26,7 +26,7 @@ import entities.EntityStatus;
 
 public class Crissaegrim {
 	
-	private static final int CLIENT_VERSION = 20140521;
+	private static final int CLIENT_VERSION = 20140606;
 	public static int getClientVersion() { return CLIENT_VERSION; }
 	
 	private static volatile GameRunner gameRunner = new GameRunner();
