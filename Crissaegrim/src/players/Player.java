@@ -7,6 +7,7 @@ import items.ItemSolais;
 import java.util.Map;
 
 import board.Board;
+import busy.InvincibleBusy;
 import busy.PlayerDiedBusy;
 import textures.Textures;
 import crissaegrim.Crissaegrim;
@@ -143,8 +144,10 @@ public class Player extends Entity {
 				getHealthBar().healDamage(getHealthBar().getMaxHealth());
 				Crissaegrim.getGameRunner().setNewDestinationToSpawn();
 				Crissaegrim.getGameRunner().goToDestinationBoard();
+				busy = new InvincibleBusy(2000);
+			} else {
+				busy = null;
 			}
-			busy = null;
 		}
 		icon = null;
 	}
