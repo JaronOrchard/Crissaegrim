@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import datapacket.GotHitByAttackPacket;
 import entities.EntityStatus;
 import geometry.Coordinate;
 import geometry.Line;
@@ -76,6 +75,9 @@ public class NPCChargingSpike extends NPC {
 	public int getStunnedTexture() { return Textures.NPC_CHARGING_SPIKE; }
 	
 	@Override
+	protected String getName() { return "NPC ChargingSpike"; }
+	
+	@Override
 	protected void updateNPC() {
 		// ChargingSpike can't be hurt, so right now no Busy applies to it.
 		
@@ -142,7 +144,7 @@ public class NPCChargingSpike extends NPC {
 						new Coordinate(esPosition.getX() - (bodyWidth / 2), esPosition.getY()),
 						new Coordinate(esPosition.getX() + (bodyWidth / 2), esPosition.getY() + feetHeight + bodyHeight));
 				if (RectUtils.rectsOverlap(entityBounds, this.getEntityEntireRect())) {
-					Valmanway.sendPacketToPlayer(entityStatus.getKey(), new GotHitByAttackPacket("NPC ChargingSpike", getAttackPower()));
+					attackPlayer(entityStatus.getKey());
 				}
 			}
 		}

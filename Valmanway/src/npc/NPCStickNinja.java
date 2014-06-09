@@ -6,6 +6,7 @@ import items.ItemSolais;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+
 import geometry.Coordinate;
 import textures.Textures;
 import thunderbrand.Thunderbrand;
@@ -55,6 +56,9 @@ public class NPCStickNinja extends NPC {
 	
 	@Override
 	public int getStunnedTexture() { return Textures.NPC_STICK_NINJA_STUNNED; }
+	
+	@Override
+	protected String getName() { return "NPC StickNinja"; }
 	
 	// Currently a hack to get NPCs initially working.
 	// Preferably each type of NPC would be its own subclass or something.

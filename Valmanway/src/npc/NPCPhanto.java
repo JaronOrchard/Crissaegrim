@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import datapacket.GotHitByAttackPacket;
 import entities.EntityStatus;
 import geometry.Coordinate;
 import geometry.Rect;
@@ -87,6 +86,9 @@ public class NPCPhanto extends NPC {
 	public int getStunnedTexture() { return Textures.NPC_PHANTO; }
 	
 	@Override
+	protected String getName() { return "NPC Phanto"; }
+	
+	@Override
 	protected void updateNPC() {
 		if (isBusy()) {
 			if (busy.hasExpired()) {
@@ -113,7 +115,7 @@ public class NPCPhanto extends NPC {
 						new Coordinate(esPosition.getX() - (bodyWidth / 2), esPosition.getY()),
 						new Coordinate(esPosition.getX() + (bodyWidth / 2), esPosition.getY() + feetHeight + bodyHeight));
 				if (RectUtils.rectsOverlap(entityBounds, this.getEntityEntireRect())) {
-					Valmanway.sendPacketToPlayer(entityStatus.getKey(), new GotHitByAttackPacket("NPC Phanto", getAttackPower()));
+					attackPlayer(entityStatus.getKey());
 				}
 			}
 		}
