@@ -7,7 +7,6 @@ import items.ItemSolais;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import datapacket.GotHitByAttackPacket;
@@ -15,7 +14,6 @@ import entities.EntityStatus;
 import geometry.Coordinate;
 import geometry.Rect;
 import geometry.RectUtils;
-import board.Board;
 import textures.Textures;
 import thunderbrand.Thunderbrand;
 import valmanway.Valmanway;
@@ -32,8 +30,8 @@ public class NPCPhanto extends NPC {
 	double radius = 7;
 	Coordinate currentCenter;
 	
-	public NPCPhanto(int npc_id, SpawnCondition spawnCondition, String boardName, Map<String, Board> boardMap) {
-		super(npc_id, MAX_HEALTH, spawnCondition, boardName, boardMap);
+	public NPCPhanto(int npc_id, SpawnCondition spawnCondition, String boardName) {
+		super(npc_id, MAX_HEALTH, spawnCondition, boardName);
 		textureHalfWidth = 1;
 		textureHeight = 2;
 		
@@ -45,7 +43,8 @@ public class NPCPhanto extends NPC {
 	}
 	
 	@Override
-	protected void respawn(Coordinate respawnPoint) {
+	public void respawn() {
+		Coordinate respawnPoint = getSpawnCondition().getNewRespawnPoint();
 		position = new Coordinate(respawnPoint);
 		currentCenter = new Coordinate(respawnPoint);
 	}

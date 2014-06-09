@@ -1,6 +1,7 @@
 package geometry;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -118,6 +119,10 @@ public final class RectUtils {
 				rect1.getLeft() > rect2.getRight() ||
 				rect1.getTop() < rect2.getBottom() ||
 				rect1.getBottom() > rect2.getTop()));
+	}
+	
+	public static boolean lineIntersectsRect(Line line, Rect rect) {
+		return LineUtils.lineSetsIntersect(Arrays.asList(line), RectUtils.getLinesFromRect(rect));
 	}
 	
 }

@@ -4,11 +4,8 @@ import items.Item;
 
 import java.awt.Color;
 import java.util.List;
-import java.util.Map;
-
-import board.Board;
+import valmanway.Valmanway;
 import entities.Entity;
-import geometry.Coordinate;
 
 public abstract class NPC extends Entity {
 	
@@ -16,16 +13,15 @@ public abstract class NPC extends Entity {
 	private SpawnCondition spawnCondition;
 	
 	public boolean isAlive() { return alive; }
+	public SpawnCondition getSpawnCondition() { return spawnCondition; }
 	
 	public abstract int getAttackPower();
 	
-	public NPC(int npc_id, int maxHealth, SpawnCondition spawnCond, String boardName, Map<String, Board> boardMap) {
-		super(maxHealth, boardMap);
+	public NPC(int npc_id, int maxHealth, SpawnCondition spawnCond, String boardName) {
+		super(maxHealth, Valmanway.getSharedData().getBoardMap());
 		id = npc_id;
 		currentBoardName = boardName;
 		spawnCondition = spawnCond;
-		respawn(spawnCondition.getNewRespawnPoint());
-		
 		alive = true;
 	}
 	
@@ -40,14 +36,14 @@ public abstract class NPC extends Entity {
 		if (!alive) {
 			if (!spawnCondition.getRevivedYet()) { return; }
 			getHealthBar().healDamage(getHealthBar().getMaxHealth());
-			respawn(spawnCondition.getNewRespawnPoint());
+			respawn();
 			alive = true;
 		}
 		updateNPC();
 	}
 	
 	protected abstract void updateNPC();
-	protected abstract void respawn(Coordinate respawnPoint);
+	public abstract void respawn();
 	public abstract List<Item> dropItems();
 	public abstract Color getMainColor();
 	

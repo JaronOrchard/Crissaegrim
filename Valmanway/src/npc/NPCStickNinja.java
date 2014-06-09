@@ -6,10 +6,7 @@ import items.ItemSolais;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import geometry.Coordinate;
-import board.Board;
 import textures.Textures;
 import thunderbrand.Thunderbrand;
 import entities.EntityMovementHelper;
@@ -22,16 +19,16 @@ public class NPCStickNinja extends NPC {
 	private static int ATTACK_POWER = 1;
 	private final int npc_type;
 	
-	public NPCStickNinja(int npc_id, SpawnCondition spawnCondition, String boardName, Map<String, Board> boardMap, int type) {
-		super(npc_id, MAX_HEALTH, spawnCondition, boardName, boardMap);
+	public NPCStickNinja(int npc_id, SpawnCondition spawnCondition, String boardName, int type) {
+		super(npc_id, MAX_HEALTH, spawnCondition, boardName);
 		npc_type = type;
 		
 		// TODO: Make a required function that sets all the movement parameters up
 	}
 	
 	@Override
-	protected void respawn(Coordinate respawnPoint) {
-		position = new Coordinate(respawnPoint);
+	public void respawn() {
+		position = new Coordinate(getSpawnCondition().getNewRespawnPoint());
 	}
 	
 	@Override

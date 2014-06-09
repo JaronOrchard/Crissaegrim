@@ -110,6 +110,7 @@ public class Textures {
 	public static final int NPC_STICK_NINJA = 1100;
 	public static final int NPC_STICK_NINJA_STUNNED = 1101;
 	public static final int NPC_PHANTO = 1102;
+	public static final int NPC_CHARGING_SPIKE = 1103;
 	
 	public static final int ICON_X = 1800;
 	
@@ -238,6 +239,7 @@ public class Textures {
 		TextureLoader.loadTexture(NPC_STICK_NINJA, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NPC.png")));
 		TextureLoader.loadTexture(NPC_STICK_NINJA_STUNNED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NPCStunned.png")));
 		TextureLoader.loadTexture(NPC_PHANTO, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/npc/Phanto.png")));
+		TextureLoader.loadTexture(NPC_CHARGING_SPIKE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/npc/ChargingSpike.png")));
 		
 		TextureLoader.loadTexture(ICON_X, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/IconX.png")));
 		
