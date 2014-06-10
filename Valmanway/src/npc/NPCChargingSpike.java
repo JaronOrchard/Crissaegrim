@@ -26,8 +26,8 @@ public class NPCChargingSpike extends NPC {
 	private Line chargeCheckLine;
 	private ChargingStatus chargingStatus;
 	
-	public NPCChargingSpike(int npc_id, SpawnCondition spawnCondition, Coordinate chargeTo, boolean chargeRight, String boardName) {
-		super(npc_id, MAX_HEALTH, spawnCondition, boardName);
+	public NPCChargingSpike(SpawnCondition spawnCondition, Coordinate chargeTo, boolean chargeRight, String boardName) {
+		super(MAX_HEALTH, spawnCondition, boardName);
 		chargeEndPoint = new Coordinate(chargeTo);
 		facingRight = chargeRight; // True if rests at left and charges right, false if reversed
 		

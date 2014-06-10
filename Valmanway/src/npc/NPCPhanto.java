@@ -28,8 +28,8 @@ public class NPCPhanto extends NPC {
 	double radius = 7;
 	Coordinate currentCenter;
 	
-	public NPCPhanto(int npc_id, SpawnCondition spawnCondition, String boardName) {
-		super(npc_id, MAX_HEALTH, spawnCondition, boardName);
+	public NPCPhanto(SpawnCondition spawnCondition, String boardName) {
+		super(MAX_HEALTH, spawnCondition, boardName);
 		textureHalfWidth = 1;
 		textureHeight = 2;
 		

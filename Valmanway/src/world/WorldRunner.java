@@ -14,7 +14,6 @@ import npc.NPCChargingSpike;
 import npc.NPCPhanto;
 import npc.NPCStickNinja;
 import npc.SpawnCondition;
-import entities.Entity;
 import entities.EntityStatus;
 import geometry.Coordinate;
 import geometry.Rect;
@@ -45,20 +44,20 @@ public class WorldRunner {
 		
 		lastFPSTitleUpdate = Thunderbrand.getTime();
 		long startTime, endTime, elaspedTime; // Per-loop times to keep FRAMES_PER_SECOND
-		List<Entity> entities = Valmanway.getSharedData().getEntities();
+		List<NPC> npcs = Valmanway.getSharedData().getNPCs();
 		while (true) {
 			startTime = Thunderbrand.getTime();
 			
-			synchronized (entities) {
-				Iterator<Entity> i = entities.iterator(); // Must be in synchronized block
+			synchronized (npcs) {
+				Iterator<NPC> i = npcs.iterator(); // Must be in synchronized block
 				while (i.hasNext()) {
-					Entity entity = i.next();
-					entity.update();
-			    	Valmanway.getSharedData().updateEntityStatusMap(entity.getId(),
-			    			new EntityStatus(Valmanway.getSharedData().getPlayerName(entity.getId()),
-			    					entity.getCurrentBoardName(), entity.getPosition().getX(), entity.getPosition().getY(),
-			    					entity.getCurrentTexture(), entity.getFacingRight(), entity.getHealthBar().getAmtHealth(),
-			    					entity.getTextureHalfWidth(), entity.getTextureHeight()));
+					NPC npc = i.next();
+					npc.update();
+			    	Valmanway.getSharedData().updateEntityStatusMap(npc.getId(),
+			    			new EntityStatus(Valmanway.getSharedData().getPlayerName(npc.getId()),
+			    					npc.getCurrentBoardName(), npc.getPosition().getX(), npc.getPosition().getY(),
+			    					npc.getCurrentTexture(), npc.getFacingRight(), npc.getHealthBar().getAmtHealth(),
+			    					npc.getTextureHalfWidth(), npc.getTextureHeight()));
 				}
 			}
 
@@ -141,41 +140,20 @@ public class WorldRunner {
 	}
 	
 	private void createNPCs() {
-		Valmanway.getSharedData().getEntities().add(new NPCStickNinja(1000001,
-				new SpawnCondition(new Coordinate(10042, 10084), NPCStickNinja.getMillisToRespawn()),
-				"tower_of_preludes", 1));
-		Valmanway.getSharedData().getEntities().add(new NPCStickNinja(1000000,
-				new SpawnCondition(new Coordinate(10050, 10023), NPCStickNinja.getMillisToRespawn()),
-				"dawning", 2));
+		List<NPC> npcList = Valmanway.getSharedData().getNPCs();
+		
+		npcList.add(new NPCStickNinja(new SpawnCondition(new Coordinate(10042, 10084), NPCStickNinja.getMillisToRespawn()), "tower_of_preludes", 1));
+		npcList.add(new NPCStickNinja(new SpawnCondition(new Coordinate(10050, 10023), NPCStickNinja.getMillisToRespawn()), "dawning", 2));
 				
-		Valmanway.getSharedData().getEntities().add(new NPCPhanto(1000002,
-				new SpawnCondition(new Rect(new Coordinate(10091, 10036), new Coordinate(10152, 10042)), NPCPhanto.getMillisToRespawn()),
-				"sotn_clock_tower"));
-		Valmanway.getSharedData().getEntities().add(new NPCPhanto(1000003,
-				new SpawnCondition(new Rect(new Coordinate(10091, 10036), new Coordinate(10152, 10042)), NPCPhanto.getMillisToRespawn()),
-				"sotn_clock_tower"));
-		Valmanway.getSharedData().getEntities().add(new NPCPhanto(1000004,
-				new SpawnCondition(new Rect(new Coordinate(10091, 10036), new Coordinate(10152, 10042)), NPCPhanto.getMillisToRespawn()),
-				"sotn_clock_tower"));
-		Valmanway.getSharedData().getEntities().add(new NPCPhanto(1000005,
-				new SpawnCondition(new Coordinate(10035, 10056), NPCPhanto.getMillisToRespawn()),
-				"sotn_clock_tower"));
+		npcList.add(new NPCPhanto(new SpawnCondition(new Rect(new Coordinate(10091, 10036), new Coordinate(10152, 10042)), NPCPhanto.getMillisToRespawn()), "sotn_clock_tower"));
+		npcList.add(new NPCPhanto(new SpawnCondition(new Rect(new Coordinate(10091, 10036), new Coordinate(10152, 10042)), NPCPhanto.getMillisToRespawn()), "sotn_clock_tower"));
+		npcList.add(new NPCPhanto(new SpawnCondition(new Rect(new Coordinate(10091, 10036), new Coordinate(10152, 10042)), NPCPhanto.getMillisToRespawn()), "sotn_clock_tower"));
+		npcList.add(new NPCPhanto(new SpawnCondition(new Coordinate(10035, 10056), NPCPhanto.getMillisToRespawn()), "sotn_clock_tower"));
 		
-		Valmanway.getSharedData().getEntities().add(new NPCChargingSpike(1000006,
-				new SpawnCondition(new Coordinate(10125, 10013)), new Coordinate(10115, 10013), false,
-				"sotn_clock_tower"));
-		Valmanway.getSharedData().getEntities().add(new NPCChargingSpike(1000007,
-				new SpawnCondition(new Coordinate(10140, 10013)), new Coordinate(10154, 10013), true,
-				"sotn_clock_tower"));
+		npcList.add(new NPCChargingSpike(new SpawnCondition(new Coordinate(10125, 10013)), new Coordinate(10115, 10013), false, "sotn_clock_tower"));
+		npcList.add(new NPCChargingSpike(new SpawnCondition(new Coordinate(10140, 10013)), new Coordinate(10154, 10013), true, "sotn_clock_tower"));
 		
-		
-		
-		
-		for (Entity entity : Valmanway.getSharedData().getEntities()) {
-			if (entity.getId() >= 1000000) {
-				((NPC)(entity)).respawn();
-			}
-		}
+		for (NPC npc : npcList) { npc.respawn(); }
 	}
 	
 }

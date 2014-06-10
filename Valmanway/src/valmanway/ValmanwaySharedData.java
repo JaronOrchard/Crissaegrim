@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import npc.NPC;
 import datapacket.DataPacket;
 import datapacket.SendChatMessagePacket;
-import entities.Entity;
 import entities.EntityStatus;
 import board.Board;
 import textblock.TextBlock;
@@ -18,7 +18,7 @@ public class ValmanwaySharedData {
 	private static final int DATAPACKETS_ARRAY_SIZE = 1000;
 	
 	private Map<String, Board> boardMap;
-	private List<Entity> entities; // NPCs only
+	private List<NPC> npcs;
 	
 	private Map<Integer, EntityStatus> entityStatusMap; // Players + NPCs
 	private Map<Integer, String> playerNameMap;
@@ -28,7 +28,7 @@ public class ValmanwaySharedData {
 	
 	public ValmanwaySharedData() {
 		boardMap = new HashMap<String, Board>();
-		entities = Collections.synchronizedList(new ArrayList<Entity>());
+		npcs = Collections.synchronizedList(new ArrayList<NPC>());
 		entityStatusMap = Collections.synchronizedMap(new HashMap<Integer, EntityStatus>());
 		playerNameMap = Collections.synchronizedMap(new HashMap<Integer, String>());
 		nextPlayerId = 1;
@@ -39,7 +39,7 @@ public class ValmanwaySharedData {
 	}
 	
 	public Map<String, Board> getBoardMap() { return boardMap; }
-	public List<Entity> getEntities() { return entities; }
+	public List<NPC> getNPCs() { return npcs; }
 	
 	public int getNextPlayerId() { return nextPlayerId++; }
 	public DataPacket getDataPacket(int index) { return dataPackets[index % DATAPACKETS_ARRAY_SIZE]; }

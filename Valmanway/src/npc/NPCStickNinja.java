@@ -20,8 +20,8 @@ public class NPCStickNinja extends NPC {
 	private static int ATTACK_POWER = 1;
 	private final int npc_type;
 	
-	public NPCStickNinja(int npc_id, SpawnCondition spawnCondition, String boardName, int type) {
-		super(npc_id, MAX_HEALTH, spawnCondition, boardName);
+	public NPCStickNinja(SpawnCondition spawnCondition, String boardName, int type) {
+		super(MAX_HEALTH, spawnCondition, boardName);
 		npc_type = type;
 		
 		// TODO: Make a required function that sets all the movement parameters up

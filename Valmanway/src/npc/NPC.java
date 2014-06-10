@@ -27,9 +27,9 @@ public abstract class NPC extends Entity {
 	public boolean isAlive() { return alive; }
 	public SpawnCondition getSpawnCondition() { return spawnCondition; }
 	
-	public NPC(int npc_id, int maxHealth, SpawnCondition spawnCond, String boardName) {
+	public NPC(int maxHealth, SpawnCondition spawnCond, String boardName) {
 		super(maxHealth, Valmanway.getSharedData().getBoardMap());
-		id = npc_id;
+		id = Valmanway.getNextNPCId();
 		currentBoardName = boardName;
 		spawnCondition = spawnCond;
 		playerNextAttackableTimes = new HashMap<Integer, Long>();

@@ -30,6 +30,9 @@ public class Valmanway {
 	
 	private static ValmanwayLogger logger = new ValmanwayLogger();
 	
+	private static int nextNPCId = 1000000;
+	public synchronized static int getNextNPCId() { nextNPCId++; return nextNPCId - 1; } 
+	
 	public static void main(String[] argv) throws IOException {
 		int valmanwayServerPort = Thunderbrand.getValmanwayServerPort();
 		ServerSocket serverSocket = null;

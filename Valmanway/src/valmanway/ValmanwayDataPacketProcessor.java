@@ -39,7 +39,6 @@ import datapacket.RequestSpecificChunkPacket;
 import datapacket.SendChatMessagePacket;
 import datapacket.SendPlayerStatusPacket;
 import datapacket.SendSystemMessagePacket;
-import entities.Entity;
 import entities.EntityStatus;
 import geometry.Coordinate;
 import geometry.RectUtils;
@@ -95,8 +94,7 @@ public final class ValmanwayDataPacketProcessor {
 	private static void processAttackPacket(AttackPacket attackPacket, ValmanwayUserData vud) {
 		Attack attack = attackPacket.getAttack();
 		// Compare this attack to all NPCs:
-		for (Entity entity : Valmanway.getSharedData().getEntities()) {
-			NPC npc = (NPC)entity; // TODO: Remove cast when getEntities is changed to getNPCs
+		for (NPC npc : Valmanway.getSharedData().getNPCs()) {
 			if (npc.getCurrentBoardName().equals(attack.getBoardName()) &&
 					npc.isAttackable() && npc.isAlive() && !npc.isBusy() &&
 					RectUtils.rectsOverlap(npc.getEntityEntireRect(npc.getPosition()), attack.getBounds())) {
