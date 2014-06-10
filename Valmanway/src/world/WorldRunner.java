@@ -162,10 +162,10 @@ public class WorldRunner {
 				"sotn_clock_tower"));
 		
 		Valmanway.getSharedData().getEntities().add(new NPCChargingSpike(1000006,
-				new SpawnCondition(new Coordinate(10125, 10013), 0), new Coordinate(10115, 10013), false,
+				new SpawnCondition(new Coordinate(10125, 10013)), new Coordinate(10115, 10013), false,
 				"sotn_clock_tower"));
 		Valmanway.getSharedData().getEntities().add(new NPCChargingSpike(1000007,
-				new SpawnCondition(new Coordinate(10140, 10013), 0), new Coordinate(10154, 10013), true,
+				new SpawnCondition(new Coordinate(10140, 10013)), new Coordinate(10154, 10013), true,
 				"sotn_clock_tower"));
 		
 		

@@ -98,7 +98,7 @@ public final class ValmanwayDataPacketProcessor {
 		for (Entity entity : Valmanway.getSharedData().getEntities()) {
 			NPC npc = (NPC)entity; // TODO: Remove cast when getEntities is changed to getNPCs
 			if (npc.getCurrentBoardName().equals(attack.getBoardName()) &&
-					npc.isAlive() && !npc.isBusy() &&
+					npc.isAttackable() && npc.isAlive() && !npc.isBusy() &&
 					RectUtils.rectsOverlap(npc.getEntityEntireRect(npc.getPosition()), attack.getBounds())) {
 				if (!npc.getHealthBar().takeDamage(attack.getAttackPower())) {
 					npc.setBusy(new GotHitByAttackBusy(npc.getStunnedTexture()));

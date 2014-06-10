@@ -88,6 +88,9 @@ public class NPCPhanto extends NPC {
 	protected String getName() { return "NPC Phanto"; }
 	
 	@Override
+	public boolean isAttackable() { return true; }
+	
+	@Override
 	protected void updateNPC() {
 		if (isBusy()) {
 			if (busy.hasExpired()) {

@@ -28,6 +28,7 @@ public class SpawnCondition {
 	private long timeOfDeath = 0;
 	private final long millisToRespawn;
 	
+	public SpawnCondition(Coordinate singleSpawningPoint) { this(singleSpawningPoint, 0); }
 	public SpawnCondition(Coordinate singleSpawningPoint, long millisToRespawn) { this(new Rect(singleSpawningPoint), millisToRespawn); }
 	public SpawnCondition(Rect singleSpawningArea, long millisToRespawn) { this(Arrays.asList(singleSpawningArea), millisToRespawn); }
 	public SpawnCondition(List<Rect> spawningAreas, long millisToRespawn) {

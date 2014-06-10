@@ -15,7 +15,7 @@ import valmanway.Valmanway;
 
 public class NPCChargingSpike extends NPC {
 	
-	private static final int MAX_HEALTH = 1;
+	private static final int MAX_HEALTH = 1; // Cannot be hurt
 	private static int ATTACK_POWER = 4;
 	protected enum ChargingStatus { IDLE, CHARGING, RETREATING }
 	
@@ -75,6 +75,9 @@ public class NPCChargingSpike extends NPC {
 	
 	@Override
 	protected String getName() { return "NPC ChargingSpike"; }
+	
+	@Override
+	public boolean isAttackable() { return false; }
 	
 	@Override
 	protected void updateNPC() {

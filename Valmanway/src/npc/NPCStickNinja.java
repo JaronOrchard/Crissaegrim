@@ -60,6 +60,9 @@ public class NPCStickNinja extends NPC {
 	@Override
 	protected String getName() { return "NPC StickNinja"; }
 	
+	@Override
+	public boolean isAttackable() { return true; }
+	
 	// Currently a hack to get NPCs initially working.
 	// Preferably each type of NPC would be its own subclass or something.
 	long tempTime = Thunderbrand.getTime();

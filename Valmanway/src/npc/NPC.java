@@ -81,5 +81,6 @@ public abstract class NPC extends Entity {
 	public abstract Color getMainColor();
 	public abstract int getAttackPower();
 	protected abstract String getName();
+	public abstract boolean isAttackable();
 	
 }
