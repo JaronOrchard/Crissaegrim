@@ -34,7 +34,7 @@ public abstract class Entity {
 	// Default values to Player's:
 	protected double entityFeetHeight = 0.425;	// NOTE: If these values change,
 	protected double entityBodyHeight = 2.4;	//       be sure to change
-	protected double entityBodyWidth = 0.6;		//       ValmanwayDataPacketProcessor, too.
+	protected double entityBodyWidth = 0.6;		//       RectUtils.getPlayerBoundingRect(), too.
 	protected double textureHalfWidth = 1.5;
 	protected double textureHeight = 3;
 	

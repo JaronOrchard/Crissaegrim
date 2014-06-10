@@ -42,7 +42,6 @@ import datapacket.SendSystemMessagePacket;
 import entities.Entity;
 import entities.EntityStatus;
 import geometry.Coordinate;
-import geometry.Rect;
 import geometry.RectUtils;
 
 public final class ValmanwayDataPacketProcessor {
@@ -116,19 +115,11 @@ public final class ValmanwayDataPacketProcessor {
 		}
 		
 		// Compare this attack to all Players:
-		// This is rather hackish for now but it will be redone when/if there are different Entity sizes.
-		// Default Entity values:
-		double feetHeight = 0.425;
-		double bodyHeight = 2.4;
-		double bodyWidth = 0.6;
 		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getEntityStatuses().entrySet()) {
 			if (entityStatus.getKey() != vud.getPlayerId() && entityStatus.getKey() < 1000000 &&
 					entityStatus.getValue().getBoardName().equals(attack.getBoardName())) {
 				Coordinate position = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
-				Rect entityBounds = new Rect(
-						new Coordinate(position.getX() - (bodyWidth / 2), position.getY()),
-						new Coordinate(position.getX() + (bodyWidth / 2), position.getY() + feetHeight + bodyHeight));
-				if (RectUtils.rectsOverlap(entityBounds, attack.getBounds())) {
+				if (RectUtils.rectsOverlap(RectUtils.getPlayerBoundingRect(position), attack.getBounds())) {
 					Valmanway.sendPacketToPlayer(entityStatus.getKey(), new GotHitByAttackPacket(vud.getPlayerName(), attack.getAttackPower()));
 				}
 			}

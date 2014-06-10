@@ -328,18 +328,13 @@ public class GameRunner {
 	
 	private void drawMouseHoverStatus() {
 		Coordinate mouseCoords = getCoordinatesForMouse();
-		double feetHeight = 0.425;
-		double bodyHeight = 2.4;
-		double bodyWidth = 0.6;
 		String players = "";
 		synchronized (Crissaegrim.getGhosts()) {
 			String currentBoardName = Crissaegrim.getBoard().getName();
 			for (Entry<Integer, EntityStatus> ghost : Crissaegrim.getGhosts().entrySet()) {
-				// TODO: This is hackish and relies on Player's width being known
 				if (ghost.getKey() < 1000000 && ghost.getValue().getBoardName().equals(currentBoardName)) {
-					Rect playerBounds = new Rect(
-							new Coordinate(ghost.getValue().getXPos() - (bodyWidth / 2), ghost.getValue().getYPos()),
-							new Coordinate(ghost.getValue().getXPos() + (bodyWidth / 2), ghost.getValue().getYPos() + feetHeight + bodyHeight));
+					Coordinate ghostCoordinate = new Coordinate(ghost.getValue().getXPos(), ghost.getValue().getYPos());
+					Rect playerBounds = RectUtils.getPlayerBoundingRect(ghostCoordinate);
 					if (RectUtils.coordinateIsInRect(mouseCoords, playerBounds)) {
 						players += ", " + ghost.getValue().getName();
 					}

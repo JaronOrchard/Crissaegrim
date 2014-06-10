@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import entities.EntityStatus;
 import geometry.Coordinate;
 import geometry.Line;
-import geometry.Rect;
 import geometry.RectUtils;
 import textures.Textures;
 import valmanway.Valmanway;
@@ -83,16 +82,10 @@ public class NPCChargingSpike extends NPC {
 		
 		if (chargingStatus == ChargingStatus.IDLE) {
 			// Check if any Players lie on ChargeLine.  If so, start charging!
-			double feetHeight = 0.425;
-			double bodyHeight = 2.4;
-			double bodyWidth = 0.6;
 			for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getEntityStatuses().entrySet()) {
 				if (entityStatus.getKey() < 1000000 && entityStatus.getValue().getBoardName().equals(getCurrentBoardName())) {
 					Coordinate esPosition = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
-					Rect entityBounds = new Rect(
-							new Coordinate(esPosition.getX() - (bodyWidth / 2), esPosition.getY()),
-							new Coordinate(esPosition.getX() + (bodyWidth / 2), esPosition.getY() + feetHeight + bodyHeight));
-					if (RectUtils.lineIntersectsRect(chargeCheckLine, entityBounds)) {
+					if (RectUtils.lineIntersectsRect(chargeCheckLine, RectUtils.getPlayerBoundingRect(esPosition))) {
 						chargingStatus = ChargingStatus.CHARGING;
 						break;
 					}
@@ -132,18 +125,10 @@ public class NPCChargingSpike extends NPC {
 		}
 		
 		// Colliding with a player hurts him/her:
-		// This is rather hackish for now but it will be redone when/if there are different Entity sizes.
-		// Default Entity values:
-		double feetHeight = 0.425;
-		double bodyHeight = 2.4;
-		double bodyWidth = 0.6;
 		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getEntityStatuses().entrySet()) {
 			if (entityStatus.getKey() < 1000000 && entityStatus.getValue().getBoardName().equals(getCurrentBoardName())) {
 				Coordinate esPosition = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
-				Rect entityBounds = new Rect(
-						new Coordinate(esPosition.getX() - (bodyWidth / 2), esPosition.getY()),
-						new Coordinate(esPosition.getX() + (bodyWidth / 2), esPosition.getY() + feetHeight + bodyHeight));
-				if (RectUtils.rectsOverlap(entityBounds, this.getEntityEntireRect())) {
+				if (RectUtils.rectsOverlap(RectUtils.getPlayerBoundingRect(esPosition), this.getEntityEntireRect())) {
 					attackPlayer(entityStatus.getKey());
 				}
 			}

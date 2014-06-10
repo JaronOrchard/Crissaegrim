@@ -125,4 +125,19 @@ public final class RectUtils {
 		return LineUtils.lineSetsIntersect(Arrays.asList(line), RectUtils.getLinesFromRect(rect));
 	}
 	
+	/**
+	 * A rather hackish function that predefines the boundaries of a Player character
+	 * and returns a Rect denoting a Player's body Rect given their position.
+	 * @param playerPosition
+	 * @return
+	 */
+	public static Rect getPlayerBoundingRect(Coordinate playerPosition) {
+		double feetHeight = 0.425;
+		double bodyHeight = 2.4;
+		double bodyWidth = 0.6;
+		return new Rect(
+				new Coordinate(playerPosition.getX() - (bodyWidth / 2), playerPosition.getY()),
+				new Coordinate(playerPosition.getX() + (bodyWidth / 2), playerPosition.getY() + feetHeight + bodyHeight));
+	}
+	
 }
