@@ -335,6 +335,7 @@ public class GameRunner {
 				if (ghost.getKey() < 1000000 && ghost.getValue().getBoardName().equals(currentBoardName)) {
 					Coordinate ghostCoordinate = new Coordinate(ghost.getValue().getXPos(), ghost.getValue().getYPos());
 					Rect playerBounds = RectUtils.getPlayerBoundingRect(ghostCoordinate);
+					RectUtils.expandRect(playerBounds, 0.6);
 					if (RectUtils.coordinateIsInRect(mouseCoords, playerBounds)) {
 						players += ", " + ghost.getValue().getName();
 					}

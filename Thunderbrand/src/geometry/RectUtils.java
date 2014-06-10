@@ -140,4 +140,17 @@ public final class RectUtils {
 				new Coordinate(playerPosition.getX() + (bodyWidth / 2), playerPosition.getY() + feetHeight + bodyHeight));
 	}
 	
+	/**
+	 * Expands the given {@link Rect} by a certain amount in all directions.
+	 * This function modifies the given Rect instead of returning a new one.
+	 * @param rect The Rect to expand
+	 * @param expandBy The amount to expand the Rect by
+	 */
+	public static void expandRect(Rect rect, double expandBy) {
+		rect.getBottomLeftCorner().incrementX(-expandBy);
+		rect.getBottomLeftCorner().incrementY(-expandBy);
+		rect.getTopRightCorner().incrementX(expandBy);
+		rect.getTopRightCorner().incrementY(expandBy);
+	}
+	
 }
