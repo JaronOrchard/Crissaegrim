@@ -41,20 +41,20 @@ public class NPCPhanto extends NPC {
 	}
 	
 	@Override
-	public void respawn() {
-		Coordinate respawnPoint = getSpawnCondition().getNewRespawnPoint();
-		position = new Coordinate(respawnPoint);
-		currentCenter = new Coordinate(respawnPoint);
-	}
-	
-	@Override
-	public int getAttackPower() { return ATTACK_POWER; }
-	
-	@Override
 	public int getCurrentTexture() {
 		if (isBusy()) return busy.getTexture();
 		return Textures.NPC_PHANTO;
 	}
+	
+	@Override public int getStunnedTexture() { return Textures.NPC_PHANTO; }
+	
+	@Override public boolean isAttackable() { return true; }
+	
+	@Override public int getAttackPower() { return ATTACK_POWER; }
+	
+	@Override protected String getName() { return "NPC Phanto"; }
+	
+	@Override public Color getMainColor() { return new Color(182, 57, 0); }
 	
 	@Override
 	public List<Item> dropItems() {
@@ -79,16 +79,11 @@ public class NPCPhanto extends NPC {
 	}
 	
 	@Override
-	public Color getMainColor() { return new Color(182, 57, 0); }
-	
-	@Override
-	public int getStunnedTexture() { return Textures.NPC_PHANTO; }
-	
-	@Override
-	protected String getName() { return "NPC Phanto"; }
-	
-	@Override
-	public boolean isAttackable() { return true; }
+	public void respawn() {
+		Coordinate respawnPoint = getSpawnCondition().getNewRespawnPoint();
+		position = new Coordinate(respawnPoint);
+		currentCenter = new Coordinate(respawnPoint);
+	}
 	
 	@Override
 	protected void updateNPC() {

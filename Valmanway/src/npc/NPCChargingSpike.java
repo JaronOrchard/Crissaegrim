@@ -42,8 +42,29 @@ public class NPCChargingSpike extends NPC {
 	}
 	
 	@Override
+	public int getCurrentTexture() {
+		if (isBusy()) return busy.getTexture();
+		return Textures.NPC_CHARGING_SPIKE;
+	}
+	
+	@Override public int getStunnedTexture() { return Textures.NPC_CHARGING_SPIKE; }
+	
+	@Override public boolean isAttackable() { return false; }
+	
+	@Override public int getAttackPower() { return ATTACK_POWER; }
+	
+	@Override protected String getName() { return "NPC ChargingSpike"; }
+	
+	@Override public Color getMainColor() { return new Color(140, 109, 38); }
+	
+	@Override
+	public List<Item> dropItems() {
+		return new ArrayList<Item>(); // ChargingSpike cannot be killed
+	}
+	
+	@Override
 	public void respawn() {
-		// (ChargingSpike only respawns once)
+		// (ChargingSpike only spawns once)
 		Coordinate respawnPoint = getSpawnCondition().getNewRespawnPoint();
 		position = new Coordinate(respawnPoint);
 		chargeStartPoint = new Coordinate(position);
@@ -52,32 +73,6 @@ public class NPCChargingSpike extends NPC {
 				new Coordinate(chargeEndPoint.getX() + (facingRight ? 1 : -1), chargeEndPoint.getY() + 0.1));
 		chargingStatus = ChargingStatus.IDLE;
 	}
-	
-	@Override
-	public int getAttackPower() { return ATTACK_POWER; }
-	
-	@Override
-	public int getCurrentTexture() {
-		if (isBusy()) return busy.getTexture();
-		return Textures.NPC_CHARGING_SPIKE;
-	}
-	
-	@Override
-	public List<Item> dropItems() {
-		return new ArrayList<Item>(); // ChargingSpike cannot be killed
-	}
-	
-	@Override
-	public Color getMainColor() { return new Color(140, 109, 38); }
-	
-	@Override
-	public int getStunnedTexture() { return Textures.NPC_CHARGING_SPIKE; }
-	
-	@Override
-	protected String getName() { return "NPC ChargingSpike"; }
-	
-	@Override
-	public boolean isAttackable() { return false; }
 	
 	@Override
 	protected void updateNPC() {

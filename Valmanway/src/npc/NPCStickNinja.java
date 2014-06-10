@@ -28,18 +28,20 @@ public class NPCStickNinja extends NPC {
 	}
 	
 	@Override
-	public void respawn() {
-		position = new Coordinate(getSpawnCondition().getNewRespawnPoint());
-	}
-	
-	@Override
-	public int getAttackPower() { return ATTACK_POWER; }
-	
-	@Override
 	public int getCurrentTexture() {
 		if (isBusy()) return busy.getTexture();
 		return Textures.NPC_STICK_NINJA;
 	}
+	
+	@Override public int getStunnedTexture() { return Textures.NPC_STICK_NINJA_STUNNED; }
+	
+	@Override public boolean isAttackable() { return true; }
+	
+	@Override public int getAttackPower() { return ATTACK_POWER; }
+	
+	@Override protected String getName() { return "NPC StickNinja"; }
+	
+	@Override public Color getMainColor() { return new Color(131, 182, 174); }
 	
 	@Override
 	public List<Item> dropItems() {
@@ -52,19 +54,10 @@ public class NPCStickNinja extends NPC {
 	}
 	
 	@Override
-	public Color getMainColor() { return new Color(131, 182, 174); }
+	public void respawn() {
+		position = new Coordinate(getSpawnCondition().getNewRespawnPoint());
+	}
 	
-	@Override
-	public int getStunnedTexture() { return Textures.NPC_STICK_NINJA_STUNNED; }
-	
-	@Override
-	protected String getName() { return "NPC StickNinja"; }
-	
-	@Override
-	public boolean isAttackable() { return true; }
-	
-	// Currently a hack to get NPCs initially working.
-	// Preferably each type of NPC would be its own subclass or something.
 	long tempTime = Thunderbrand.getTime();
 	Coordinate prevPosition = new Coordinate(0,0);
 	boolean goLeft = true;

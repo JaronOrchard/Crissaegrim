@@ -75,12 +75,12 @@ public abstract class NPC extends Entity {
 		}
 	}
 	
-	protected abstract void updateNPC();
-	public abstract void respawn();
-	public abstract List<Item> dropItems();
-	public abstract Color getMainColor();
+	public abstract boolean isAttackable();
 	public abstract int getAttackPower();
 	protected abstract String getName();
-	public abstract boolean isAttackable();
+	public abstract Color getMainColor();
+	public abstract List<Item> dropItems();
+	public abstract void respawn();
+	protected abstract void updateNPC();
 	
 }
