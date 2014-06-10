@@ -18,7 +18,7 @@ public class ValmanwaySharedData {
 	private static final int DATAPACKETS_ARRAY_SIZE = 1000;
 	
 	private Map<String, Board> boardMap;
-	private List<NPC> npcs;
+	private Map<String, List<NPC>> npcs;
 	
 	private Map<Integer, EntityStatus> entityStatusMap; // Players + NPCs
 	private Map<Integer, String> playerNameMap;
@@ -28,7 +28,10 @@ public class ValmanwaySharedData {
 	
 	public ValmanwaySharedData() {
 		boardMap = new HashMap<String, Board>();
-		npcs = Collections.synchronizedList(new ArrayList<NPC>());
+		npcs = Collections.synchronizedMap(new HashMap<String, List<NPC>>());
+		for (String boardName : Valmanway.getBoardNames()) {
+			npcs.put(boardName, Collections.synchronizedList(new ArrayList<NPC>()));
+		}
 		entityStatusMap = Collections.synchronizedMap(new HashMap<Integer, EntityStatus>());
 		playerNameMap = Collections.synchronizedMap(new HashMap<Integer, String>());
 		nextPlayerId = 1;
@@ -39,7 +42,7 @@ public class ValmanwaySharedData {
 	}
 	
 	public Map<String, Board> getBoardMap() { return boardMap; }
-	public List<NPC> getNPCs() { return npcs; }
+	public Map<String, List<NPC>> getNPCs() { return npcs; }
 	
 	public int getNextPlayerId() { return nextPlayerId++; }
 	public DataPacket getDataPacket(int index) { return dataPackets[index % DATAPACKETS_ARRAY_SIZE]; }

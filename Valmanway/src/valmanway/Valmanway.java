@@ -3,7 +3,9 @@ package valmanway;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import datapacket.DataPacket;
@@ -31,7 +33,17 @@ public class Valmanway {
 	private static ValmanwayLogger logger = new ValmanwayLogger();
 	
 	private static int nextNPCId = 1000000;
-	public synchronized static int getNextNPCId() { nextNPCId++; return nextNPCId - 1; } 
+	public synchronized static int getNextNPCId() { nextNPCId++; return nextNPCId - 1; }
+	
+	private static List<String> boardNames;
+	public static List<String> getBoardNames() {
+		if (boardNames == null) {
+			boardNames = Arrays.asList(
+					"tower_of_preludes", "dawning", "dawning_interior", "sotn_clock_tower"
+			);
+		}
+		return boardNames;
+	}
 	
 	public static void main(String[] argv) throws IOException {
 		int valmanwayServerPort = Thunderbrand.getValmanwayServerPort();

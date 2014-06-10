@@ -93,10 +93,9 @@ public final class ValmanwayDataPacketProcessor {
 	
 	private static void processAttackPacket(AttackPacket attackPacket, ValmanwayUserData vud) {
 		Attack attack = attackPacket.getAttack();
-		// Compare this attack to all NPCs:
-		for (NPC npc : Valmanway.getSharedData().getNPCs()) {
-			if (npc.getCurrentBoardName().equals(attack.getBoardName()) &&
-					npc.isAttackable() && npc.isAlive() && !npc.isBusy() &&
+		// Compare this attack to all NPCs on that board:
+		for (NPC npc : Valmanway.getSharedData().getNPCs().get(attack.getBoardName())) {
+			if (npc.isAttackable() && npc.isAlive() && !npc.isBusy() &&
 					RectUtils.rectsOverlap(npc.getEntityEntireRect(npc.getPosition()), attack.getBounds())) {
 				if (!npc.getHealthBar().takeDamage(attack.getAttackPower())) {
 					npc.setBusy(new GotHitByAttackBusy(npc.getStunnedTexture()));
