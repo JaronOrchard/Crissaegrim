@@ -329,16 +329,13 @@ public class GameRunner {
 	private void drawMouseHoverStatus() {
 		Coordinate mouseCoords = getCoordinatesForMouse();
 		String players = "";
-		synchronized (Crissaegrim.getGhosts()) {
-			String currentBoardName = Crissaegrim.getBoard().getName();
-			for (Entry<Integer, EntityStatus> ghost : Crissaegrim.getGhosts().entrySet()) {
-				if (ghost.getKey() < 1000000 && ghost.getValue().getBoardName().equals(currentBoardName)) {
-					Coordinate ghostCoordinate = new Coordinate(ghost.getValue().getXPos(), ghost.getValue().getYPos());
-					Rect playerBounds = RectUtils.getPlayerBoundingRect(ghostCoordinate);
-					RectUtils.expandRect(playerBounds, 0.6);
-					if (RectUtils.coordinateIsInRect(mouseCoords, playerBounds)) {
-						players += ", " + ghost.getValue().getName();
-					}
+		synchronized (Crissaegrim.getPlayerGhosts()) {
+			for (EntityStatus ghost : Crissaegrim.getPlayerGhosts().values()) {
+				Coordinate ghostCoordinate = new Coordinate(ghost.getXPos(), ghost.getYPos());
+				Rect playerBounds = RectUtils.getPlayerBoundingRect(ghostCoordinate);
+				RectUtils.expandRect(playerBounds, 0.6);
+				if (RectUtils.coordinateIsInRect(mouseCoords, playerBounds)) {
+					players += ", " + ghost.getName();
 				}
 			}
 		}
@@ -389,17 +386,20 @@ public class GameRunner {
 	}
 	
 	private void drawGhosts() {
-		synchronized (Crissaegrim.getGhosts()) {
-			String currentBoardName = Crissaegrim.getBoard().getName();
-			for (Entry<Integer, EntityStatus> ghost : Crissaegrim.getGhosts().entrySet()) {
-				if (ghost.getValue().getBoardName().equals(currentBoardName)) {
-					drawGhost(ghost.getValue());
-				}
+		synchronized (Crissaegrim.getNpcGhosts()) {
+			for (EntityStatus ghost : Crissaegrim.getNpcGhosts().values()) {
+				drawGhost(ghost);
+			}
+		}
+		synchronized (Crissaegrim.getPlayerGhosts()) {
+			for (EntityStatus ghost : Crissaegrim.getPlayerGhosts().values()) {
+				drawGhost(ghost);
 			}
 		}
 	}
 	
 	private void drawGhost(EntityStatus ghost) {
+		// TODO: Don't draw if off-screen!
 		boolean facingRight = ghost.getFacingRight();
 		double xPos = ghost.getXPos();
 		double yPos = ghost.getYPos();
@@ -539,10 +539,10 @@ public class GameRunner {
 		if (!destinationBoardName.isEmpty() && destinationCoordinate != null) {
 			if (boardMap.containsKey(destinationBoardName)) {
 				Crissaegrim.getPlayer().setCurrentBoardName(destinationBoardName);
-				//Crissaegrim.setBoard(boardMap.get(destinationBoardName));
 				Crissaegrim.getPlayer().getPosition().setAll(destinationCoordinate);
 				setNewDestination("", null);
 				Crissaegrim.currentlyLoading = false;
+				Crissaegrim.clearGhosts();
 			} else {
 				Crissaegrim.addOutgoingDataPacket(new RequestEntireBoardPacket(destinationBoardName));
 				Crissaegrim.currentlyLoading = true;

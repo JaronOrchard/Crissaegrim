@@ -11,15 +11,19 @@ public class ValmanwayUserData {
 	private List<DataPacket> outgoingDataPackets;
 	public volatile boolean connectionStable = true;
 	private final int playerId;
+	private String currentBoardName;
 	private int lastSentDataPacketIndex;
 	
 	public int getPlayerId() { return playerId; }
+	public String getCurrentBoardName() { return currentBoardName; }
+	public void setCurrentBoardName(String boardName) { currentBoardName = boardName; }
 	public String getPlayerName() { return Valmanway.getSharedData().getPlayerName(playerId); }
 	public void setPlayerName(String n) { Valmanway.getSharedData().setPlayerName(playerId, n); }
 	public int getLastSentDataPacketIndex() { return lastSentDataPacketIndex; }
 	
 	public ValmanwayUserData(int playerId, int mostRecentChatMessageIndex) {
 		this.playerId = playerId;
+		currentBoardName = "";
 		setPlayerName("Player " + playerId);
 		outgoingDataPackets = Collections.synchronizedList(new ArrayList<DataPacket>());
 		lastSentDataPacketIndex = mostRecentChatMessageIndex;

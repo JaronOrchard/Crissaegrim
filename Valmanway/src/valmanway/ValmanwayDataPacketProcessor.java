@@ -59,9 +59,16 @@ public final class ValmanwayDataPacketProcessor {
 				}
 				break;
 			case DataPacketTypes.SEND_PLAYER_STATUS_PACKET:
-				Valmanway.getSharedData().updateEntityStatusMap(
-						valmanwayUserData.getPlayerId(),
-						((SendPlayerStatusPacket)(packet)).getPlayerStatus());
+				SendPlayerStatusPacket spsp = (SendPlayerStatusPacket)(packet);
+				if (!valmanwayUserData.getCurrentBoardName().equals(spsp.getPlayerStatus().getBoardName())) {
+					if (!valmanwayUserData.getCurrentBoardName().isEmpty()) {
+						Valmanway.getSharedData().removePlayerStatusFromBoard(valmanwayUserData.getPlayerId(), valmanwayUserData.getCurrentBoardName());
+					}
+					valmanwayUserData.setCurrentBoardName(spsp.getPlayerStatus().getBoardName());
+				}
+				Valmanway.getSharedData().updatePlayerStatusMap(
+						valmanwayUserData.getPlayerId(), valmanwayUserData.getCurrentBoardName(),
+						spsp.getPlayerStatus());
 				break;
 			case DataPacketTypes.SEND_CHAT_MESSAGE_PACKET:
 				processChatMessage( ((SendChatMessagePacket)(packet)).getTextBlock(), valmanwayUserData);
@@ -112,9 +119,8 @@ public final class ValmanwayDataPacketProcessor {
 		}
 		
 		// Compare this attack to all Players:
-		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getEntityStatuses().entrySet()) {
-			if (entityStatus.getKey() != vud.getPlayerId() && entityStatus.getKey() < 1000000 &&
-					entityStatus.getValue().getBoardName().equals(attack.getBoardName())) {
+		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getPlayerStatusMap().get(attack.getBoardName()).entrySet()) {
+			if (entityStatus.getKey() != vud.getPlayerId()) {
 				Coordinate position = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
 				if (RectUtils.rectsOverlap(RectUtils.getPlayerBoundingRect(position), attack.getBounds())) {
 					Valmanway.sendPacketToPlayer(entityStatus.getKey(), new GotHitByAttackPacket(vud.getPlayerName(), attack.getAttackPower()));

@@ -31,7 +31,8 @@ public class Crissaegrim {
 	
 	private static volatile GameRunner gameRunner = new GameRunner();
 	private static volatile Player player = null;
-	private static volatile Map<Integer, EntityStatus> ghosts = new HashMap<Integer, EntityStatus>();
+	private static volatile Map<Integer, EntityStatus> npcGhosts = new HashMap<Integer, EntityStatus>();
+	private static volatile Map<Integer, EntityStatus> playerGhosts = new HashMap<Integer, EntityStatus>();
 	private static volatile ChatBox chatBox = new ChatBox();
 	private static volatile PreferenceHandler preferenceHandler = new PreferenceHandler();
 	private static volatile CommonTextures commonTextures = new CommonTextures();
@@ -46,8 +47,14 @@ public class Crissaegrim {
 	public static GameRunner getGameRunner() { return gameRunner; }
 	public static Player getPlayer() { return player; }
 	public static void initializePlayer(Map<String, Board> boardMap) { player = new Player(boardMap); }
-	public static Map<Integer, EntityStatus> getGhosts() { return ghosts; }
-	public static void setGhosts(Map<Integer, EntityStatus> g) { synchronized(Crissaegrim.getGhosts()) { ghosts = g; } }
+	public static Map<Integer, EntityStatus> getNpcGhosts() { return npcGhosts; }
+	public static Map<Integer, EntityStatus> getPlayerGhosts() { return playerGhosts; }
+	public static void setNpcGhosts(Map<Integer, EntityStatus> g) { synchronized(Crissaegrim.getNpcGhosts()) { npcGhosts = g; } }
+	public static void setPlayerGhosts(Map<Integer, EntityStatus> g) { synchronized(Crissaegrim.getPlayerGhosts()) { playerGhosts = g; } }
+	public static void clearGhosts() {
+		synchronized(Crissaegrim.getNpcGhosts()) { Crissaegrim.getNpcGhosts().clear(); }
+		synchronized(Crissaegrim.getPlayerGhosts()) { Crissaegrim.getPlayerGhosts().clear(); }
+	}
 	public static Board getBoard() { return player.getCurrentBoard(); }
 	public static ChatBox getChatBox() { return chatBox; }
 	public static PreferenceHandler getPreferenceHandler() { return preferenceHandler; }

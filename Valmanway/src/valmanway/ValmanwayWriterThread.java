@@ -4,9 +4,10 @@ import java.awt.Color;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.Map;
 
-import datapacket.SendAllPlayerStatusesPacket;
+import datapacket.SendEntityStatusesPacket;
 import entities.EntityStatus;
 import thunderbrand.Thunderbrand;
 
@@ -44,10 +45,18 @@ public class ValmanwayWriterThread extends Thread {
     			if (Thunderbrand.getTime() - lastPlayerStatusSendTime > PLAYER_STATUS_SEND_INTERVAL) {
     				lastPlayerStatusSendTime = Thunderbrand.getTime();
 					
-    				Map<Integer, EntityStatus> ps = Valmanway.getSharedData().getEntityStatuses();
-					ps.remove(valmanwayUserData.getPlayerId());
-					valmanwayUserData.addOutgoingDataPacket(new SendAllPlayerStatusesPacket(ps));
-					
+    				String boardName = valmanwayUserData.getCurrentBoardName();
+    				if (!boardName.isEmpty()) {
+    					// Send players:
+    					Map<Integer, EntityStatus> playerStatuses = new HashMap<Integer, EntityStatus>(Valmanway.getSharedData().getPlayerStatusMap().get(boardName));
+    					playerStatuses.remove(valmanwayUserData.getPlayerId());
+    					valmanwayUserData.addOutgoingDataPacket(new SendEntityStatusesPacket(playerStatuses, false, boardName));
+    					
+        				// Send NPCs:
+        				valmanwayUserData.addOutgoingDataPacket(new SendEntityStatusesPacket(
+        						Valmanway.getSharedData().getNpcStatusMap().get(boardName), true, boardName));
+    				}
+    				
 					valmanwayUserData.sendNewDataPackets();
     			}
     		}
@@ -63,6 +72,6 @@ public class ValmanwayWriterThread extends Thread {
 	    } catch (IOException e) { /*e.printStackTrace();*/ }
     	
     	valmanwayUserData.connectionStable = false;
-    	Valmanway.getSharedData().dropPlayer(valmanwayUserData.getPlayerId());
+    	Valmanway.getSharedData().dropPlayer(valmanwayUserData.getPlayerId(), valmanwayUserData.getCurrentBoardName());
     }
 }

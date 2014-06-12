@@ -100,12 +100,10 @@ public class NPCPhanto extends NPC {
 		position = new Coordinate(currentCenter.getX() + (Math.cos(angle) * radius), currentCenter.getY() + (Math.sin(angle) * radius));
 		
 		// Colliding with a player hurts him/her:
-		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getEntityStatuses().entrySet()) {
-			if (entityStatus.getKey() < 1000000 && entityStatus.getValue().getBoardName().equals(getCurrentBoardName())) {
-				Coordinate esPosition = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
-				if (RectUtils.rectsOverlap(RectUtils.getPlayerBoundingRect(esPosition), this.getEntityEntireRect())) {
-					attackPlayer(entityStatus.getKey());
-				}
+		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getPlayerStatusMap().get(getCurrentBoardName()).entrySet()) {
+			Coordinate esPosition = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
+			if (RectUtils.rectsOverlap(RectUtils.getPlayerBoundingRect(esPosition), this.getEntityEntireRect())) {
+				attackPlayer(entityStatus.getKey());
 			}
 		}
 	}

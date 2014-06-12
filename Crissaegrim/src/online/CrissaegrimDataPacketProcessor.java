@@ -20,7 +20,7 @@ import datapacket.ParticleSystemPacket;
 import datapacket.ReceiveItemsPacket;
 import datapacket.ReceivePlayerIdPacket;
 import datapacket.ReceivePlayerNamePacket;
-import datapacket.SendAllPlayerStatusesPacket;
+import datapacket.SendEntityStatusesPacket;
 import datapacket.SendChatMessagePacket;
 import datapacket.SendSystemMessagePacket;
 import effects.ParticleSystem;
@@ -38,8 +38,13 @@ public final class CrissaegrimDataPacketProcessor {
 				Crissaegrim.getPlayer().setName(newName);
 				Crissaegrim.getPreferenceHandler().setLastUsername(newName);
 				break;
-			case DataPacketTypes.SEND_ALL_PLAYER_STATUSES_PACKET:
-				Crissaegrim.setGhosts( ((SendAllPlayerStatusesPacket)(packet)).getPlayerStatuses() );
+			case DataPacketTypes.SEND_ENTITY_STATUSES_PACKET:
+				SendEntityStatusesPacket sesp = (SendEntityStatusesPacket)(packet);
+				if (sesp.getStatusesAreNPCs()) {
+					Crissaegrim.setNpcGhosts(sesp.getEntityStatuses());
+				} else {
+					Crissaegrim.setPlayerGhosts(sesp.getEntityStatuses());
+				}
 				break;
 			case DataPacketTypes.SEND_CHAT_MESSAGE_PACKET:
 				Crissaegrim.getGameRunner().addWaitingChatMessage( ((SendChatMessagePacket)(packet)).getTextBlock() );

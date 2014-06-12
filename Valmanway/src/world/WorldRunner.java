@@ -53,7 +53,7 @@ public class WorldRunner {
 						while (npcIter.hasNext()) {
 							NPC npc = npcIter.next();
 							npc.update();
-							Valmanway.getSharedData().updateEntityStatusMap(npc.getId(),
+							Valmanway.getSharedData().updateNpcStatusMap(npc.getId(), npc.getCurrentBoardName(),
 					    			new EntityStatus(Valmanway.getSharedData().getPlayerName(npc.getId()),
 					    					npc.getCurrentBoardName(), npc.getPosition().getX(), npc.getPosition().getY(),
 					    					npc.getCurrentTexture(), npc.getFacingRight(), npc.getHealthBar().getAmtHealth(),

@@ -80,16 +80,13 @@ public class NPCChargingSpike extends NPC {
 		
 		if (chargingStatus == ChargingStatus.IDLE) {
 			// Check if any Players lie on ChargeLine.  If so, start charging!
-			for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getEntityStatuses().entrySet()) {
-				if (entityStatus.getKey() < 1000000 && entityStatus.getValue().getBoardName().equals(getCurrentBoardName())) {
-					Coordinate esPosition = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
-					if (RectUtils.lineIntersectsRect(chargeCheckLine, RectUtils.getPlayerBoundingRect(esPosition))) {
-						chargingStatus = ChargingStatus.CHARGING;
-						break;
-					}
+			for (EntityStatus entityStatus : Valmanway.getSharedData().getPlayerStatusMap().get(getCurrentBoardName()).values()) {
+				Coordinate esPosition = new Coordinate(entityStatus.getXPos(), entityStatus.getYPos());
+				if (RectUtils.lineIntersectsRect(chargeCheckLine, RectUtils.getPlayerBoundingRect(esPosition))) {
+					chargingStatus = ChargingStatus.CHARGING;
+					break;
 				}
 			}
-			
 		} else if (chargingStatus == ChargingStatus.CHARGING) {
 			// Keep charging until reaching chargeEndPoint
 			if (facingRight) {
@@ -123,12 +120,10 @@ public class NPCChargingSpike extends NPC {
 		}
 		
 		// Colliding with a player hurts him/her:
-		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getEntityStatuses().entrySet()) {
-			if (entityStatus.getKey() < 1000000 && entityStatus.getValue().getBoardName().equals(getCurrentBoardName())) {
-				Coordinate esPosition = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
-				if (RectUtils.rectsOverlap(RectUtils.getPlayerBoundingRect(esPosition), this.getEntityEntireRect())) {
-					attackPlayer(entityStatus.getKey());
-				}
+		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getPlayerStatusMap().get(getCurrentBoardName()).entrySet()) {
+			Coordinate esPosition = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
+			if (RectUtils.rectsOverlap(RectUtils.getPlayerBoundingRect(esPosition), this.getEntityEntireRect())) {
+				attackPlayer(entityStatus.getKey());
 			}
 		}
 	}
