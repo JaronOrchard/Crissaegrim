@@ -130,7 +130,7 @@ public class EntityMovementHelper {
 				Coordinate raisedEndingPosition = null;
 				for (CollisionDetectionTile collisionDetectionTile : nearbyTiles) { // (COULD BE REDUCED TO ONLY THE TILE THE PLAYER'S FEET ARE IN?  MAYBE?)
 					if (raisedEndingPosition == null) {
-						raisedEndingPosition = collisionDetectionTile.entityFeetCollide(parentEntity, startingPosition, endingPosition, endingPosition.getY() <= startingPosition.getY());
+						raisedEndingPosition = collisionDetectionTile.entityFeetCollide(parentEntity, startingPosition, endingPosition, endingPosition.getY() <= startingPosition.getY(), onTheGround);
 					}
 				}
 				// If there was no feet collision, ending position is good to go.
@@ -198,7 +198,7 @@ public class EntityMovementHelper {
 				Coordinate raisedEndingPosition = null;
 				for (CollisionDetectionTile collisionDetectionTile : nearbyTiles) { // (COULD BE REDUCED TO ONLY THE TILE THE PLAYER'S FEET ARE IN?)
 					if (raisedEndingPosition == null) {
-						raisedEndingPosition = collisionDetectionTile.entityFeetCollide(parentEntity, startingPosition, endingPosition, !onTheGround);
+						raisedEndingPosition = collisionDetectionTile.entityFeetCollide(parentEntity, startingPosition, endingPosition, !onTheGround, onTheGround);
 					}
 				}
 				// If there was no feet collision, ending position is good to go.

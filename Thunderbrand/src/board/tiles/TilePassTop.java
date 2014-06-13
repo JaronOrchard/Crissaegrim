@@ -34,12 +34,12 @@ public class TilePassTop extends Tile {
 	}
 
 	@Override
-	public Coordinate entityFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine) {
+	public Coordinate entityFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine, boolean onTheGround) {
 		List<Line> tileBoundingBoxLines = RectUtils.getLinesFromRect(new Rect(new Coordinate(xPos, yPos), new Coordinate(xPos + 1, yPos + 1)));
 		List<Line> playerFeetLines = entity.getEntityFeetLines(endingPosition, includeHorizontalFeetLine);
 		
 		double playerYatX = startingPosition.getY();
-		if (startingPosition.getX() <= xPos || startingPosition.getX() >= xPos + 1) { playerYatX += entity.getFeetHeight(); }
+		if (onTheGround && (startingPosition.getX() <= xPos || startingPosition.getX() >= xPos + 1)) { playerYatX += entity.getFeetHeight(); }
 		
 		if (playerYatX >= yPos + 1 && endingPosition.getY() < yPos + 1 && LineUtils.lineSetsIntersect(tileBoundingBoxLines, playerFeetLines)) {
 			return raisePositionToAboveTile(xPos, yPos, entity, endingPosition);

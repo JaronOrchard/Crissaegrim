@@ -19,8 +19,8 @@ public class CollisionDetectionTile {
 	}
 	
 	// Returns null if no collision, or a coordinate for a raised position if they do
-	public Coordinate entityFeetCollide(Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine) {
-		return tile.entityFeetCollide(xPos, yPos, entity, startingPosition, endingPosition, includeHorizontalFeetLine);
+	public Coordinate entityFeetCollide(Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine, boolean onTheGround) {
+		return tile.entityFeetCollide(xPos, yPos, entity, startingPosition, endingPosition, includeHorizontalFeetLine, onTheGround);
 	}
 	
 }

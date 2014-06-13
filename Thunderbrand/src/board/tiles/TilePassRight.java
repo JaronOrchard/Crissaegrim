@@ -29,7 +29,7 @@ public class TilePassRight extends Tile {
 	}
 
 	@Override
-	public Coordinate entityFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine) {
+	public Coordinate entityFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine, boolean onTheGround) {
 		return null; // Can't be pushed up by this tile
 	}
 

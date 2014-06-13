@@ -37,7 +37,7 @@ public class TilePass2R extends Tile {
 	}
 	
 	@Override
-	public Coordinate entityFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine) {
+	public Coordinate entityFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine, boolean onTheGround) {
 		if (CoordinateUtils.isMovingUp(startingPosition, endingPosition)) { return null; }
 		
 		List<Line> tileBoundaryLines = new ArrayList<Line>();
@@ -47,7 +47,7 @@ public class TilePass2R extends Tile {
 		
 		double slopeYatX = yPos + Math.max(Math.min(0.5 - ((startingPosition.getX() - (double)xPos) / 2), 0.5), 0);
 		double playerYatX = startingPosition.getY();
-		if (startingPosition.getY() < yPos) { playerYatX += entity.getFeetHeight(); }
+		if (onTheGround && startingPosition.getY() < yPos) { playerYatX += entity.getFeetHeight(); }
 		
 		if (playerYatX >= slopeYatX && LineUtils.lineSetsIntersect(tileBoundaryLines, playerFeetLines)) {
 			return raisePositionToAboveTile(xPos, yPos, entity, endingPosition);

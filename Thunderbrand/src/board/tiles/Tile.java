@@ -51,9 +51,10 @@ public abstract class Tile {
 	 * @param endingPosition The player's desired ending Coordinate
 	 * @param includeHorizontalFeetLine {@code true} if the player's horizontal feet line should be included in its feet,
 	 * 		or {@code false} if only the vertical feet line should be considered
+	 * @param onTheGround {@code true} if the player is on the ground, {@code false} otherwise or if jumping
 	 * @return {@code null} if there was no collision, or a raised Coordinate if there was 
 	 */
-	public abstract Coordinate entityFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine);
+	public abstract Coordinate entityFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine, boolean onTheGround);
 	
 	protected abstract Coordinate raisePositionToAboveTile(int xPos, int yPos, Entity entity, Coordinate position);
 	
