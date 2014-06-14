@@ -22,7 +22,7 @@ public class TilePassLeft extends Tile {
 		if (!CoordinateUtils.isMovingRight(startingPosition, endingPosition)) { return false; }
 		
 		Rect tileBoundingBox = new Rect(new Coordinate(xPos, yPos), new Coordinate(xPos + 1, yPos + 1));
-		Rect playerBodyBox = entity.getEntityBodyRect(endingPosition);
+		Rect playerBodyBox = entity.getEntityEntireRect(endingPosition);
 		
 		if (!RectUtils.rectsOverlap(tileBoundingBox, playerBodyBox)) { return false; }
 		return (startingPosition.getX() + entity.getBodyRadius() < xPos && endingPosition.getX() + entity.getBodyRadius() >= xPos);
