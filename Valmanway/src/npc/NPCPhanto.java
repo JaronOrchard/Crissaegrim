@@ -23,9 +23,9 @@ public class NPCPhanto extends NPC {
 	private static final int MAX_HEALTH = 3;
 	private static int ATTACK_POWER = 4;
 	
-	double angle = 0;
-	double angleIncrement = 2*Math.PI / 360.0 / 2.0; // 0.5 degrees/frame
-	double radius = 7;
+	double angle;
+	double angleIncrement;
+	double radius;
 	Coordinate currentCenter;
 	
 	public NPCPhanto(SpawnCondition spawnCondition, String boardName) {
@@ -37,6 +37,7 @@ public class NPCPhanto extends NPC {
 		entityBodyHeight = 2;
 		entityBodyWidth = 2;
 		
+		radius = 7;
 		// TODO: Make a required function that sets all the movement parameters up
 	}
 	
@@ -83,6 +84,9 @@ public class NPCPhanto extends NPC {
 		Coordinate respawnPoint = getSpawnCondition().getNewRespawnPoint();
 		position = new Coordinate(respawnPoint);
 		currentCenter = new Coordinate(respawnPoint);
+		angle = 0;
+		angleIncrement = 2*Math.PI / 360.0 / 2.0; // 0.5 degrees/frame
+		angleIncrement *= Thunderbrand.getRandomNumbers().getDoubleInRange(0.9, 1.1); // Vary angle by 0.9-1.1x
 	}
 	
 	@Override
