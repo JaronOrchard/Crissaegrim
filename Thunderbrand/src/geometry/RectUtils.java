@@ -153,4 +153,14 @@ public final class RectUtils {
 		rect.getTopRightCorner().incrementY(expandBy);
 	}
 	
+	public static Coordinate getCenterOfRect(Rect rect) {
+		return new Coordinate(
+				(rect.getLeft() + rect.getRight()) / 2,
+				(rect.getBottom() + rect.getTop()) / 2);
+	}
+	
+	public static boolean firstRectIsOnLeft(Rect rect1, Rect rect2) {
+		return getCenterOfRect(rect1).getX() < getCenterOfRect(rect2).getX();
+	}
+	
 }

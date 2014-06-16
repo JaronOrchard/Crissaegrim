@@ -7,7 +7,7 @@ import java.util.List;
 
 import textblock.TextBlock;
 import textures.Textures;
-import busy.GotHitByAttackBusy;
+import busy.GotHitByAttackStunnedBusy;
 import busy.PlayerDiedBusy;
 import crissaegrim.Crissaegrim;
 import datapacket.ChunkPacket;
@@ -68,12 +68,17 @@ public final class CrissaegrimDataPacketProcessor {
 				Crissaegrim.getPlayer().assignPlayerId(-2); // playerId of -2 signifies outdated version
 				break;
 			case DataPacketTypes.GOT_HIT_BY_ATTACK_PACKET:
+				GotHitByAttackPacket ghbap = (GotHitByAttackPacket)(packet);
 				if (!Crissaegrim.getPlayer().isBusy() || !Crissaegrim.getPlayer().getBusy().isImmuneToAttacks()) {
-					if (!Crissaegrim.getPlayer().getHealthBar().takeDamage( ((GotHitByAttackPacket)(packet)).getDamage() )) {
-						Crissaegrim.getPlayer().setBusy(new GotHitByAttackBusy(Crissaegrim.getPlayer().getStunnedTexture()));
+					if (!Crissaegrim.getPlayer().getHealthBar().takeDamage(ghbap.getDamage())) {
+						if (ghbap.getBounceBack()) {
+							Crissaegrim.getPlayer().getMovementHelper().bounceBackFromAttack(ghbap.getHitFromRightSide());
+						} else {
+							Crissaegrim.getPlayer().setBusy(new GotHitByAttackStunnedBusy(Crissaegrim.getPlayer().getStunnedTexture()));
+						}
 					} else { // The Player died from this attack!
 						Crissaegrim.addOutgoingDataPacket(new SendSystemMessagePacket(new TextBlock(
-								Crissaegrim.getPlayer().getName() + " has been killed by " + ((GotHitByAttackPacket)(packet)).getAttackerName() + "!", Color.RED)));
+								Crissaegrim.getPlayer().getName() + " has been killed by " + ghbap.getAttackerName() + "!", Color.RED)));
 						Crissaegrim.getPlayer().setBusy(new PlayerDiedBusy(Textures.STICK_PLAYER_DEAD));
 					}
 				}

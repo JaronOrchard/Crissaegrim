@@ -58,10 +58,17 @@ public abstract class NPC extends Entity {
 		}
 	}
 	
-	protected synchronized void attackPlayer(int playerId) {
+	/**
+	 * Attacks the Player with an id of {@code playerId}.
+	 * @param playerId The id of the Player to attack
+	 * @param hitFromRightSide {@code true} if the attack hit the Player on the right (to cause the Player to bounce leftward),
+	 * 		{@code false} if the attack hit the Player on the left.  If this attack is not going to cause
+	 * 		the Player to bounce/recoil sideways at all, the value of this variable is irrelevant.
+	 */
+	protected synchronized void attackPlayer(int playerId, boolean hitFromRightSide) {
 		if (!playerNextAttackableTimes.containsKey(playerId) || new Date().getTime() >= playerNextAttackableTimes.get(playerId)) {
 			playerNextAttackableTimes.put(playerId, new Date().getTime() + PLAYER_NEXT_ATTACKABLE_DELAY);
-			Valmanway.sendPacketToPlayer(playerId, new GotHitByAttackPacket(getName(), getAttackPower()));
+			Valmanway.sendPacketToPlayer(playerId, new GotHitByAttackPacket(getName(), getAttackPower(), getAttacksBounceBack(), hitFromRightSide));
 		}
 	}
 	
@@ -77,6 +84,7 @@ public abstract class NPC extends Entity {
 	
 	public abstract boolean isAttackable();
 	public abstract int getAttackPower();
+	public abstract boolean getAttacksBounceBack();
 	protected abstract String getName();
 	public abstract Color getMainColor();
 	public abstract List<Item> dropItems();

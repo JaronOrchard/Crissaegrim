@@ -1,6 +1,7 @@
 package npc;
 
 import items.Item;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map.Entry;
 import entities.EntityStatus;
 import geometry.Coordinate;
 import geometry.Line;
+import geometry.Rect;
 import geometry.RectUtils;
 import textures.Textures;
 import valmanway.Valmanway;
@@ -52,6 +54,8 @@ public class NPCChargingSpike extends NPC {
 	@Override public boolean isAttackable() { return false; }
 	
 	@Override public int getAttackPower() { return ATTACK_POWER; }
+	
+	@Override public boolean getAttacksBounceBack() { return true; }
 	
 	@Override protected String getName() { return "NPC ChargingSpike"; }
 	
@@ -122,8 +126,10 @@ public class NPCChargingSpike extends NPC {
 		// Colliding with a player hurts him/her:
 		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getPlayerStatusMap().get(getCurrentBoardName()).entrySet()) {
 			Coordinate esPosition = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
-			if (RectUtils.rectsOverlap(RectUtils.getPlayerBoundingRect(esPosition), this.getEntityEntireRect())) {
-				attackPlayer(entityStatus.getKey());
+			Rect playerBoundingRect = RectUtils.getPlayerBoundingRect(esPosition);
+			Rect entityBoundingRect = getEntityEntireRect();
+			if (RectUtils.rectsOverlap(playerBoundingRect, entityBoundingRect)) {
+				attackPlayer(entityStatus.getKey(), RectUtils.firstRectIsOnLeft(playerBoundingRect, entityBoundingRect));
 			}
 		}
 	}

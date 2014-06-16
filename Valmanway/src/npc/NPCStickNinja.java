@@ -39,6 +39,8 @@ public class NPCStickNinja extends NPC {
 	
 	@Override public int getAttackPower() { return ATTACK_POWER; }
 	
+	@Override public boolean getAttacksBounceBack() { return false; }
+	
 	@Override protected String getName() { return "NPC StickNinja"; }
 	
 	@Override public Color getMainColor() { return new Color(131, 182, 174); }

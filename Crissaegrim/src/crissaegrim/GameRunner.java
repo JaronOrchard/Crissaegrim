@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -41,6 +42,7 @@ import board.Chunk;
 import board.ClientBoard;
 import board.MissingChunk;
 import board.tiles.Tile.TileLayer;
+import busy.GotHitByAttackStunnedBusy;
 import busy.SwordSwingBusy;
 import textblock.TextBlock;
 import textblock.TextTexture;
@@ -273,8 +275,11 @@ public class GameRunner {
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
 				
-//				if (Keyboard.getEventKey() == Keyboard.KEY_P) {
-//					particleSystems.add(new ParticleSystem(125, new Coordinate(player.getPosition().getX(), player.getPosition().getY() + 4), player.getCurrentBoardName(), Color.CYAN));
+//				if (Keyboard.getEventKey() == Keyboard.KEY_B) {
+//					Crissaegrim.getPlayer().setBusy(new GotHitByAttackStunnedBusy(Textures.STICK_PLAYER_STUNNED));
+//				}
+//				if (Keyboard.getEventKey() == Keyboard.KEY_N) {
+//					Crissaegrim.getPlayer().getMovementHelper().bounceBackFromAttack(false);
 //				}
 				
 				if (Keyboard.getEventKey() == Keyboard.KEY_T ||

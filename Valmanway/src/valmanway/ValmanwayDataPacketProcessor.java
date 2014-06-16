@@ -16,7 +16,7 @@ import npc.NPC;
 
 import org.apache.commons.lang3.StringUtils;
 
-import busy.GotHitByAttackBusy;
+import busy.GotHitByAttackStunnedBusy;
 import attack.Attack;
 import textblock.TextBlock;
 import thunderbrand.Thunderbrand;
@@ -41,6 +41,7 @@ import datapacket.SendPlayerStatusPacket;
 import datapacket.SendSystemMessagePacket;
 import entities.EntityStatus;
 import geometry.Coordinate;
+import geometry.Rect;
 import geometry.RectUtils;
 
 public final class ValmanwayDataPacketProcessor {
@@ -105,7 +106,7 @@ public final class ValmanwayDataPacketProcessor {
 			if (npc.isAttackable() && npc.isAlive() && !npc.isBusy() &&
 					RectUtils.rectsOverlap(npc.getEntityEntireRect(npc.getPosition()), attack.getBounds())) {
 				if (!npc.getHealthBar().takeDamage(attack.getAttackPower())) {
-					npc.setBusy(new GotHitByAttackBusy(npc.getStunnedTexture()));
+					npc.setBusy(new GotHitByAttackStunnedBusy(npc.getStunnedTexture()));
 				} else { // The NPC died from this attack!
 					Valmanway.sendPacketToPlayer(attack.getAttackerId(), new ReceiveItemsPacket(npc.dropItems())); // Give the killer the dropped items
 					Valmanway.getSharedData().addDataPacket(new ParticleSystemPacket(
@@ -122,8 +123,10 @@ public final class ValmanwayDataPacketProcessor {
 		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getPlayerStatusMap().get(attack.getBoardName()).entrySet()) {
 			if (entityStatus.getKey() != vud.getPlayerId()) {
 				Coordinate position = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
-				if (RectUtils.rectsOverlap(RectUtils.getPlayerBoundingRect(position), attack.getBounds())) {
-					Valmanway.sendPacketToPlayer(entityStatus.getKey(), new GotHitByAttackPacket(vud.getPlayerName(), attack.getAttackPower()));
+				Rect playerBoundingRect = RectUtils.getPlayerBoundingRect(position);
+				if (RectUtils.rectsOverlap(playerBoundingRect, attack.getBounds())) {
+					Valmanway.sendPacketToPlayer(entityStatus.getKey(), new GotHitByAttackPacket(
+							vud.getPlayerName(), attack.getAttackPower(), true, RectUtils.firstRectIsOnLeft(playerBoundingRect, attack.getBounds())));
 				}
 			}
 		}

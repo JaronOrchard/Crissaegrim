@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 
 import entities.EntityStatus;
 import geometry.Coordinate;
+import geometry.Rect;
 import geometry.RectUtils;
 import textures.Textures;
 import thunderbrand.Thunderbrand;
@@ -52,6 +53,8 @@ public class NPCPhanto extends NPC {
 	@Override public boolean isAttackable() { return true; }
 	
 	@Override public int getAttackPower() { return ATTACK_POWER; }
+	
+	@Override public boolean getAttacksBounceBack() { return false; }
 	
 	@Override protected String getName() { return "NPC Phanto"; }
 	
@@ -106,8 +109,10 @@ public class NPCPhanto extends NPC {
 		// Colliding with a player hurts him/her:
 		for (Entry<Integer, EntityStatus> entityStatus : Valmanway.getSharedData().getPlayerStatusMap().get(getCurrentBoardName()).entrySet()) {
 			Coordinate esPosition = new Coordinate(entityStatus.getValue().getXPos(), entityStatus.getValue().getYPos());
-			if (RectUtils.rectsOverlap(RectUtils.getPlayerBoundingRect(esPosition), this.getEntityEntireRect())) {
-				attackPlayer(entityStatus.getKey());
+			Rect playerBoundingRect = RectUtils.getPlayerBoundingRect(esPosition);
+			Rect entityBoundingRect = getEntityEntireRect();
+			if (RectUtils.rectsOverlap(playerBoundingRect, entityBoundingRect)) {
+				attackPlayer(entityStatus.getKey(), RectUtils.firstRectIsOnLeft(playerBoundingRect, entityBoundingRect));
 			}
 		}
 	}

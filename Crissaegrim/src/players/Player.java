@@ -7,6 +7,7 @@ import items.ItemSolais;
 import java.util.Map;
 
 import board.Board;
+import busy.GotHitByAttackBouncedBackBusy;
 import busy.InvincibleBusy;
 import busy.PlayerDiedBusy;
 import textures.Textures;
@@ -139,13 +140,17 @@ public class Player extends Entity {
 	
 	@Override
 	public void update() {
-		if (isBusy() && busy.hasExpired()) {
-			if (busy instanceof PlayerDiedBusy) {
-				getHealthBar().healDamage(getHealthBar().getMaxHealth());
-				Crissaegrim.getGameRunner().setNewDestinationToSpawn();
-				Crissaegrim.getGameRunner().goToDestinationBoard();
-				busy = new InvincibleBusy(2000);
-			} else {
+		if (isBusy()) {
+			if (busy.hasExpired()) {
+				if (busy instanceof PlayerDiedBusy) {
+					getHealthBar().healDamage(getHealthBar().getMaxHealth());
+					Crissaegrim.getGameRunner().setNewDestinationToSpawn();
+					Crissaegrim.getGameRunner().goToDestinationBoard();
+					busy = new InvincibleBusy(2000);
+				} else {
+					busy = null;
+				}
+			} else if (busy instanceof GotHitByAttackBouncedBackBusy && !getMovementHelper().isCurrentlyBouncingBackFromAttack()) {
 				busy = null;
 			}
 		}
