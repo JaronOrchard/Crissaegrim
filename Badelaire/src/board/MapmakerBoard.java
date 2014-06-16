@@ -51,9 +51,9 @@ public class MapmakerBoard {
 		Map<String, MapmakerChunk> tempChunkMap = new HashMap<String, MapmakerChunk>();
 		tempChunkMap.putAll(chunkMap);
 		for (Map.Entry<String, MapmakerChunk> entry : tempChunkMap.entrySet()) {
-		    createBoundaryChunksIfNeeded(
-		    		Integer.parseInt(entry.getKey().substring(0, entry.getKey().indexOf("_"))),
-		    		Integer.parseInt(entry.getKey().substring(entry.getKey().indexOf("_") + 1)));
+			createBoundaryChunksIfNeeded(
+					Integer.parseInt(entry.getKey().substring(0, entry.getKey().indexOf("_"))),
+					Integer.parseInt(entry.getKey().substring(entry.getKey().indexOf("_") + 1)));
 		}
 		// If no chunks exist, make one:
 		if (chunkMap.isEmpty()) {
@@ -137,12 +137,12 @@ public class MapmakerBoard {
 		int xRange = (int)Math.ceil(Badelaire.getWindowWidthRadiusInTiles()) + 1;
 		int yRange = (int)Math.ceil(Badelaire.getWindowHeightRadiusInTiles()) + 1;
 		for (Map.Entry<String, MapmakerChunk> entry : chunkMap.entrySet()) {
-		    if (drawGrid) { entry.getValue().drawPreGrid(); }
+			if (drawGrid) { entry.getValue().drawPreGrid(); }
 			if (drawDefaults) { entry.getValue().draw(centerPosition, TileLayer.DEFAULT, xRange, yRange); }
 			if (drawBG) { entry.getValue().draw(centerPosition, TileLayer.BACKGROUND, xRange, yRange); }
 			if (drawMG) { entry.getValue().draw(centerPosition, TileLayer.MIDDLEGROUND, xRange, yRange); }
 			if (drawFG) { entry.getValue().draw(centerPosition, TileLayer.FOREGROUND, xRange, yRange); }
-		    if (drawGrid) { entry.getValue().drawPostGrid(); }
+			if (drawGrid) { entry.getValue().drawPostGrid(); }
 		}
 	}
 	

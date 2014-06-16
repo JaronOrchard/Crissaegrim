@@ -28,9 +28,9 @@ public final class MapmakerInitializer {
 		glViewport(0, 0, Badelaire.getWindowWidth(), Badelaire.getWindowHeight());
 		
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	    glEnable(GL_BLEND);
-	    
-	    glEnable(GL11.GL_TEXTURE_2D);
+		glEnable(GL_BLEND);
+		
+		glEnable(GL11.GL_TEXTURE_2D);
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 	}

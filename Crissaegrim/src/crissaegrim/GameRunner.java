@@ -379,12 +379,12 @@ public class GameRunner {
 	public void updateFPS(long millisSkipped) {
 		millisecondsSkipped += millisSkipped;
 		framesRendered += 1;
-	    if (Thunderbrand.getTime() - lastFPSTitleUpdate > 1000) { // Update the title in one-second increments
-	        GameInitializer.setWindowTitle("FPS: " + framesRendered + " | Idle time: " + (millisecondsSkipped / 10) + "%");
-	        framesRendered = 0; // Reset the frames rendered
-	        millisecondsSkipped = 0; // Reset the milliseconds skipped
-	        lastFPSTitleUpdate += 1000; // Add one second
-	    }
+		if (Thunderbrand.getTime() - lastFPSTitleUpdate > 1000) { // Update the title in one-second increments
+			GameInitializer.setWindowTitle("FPS: " + framesRendered + " | Idle time: " + (millisecondsSkipped / 10) + "%");
+			framesRendered = 0; // Reset the frames rendered
+			millisecondsSkipped = 0; // Reset the milliseconds skipped
+			lastFPSTitleUpdate += 1000; // Add one second
+		}
 	}
 	
 	private void drawGhosts() {

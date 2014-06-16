@@ -54,10 +54,10 @@ public class WorldRunner {
 							NPC npc = npcIter.next();
 							npc.update();
 							Valmanway.getSharedData().updateNpcStatusMap(npc.getId(), npc.getCurrentBoardName(),
-					    			new EntityStatus(Valmanway.getSharedData().getPlayerName(npc.getId()),
-					    					npc.getCurrentBoardName(), npc.getPosition().getX(), npc.getPosition().getY(),
-					    					npc.getCurrentTexture(), npc.getFacingRight(), npc.getHealthBar().getAmtHealth(),
-					    					npc.getTextureHalfWidth(), npc.getTextureHeight()));
+									new EntityStatus(Valmanway.getSharedData().getPlayerName(npc.getId()),
+											npc.getCurrentBoardName(), npc.getPosition().getX(), npc.getPosition().getY(),
+											npc.getCurrentTexture(), npc.getFacingRight(), npc.getHealthBar().getAmtHealth(),
+											npc.getTextureHalfWidth(), npc.getTextureHeight()));
 						}
 					}
 				}
@@ -73,12 +73,12 @@ public class WorldRunner {
 	public void updateFPS(long millisSkipped) {
 		millisecondsSkipped += millisSkipped;
 		framesRendered += 1;
-	    if (Thunderbrand.getTime() - lastFPSTitleUpdate > 10000) { // Update the title in ten-second increments
-	        System.out.println("FP10S: " + framesRendered + " | Millis skipped: " + (millisecondsSkipped / 10));
-	        framesRendered = 0; // Reset the frames rendered
-	        millisecondsSkipped = 0; // Reset the milliseconds skipped
-	        lastFPSTitleUpdate += 10000; // Add ten seconds
-	    }
+		if (Thunderbrand.getTime() - lastFPSTitleUpdate > 10000) { // Update the title in ten-second increments
+			System.out.println("FP10S: " + framesRendered + " | Millis skipped: " + (millisecondsSkipped / 10));
+			framesRendered = 0; // Reset the frames rendered
+			millisecondsSkipped = 0; // Reset the milliseconds skipped
+			lastFPSTitleUpdate += 10000; // Add ten seconds
+		}
 	}
 	
 	private void loadAllChunks() {
