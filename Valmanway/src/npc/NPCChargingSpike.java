@@ -55,6 +55,8 @@ public class NPCChargingSpike extends NPC {
 	
 	@Override public int getAttackPower() { return ATTACK_POWER; }
 	
+	@Override public void hitByAttack(boolean hitFromRightSide) { /* Cannot be attacked */ }
+	
 	@Override public boolean getAttacksBounceBack() { return true; }
 	
 	@Override protected String getName() { return "NPC ChargingSpike"; }

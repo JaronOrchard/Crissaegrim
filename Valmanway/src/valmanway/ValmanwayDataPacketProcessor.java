@@ -16,7 +16,6 @@ import npc.NPC;
 
 import org.apache.commons.lang3.StringUtils;
 
-import busy.GotHitByAttackStunnedBusy;
 import attack.Attack;
 import textblock.TextBlock;
 import thunderbrand.Thunderbrand;
@@ -104,9 +103,9 @@ public final class ValmanwayDataPacketProcessor {
 		// Compare this attack to all NPCs on that board:
 		for (NPC npc : Valmanway.getSharedData().getNPCs().get(attack.getBoardName())) {
 			if (npc.isAttackable() && npc.isAlive() && !npc.isBusy() &&
-					RectUtils.rectsOverlap(npc.getEntityEntireRect(npc.getPosition()), attack.getBounds())) {
+					RectUtils.rectsOverlap(npc.getEntityEntireRect(), attack.getBounds())) {
 				if (!npc.getHealthBar().takeDamage(attack.getAttackPower())) {
-					npc.setBusy(new GotHitByAttackStunnedBusy(npc.getStunnedTexture()));
+					npc.hitByAttack(RectUtils.firstRectIsOnLeft(npc.getEntityEntireRect(), attack.getBounds()));
 				} else { // The NPC died from this attack!
 					Valmanway.sendPacketToPlayer(attack.getAttackerId(), new ReceiveItemsPacket(npc.dropItems())); // Give the killer the dropped items
 					Valmanway.getSharedData().addDataPacket(new ParticleSystemPacket(

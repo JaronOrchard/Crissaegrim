@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import busy.GotHitByAttackStunnedBusy;
 import entities.EntityStatus;
 import geometry.Coordinate;
 import geometry.Rect;
@@ -55,6 +56,8 @@ public class NPCPhanto extends NPC {
 	@Override public int getAttackPower() { return ATTACK_POWER; }
 	
 	@Override public boolean getAttacksBounceBack() { return false; }
+	
+	@Override public void hitByAttack(boolean hitFromRightSide) { setBusy(new GotHitByAttackStunnedBusy(getStunnedTexture())); }
 	
 	@Override protected String getName() { return "NPC Phanto"; }
 	

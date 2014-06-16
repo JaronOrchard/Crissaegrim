@@ -85,6 +85,7 @@ public abstract class NPC extends Entity {
 	public abstract boolean isAttackable();
 	public abstract int getAttackPower();
 	public abstract boolean getAttacksBounceBack();
+	public abstract void hitByAttack(boolean hitFromRightSide);
 	protected abstract String getName();
 	public abstract Color getMainColor();
 	public abstract List<Item> dropItems();

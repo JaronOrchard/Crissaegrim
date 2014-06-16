@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import busy.GotHitByAttackBouncedBackBusy;
 import geometry.Coordinate;
 import textures.Textures;
 import thunderbrand.Thunderbrand;
@@ -41,6 +42,8 @@ public class NPCStickNinja extends NPC {
 	
 	@Override public boolean getAttacksBounceBack() { return false; }
 	
+	@Override public void hitByAttack(boolean hitFromRightSide) { getMovementHelper().bounceBackFromAttack(hitFromRightSide); }
+	
 	@Override protected String getName() { return "NPC StickNinja"; }
 	
 	@Override public Color getMainColor() { return new Color(131, 182, 174); }
@@ -67,7 +70,7 @@ public class NPCStickNinja extends NPC {
 	boolean jumpedAlready = false;
 	@Override
 	protected void updateNPC() {
-		if (isBusy() && busy.hasExpired()) {
+		if (isBusy() && (busy.hasExpired() || (busy instanceof GotHitByAttackBouncedBackBusy && !getMovementHelper().isCurrentlyBouncingBackFromAttack()))) {
 			busy = null;
 		}
 		
