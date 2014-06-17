@@ -91,6 +91,7 @@ public class GameRunner {
 			return;
 		}
 		
+		Crissaegrim.addSystemMessage("Welcome to Crissaegrim!");
 		setNewDestinationToSpawn();
 		goToDestinationBoard();
 		
@@ -98,6 +99,8 @@ public class GameRunner {
 		String lastUsername = Crissaegrim.getPreferenceHandler().getLastUsername();
 		if (lastUsername != null) {
 			Crissaegrim.addOutgoingDataPacket(new SendChatMessagePacket(new TextBlock("/setname " + lastUsername, Color.WHITE)));
+		} else {
+			Crissaegrim.addSystemMessage("Tip: You can use /setname to permanently set your username.");
 		}
 		
 		//initializeGame();
