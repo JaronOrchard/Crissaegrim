@@ -140,8 +140,9 @@ public class WorldRunner {
 		npcMap.get("sotn_clock_tower").add(new NPCPhanto(new SpawnCondition(new Rect(new Coordinate(10091, 10036), new Coordinate(10152, 10042)), NPCPhanto.getMillisToRespawn()), "sotn_clock_tower"));
 		npcMap.get("sotn_clock_tower").add(new NPCPhanto(new SpawnCondition(new Coordinate(10035, 10056), NPCPhanto.getMillisToRespawn()), "sotn_clock_tower"));
 		
-		npcMap.get("sotn_clock_tower").add(new NPCChargingSpike(new SpawnCondition(new Coordinate(10125, 10013)), new Coordinate(10115, 10013), false, "sotn_clock_tower"));
-		npcMap.get("sotn_clock_tower").add(new NPCChargingSpike(new SpawnCondition(new Coordinate(10140, 10013)), new Coordinate(10154, 10013), true, "sotn_clock_tower"));
+		npcMap.get("sotn_clock_tower").add(new NPCChargingSpike(new SpawnCondition(new Coordinate(10125, 10013)), new Coordinate(10115, 10013), "sotn_clock_tower"));
+		npcMap.get("sotn_clock_tower").add(new NPCChargingSpike(new SpawnCondition(new Coordinate(10140, 10013)), new Coordinate(10154, 10013), "sotn_clock_tower"));
+		npcMap.get("sotn_clock_tower").add(new NPCChargingSpike(new SpawnCondition(new Coordinate(10080, 10025)), new Coordinate(10090, 10025), "sotn_clock_tower"));
 		
 		
 		for (List<NPC> npcList : npcMap.values()) {

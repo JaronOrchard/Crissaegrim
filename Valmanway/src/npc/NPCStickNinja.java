@@ -44,7 +44,7 @@ public class NPCStickNinja extends NPC {
 	
 	@Override public void hitByAttack(boolean hitFromRightSide) { getMovementHelper().bounceBackFromAttack(hitFromRightSide); }
 	
-	@Override protected String getName() { return "NPC StickNinja"; }
+	@Override public String getName() { return "NPC StickNinja"; }
 	
 	@Override public Color getMainColor() { return new Color(131, 182, 174); }
 	

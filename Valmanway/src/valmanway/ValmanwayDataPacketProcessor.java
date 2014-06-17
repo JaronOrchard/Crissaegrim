@@ -114,6 +114,7 @@ public final class ValmanwayDataPacketProcessor {
 							npc.getCurrentBoardName(),
 							npc.getMainColor().brighter()));
 					npc.killNPC(); // Set NPC to dead and scheduled to respawn (must be last as it changes position)
+					Valmanway.logMessage(Valmanway.getSharedData().getPlayerName(attack.getAttackerId()) + " killed a " + npc.getName() + "!");
 				}
 			}
 		}

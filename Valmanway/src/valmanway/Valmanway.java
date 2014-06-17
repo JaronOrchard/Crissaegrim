@@ -77,8 +77,7 @@ public class Valmanway {
 		serverSocket.close();
 	}
 	
-	public static void logMessage(TextBlock tb) {
-		logger.log(tb);
-	}
+	public static void logMessage(String message) { logger.log(message); }
+	public static void logMessage(TextBlock tb) { logger.log(tb); }
 	
 }

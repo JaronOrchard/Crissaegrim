@@ -59,7 +59,7 @@ public class NPCPhanto extends NPC {
 	
 	@Override public void hitByAttack(boolean hitFromRightSide) { setBusy(new GotHitByAttackStunnedBusy(getStunnedTexture())); }
 	
-	@Override protected String getName() { return "NPC Phanto"; }
+	@Override public String getName() { return "NPC Phanto"; }
 	
 	@Override public Color getMainColor() { return new Color(182, 57, 0); }
 	

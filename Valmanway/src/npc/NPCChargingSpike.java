@@ -28,10 +28,10 @@ public class NPCChargingSpike extends NPC {
 	private Line chargeCheckLine;
 	private ChargingStatus chargingStatus;
 	
-	public NPCChargingSpike(SpawnCondition spawnCondition, Coordinate chargeTo, boolean chargeRight, String boardName) {
+	public NPCChargingSpike(SpawnCondition spawnCondition, Coordinate chargeTo, String boardName) {
 		super(MAX_HEALTH, spawnCondition, boardName);
 		chargeEndPoint = new Coordinate(chargeTo);
-		facingRight = chargeRight; // True if rests at left and charges right, false if reversed
+		facingRight = spawnCondition.getNewRespawnPoint().getX() < chargeTo.getX(); // True if rests at left and charges right, false if reversed
 		
 		textureHalfWidth = 1;
 		textureHeight = 2;
@@ -59,7 +59,7 @@ public class NPCChargingSpike extends NPC {
 	
 	@Override public boolean getAttacksBounceBack() { return true; }
 	
-	@Override protected String getName() { return "NPC ChargingSpike"; }
+	@Override public String getName() { return "NPC ChargingSpike"; }
 	
 	@Override public Color getMainColor() { return new Color(140, 109, 38); }
 	
