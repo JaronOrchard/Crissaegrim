@@ -6,7 +6,7 @@ import random.RandomNumbers;
 
 public final class Thunderbrand {
 	
-	private static final boolean LINUX_BUILD = true; // Change to true when deploying to the VM server, keep false if on my Windows machine
+	private static final boolean LINUX_BUILD = false; // Change to true when deploying to the VM server, keep false if on my Windows machine
 	private static final int VALMANWAY_SERVER_PORT = 22112;
 	private static final boolean START_WORLD_RUNNER = true; // If false, doesn't start the WorldRunner in Valmanway
 	

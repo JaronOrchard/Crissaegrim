@@ -27,10 +27,10 @@ public class ValmanwayConnection {
 	
 	public ValmanwayConnection() {
 		if (Thunderbrand.isLinuxBuild()) {
-			VALMANWAY_HOSTNAMES.add("199.204.23.93"); // VPS
+			VALMANWAY_HOSTNAMES.add("199.204.23.93"); // Peridot (VPS)
 		} else {
-			VALMANWAY_HOSTNAMES.add("garnet");		// Laptop computer
-			VALMANWAY_HOSTNAMES.add("96.35.6.105");	// Home desktop computer
+			VALMANWAY_HOSTNAMES.add("garnet");	      // Garnet (Laptop)
+			VALMANWAY_HOSTNAMES.add("96.35.6.105");	  // Diamond (Desktop)
 		}
 	}
 	

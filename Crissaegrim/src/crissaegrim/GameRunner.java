@@ -8,6 +8,7 @@ import items.Weapon;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,6 +27,8 @@ import datapacket.ParticleSystemPacket;
 import datapacket.RequestEntireBoardPacket;
 import datapacket.RequestPlayerIdPacket;
 import datapacket.SendChatMessagePacket;
+import dialogboxes.DialogBox;
+import dialogboxes.DialogBoxRunner;
 import doodads.Doodad;
 import doodads.Door;
 import effects.ParticleSystem;
@@ -50,8 +53,8 @@ import thunderbrand.Thunderbrand;
 
 public class GameRunner {
 	
-	private static final long FRAMES_PER_SECOND = 100;
-	private static final long MILLISECONDS_PER_FRAME = 1000 / FRAMES_PER_SECOND;
+	public static final long FRAMES_PER_SECOND = 100;
+	public static final long MILLISECONDS_PER_FRAME = 1000 / FRAMES_PER_SECOND;
 	
 	private long lastFPSTitleUpdate;
 	private long millisecondsSkipped = 0;
@@ -124,10 +127,10 @@ public class GameRunner {
 				if (Crissaegrim.currentlyLoading) { continue; }
 				player.update();
 				actionDoodadList();
-			
+				
 				// Draw new scene:
 				drawScene();
-			
+				
 				// Get input and move the player:
 				if (Crissaegrim.getChatBox().isTypingMode()) {
 					Crissaegrim.getChatBox().getKeyboardInput();
@@ -177,7 +180,7 @@ public class GameRunner {
 		Crissaegrim.getValmanwayConnection().closeConnections();
 	}
 	
-	private void drawScene() {
+	public void drawScene() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		Board currentBoard = Crissaegrim.getBoard();
 		
@@ -212,7 +215,7 @@ public class GameRunner {
 		Crissaegrim.getChatBox().draw();
 	}
 	
-	private void drawHUD() {
+	public void drawHUD() {
 		drawPlayerHealthBar();
 	}
 	
@@ -277,12 +280,12 @@ public class GameRunner {
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
 				
-//				if (Keyboard.getEventKey() == Keyboard.KEY_B) {
-//					Crissaegrim.getPlayer().setBusy(new GotHitByAttackStunnedBusy(Textures.STICK_PLAYER_STUNNED));
-//				}
-//				if (Keyboard.getEventKey() == Keyboard.KEY_N) {
-//					Crissaegrim.getPlayer().getMovementHelper().bounceBackFromAttack(false);
-//				}
+				if (Keyboard.getEventKey() == Keyboard.KEY_B) {
+					DialogBoxRunner dbr = new DialogBoxRunner();
+					dbr.run(new DialogBox(
+							Arrays.asList("A wild dialog box appeared!", "Do you want to set this location as your respawn point?"),
+							Arrays.asList("Yes", "No", "I-I don't know, I thought I heard a thump?")));
+				}
 				
 				if (Keyboard.getEventKey() == Keyboard.KEY_T ||
 						Keyboard.getEventKey() == Keyboard.KEY_RETURN) {	// T or Enter: Enter chat mode
