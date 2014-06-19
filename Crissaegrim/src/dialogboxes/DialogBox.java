@@ -23,6 +23,8 @@ import geometry.Rect;
 
 import java.util.List;
 
+import org.lwjgl.input.Mouse;
+
 import textblock.TextTexture;
 import crissaegrim.Crissaegrim;
 import crissaegrim.GameInitializer;
@@ -72,6 +74,8 @@ public class DialogBox {
 	 * 1 pixel padding between the bottom of last button and the bottom of the dialog
 	 */
 	public void draw() {
+		int hoveredButton = getHoveredButtonIndex();
+		
 		GameInitializer.initializeNewFrameForWindow();
 		glDisable(GL_TEXTURE_2D);
 		glColor3d(0.313, 0.313, 0.313);
@@ -119,14 +123,14 @@ public class DialogBox {
 		int buttonY = messageLineY - 15;
 		for (int i = 0; i < buttonLabels.size(); i++) {
 			glDisable(GL_TEXTURE_2D);
-			glColor3d(0.208, 0.255, 0.325);
+			if (i == hoveredButton) { glColor3d(0.224, 0.314, 0.220); } else {glColor3d(0.208, 0.255, 0.325); }
 			glBegin(GL_QUADS); // Draw button background
 				glVertex2d(dialogRect.getLeft() + 10, buttonY - 36);
 				glVertex2d(dialogRect.getRight() - 10, buttonY - 36);
 				glVertex2d(dialogRect.getRight() - 10, buttonY);
 				glVertex2d(dialogRect.getLeft() + 10, buttonY);
 			glEnd();
-			glColor3d(0.667, 0.702, 0.749);
+			if (i == hoveredButton) { glColor3d(0.675, 0.749, 0.667); } else { glColor3d(0.667, 0.702, 0.749); }
 			glLineWidth(2);
 			glBegin(GL_LINE_LOOP); // Draw button outline
 				glVertex2d(dialogRect.getLeft() + 10, buttonY - 36);
@@ -155,6 +159,20 @@ public class DialogBox {
 			buttonY -= 46;
 		}
 		
+	}
+	
+	public int getHoveredButtonIndex() {
+		int mouseX = Mouse.getX();
+		int mouseY = Mouse.getY();
+		int buttonY = Crissaegrim.getWindowHeight() - 60 - (22 * messageLines.size());
+		if (mouseX >= dialogRect.getLeft() + 10 && mouseX <= dialogRect.getRight() - 10 &&
+				mouseY <= buttonY && mouseY >= dialogRect.getBottom()) {
+			for (int i = 0; i < buttonLabels.size(); i++) {
+				if (mouseY <= buttonY && mouseY >= buttonY - 36) { return i; }
+				buttonY -= 46;
+			}
+		}
+		return -1;
 	}
 	
 }
