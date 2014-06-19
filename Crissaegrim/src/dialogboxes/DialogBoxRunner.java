@@ -1,7 +1,8 @@
 package dialogboxes;
 
 import java.io.IOException;
-
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import players.Player;
@@ -18,70 +19,43 @@ public class DialogBoxRunner {
 		EntityMovementHelper playerMovementHelper = player.getMovementHelper();
 		
 		try {
-	//		if (Crissaegrim.currentlyLoading) { break; }
-			
 			long startTime, endTime, elaspedTime; // Per-loop times to keep FRAMES_PER_SECOND
 			while (!Display.isCloseRequested()) {
 				startTime = Thunderbrand.getTime();
 				
 				if (!Crissaegrim.connectionStable) { break; }
 				
-				// Update the board, including all entities and bullets:
-	//			if (!Crissaegrim.currentlyLoading) {
-	//				ClientBoard.verifyChunksExist(Crissaegrim.getBoard());
-	//				if (Crissaegrim.currentlyLoading) { continue; }
-					player.update();
-	//				actionDoodadList();
-					
-					// Draw new scene:
-					gameRunner.drawScene();
-					
-					// Get input and move the player:
-	//				if (Crissaegrim.getChatBox().isTypingMode()) {
-	//					Crissaegrim.getChatBox().getKeyboardInput();
-	//				} else {
-	//					getKeyboardAndMouseInput();
-	//				}
-	//				drawMouseHoverStatus();
-	//				playerMovementHelper.moveEntityPre();
-	//				Item itemToUse = playerMovementHelper.getItemToUse();
-	//				if (itemToUse != null && !player.isBusy()) {
-	//					if (itemToUse instanceof Weapon) {
-	//						// TODO: This should be split up depending upon the weapon and attack type
-	//						// TODO: Bounding rect of sword swing should not be entire entity
-	//						player.setBusy(new SwordSwingBusy());
-	//						Crissaegrim.addOutgoingDataPacket(new AttackPacket(new Attack(
-	//								player.getId(), player.getCurrentBoardName(), player.getSwordSwingRect(), ((Weapon)(itemToUse)).getAttackPower(), 1)));
-	//					} else if (itemToUse instanceof ItemPartyPopper) {
-	//						ItemPartyPopper popper = (ItemPartyPopper)(itemToUse);
-	//						Crissaegrim.addOutgoingDataPacket(new ParticleSystemPacket(
-	//								125, playerMovementHelper.getCoordinateClicked(), player.getCurrentBoardName(), popper.getColor()));
-	//						popper.decrementUses();
-	//						if (popper.getUsesLeft() <= 0) {
-	//							player.getInventory().removeCurrentItem();
-	//						}
-	//					}
-	//				}
-	//				playerMovementHelper.moveEntityPost();
-					playerMovementHelper.moveEntity();
-					
-					gameRunner.drawHUD();
-					
-					dialogBox.draw();
-					
-					// Transmit data to the server
-					Crissaegrim.getValmanwayConnection().sendPlayerStatus();
-	//			} else {
-	//				drawScene();
-	//				drawLoadingMessage();
-	//				drawLoadingProgressBar();
-	//			}
+				player.update(); // (Don't negate gravity)
+				gameRunner.drawScene();
+				
+				if (Crissaegrim.getChatBox().isTypingMode()) {
+					Crissaegrim.getChatBox().getKeyboardInput(false);
+				} else {
+					getKeyboardInput(dialogBox);
+				}
+				// If a button was clicked, find out which one and return it if valid
+				while (Mouse.next()) {
+					if (Mouse.getEventButtonState() && Mouse.getEventButton() == 0) {
+						int clickedButton = dialogBox.getHoveredButtonIndex();
+						if (clickedButton != -1) {
+							return getDialogResultForIndex(clickedButton);
+						}
+					}
+				}
+				
+				playerMovementHelper.moveEntity();
+				
+				gameRunner.drawHUD();
+				
+				dialogBox.draw();
+				
+				// Still transmit data to the server
+				Crissaegrim.getValmanwayConnection().sendPlayerStatus();
 					
 				Display.update();
 				endTime = Thunderbrand.getTime();
 				elaspedTime = endTime - startTime;
 				Thread.sleep(Math.max(0, GameRunner.MILLISECONDS_PER_FRAME - elaspedTime));
-	//			updateFPS(Math.max(0, gameRunner.MILLISECONDS_PER_FRAME - elaspedTime));
 			}
 			
 			Display.destroy();
@@ -90,6 +64,44 @@ public class DialogBoxRunner {
 			e.printStackTrace();
 		}
 		System.exit(1);
+		return null;
+	}
+	
+	/**
+	 * Detects keyboard input and reacts accordingly.
+	 */
+	private void getKeyboardInput(DialogBox dialogBox) {
+		while (Keyboard.next()) {
+			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
+				if (Keyboard.getEventKey() == Keyboard.KEY_T ||
+						Keyboard.getEventKey() == Keyboard.KEY_RETURN) {	// T or Enter: Enter chat mode
+					Crissaegrim.getChatBox().enableTypingMode();
+					return; // Don't process any more keys!
+				} else if (Keyboard.getEventKey() == 41) {					// Backtick (`) key
+					Crissaegrim.toggleDebugMode();
+				} else if (Keyboard.getEventKey() == Keyboard.KEY_TAB) {	// Tab key: Toggle zoom
+					Crissaegrim.toggleZoom();
+				} else if (Keyboard.getEventKey() == Keyboard.KEY_M) {		// M key: Toggle window size
+					Crissaegrim.toggleWindowSize();
+					dialogBox.recalculateDialogDimensions();
+				}
+			}
+		}
+	}
+	
+	private DialogBox.Result getDialogResultForIndex(int index) {
+		switch (index) {
+			case 0: return DialogBox.Result.BUTTON_1;
+			case 1: return DialogBox.Result.BUTTON_2;
+			case 2: return DialogBox.Result.BUTTON_3;
+			case 3: return DialogBox.Result.BUTTON_4;
+			case 4: return DialogBox.Result.BUTTON_5;
+			case 5: return DialogBox.Result.BUTTON_6;
+			case 6: return DialogBox.Result.BUTTON_7;
+			case 7: return DialogBox.Result.BUTTON_8;
+			case 8: return DialogBox.Result.BUTTON_9;
+			case 9: return DialogBox.Result.BUTTON_10;
+		}
 		return null;
 	}
 	

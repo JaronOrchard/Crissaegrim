@@ -42,8 +42,8 @@ public class ChatBox {
 		return chatTypingArea.isTypingMode();
 	}
 	
-	public void getKeyboardInput() {
-		chatTypingArea.getKeyboardInput();
+	public void getKeyboardInput(boolean ignoreMouseClicks) {
+		chatTypingArea.getKeyboardInput(ignoreMouseClicks);
 	}
 	
 	private void drawSeparatingLine() {

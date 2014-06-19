@@ -80,7 +80,7 @@ public class ChatTypingArea {
 		return typingModeEnabled;
 	}
 	
-	public void getKeyboardInput() {
+	public void getKeyboardInput(boolean ignoreMouseClicks) {
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
 				if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
@@ -108,8 +108,10 @@ public class ChatTypingArea {
 				}
 			}
 		}
-		while (Mouse.next()) {
-			// Accept and then ignore all mouse clicks while in typing mode
+		if (ignoreMouseClicks) {
+			while (Mouse.next()) {
+				// Accept and then ignore all mouse clicks while in typing mode
+			}
 		}
 	}
 	

@@ -8,7 +8,6 @@ import items.Weapon;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,8 +26,6 @@ import datapacket.ParticleSystemPacket;
 import datapacket.RequestEntireBoardPacket;
 import datapacket.RequestPlayerIdPacket;
 import datapacket.SendChatMessagePacket;
-import dialogboxes.DialogBox;
-import dialogboxes.DialogBoxRunner;
 import doodads.Doodad;
 import doodads.Door;
 import effects.ParticleSystem;
@@ -133,7 +130,7 @@ public class GameRunner {
 				
 				// Get input and move the player:
 				if (Crissaegrim.getChatBox().isTypingMode()) {
-					Crissaegrim.getChatBox().getKeyboardInput();
+					Crissaegrim.getChatBox().getKeyboardInput(true);
 				} else {
 					getKeyboardAndMouseInput();
 				}
@@ -280,12 +277,15 @@ public class GameRunner {
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
 				
-				if (Keyboard.getEventKey() == Keyboard.KEY_B) {
-					DialogBoxRunner dbr = new DialogBoxRunner();
-					dbr.run(new DialogBox(
-							Arrays.asList("A wild dialog box appeared!", "Do you want to set this location as your respawn point?"),
-							Arrays.asList("Yes", "No", "I-I don't know, I thought I heard a thump?")));
-				}
+//				if (Keyboard.getEventKey() == Keyboard.KEY_B) {
+//					DialogBoxRunner dbr = new DialogBoxRunner();
+//					DialogBox.Result res = dbr.run(new DialogBox(
+//							Arrays.asList("A wild dialog box appeared!", "Do you want to set this location as your respawn point?"),
+//							Arrays.asList("Yes", "No", "I-I don't know, I thought I heard a thump?")));
+//					if (res == DialogBox.Result.BUTTON_1) { Crissaegrim.addSystemMessage("Cool."); }
+//					else if (res == DialogBox.Result.BUTTON_2) { Crissaegrim.addSystemMessage("Fine!"); }
+//					else if (res == DialogBox.Result.BUTTON_3) { Crissaegrim.addSystemMessage("P-President Fabio?"); }
+//				}
 				
 				if (Keyboard.getEventKey() == Keyboard.KEY_T ||
 						Keyboard.getEventKey() == Keyboard.KEY_RETURN) {	// T or Enter: Enter chat mode
