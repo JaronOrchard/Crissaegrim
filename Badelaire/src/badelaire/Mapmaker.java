@@ -63,10 +63,11 @@ public class Mapmaker {
 		Textures.initializeTextures();
 		MapmakerInitializer.initializeOpenGLFor2D();
 		
-		mapmakerBoard = new MapmakerBoard("sotn_clock_tower");
+		//mapmakerBoard = new MapmakerBoard("sotn_clock_tower");
 		//mapmakerBoard = new MapmakerBoard("dawning_interior");
 		//mapmakerBoard = new MapmakerBoard("dawning");
 		//mapmakerBoard = new MapmakerBoard("tower_of_preludes");
+		mapmakerBoard = new MapmakerBoard("morriston");
 		
 		//textureRemap(); if(true) return;
 		

@@ -154,6 +154,7 @@ public class MapmakerBoard {
 		MapmakerChunk chunk = chunkMap.get(chunkName);
 		if (chunk != null) {
 			chunk.getTile(tileX % chunkSideSize, tileY % chunkSideSize).setBackgroundTexture(texture);
+			chunk.checkAndSetIsEmpty();
 			modifiedChunks.add(chunkName);
 			createBoundaryChunksIfNeeded(chunkXOrigin, chunkYOrigin);
 		}
@@ -167,6 +168,7 @@ public class MapmakerBoard {
 		MapmakerChunk chunk = chunkMap.get(chunkName);
 		if (chunk != null) {
 			chunk.getTile(tileX % chunkSideSize, tileY % chunkSideSize).setMiddlegroundTexture(texture);
+			chunk.checkAndSetIsEmpty();
 			modifiedChunks.add(chunkName);
 			createBoundaryChunksIfNeeded(chunkXOrigin, chunkYOrigin);
 		}
@@ -180,6 +182,7 @@ public class MapmakerBoard {
 		MapmakerChunk chunk = chunkMap.get(chunkName);
 		if (chunk != null) {
 			chunk.getTile(tileX % chunkSideSize, tileY % chunkSideSize).setForegroundTexture(texture);
+			chunk.checkAndSetIsEmpty();
 			modifiedChunks.add(chunkName);
 			createBoundaryChunksIfNeeded(chunkXOrigin, chunkYOrigin);
 		}
@@ -199,6 +202,7 @@ public class MapmakerBoard {
 				tile.setBackgroundTexture(currentTile.getBackgroundTexture());
 			}
 			chunk.setTile(tileX % chunkSideSize, tileY % chunkSideSize, tile);
+			chunk.checkAndSetIsEmpty();
 			modifiedChunks.add(chunkName);
 			createBoundaryChunksIfNeeded(chunkXOrigin, chunkYOrigin);
 		}
@@ -212,6 +216,7 @@ public class MapmakerBoard {
 		MapmakerChunk chunk = chunkMap.get(chunkName);
 		if (chunk != null) {
 			chunk.getTiles()[tileX % chunkSideSize][tileY % chunkSideSize] = new TileBlank();
+			chunk.checkAndSetIsEmpty();
 		}
 	}
 	

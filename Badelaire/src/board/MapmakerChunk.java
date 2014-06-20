@@ -13,6 +13,7 @@ import board.tiles.TileUtils;
 
 public class MapmakerChunk extends Chunk {
 	private final String boardName;
+	private boolean isEmpty;
 
 	public MapmakerChunk(String bName, int xOrig, int yOrig) {
 		super(xOrig, yOrig);
@@ -23,17 +24,19 @@ public class MapmakerChunk extends Chunk {
 				tiles[i][j] = new TileBlank();
 			}
 		}
+		isEmpty = true;
 	}
 	
 	public MapmakerChunk(String bName, int xOrig, int yOrig, byte[] bytes) {
 		super(xOrig, yOrig, bytes);
 		boardName = bName;
+		isEmpty = false;
 	}
 	
 	public void drawPreGrid() {
 		int chunkSideSize = Thunderbrand.getChunkSideSize();
 		glDisable(GL_TEXTURE_2D);
-		glColor3d(0.2, 0.2, 0.2);
+		if (isEmpty) { glColor3d(0.1, 0.15, 0.1); } else { glColor3d(0.2, 0.2, 0.2); }
 		glBegin(GL_LINES);
 			for (double i = xOrigin + 1; i < xOrigin + chunkSideSize; i += 1) {
 				glVertex2d(i, (double)yOrigin);
@@ -117,6 +120,22 @@ public class MapmakerChunk extends Chunk {
 				System.out.println("Failed to save chunk " + chunkName + "!");
 			} finally {
 				try { fileOutputStream.close(); } catch (Exception ex) {}
+			}
+		}
+	}
+	
+	public void checkAndSetIsEmpty() {
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
+		isEmpty = true;
+		for (int i = 0; i < chunkSideSize; i++) {
+			for (int j = 0; j < chunkSideSize; j++) {
+				if (!(tiles[i][j] instanceof TileBlank) ||
+						tiles[i][j].getBackgroundTexture() != Textures.NONE ||
+						tiles[i][j].getMiddlegroundTexture() != Textures.NONE ||
+						tiles[i][j].getForegroundTexture() != Textures.NONE) {
+					isEmpty = false;
+					return;
+				}
 			}
 		}
 	}

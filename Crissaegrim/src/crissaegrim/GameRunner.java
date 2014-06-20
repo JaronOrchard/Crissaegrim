@@ -538,9 +538,10 @@ public class GameRunner {
 	}
 	
 	public void setNewDestinationToSpawn() {
-		setNewDestination("tower_of_preludes", new Coordinate(10044, 10084));
-		setNewDestination("sotn_clock_tower", new Coordinate(10132, 10038));
-		setNewDestination("dawning", new Coordinate(10246, 10003));
+//		setNewDestination("tower_of_preludes", new Coordinate(10044, 10084));
+//		setNewDestination("sotn_clock_tower", new Coordinate(10132, 10038));
+//		setNewDestination("dawning", new Coordinate(10246, 10003));
+		setNewDestination("morriston", new Coordinate(10019, 10035));
 	}
 	
 	public void goToDestinationBoard() {
