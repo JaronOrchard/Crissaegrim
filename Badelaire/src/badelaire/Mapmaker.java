@@ -274,6 +274,7 @@ public class Mapmaker {
 		sb.append("] [Grid: ");
 		if (showGrid) sb.append("On"); else sb.append("Off");
 		sb.append("]");
+		if (mapmakerBoard.getModifiedChunksExist()) { sb.append(" (*)"); }
 		Display.setTitle(sb.toString());
 	}
 	
@@ -356,6 +357,7 @@ public class Mapmaker {
 						tileTypeSelectionModeEnabled = !tileTypeSelectionModeEnabled;
 					}
 				}
+				updateDisplayTitle();
 			}
 		}
 		
@@ -376,6 +378,7 @@ public class Mapmaker {
 						e.printStackTrace();
 					}
 				}
+				updateDisplayTitle();
 			} else if (Mouse.isButtonDown(1)) { // Right mouse button down
 				int tileX = (int)center.getX() - (Badelaire.getWindowWidth() / 2 / Badelaire.getPixelsPerTile()) + (Mouse.getX() / Badelaire.getPixelsPerTile());
 				int tileY = (int)center.getY() - (Badelaire.getWindowHeight() / 2 / Badelaire.getPixelsPerTile()) + (Mouse.getY() / Badelaire.getPixelsPerTile());

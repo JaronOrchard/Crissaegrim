@@ -28,6 +28,7 @@ public class MapmakerBoard {
 	private Set<String> modifiedChunks;
 	
 	public Map<String, MapmakerChunk> getChunkMap() { return chunkMap; }
+	public boolean getModifiedChunksExist() { return !modifiedChunks.isEmpty(); }
 	
 	public MapmakerBoard(String bName) {
 		boardName = bName;
