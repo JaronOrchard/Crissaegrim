@@ -133,6 +133,14 @@ public class Mapmaker {
 					glVertex2d(viewLimitRight, viewLimitBottom);
 					glVertex2d(viewLimitRight, viewLimitTop);
 					
+					if (Badelaire.getWindowHeight() != crissaegrimWindowHeight) {
+						glVertex2d(viewLimitLeft, viewLimitTop);
+						glVertex2d(viewLimitRight, viewLimitTop);
+						
+						glVertex2d(viewLimitLeft, viewLimitBottom);
+						glVertex2d(viewLimitRight, viewLimitBottom);
+					}
+					
 					glVertex2d(middleX - 5, middleY - 5);
 					glVertex2d(middleX + 5, middleY + 5);
 					
