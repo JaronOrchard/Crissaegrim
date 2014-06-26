@@ -8,11 +8,11 @@ public final class Thunderbrand {
 	
 	private static final boolean LINUX_BUILD = false; // Change to true when deploying to the VM server, keep false if on my Windows machine
 	private static final int VALMANWAY_SERVER_PORT = 22112;
-	private static final boolean START_WORLD_RUNNER = true; // If false, doesn't start the WorldRunner in Valmanway
+	private static final boolean CREATE_NPCS = false; // If false, the WorldRunner doesn't create NPCs in Valmanway
 	
 	public static boolean isLinuxBuild() { return LINUX_BUILD; }
 	public static int getValmanwayServerPort() { return VALMANWAY_SERVER_PORT; }
-	public static boolean getStartWorldRunner() { return START_WORLD_RUNNER; }
+	public static boolean getCreateNPCs() { return CREATE_NPCS; }
 	
 	private static final RandomNumbers randomNumbers = new RandomNumbers();
 	public static RandomNumbers getRandomNumbers() { return randomNumbers; }

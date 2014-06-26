@@ -35,7 +35,7 @@ public class WorldRunner {
 	public void run() throws InterruptedException {
 		System.out.print("Loading world...");
 		loadAllChunks();
-		createNPCs();
+		if (Thunderbrand.isLinuxBuild() || Thunderbrand.getCreateNPCs()) { createNPCs(); }
 		System.out.println("done.");
 		
 		lastFPSTitleUpdate = Thunderbrand.getTime();
