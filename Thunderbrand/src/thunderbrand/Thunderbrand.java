@@ -15,12 +15,13 @@ public final class Thunderbrand {
 	public static boolean getStartWorldRunner() { return START_WORLD_RUNNER; }
 	
 	private static final RandomNumbers randomNumbers = new RandomNumbers();
-	
 	public static RandomNumbers getRandomNumbers() { return randomNumbers; }
+	
+	private static int nextDoodadId = 1;
+	public synchronized static int getNextDoodadId() { nextDoodadId++; return nextDoodadId - 1; }
 	
 	private static final int CHUNK_SIDE_SIZE = 100;
 	public static int getChunkSideSize() { return CHUNK_SIDE_SIZE; }
-	
 	
 	/**
 	 * Get the current time in milliseconds

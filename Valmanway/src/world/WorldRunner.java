@@ -20,6 +20,7 @@ import geometry.Rect;
 import thunderbrand.Thunderbrand;
 import valmanway.Valmanway;
 import board.Board;
+import board.BoardInfo;
 import board.Chunk;
 
 public class WorldRunner {
@@ -124,6 +125,7 @@ public class WorldRunner {
 					}
 					curBoard.getChunkMap().put(chunkXOrigin + "_" + chunkYOrigin, new Chunk(chunkXOrigin, chunkYOrigin, bytes));
 				}
+				BoardInfo.addDoodadsToBoard(curBoard);
 			}
 			Valmanway.getSharedData().getBoardMap().put(boardName, curBoard);
 		}

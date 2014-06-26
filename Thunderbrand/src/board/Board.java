@@ -16,18 +16,18 @@ public class Board {
 	protected final String boardName;
 	private final int backgroundTextureId;
 	
-	private List<Doodad> doodadList;
+	private Map<Integer, Doodad> doodads;
 	
 	public Map<String, Chunk> getChunkMap() { return chunkMap; }
 	public String getName() { return boardName; }
 	public int getBackgroundTextureId() { return backgroundTextureId; }
-	public List<Doodad> getDoodadList() { return doodadList; }
+	public Map<Integer, Doodad> getDoodads() { return doodads; }
 	
 	public Board(String bName) {
 		chunkMap = new HashMap<String, Chunk>();
 		boardName = bName;
 		backgroundTextureId = BoardInfo.getBackgroundTextureIdForBoard(boardName);
-		doodadList = new ArrayList<Doodad>();
+		doodads = new HashMap<Integer, Doodad>();
 	}
 	
 	/**

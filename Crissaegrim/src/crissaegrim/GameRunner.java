@@ -37,7 +37,6 @@ import geometry.Rect;
 import geometry.RectUtils;
 import attack.Attack;
 import board.Board;
-import board.BoardInfo;
 import board.Chunk;
 import board.ClientBoard;
 import board.MissingChunk;
@@ -188,7 +187,7 @@ public class GameRunner {
 			GameInitializer.initializeNewFrameForScene();
 			ClientBoard.draw(currentBoard, TileLayer.BACKGROUND);
 			ClientBoard.draw(currentBoard, TileLayer.MIDDLEGROUND);
-			for (Doodad doodad : Crissaegrim.getBoard().getDoodadList()) {
+			for (Doodad doodad : Crissaegrim.getBoard().getDoodads().values()) {
 				if (!Crissaegrim.getDebugMode()) {
 					doodad.draw();
 				} else {
@@ -253,7 +252,7 @@ public class GameRunner {
 	}
 	
 	private void actionDoodadList() {
-		Iterator<Doodad> doodadIter = Crissaegrim.getBoard().getDoodadList().iterator();
+		Iterator<Doodad> doodadIter = Crissaegrim.getBoard().getDoodads().values().iterator();
 		while (doodadIter.hasNext()) {
 			Doodad doodad = doodadIter.next();
 			if (doodad instanceof Door) {
@@ -304,7 +303,7 @@ public class GameRunner {
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_M) {		// M key: Toggle window size
 					Crissaegrim.toggleWindowSize();
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_X) {		// X key: Enter door
-					for (Doodad doodad : Crissaegrim.getBoard().getDoodadList()) {
+					for (Doodad doodad : Crissaegrim.getBoard().getDoodads().values()) {
 						if (!player.isBusy() && doodad instanceof Door &&
 								RectUtils.coordinateIsInRect(player.getPosition(), doodad.getBounds())) {
 							Door door = (Door)doodad;
@@ -540,8 +539,8 @@ public class GameRunner {
 	public void setNewDestinationToSpawn() {
 //		setNewDestination("tower_of_preludes", new Coordinate(10044, 10084));
 //		setNewDestination("sotn_clock_tower", new Coordinate(10132, 10038));
-//		setNewDestination("dawning", new Coordinate(10246, 10003));
-		setNewDestination("morriston", new Coordinate(10019, 10035));
+		setNewDestination("dawning", new Coordinate(10246, 10003));
+//		setNewDestination("morriston", new Coordinate(10019, 10035));
 	}
 	
 	public void goToDestinationBoard() {
@@ -578,9 +577,6 @@ public class GameRunner {
 	private void addBoardToMapIfNeeded(String boardName) {
 		if (!boardMap.containsKey(boardName)) {
 			boardMap.put(boardName, new Board(boardName));
-			
-			// Set up doodads:
-			BoardInfo.addDoodadsToBoard(boardName, boardMap.get(boardName).getDoodadList());
 		}
 	}
 	
