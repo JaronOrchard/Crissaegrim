@@ -20,8 +20,8 @@ public class Door extends Doodad {
 	public String getDestinationBoardName() { return destinationBoardName; }
 	public Coordinate getDestinationCoordinate() { return destinationCoordinate; }
 	
-	public Door(Coordinate bottomCenter, String destBoardName, Coordinate destCoord) {
-		super(new Rect(
+	public Door(int id, Coordinate bottomCenter, String destBoardName, Coordinate destCoord) {
+		super(id, DoodadActions.GO_THROUGH_DOORWAY, new Rect(
 				new Coordinate(bottomCenter.getX() - DOOR_RADIUS, bottomCenter.getY()),
 				new Coordinate(bottomCenter.getX() + DOOR_RADIUS, bottomCenter.getY() + DOOR_HEIGHT)));
 		destinationBoardName = destBoardName;
@@ -30,6 +30,7 @@ public class Door extends Doodad {
 
 	@Override
 	public void draw() {
+		Rect bounds = getBounds();
 		glPushMatrix();
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 			glBindTexture(GL_TEXTURE_2D, Textures.DOOR_CLOSED);
@@ -48,6 +49,7 @@ public class Door extends Doodad {
 
 	@Override
 	public void drawDebugMode() {
+		Rect bounds = getBounds();
 		glDisable(GL11.GL_TEXTURE_2D);
 		glBegin(GL_LINE_LOOP);
 			glColor3d(0, 1, 1);

@@ -125,8 +125,8 @@ public class WorldRunner {
 					}
 					curBoard.getChunkMap().put(chunkXOrigin + "_" + chunkYOrigin, new Chunk(chunkXOrigin, chunkYOrigin, bytes));
 				}
-				BoardInfo.addDoodadsToBoard(curBoard);
 			}
+			BoardInfo.addDoodadsToBoard(curBoard);
 			Valmanway.getSharedData().getBoardMap().put(boardName, curBoard);
 		}
 	}
