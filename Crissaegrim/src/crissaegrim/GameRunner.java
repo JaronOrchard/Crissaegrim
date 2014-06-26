@@ -28,6 +28,7 @@ import datapacket.PlayerIsChangingBoardsPacket;
 import datapacket.RequestPlayerIdPacket;
 import datapacket.SendChatMessagePacket;
 import doodads.Doodad;
+import doodads.DoodadActions;
 import doodads.Door;
 import effects.ParticleSystem;
 import entities.Entity;
@@ -258,7 +259,7 @@ public class GameRunner {
 			Doodad doodad = doodadIter.next();
 			if (doodad instanceof Door) {
 				if (RectUtils.coordinateIsInRect(Crissaegrim.getPlayer().getPosition(), doodad.getBounds())) {
-					Crissaegrim.getPlayer().setIcon("X");
+					Crissaegrim.getPlayer().setIcon("F");
 				}
 			}
 		}
@@ -303,15 +304,21 @@ public class GameRunner {
 					Crissaegrim.toggleZoom();
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_M) {		// M key: Toggle window size
 					Crissaegrim.toggleWindowSize();
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_X) {		// X key: Enter door
+				} else if (Keyboard.getEventKey() == Keyboard.KEY_F) {		// F key: Activate doodad
 					for (Doodad doodad : Crissaegrim.getBoard().getDoodads().values()) {
-						if (!player.isBusy() && doodad instanceof Door &&
-								RectUtils.coordinateIsInRect(player.getPosition(), doodad.getBounds())) {
-							Door door = (Door)doodad;
-							pmh.resetMovementRequests();
-							setNewDestination(door.getDestinationBoardName(), door.getDestinationCoordinate());
-							requestTravelToDestinationBoard();
-							break;
+						if (!player.isBusy() && RectUtils.coordinateIsInRect(player.getPosition(), doodad.getBounds())) {
+							switch (doodad.getDoodadAction()) {
+								case DoodadActions.GO_THROUGH_DOORWAY:
+									Door door = (Door)doodad;
+									pmh.resetMovementRequests();
+									setNewDestination(door.getDestinationBoardName(), door.getDestinationCoordinate());
+									requestTravelToDestinationBoard();
+									break;
+								
+								default:
+									break;
+							}
+							break; // Found the relevant Doodad; ignore the rest
 						}
 					}
 				}

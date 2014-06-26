@@ -112,7 +112,7 @@ public class Textures {
 	public static final int NPC_PHANTO = 1102;
 	public static final int NPC_CHARGING_SPIKE = 1103;
 	
-	public static final int ICON_X = 1800;
+	public static final int ICON_F = 1800;
 	
 	public static final int TARGET = 2000;
 	public static final int DOOR_CLOSED = 2001;
@@ -241,7 +241,7 @@ public class Textures {
 		TextureLoader.loadTexture(NPC_PHANTO, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/npc/Phanto.png")));
 		TextureLoader.loadTexture(NPC_CHARGING_SPIKE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/npc/ChargingSpike.png")));
 		
-		TextureLoader.loadTexture(ICON_X, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/IconX.png")));
+		TextureLoader.loadTexture(ICON_F, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/IconF.png")));
 		
 		TextureLoader.loadTexture(TARGET, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/Target.png")));
 		TextureLoader.loadTexture(DOOR_CLOSED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/DoorClosed.png")));
