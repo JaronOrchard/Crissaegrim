@@ -61,12 +61,6 @@ public final class ValmanwayDataPacketProcessor {
 				break;
 			case DataPacketTypes.SEND_PLAYER_STATUS_PACKET:
 				SendPlayerStatusPacket spsp = (SendPlayerStatusPacket)(packet);
-				if (!valmanwayUserData.getCurrentBoardName().equals(spsp.getPlayerStatus().getBoardName())) {
-					if (!valmanwayUserData.getCurrentBoardName().isEmpty()) {
-						Valmanway.getSharedData().removePlayerStatusFromBoard(valmanwayUserData.getPlayerId(), valmanwayUserData.getCurrentBoardName());
-					}
-					valmanwayUserData.setCurrentBoardName(spsp.getPlayerStatus().getBoardName());
-				}
 				Valmanway.getSharedData().updatePlayerStatusMap(
 						valmanwayUserData.getPlayerId(), valmanwayUserData.getCurrentBoardName(),
 						spsp.getPlayerStatus());
@@ -80,6 +74,10 @@ public final class ValmanwayDataPacketProcessor {
 				break;
 			case DataPacketTypes.PLAYER_IS_CHANGING_BOARDS_PACKET:
 				PlayerIsChangingBoardsPacket picbp = (PlayerIsChangingBoardsPacket)(packet);
+				if (!valmanwayUserData.getCurrentBoardName().isEmpty()) {
+					Valmanway.getSharedData().removePlayerStatusFromBoard(valmanwayUserData.getPlayerId(), valmanwayUserData.getCurrentBoardName());
+				}
+				valmanwayUserData.setCurrentBoardName(picbp.getBoardName());
 				if (picbp.getSendBoardData()) { sendEntireBoard(picbp.getBoardName(), valmanwayUserData); }
 				valmanwayUserData.addOutgoingDataPacket(
 						new BoardDoodadsPacket(picbp.getBoardName(), Valmanway.getSharedData().getBoardMap().get(picbp.getBoardName()).getDoodads()));
