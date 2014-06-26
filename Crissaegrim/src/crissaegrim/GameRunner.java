@@ -20,10 +20,11 @@ import org.lwjgl.opengl.Display;
 
 import players.Player;
 import datapacket.AttackPacket;
+import datapacket.BoardDoodadsPacket;
 import datapacket.ChunkPacket;
 import datapacket.NonexistentChunkPacket;
 import datapacket.ParticleSystemPacket;
-import datapacket.RequestEntireBoardPacket;
+import datapacket.PlayerIsChangingBoardsPacket;
 import datapacket.RequestPlayerIdPacket;
 import datapacket.SendChatMessagePacket;
 import doodads.Doodad;
@@ -92,7 +93,7 @@ public class GameRunner {
 		
 		Crissaegrim.addSystemMessage("Welcome to Crissaegrim!");
 		setNewDestinationToSpawn();
-		goToDestinationBoard();
+		requestTravelToDestinationBoard();
 		
 		// Set name to last used username if applicable:
 		String lastUsername = Crissaegrim.getPreferenceHandler().getLastUsername();
@@ -309,7 +310,8 @@ public class GameRunner {
 							Door door = (Door)doodad;
 							pmh.resetMovementRequests();
 							setNewDestination(door.getDestinationBoardName(), door.getDestinationCoordinate());
-							goToDestinationBoard();
+							requestTravelToDestinationBoard();
+							break;
 						}
 					}
 				}
@@ -543,21 +545,21 @@ public class GameRunner {
 //		setNewDestination("morriston", new Coordinate(10019, 10035));
 	}
 	
-	public void goToDestinationBoard() {
+	public void requestTravelToDestinationBoard() {
 		if (!destinationBoardName.isEmpty() && destinationCoordinate != null) {
-			if (boardMap.containsKey(destinationBoardName)) {
-				Crissaegrim.getPlayer().setCurrentBoardName(destinationBoardName);
-				Crissaegrim.getPlayer().getPosition().setAll(destinationCoordinate);
-				setNewDestination("", null);
-				Crissaegrim.currentlyLoading = false;
-				Crissaegrim.clearGhosts();
-			} else {
-				Crissaegrim.addOutgoingDataPacket(new RequestEntireBoardPacket(destinationBoardName));
-				Crissaegrim.currentlyLoading = true;
-				Crissaegrim.numPacketsReceived = 0;
-				Crissaegrim.numPacketsToReceive = 0;
-			}
+			Crissaegrim.addOutgoingDataPacket(new PlayerIsChangingBoardsPacket(destinationBoardName, !boardMap.containsKey(destinationBoardName)));
+			Crissaegrim.currentlyLoading = true;
+			Crissaegrim.numPacketsReceived = 0;
+			Crissaegrim.numPacketsToReceive = 0;
 		}
+	}
+	
+	public void sendPlayerToDestinationBoard() {
+		Crissaegrim.getPlayer().setCurrentBoardName(destinationBoardName);
+		Crissaegrim.getPlayer().getPosition().setAll(destinationCoordinate);
+		setNewDestination("", null);
+		Crissaegrim.currentlyLoading = false;
+		Crissaegrim.clearGhosts();
 	}
 	
 	public void addChunk(ChunkPacket cp) {
@@ -572,6 +574,11 @@ public class GameRunner {
 		boardMap.get(ncp.getBoardName()).getChunkMap().put(
 				ncp.getChunkXOrigin() + "_" + ncp.getChunkYOrigin(),
 				new MissingChunk(ncp.getChunkXOrigin(), ncp.getChunkYOrigin()));
+	}
+	
+	public void setDoodadsForBoard(BoardDoodadsPacket bdp) {
+		addBoardToMapIfNeeded(bdp.getBoardName());
+		boardMap.get(bdp.getBoardName()).getDoodads().putAll(bdp.getDoodads());
 	}
 	
 	private void addBoardToMapIfNeeded(String boardName) {

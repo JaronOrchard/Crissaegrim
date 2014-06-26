@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import textures.Textures;
 
 public class Door extends Doodad {
+	private static final long serialVersionUID = 1L;
 	
 	private static double DOOR_RADIUS = 0.5;
 	private static double DOOR_HEIGHT = 3;

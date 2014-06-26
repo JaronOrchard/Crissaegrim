@@ -1,8 +1,11 @@
 package doodads;
 
+import java.io.Serializable;
+
 import geometry.Rect;
 
-public abstract class Doodad {
+public abstract class Doodad implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	protected Rect bounds;
 	

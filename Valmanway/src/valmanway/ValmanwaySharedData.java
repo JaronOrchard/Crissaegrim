@@ -89,7 +89,7 @@ public class ValmanwaySharedData {
 	}
 	
 	public void dropPlayer(int playerId, String boardName) {
-		removePlayerStatusFromBoard(playerId, boardName);
+		if (!boardName.isEmpty()) { removePlayerStatusFromBoard(playerId, boardName); }
 		playerNameMap.remove(playerId);
 	}
 	

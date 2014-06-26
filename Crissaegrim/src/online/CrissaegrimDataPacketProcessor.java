@@ -10,6 +10,7 @@ import textures.Textures;
 import busy.GotHitByAttackStunnedBusy;
 import busy.PlayerDiedBusy;
 import crissaegrim.Crissaegrim;
+import datapacket.BoardDoodadsPacket;
 import datapacket.ChunkPacket;
 import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
@@ -61,8 +62,7 @@ public final class CrissaegrimDataPacketProcessor {
 				Crissaegrim.numPacketsReceived++;
 				break;
 			case DataPacketTypes.DONE_SENDING_CHUNKS_PACKET:
-				Crissaegrim.currentlyLoading = false;
-				Crissaegrim.getGameRunner().goToDestinationBoard();
+				Crissaegrim.getGameRunner().sendPlayerToDestinationBoard();
 				break;
 			case DataPacketTypes.CLIENT_IS_OUTDATED_PACKET:
 				Crissaegrim.getPlayer().assignPlayerId(-2); // playerId of -2 signifies outdated version
@@ -94,7 +94,9 @@ public final class CrissaegrimDataPacketProcessor {
 				Crissaegrim.getGameRunner().addParticleSystem(
 						new ParticleSystem(psp.getNumParticles(), psp.getSystemCenter(), psp.getBoardName(), psp.getSystemColor()));
 				break;
-				
+			case DataPacketTypes.BOARD_DOODADS_PACKET:
+				Crissaegrim.getGameRunner().setDoodadsForBoard((BoardDoodadsPacket)(packet));
+				break;
 				
 				
 			default:

@@ -145,7 +145,7 @@ public class Player extends Entity {
 				if (busy instanceof PlayerDiedBusy) {
 					getHealthBar().healDamage(getHealthBar().getMaxHealth());
 					Crissaegrim.getGameRunner().setNewDestinationToSpawn();
-					Crissaegrim.getGameRunner().goToDestinationBoard();
+					Crissaegrim.getGameRunner().requestTravelToDestinationBoard();
 					busy = new InvincibleBusy(2000);
 				} else {
 					busy = null;

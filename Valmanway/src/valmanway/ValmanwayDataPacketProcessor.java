@@ -20,6 +20,7 @@ import attack.Attack;
 import textblock.TextBlock;
 import thunderbrand.Thunderbrand;
 import datapacket.AttackPacket;
+import datapacket.BoardDoodadsPacket;
 import datapacket.ChunkPacket;
 import datapacket.ClientIsOutdatedPacket;
 import datapacket.DataPacket;
@@ -32,7 +33,7 @@ import datapacket.ParticleSystemPacket;
 import datapacket.ReceiveItemsPacket;
 import datapacket.ReceivePlayerIdPacket;
 import datapacket.ReceivePlayerNamePacket;
-import datapacket.RequestEntireBoardPacket;
+import datapacket.PlayerIsChangingBoardsPacket;
 import datapacket.RequestPlayerIdPacket;
 import datapacket.RequestSpecificChunkPacket;
 import datapacket.SendChatMessagePacket;
@@ -77,8 +78,12 @@ public final class ValmanwayDataPacketProcessor {
 				TextBlock tb = ((SendSystemMessagePacket)(packet)).getTextBlock();
 				sendRegularMessage(tb.getMessage(), tb.getColor());
 				break;
-			case DataPacketTypes.REQUEST_ENTIRE_BOARD_PACKET:
-				sendEntireBoard( ((RequestEntireBoardPacket)(packet)).getBoardName(), valmanwayUserData);
+			case DataPacketTypes.PLAYER_IS_CHANGING_BOARDS_PACKET:
+				PlayerIsChangingBoardsPacket picbp = (PlayerIsChangingBoardsPacket)(packet);
+				if (picbp.getSendBoardData()) { sendEntireBoard(picbp.getBoardName(), valmanwayUserData); }
+				valmanwayUserData.addOutgoingDataPacket(
+						new BoardDoodadsPacket(picbp.getBoardName(), Valmanway.getSharedData().getBoardMap().get(picbp.getBoardName()).getDoodads()));
+				valmanwayUserData.addOutgoingDataPacket(new DoneSendingChunksPacket());
 				break;
 			case DataPacketTypes.REQUEST_SPECIFIC_CHUNK_PACKET:
 				sendSpecificChunk( (RequestSpecificChunkPacket)packet, valmanwayUserData);
@@ -252,7 +257,6 @@ public final class ValmanwayDataPacketProcessor {
 		for (DataPacket chunkPacket : chunkPackets.values()) {
 			vud.addOutgoingDataPacket(chunkPacket);
 		}
-		vud.addOutgoingDataPacket(new DoneSendingChunksPacket());
 	}
 	
 	private static void sendSpecificChunk(RequestSpecificChunkPacket rscp, ValmanwayUserData vud) {
