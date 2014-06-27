@@ -7,6 +7,7 @@ import textures.Textures;
 import thunderbrand.Thunderbrand;
 import doodads.Doodad;
 import doodads.Door;
+import doodads.MineableRock;
 
 public class BoardInfo {
 	
@@ -31,6 +32,21 @@ public class BoardInfo {
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10050.5, 10016), "dawning", new Coordinate(10052.5, 10013)));
 		} else if (boardName.equals("sotn_clock_tower")) {
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(9860.5, 10096), "dawning", new Coordinate(10280.5, 9992)));
+		} else if (boardName.equals("morriston")) {
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10271, 9954), MineableRock.OreType.RHICHITE));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10268, 9954), MineableRock.OreType.RHICHITE));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10264, 9954), MineableRock.OreType.RHICHITE));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10249, 9959), MineableRock.OreType.RHICHITE));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10235, 9970), MineableRock.OreType.RHICHITE));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10252, 9950), MineableRock.OreType.RHICHITE));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10246, 9945), MineableRock.OreType.RHICHITE));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10232, 9947), MineableRock.OreType.RHICHITE));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10252, 9959), MineableRock.OreType.VALENITE));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10241, 9946), MineableRock.OreType.VALENITE));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10238, 9946), MineableRock.OreType.VALENITE));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10244, 9958), MineableRock.OreType.SANDSOMETHINGOROTHER));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10231, 9970), MineableRock.OreType.SANDSOMETHINGOROTHER));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10258, 9940), MineableRock.OreType.UNKNOWN));
 		}
 	}
 	
