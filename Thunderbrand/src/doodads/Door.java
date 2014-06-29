@@ -27,7 +27,10 @@ public class Door extends Doodad {
 		destinationBoardName = destBoardName;
 		destinationCoordinate = destCoord;
 	}
-
+	
+	@Override
+	public boolean isActionable() { return true; }
+	
 	@Override
 	public void draw() {
 		Rect bounds = getBounds();

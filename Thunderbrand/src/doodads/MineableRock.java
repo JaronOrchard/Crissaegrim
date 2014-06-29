@@ -3,7 +3,6 @@ package doodads;
 import static org.lwjgl.opengl.GL11.*;
 import geometry.Coordinate;
 import geometry.Rect;
-
 import textures.Textures;
 
 public class MineableRock extends Doodad {
@@ -41,7 +40,10 @@ public class MineableRock extends Doodad {
 		else if (type == OreType.SANDSOMETHINGOROTHER)	{ return 4000; } // Sandsomethingorother: 4 sec
 		return 1000;
 	}
-
+	
+	@Override
+	public boolean isActionable() { return hasOre; }
+	
 	@Override
 	public void draw() {
 		Rect bounds = getBounds();

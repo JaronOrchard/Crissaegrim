@@ -257,10 +257,8 @@ public class GameRunner {
 		Iterator<Doodad> doodadIter = Crissaegrim.getBoard().getDoodads().values().iterator();
 		while (doodadIter.hasNext()) {
 			Doodad doodad = doodadIter.next();
-			if (doodad instanceof Door) {
-				if (RectUtils.coordinateIsInRect(Crissaegrim.getPlayer().getPosition(), doodad.getBounds())) {
-					Crissaegrim.getPlayer().setIcon("F");
-				}
+			if (doodad.isActionable() && RectUtils.coordinateIsInRect(Crissaegrim.getPlayer().getPosition(), doodad.getBounds())) {
+				Crissaegrim.getPlayer().setIcon("F");
 			}
 		}
 	}

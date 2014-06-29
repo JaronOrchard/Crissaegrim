@@ -21,6 +21,7 @@ public abstract class Doodad implements Serializable {
 		this.bounds = bounds;
 	}
 	
+	public abstract boolean isActionable();
 	public abstract void draw();
 	public abstract void drawDebugMode();
 	
