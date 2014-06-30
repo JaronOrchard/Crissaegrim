@@ -28,6 +28,9 @@ public class Inventory {
 	private int selectedItemIndex;
 	private long lastTouchedTime = 0;
 	
+	public int getInventorySize() { return INVENTORY_SIZE; }
+	public Item[] getItems() { return items; }
+	
 	public Inventory() {
 		items = new Item[INVENTORY_SIZE];
 		solais = 0;

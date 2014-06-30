@@ -21,6 +21,7 @@ import static org.lwjgl.opengl.GL11.glVertex2d;
 import geometry.Coordinate;
 import geometry.Rect;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.lwjgl.input.Mouse;
@@ -40,6 +41,9 @@ public class DialogBox {
 	private List<String> buttonLabels;
 	private Rect dialogRect;
 	
+	public DialogBox(String messageLine, String buttonLabel) { this(Arrays.asList(messageLine), Arrays.asList(buttonLabel)); }
+	public DialogBox(List<String> messageLines, String buttonLabel) { this(messageLines, Arrays.asList(buttonLabel)); }
+	public DialogBox(String messageLine, List<String> buttonLabels) { this(Arrays.asList(messageLine), buttonLabels); }
 	public DialogBox(List<String> messageLines, List<String> buttonLabels) {
 		this.messageLines = messageLines;
 		this.buttonLabels = buttonLabels;

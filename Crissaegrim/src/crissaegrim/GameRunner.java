@@ -18,6 +18,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
+import players.InventoryUtils;
 import players.Player;
 import datapacket.AttackPacket;
 import datapacket.BoardDoodadsPacket;
@@ -27,9 +28,12 @@ import datapacket.ParticleSystemPacket;
 import datapacket.PlayerIsChangingBoardsPacket;
 import datapacket.RequestPlayerIdPacket;
 import datapacket.SendChatMessagePacket;
+import dialogboxes.DialogBox;
+import dialogboxes.DialogBoxRunner;
 import doodads.Doodad;
 import doodads.DoodadActions;
 import doodads.Door;
+import doodads.MineableRock;
 import effects.ParticleSystem;
 import entities.Entity;
 import entities.EntityMovementHelper;
@@ -312,7 +316,14 @@ public class GameRunner {
 									setNewDestination(door.getDestinationBoardName(), door.getDestinationCoordinate());
 									requestTravelToDestinationBoard();
 									break;
-								
+								case DoodadActions.MINE_ROCK:
+									if (!InventoryUtils.containsPickaxe(Crissaegrim.getPlayer().getInventory())) {
+										new DialogBoxRunner().run(new DialogBox("You need a pickaxe to mine this rock.", "Ok"));
+									} else {
+										MineableRock mineableRock = (MineableRock)doodad;
+									}
+									break;
+									
 								default:
 									break;
 							}
