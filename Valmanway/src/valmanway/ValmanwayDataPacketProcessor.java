@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import actions.MineRockAction;
 import attack.Attack;
 import textblock.TextBlock;
+import thunderbrand.Constants;
 import thunderbrand.Thunderbrand;
 import datapacket.AttackPacket;
 import datapacket.BoardDoodadsPacket;
@@ -97,7 +98,7 @@ public final class ValmanwayDataPacketProcessor {
 			case DataPacketTypes.MINE_ROCK_REQUEST_PACKET:
 				MineRockRequestPacket mrrp = (MineRockRequestPacket)(packet);
 				Valmanway.getSharedData().addActionToQueue(new MineRockAction(
-						2000, mrrp.getRockId(), mrrp.getPlayerId(), mrrp.getBoardName(), mrrp.getChanceOfSuccess()));
+						Constants.MILLIS_TO_MINE_A_ROCK, mrrp.getRockId(), mrrp.getPlayerId(), mrrp.getBoardName(), mrrp.getChanceOfSuccess()));
 				break;
 				
 				
