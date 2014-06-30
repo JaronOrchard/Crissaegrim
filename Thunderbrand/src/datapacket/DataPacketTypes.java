@@ -21,5 +21,6 @@ public class DataPacketTypes {
 	public static final int RECEIVE_ITEMS_PACKET =				17; // Valmanway -> Crissaegrim
 	public static final int PARTICLE_SYSTEM_PACKET =			18; // (Crissaegrim ->) Valmanway -> Crissaegrim
 	public static final int BOARD_DOODADS_PACKET =				19; // Valmanway -> Crissaegrim
+	public static final int MINE_ROCK_REQUEST_PACKET =			20; // Crissaegrim -> Valmanway
 	
 }

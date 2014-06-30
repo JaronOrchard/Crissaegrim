@@ -22,23 +22,30 @@ public class MineableRock extends Doodad {
 				new Coordinate(bottomCenter.getX() - ROCK_RADIUS, bottomCenter.getY()),
 				new Coordinate(bottomCenter.getX() + ROCK_RADIUS, bottomCenter.getY() + ROCK_HEIGHT)));
 		this.oreType = oreType;
-		rockTexture = getRockTexture(oreType);
-		oreRespawnTime = getOreRespawnTime(oreType);
+		rockTexture = getRockTexture();
+		oreRespawnTime = getOreRespawnTime();
 		hasOre = true;
 	}
 	
-	private int getRockTexture(OreType type) {
-		if (type == OreType.RHICHITE) { return Textures.RHICHITE_ROCK; }
-		else if (type == OreType.VALENITE) { return Textures.VALENITE_ROCK; }
-		else if (type == OreType.SANDSOMETHINGOROTHER) { return Textures.SANDSOMETHING_ROCK; }
+	private int getRockTexture() {
+		if (oreType == OreType.RHICHITE) { return Textures.RHICHITE_ROCK; }
+		else if (oreType == OreType.VALENITE) { return Textures.VALENITE_ROCK; }
+		else if (oreType == OreType.SANDSOMETHINGOROTHER) { return Textures.SANDSOMETHING_ROCK; }
 		return Textures.DEPLETED_ROCK;
 	}
 	
-	private long getOreRespawnTime(OreType type) {
-		if (type == OreType.RHICHITE)					{ return 2500; } // Rhichite: 2.5 sec
-		else if (type == OreType.VALENITE)				{ return 5000; } // Valenite: 5 sec
-		else if (type == OreType.SANDSOMETHINGOROTHER)	{ return 4000; } // Sandsomethingorother: 4 sec
+	private long getOreRespawnTime() {
+		if (oreType == OreType.RHICHITE)					{ return 2500; } // Rhichite: 2.5 sec
+		else if (oreType == OreType.VALENITE)				{ return 5000; } // Valenite: 5 sec
+		else if (oreType == OreType.SANDSOMETHINGOROTHER)	{ return 4000; } // Sandsomethingorother: 4 sec
 		return 1000;
+	}
+	
+	public double getChanceOfSuccess() {
+		if (oreType == OreType.RHICHITE)					{ return 0.8; }
+		else if (oreType == OreType.VALENITE)				{ return 0.4; }
+		else if (oreType == OreType.SANDSOMETHINGOROTHER)	{ return 0.5; }
+		return 1.0;
 	}
 	
 	@Override

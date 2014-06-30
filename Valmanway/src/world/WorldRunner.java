@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 import npc.NPC;
 import npc.NPCChargingSpike;
@@ -19,6 +20,7 @@ import geometry.Coordinate;
 import geometry.Rect;
 import thunderbrand.Thunderbrand;
 import valmanway.Valmanway;
+import actions.Action;
 import board.Board;
 import board.BoardInfo;
 import board.Chunk;
@@ -32,17 +34,27 @@ public class WorldRunner {
 	private long millisecondsSkipped = 0;
 	private short framesRendered = 0;
 	
-	public void run() throws InterruptedException {
+	public WorldRunner() {
 		System.out.print("Loading world...");
 		loadAllChunks();
 		if (Thunderbrand.isLinuxBuild() || Thunderbrand.getCreateNPCs()) { createNPCs(); }
 		System.out.println("done.");
-		
+	}
+	
+	public void run() throws InterruptedException {
 		lastFPSTitleUpdate = Thunderbrand.getTime();
 		long startTime, endTime, elaspedTime; // Per-loop times to keep FRAMES_PER_SECOND
 		Map<String, List<NPC>> npcMap = Valmanway.getSharedData().getNPCs();
+		PriorityQueue<Action> actionQueue = Valmanway.getSharedData().getActionQueue();
 		while (true) {
 			startTime = Thunderbrand.getTime();
+			
+			// Process Actions:
+			synchronized (actionQueue) {
+				while (actionQueue.peek() != null && actionQueue.peek().getActionTime() <= startTime) {
+					processAction(actionQueue.remove());
+				}
+			}
 			
 			// Update all NPCs:
 			synchronized (npcMap) {
@@ -152,6 +164,10 @@ public class WorldRunner {
 				npc.respawn();
 			}
 		}
+	}
+	
+	private void processAction(Action action) {
+		System.out.println("--> Process a " + action.getClass().getName());
 	}
 	
 }

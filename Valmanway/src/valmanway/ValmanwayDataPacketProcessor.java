@@ -16,6 +16,7 @@ import npc.NPC;
 
 import org.apache.commons.lang3.StringUtils;
 
+import actions.MineRockAction;
 import attack.Attack;
 import textblock.TextBlock;
 import thunderbrand.Thunderbrand;
@@ -28,6 +29,7 @@ import datapacket.DataPacketTypes;
 import datapacket.DoneSendingChunksPacket;
 import datapacket.GotHitByAttackPacket;
 import datapacket.IncomingChunkCountPacket;
+import datapacket.MineRockRequestPacket;
 import datapacket.NonexistentChunkPacket;
 import datapacket.ParticleSystemPacket;
 import datapacket.ReceiveItemsPacket;
@@ -91,6 +93,11 @@ public final class ValmanwayDataPacketProcessor {
 				break;
 			case DataPacketTypes.PARTICLE_SYSTEM_PACKET:
 				Valmanway.getSharedData().addDataPacket(packet);
+				break;
+			case DataPacketTypes.MINE_ROCK_REQUEST_PACKET:
+				MineRockRequestPacket mrrp = (MineRockRequestPacket)(packet);
+				Valmanway.getSharedData().addActionToQueue(new MineRockAction(
+						2000, mrrp.getRockId(), mrrp.getPlayerId(), mrrp.getBoardName(), mrrp.getChanceOfSuccess()));
 				break;
 				
 				

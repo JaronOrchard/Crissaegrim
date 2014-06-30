@@ -23,6 +23,7 @@ import players.Player;
 import datapacket.AttackPacket;
 import datapacket.BoardDoodadsPacket;
 import datapacket.ChunkPacket;
+import datapacket.MineRockRequestPacket;
 import datapacket.NonexistentChunkPacket;
 import datapacket.ParticleSystemPacket;
 import datapacket.PlayerIsChangingBoardsPacket;
@@ -317,10 +318,13 @@ public class GameRunner {
 									requestTravelToDestinationBoard();
 									break;
 								case DoodadActions.MINE_ROCK:
-									if (!InventoryUtils.containsPickaxe(Crissaegrim.getPlayer().getInventory())) {
+									if (!InventoryUtils.containsPickaxe(player.getInventory())) {
 										new DialogBoxRunner().run(new DialogBox("You need a pickaxe to mine this rock.", "Ok"));
 									} else {
 										MineableRock mineableRock = (MineableRock)doodad;
+										Crissaegrim.addOutgoingDataPacket(new MineRockRequestPacket(
+												mineableRock.getId(), player.getId(), player.getCurrentBoardName(), mineableRock.getChanceOfSuccess()));
+										// INITIATE MINING_ROCK_BUSY
 									}
 									break;
 									
