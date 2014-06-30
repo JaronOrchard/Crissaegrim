@@ -8,6 +8,7 @@ import textblock.TextTexture;
 import textures.Textures;
 import crissaegrim.Crissaegrim;
 import items.Item;
+import items.ItemPickaxe;
 import items.Weapon;
 
 public class Inventory {
@@ -35,6 +36,7 @@ public class Inventory {
 		selectedItemIndex = 0;
 		
 		items[0] = new Weapon("Starter Sword", Textures.ITEM_STARTER_SWORD);
+		items[1] = new ItemPickaxe("Rhichite", Textures.ITEM_RHICHITE_PICKAXE);
 	}
 	
 	private void updateSolaisTextTexture() {

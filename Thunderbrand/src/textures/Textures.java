@@ -134,6 +134,7 @@ public class Textures {
 	public static final int ITEM_PARTY_POPPER_RED = 20003;
 	public static final int ITEM_PARTY_POPPER_WHITE = 20004;
 	public static final int ITEM_PARTY_POPPER_YELLOW = 20005;
+	public static final int ITEM_RHICHITE_PICKAXE = 20006;
 	
 	// (Texture IDs 100000 and up are reserved for text)
 	
@@ -261,12 +262,13 @@ public class Textures {
 		
 		TextureLoader.loadTexture(BACKGROUND_SOTN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/SotNCastle.png")));
 		
-		TextureLoader.loadTexture(ITEM_STARTER_SWORD, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ItemStarterSword.png")));
+		TextureLoader.loadTexture(ITEM_STARTER_SWORD, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/StarterSword.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_BLUE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperBlue.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_GREEN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperGreen.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_RED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperRed.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_WHITE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperWhite.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_YELLOW, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperYellow.png")));
+		TextureLoader.loadTexture(ITEM_RHICHITE_PICKAXE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/RhichitePickaxe.png")));
 		
 	}
 	
