@@ -35,6 +35,10 @@ public class Coordinate implements Serializable {
 		this.y = clone.getY();
 	}
 	
+	/**
+	 * @param c The {@link Coordinate} to compare to
+	 * @return {@code true} if c's x and y match this Coordinate's x and y, {@code false} otherwise
+	 */
 	public boolean matchesCoordinate(Coordinate c) {
 		return (x == c.getX() && y == c.getY());
 	}

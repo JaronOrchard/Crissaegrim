@@ -18,16 +18,12 @@ public abstract class Busy {
 		return (attackableType == AttackableType.IMMUNE_TO_ATTACKS);
 	}
 	
-	private long startTime;
-	private long duration;
-	private long endTime;
+	protected final long startTime;
 	private final ImmobilizingType immobilizingType;
 	private final AttackableType attackableType;
 	
-	public Busy(long dur, ImmobilizingType immobilizingType, AttackableType attackableType) {
+	public Busy(ImmobilizingType immobilizingType, AttackableType attackableType) {
 		startTime = new Date().getTime();
-		duration = dur;
-		endTime = startTime + duration;
 		this.immobilizingType = immobilizingType;
 		this.attackableType = attackableType;
 	}
@@ -38,18 +34,8 @@ public abstract class Busy {
 	public abstract int getTexture();
 	
 	/**
-	 * @return The amount of the Busy that has elapsed, where 0 is none of it, 1 is all of it,
-	 * and 0.5 means the Busy is exactly half over
+	 * @return The number of milliseconds that have passed since the Busy has started
 	 */
-	protected double getAmountElapsed() {
-		return ((double)(new Date().getTime() - startTime)/(double)duration);
-	}
-	
-	/**
-	 * @return {@code true} if the Busy has expired, {@code false} otherwise
-	 */
-	public boolean hasExpired() {
-		return new Date().getTime() >= endTime;
-	}
+	protected long getMillisElapsed() { return new Date().getTime() - startTime; }
 	
 }

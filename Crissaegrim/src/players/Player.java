@@ -10,6 +10,8 @@ import board.Board;
 import busy.GotHitByAttackBouncedBackBusy;
 import busy.InvincibleBusy;
 import busy.PlayerDiedBusy;
+import busy.StationaryBusy;
+import busy.TimedBusy;
 import textures.Textures;
 import crissaegrim.Crissaegrim;
 import entities.Entity;
@@ -141,7 +143,7 @@ public class Player extends Entity {
 	@Override
 	public void update() {
 		if (isBusy()) {
-			if (busy.hasExpired()) {
+			if (busy instanceof TimedBusy && ((TimedBusy)(busy)).hasExpired()) {
 				if (busy instanceof PlayerDiedBusy) {
 					getHealthBar().healDamage(getHealthBar().getMaxHealth());
 					Crissaegrim.getGameRunner().setNewDestinationToSpawn();
@@ -150,6 +152,8 @@ public class Player extends Entity {
 				} else {
 					busy = null;
 				}
+			} else if (busy instanceof StationaryBusy && ((StationaryBusy)(busy)).hasMoved(getPosition())) {
+				busy = null;
 			} else if (busy instanceof GotHitByAttackBouncedBackBusy && !getMovementHelper().isCurrentlyBouncingBackFromAttack()) {
 				busy = null;
 			}

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import busy.GotHitByAttackStunnedBusy;
+import busy.TimedBusy;
 import entities.EntityStatus;
 import geometry.Coordinate;
 import geometry.Rect;
@@ -97,8 +98,8 @@ public class NPCPhanto extends NPC {
 	
 	@Override
 	protected void updateNPC() {
-		if (isBusy()) {
-			if (busy.hasExpired()) {
+		if (isBusy() && busy instanceof TimedBusy) {
+			if (((TimedBusy)(busy)).hasExpired()) {
 				busy = null;
 			} else {
 				return; // Phanto is busy!

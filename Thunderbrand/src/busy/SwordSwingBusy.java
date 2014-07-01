@@ -2,7 +2,7 @@ package busy;
 
 import textures.Textures;
 
-public class SwordSwingBusy extends Busy {
+public class SwordSwingBusy extends TimedBusy {
 
 	private static long SWORD_SWING_TOTAL_TIME = 500;
 	
@@ -12,9 +12,9 @@ public class SwordSwingBusy extends Busy {
 
 	@Override
 	public int getTexture() {
-		double amountElapsed = getAmountElapsed();
-		if (amountElapsed < 0.20) return Textures.STICK_PLAYER_SWORD_SWING_1;
-		if (amountElapsed < 0.60) return Textures.STICK_PLAYER_SWORD_SWING_2;
+		long millisElapsed = getMillisElapsed();
+		if (millisElapsed < 100) return Textures.STICK_PLAYER_SWORD_SWING_1;
+		if (millisElapsed < 300) return Textures.STICK_PLAYER_SWORD_SWING_2;
 		return Textures.STICK_PLAYER_SWORD_SWING_3;
 	}
 	

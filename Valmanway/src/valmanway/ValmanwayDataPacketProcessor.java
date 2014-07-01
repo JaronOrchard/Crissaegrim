@@ -98,7 +98,7 @@ public final class ValmanwayDataPacketProcessor {
 			case DataPacketTypes.MINE_ROCK_REQUEST_PACKET:
 				MineRockRequestPacket mrrp = (MineRockRequestPacket)(packet);
 				Valmanway.getSharedData().addActionToQueue(new MineRockAction(
-						Constants.MILLIS_TO_MINE_A_ROCK, mrrp.getRockId(), mrrp.getPlayerId(), mrrp.getBoardName(), mrrp.getChanceOfSuccess()));
+						Constants.MILLIS_TO_MINE_A_ROCK, mrrp.getDoodadId(), mrrp.getPlayerId(), mrrp.getBoardName(), mrrp.getChanceOfSuccess()));
 				break;
 				
 				

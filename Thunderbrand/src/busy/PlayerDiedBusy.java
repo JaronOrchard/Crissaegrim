@@ -1,6 +1,6 @@
 package busy;
 
-public class PlayerDiedBusy extends Busy {
+public class PlayerDiedBusy extends TimedBusy {
 
 	private static long STUNNED_TOTAL_TIME = 4000;
 	private final int deadTexture;

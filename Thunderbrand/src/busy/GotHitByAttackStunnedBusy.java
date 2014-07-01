@@ -2,7 +2,7 @@ package busy;
 
 import textures.Textures;
 
-public class GotHitByAttackStunnedBusy extends Busy {
+public class GotHitByAttackStunnedBusy extends TimedBusy {
 	
 	private static long STUNNED_TOTAL_TIME = 1000;
 	private final int stunnedTexture;
@@ -14,8 +14,7 @@ public class GotHitByAttackStunnedBusy extends Busy {
 	
 	@Override
 	public int getTexture() {
-		int amountElapsedInt = (int)(getAmountElapsed() * 100);
-		if (amountElapsedInt % 20 < 10) return Textures.NONE;
+		if (getMillisElapsed() % 200 < 100) return Textures.NONE;
 		return stunnedTexture;
 	}
 	

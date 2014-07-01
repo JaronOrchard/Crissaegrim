@@ -48,6 +48,7 @@ import board.Chunk;
 import board.ClientBoard;
 import board.MissingChunk;
 import board.tiles.Tile.TileLayer;
+import busy.MiningRockBusy;
 import busy.SwordSwingBusy;
 import textblock.TextBlock;
 import textblock.TextTexture;
@@ -324,7 +325,7 @@ public class GameRunner {
 										MineableRock mineableRock = (MineableRock)doodad;
 										Crissaegrim.addOutgoingDataPacket(new MineRockRequestPacket(
 												mineableRock.getId(), player.getId(), player.getCurrentBoardName(), mineableRock.getChanceOfSuccess()));
-										// INITIATE MINING_ROCK_BUSY
+										player.setBusy(new MiningRockBusy(player.getPosition()));
 									}
 									break;
 									

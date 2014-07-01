@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+import datapacket.MineRockResultPacket;
+import doodads.MineableRock;
 import npc.NPC;
 import npc.NPCChargingSpike;
 import npc.NPCPhanto;
@@ -18,9 +20,11 @@ import npc.SpawnCondition;
 import entities.EntityStatus;
 import geometry.Coordinate;
 import geometry.Rect;
+import thunderbrand.Constants;
 import thunderbrand.Thunderbrand;
 import valmanway.Valmanway;
 import actions.Action;
+import actions.MineRockAction;
 import board.Board;
 import board.BoardInfo;
 import board.Chunk;
@@ -167,7 +171,21 @@ public class WorldRunner {
 	}
 	
 	private void processAction(Action action) {
-		System.out.println("--> Process a " + action.getClass().getName());
+		if (action instanceof MineRockAction) {
+			MineRockAction mra = (MineRockAction)(action);
+			MineableRock mineableRock = (MineableRock)(Valmanway.getSharedData().getBoardMap().get(mra.getBoardName()).getDoodads().get(mra.getDoodadId()));
+			if (mineableRock.isDepleted()) { // Another player has mined this rock already
+				Valmanway.sendPacketToPlayer(mra.getPlayerId(), new MineRockResultPacket(false));
+			} else {
+				if (Thunderbrand.getRandomNumbers().getDouble() < mra.getChanceOfSuccess()) { // Success!
+					Valmanway.sendPacketToPlayer(mra.getPlayerId(), new MineRockResultPacket(true));
+				} else { // Failed; requeue action
+					Valmanway.getSharedData().addActionToQueue(new MineRockAction(
+							Constants.MILLIS_TO_MINE_A_ROCK, mra.getDoodadId(), mra.getPlayerId(), mra.getBoardName(), mra.getChanceOfSuccess()));
+				}
+			}
+		} // else if (action instanceof ... ) { ...
+		
 	}
 	
 }

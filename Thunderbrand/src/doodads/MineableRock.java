@@ -17,35 +17,38 @@ public class MineableRock extends Doodad {
 	private final long oreRespawnTime;
 	private boolean hasOre;
 	
+	public boolean isDepleted() { return !hasOre; }
+	
 	public MineableRock(int id, Coordinate bottomCenter, OreType oreType) {
 		super(id, DoodadActions.MINE_ROCK, new Rect(
 				new Coordinate(bottomCenter.getX() - ROCK_RADIUS, bottomCenter.getY()),
 				new Coordinate(bottomCenter.getX() + ROCK_RADIUS, bottomCenter.getY() + ROCK_HEIGHT)));
 		this.oreType = oreType;
-		rockTexture = getRockTexture();
-		oreRespawnTime = getOreRespawnTime();
+		rockTexture = getRockTexture(oreType);
+		oreRespawnTime = getOreRespawnTime(oreType);
 		hasOre = true;
 	}
 	
-	private int getRockTexture() {
-		if (oreType == OreType.RHICHITE) { return Textures.RHICHITE_ROCK; }
-		else if (oreType == OreType.VALENITE) { return Textures.VALENITE_ROCK; }
-		else if (oreType == OreType.SANDSOMETHINGOROTHER) { return Textures.SANDSOMETHING_ROCK; }
+	private static int getRockTexture(OreType type) {
+		if (type == OreType.RHICHITE) { return Textures.RHICHITE_ROCK; }
+		else if (type == OreType.VALENITE) { return Textures.VALENITE_ROCK; }
+		else if (type == OreType.SANDSOMETHINGOROTHER) { return Textures.SANDSOMETHING_ROCK; }
 		return Textures.DEPLETED_ROCK;
 	}
 	
-	private long getOreRespawnTime() {
-		if (oreType == OreType.RHICHITE)					{ return 2500; } // Rhichite: 2.5 sec
-		else if (oreType == OreType.VALENITE)				{ return 5000; } // Valenite: 5 sec
-		else if (oreType == OreType.SANDSOMETHINGOROTHER)	{ return 4000; } // Sandsomethingorother: 4 sec
+	private static long getOreRespawnTime(OreType type) {
+		if (type == OreType.RHICHITE)					{ return 2500; } // Rhichite: 2.5 sec
+		else if (type == OreType.VALENITE)				{ return 5000; } // Valenite: 5 sec
+		else if (type == OreType.SANDSOMETHINGOROTHER)	{ return 4000; } // Sandsomethingorother: 4 sec
 		return 1000;
 	}
 	
-	public double getChanceOfSuccess() {
-		if (oreType == OreType.RHICHITE)					{ return 0.8; }
-		else if (oreType == OreType.VALENITE)				{ return 0.4; }
-		else if (oreType == OreType.SANDSOMETHINGOROTHER)	{ return 0.5; }
-		return 1.0;
+	public double getChanceOfSuccess() { return getChanceOfSuccess(oreType); }
+	public static double getChanceOfSuccess(OreType type) {
+		if (type == OreType.RHICHITE)					{ return 0.8; }
+		else if (type == OreType.VALENITE)				{ return 0.4; }
+		else if (type == OreType.SANDSOMETHINGOROTHER)	{ return 0.5; }
+		return 1;
 	}
 	
 	@Override

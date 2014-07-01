@@ -70,7 +70,7 @@ public class NPCStickNinja extends NPC {
 	boolean jumpedAlready = false;
 	@Override
 	protected void updateNPC() {
-		if (isBusy() && (busy.hasExpired() || (busy instanceof GotHitByAttackBouncedBackBusy && !getMovementHelper().isCurrentlyBouncingBackFromAttack()))) {
+		if (isBusy() && busy instanceof GotHitByAttackBouncedBackBusy && !getMovementHelper().isCurrentlyBouncingBackFromAttack()) {
 			busy = null;
 		}
 		
