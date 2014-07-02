@@ -119,7 +119,7 @@ public class Textures {
 	public static final int DEPLETED_ROCK = 2020;
 	public static final int RHICHITE_ROCK = 2021;
 	public static final int VALENITE_ROCK = 2022;
-	public static final int SANDSOMETHING_ROCK = 2023;
+	public static final int SANDELUGE_ROCK = 2023;
 	
 	public static final int LOADING_MESSAGE = 17900;
 	public static final int NO_CONNECTION_MESSAGE = 17901;
@@ -137,7 +137,7 @@ public class Textures {
 	public static final int ITEM_RHICHITE_PICKAXE = 20006;
 	public static final int ITEM_RHICHITE_ORE = 20020;
 	public static final int ITEM_VALENITE_ORE = 20021;
-	public static final int ITEM_SANDSOMETHING_ORE = 20022;
+	public static final int ITEM_SANDELUGE_ORE = 20022;
 	
 	// (Texture IDs 100000 and up are reserved for text)
 	
@@ -256,7 +256,7 @@ public class Textures {
 		TextureLoader.loadTexture(DEPLETED_ROCK, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/doodads/DepletedRock.png")));
 		TextureLoader.loadTexture(RHICHITE_ROCK, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/doodads/RhichiteRock.png")));
 		TextureLoader.loadTexture(VALENITE_ROCK, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/doodads/ValeniteRock.png")));
-		TextureLoader.loadTexture(SANDSOMETHING_ROCK, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/doodads/SandRock.png")));
+		TextureLoader.loadTexture(SANDELUGE_ROCK, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/doodads/SandelugeRock.png")));
 		
 		TextureLoader.loadTexture(LOADING_MESSAGE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/LoadingMessage.png")));
 		TextureLoader.loadTexture(NO_CONNECTION_MESSAGE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NoConnectionMessage.png")));
@@ -274,7 +274,7 @@ public class Textures {
 		TextureLoader.loadTexture(ITEM_RHICHITE_PICKAXE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/RhichitePickaxe.png")));
 		TextureLoader.loadTexture(ITEM_RHICHITE_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/RhichiteOre.png")));
 		TextureLoader.loadTexture(ITEM_VALENITE_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/ValeniteOre.png")));
-		TextureLoader.loadTexture(ITEM_SANDSOMETHING_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/SandOre.png")));
+		TextureLoader.loadTexture(ITEM_SANDELUGE_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/SandelugeOre.png")));
 		
 	}
 	

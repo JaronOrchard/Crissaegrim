@@ -13,7 +13,7 @@ public class MineableRock extends Doodad {
 	private static transient double ROCK_RADIUS = 1;
 	private static transient double ROCK_HEIGHT = 1;
 	
-	public enum OreType { RHICHITE, VALENITE, SANDSOMETHINGOROTHER, UNKNOWN }
+	public enum OreType { RHICHITE, VALENITE, SANDELUGE, UNKNOWN }
 	private final OreType oreType;
 	private final int rockTexture;
 	private final long oreRespawnTime;
@@ -25,14 +25,14 @@ public class MineableRock extends Doodad {
 	public String getOreString() {
 		if (oreType == OreType.RHICHITE) { return "Rhichite"; }
 		else if (oreType == OreType.VALENITE) { return "Valenite"; }
-		else if (oreType == OreType.SANDSOMETHINGOROTHER) { return "Sandsomething"; }
+		else if (oreType == OreType.SANDELUGE) { return "Sandeluge"; }
 		return "Unknown";
 	}
 	
 	public Item getOreItem() {
 		if (oreType == OreType.RHICHITE) { return Items.rhichiteOre(); }
 		else if (oreType == OreType.VALENITE) { return Items.valeniteOre(); }
-		else if (oreType == OreType.SANDSOMETHINGOROTHER) { return Items.sandsomethingOre(); }
+		else if (oreType == OreType.SANDELUGE) { return Items.sandelugeOre(); }
 		return null;
 	}
 	
@@ -49,14 +49,14 @@ public class MineableRock extends Doodad {
 	private static int getRockTexture(OreType type) {
 		if (type == OreType.RHICHITE) { return Textures.RHICHITE_ROCK; }
 		else if (type == OreType.VALENITE) { return Textures.VALENITE_ROCK; }
-		else if (type == OreType.SANDSOMETHINGOROTHER) { return Textures.SANDSOMETHING_ROCK; }
+		else if (type == OreType.SANDELUGE) { return Textures.SANDELUGE_ROCK; }
 		return Textures.DEPLETED_ROCK;
 	}
 	
 	private static long getOreRespawnTime(OreType type) {
 		if (type == OreType.RHICHITE)					{ return 2500; } // Rhichite: 2.5 sec
 		else if (type == OreType.VALENITE)				{ return 5000; } // Valenite: 5 sec
-		else if (type == OreType.SANDSOMETHINGOROTHER)	{ return 4000; } // Sandsomethingorother: 4 sec
+		else if (type == OreType.SANDELUGE)				{ return 4000; } // Sandeluge: 4 sec
 		return 1000;
 	}
 	
@@ -64,7 +64,7 @@ public class MineableRock extends Doodad {
 	public static double getChanceOfSuccess(OreType type) {
 		if (type == OreType.RHICHITE)					{ return 0.8; }
 		else if (type == OreType.VALENITE)				{ return 0.4; }
-		else if (type == OreType.SANDSOMETHINGOROTHER)	{ return 0.5; }
+		else if (type == OreType.SANDELUGE)				{ return 0.5; }
 		return 1;
 	}
 	

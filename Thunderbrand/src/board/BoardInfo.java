@@ -44,8 +44,8 @@ public class BoardInfo {
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10252, 9959), MineableRock.OreType.VALENITE));
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10241, 9946), MineableRock.OreType.VALENITE));
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10238, 9946), MineableRock.OreType.VALENITE));
-			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10244, 9958), MineableRock.OreType.SANDSOMETHINGOROTHER));
-			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10231, 9970), MineableRock.OreType.SANDSOMETHINGOROTHER));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10244, 9958), MineableRock.OreType.SANDELUGE));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10231, 9970), MineableRock.OreType.SANDELUGE));
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10258, 9940), MineableRock.OreType.UNKNOWN));
 		}
 	}
