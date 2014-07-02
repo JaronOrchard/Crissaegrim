@@ -324,11 +324,13 @@ public class GameRunner {
 									} else if (InventoryUtils.inventoryIsFull(player.getInventory())) {
 										new DialogBoxRunner().run(new DialogBox("Your inventory is full.", "Ok"));
 									} else {
-										Crissaegrim.addSystemMessage("You start mining the rock...");
 										MineableRock mineableRock = (MineableRock)doodad;
-										player.setBusy(new MiningRockBusy(player.getPosition()));
-										Crissaegrim.addOutgoingDataPacket(new MineRockRequestPacket(
-												mineableRock.getId(), player.getId(), player.getBusy().getId(), player.getCurrentBoardName(), mineableRock.getChanceOfSuccess()));
+										if (!mineableRock.isDepleted()) {
+											Crissaegrim.addSystemMessage("You start mining the rock...");
+											player.setBusy(new MiningRockBusy(player.getPosition()));
+											Crissaegrim.addOutgoingDataPacket(new MineRockRequestPacket(
+													mineableRock.getId(), player.getId(), player.getBusy().getId(), player.getCurrentBoardName(), mineableRock.getChanceOfSuccess()));
+										}
 									}
 									break;
 									

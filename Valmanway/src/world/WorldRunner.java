@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 import datapacket.MineRockResultPacket;
+import datapacket.UpdatedDoodadPacket;
 import doodads.MineableRock;
 import npc.NPC;
 import npc.NPCChargingSpike;
@@ -25,6 +26,7 @@ import thunderbrand.Thunderbrand;
 import valmanway.Valmanway;
 import actions.Action;
 import actions.MineRockAction;
+import actions.ReplenishRockAction;
 import board.Board;
 import board.BoardInfo;
 import board.Chunk;
@@ -184,7 +186,12 @@ public class WorldRunner {
 							Constants.MILLIS_TO_MINE_A_ROCK, mra.getDoodadId(), mra.getPlayerId(), mra.getBusyId(), mra.getBoardName(), mra.getChanceOfSuccess()));
 				}
 			}
-		} // else if (action instanceof ... ) { ...
+		} else if (action instanceof ReplenishRockAction) {
+			ReplenishRockAction rra = (ReplenishRockAction)(action);
+			MineableRock mineableRock = (MineableRock)(Valmanway.getSharedData().getBoardMap().get(rra.getBoardName()).getDoodads().get(rra.getDoodadId()));
+			mineableRock.setHasOre(true);
+			Valmanway.getSharedData().addDataPacket(new UpdatedDoodadPacket(rra.getBoardName(), mineableRock));
+		}
 		
 	}
 	

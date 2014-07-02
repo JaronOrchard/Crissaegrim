@@ -17,6 +17,7 @@ import npc.NPC;
 import org.apache.commons.lang3.StringUtils;
 
 import actions.MineRockAction;
+import actions.ReplenishRockAction;
 import attack.Attack;
 import textblock.TextBlock;
 import thunderbrand.Constants;
@@ -42,6 +43,9 @@ import datapacket.RequestSpecificChunkPacket;
 import datapacket.SendChatMessagePacket;
 import datapacket.SendPlayerStatusPacket;
 import datapacket.SendSystemMessagePacket;
+import datapacket.UpdatedDoodadPacket;
+import doodads.Doodad;
+import doodads.MineableRock;
 import entities.EntityStatus;
 import geometry.Coordinate;
 import geometry.Rect;
@@ -100,6 +104,12 @@ public final class ValmanwayDataPacketProcessor {
 				Valmanway.getSharedData().addActionToQueue(new MineRockAction(
 						Constants.MILLIS_TO_MINE_A_ROCK, mrrp.getDoodadId(), mrrp.getPlayerId(), mrrp.getBusyId(), mrrp.getBoardName(), mrrp.getChanceOfSuccess()));
 				break;
+			case DataPacketTypes.UPDATED_DOODAD_PACKET:
+				UpdatedDoodadPacket udp = (UpdatedDoodadPacket)(packet);
+				Valmanway.getSharedData().addDataPacket(packet); // Bounce packet back to Crissaegrim
+				Valmanway.getSharedData().getBoardMap().get(udp.getBoardName()).getDoodads().put(udp.getDoodad().getId(), udp.getDoodad());
+				processUpdatedDoodadPacket(udp, valmanwayUserData);
+				break;
 				
 				
 			default:
@@ -140,6 +150,14 @@ public final class ValmanwayDataPacketProcessor {
 							vud.getPlayerName(), attack.getAttackPower(), true, RectUtils.firstRectIsOnLeft(playerBoundingRect, attack.getBounds())));
 				}
 			}
+		}
+	}
+	
+	private static void processUpdatedDoodadPacket(UpdatedDoodadPacket udp, ValmanwayUserData vud) {
+		Doodad doodad = udp.getDoodad();
+		if (doodad instanceof MineableRock) { // Ore needs to respawn after a certain amount of time
+			MineableRock mineableRock = (MineableRock)(doodad);
+			Valmanway.getSharedData().addActionToQueue(new ReplenishRockAction(mineableRock.getOreRespawnTime(), mineableRock.getId(), udp.getBoardName()));
 		}
 	}
 	
@@ -308,5 +326,5 @@ public final class ValmanwayDataPacketProcessor {
 		}
 		vud.addOutgoingDataPacket(new DoneSendingChunksPacket());
 	}
-		
+	
 }

@@ -25,6 +25,7 @@ import datapacket.ReceivePlayerNamePacket;
 import datapacket.SendEntityStatusesPacket;
 import datapacket.SendChatMessagePacket;
 import datapacket.SendSystemMessagePacket;
+import datapacket.UpdatedDoodadPacket;
 import doodads.MineableRock;
 import effects.ParticleSystem;
 
@@ -104,17 +105,21 @@ public final class CrissaegrimDataPacketProcessor {
 				if (!Crissaegrim.getPlayer().isBusy() || Crissaegrim.getPlayer().getBusy().getId() != mrrp.getBusyId()) {
 					// Player walked away from rock; this result packet is irrelevant
 				} else {
+					Crissaegrim.getPlayer().setBusy(null);
 					if (!mrrp.getSucceeded()) {
 						Crissaegrim.addSystemMessage("Another player has already mined this rock.");
 					} else {
 						MineableRock mineableRock = (MineableRock)(Crissaegrim.getPlayer().getMovementHelper().getBoardMap().get(mrrp.getBoardName()).getDoodads().get(mrrp.getDoodadId()));
-						Crissaegrim.getPlayer().setBusy(null);
 						Crissaegrim.addSystemMessage("You got some " + mineableRock.getOreString() + " ore.");
 						Crissaegrim.getPlayer().getInventory().addItem(mineableRock.getOreItem());
-						// update doodad
-						// send updated doodad packet to valmanway
+						mineableRock.setHasOre(false);
+						Crissaegrim.addOutgoingDataPacket(new UpdatedDoodadPacket(mrrp.getBoardName(), mineableRock));
 					}
 				}
+				break;
+			case DataPacketTypes.UPDATED_DOODAD_PACKET:
+				UpdatedDoodadPacket udp = (UpdatedDoodadPacket)(packet);
+				Crissaegrim.getPlayer().getMovementHelper().getBoardMap().get(udp.getBoardName()).getDoodads().put(udp.getDoodad().getId(), udp.getDoodad());
 				break;
 				
 				

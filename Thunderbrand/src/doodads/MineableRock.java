@@ -19,6 +19,7 @@ public class MineableRock extends Doodad {
 	private final long oreRespawnTime;
 	private boolean hasOre;
 	
+	public long getOreRespawnTime() { return oreRespawnTime; }
 	public void setHasOre(boolean hasOre) { this.hasOre = hasOre; }
 	public boolean isDepleted() { return !hasOre; }
 	
@@ -62,9 +63,9 @@ public class MineableRock extends Doodad {
 	
 	public double getChanceOfSuccess() { return getChanceOfSuccess(oreType); }
 	public static double getChanceOfSuccess(OreType type) {
-		if (type == OreType.RHICHITE)					{ return 0.8; }
-		else if (type == OreType.VALENITE)				{ return 0.4; }
-		else if (type == OreType.SANDELUGE)				{ return 0.5; }
+		if (type == OreType.RHICHITE)					{ return 0.8; } // Rhichite: 80%
+		else if (type == OreType.VALENITE)				{ return 0.4; } // Valenite: 40%
+		else if (type == OreType.SANDELUGE)				{ return 0.5; } // Sandeluge: 50%
 		return 1;
 	}
 	
