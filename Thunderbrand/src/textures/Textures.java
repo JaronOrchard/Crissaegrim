@@ -135,6 +135,9 @@ public class Textures {
 	public static final int ITEM_PARTY_POPPER_WHITE = 20004;
 	public static final int ITEM_PARTY_POPPER_YELLOW = 20005;
 	public static final int ITEM_RHICHITE_PICKAXE = 20006;
+	public static final int ITEM_RHICHITE_ORE = 20020;
+	public static final int ITEM_VALENITE_ORE = 20021;
+	public static final int ITEM_SANDSOMETHING_ORE = 20022;
 	
 	// (Texture IDs 100000 and up are reserved for text)
 	
@@ -269,6 +272,9 @@ public class Textures {
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_WHITE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperWhite.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_YELLOW, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperYellow.png")));
 		TextureLoader.loadTexture(ITEM_RHICHITE_PICKAXE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/RhichitePickaxe.png")));
+		TextureLoader.loadTexture(ITEM_RHICHITE_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/RhichiteOre.png")));
+		TextureLoader.loadTexture(ITEM_VALENITE_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/ValeniteOre.png")));
+		TextureLoader.loadTexture(ITEM_SANDSOMETHING_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/SandOre.png")));
 		
 	}
 	

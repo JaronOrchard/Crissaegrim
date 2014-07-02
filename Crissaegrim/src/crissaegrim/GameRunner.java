@@ -321,11 +321,14 @@ public class GameRunner {
 								case DoodadActions.MINE_ROCK:
 									if (!InventoryUtils.containsPickaxe(player.getInventory())) {
 										new DialogBoxRunner().run(new DialogBox("You need a pickaxe to mine this rock.", "Ok"));
+									} else if (InventoryUtils.inventoryIsFull(player.getInventory())) {
+										new DialogBoxRunner().run(new DialogBox("Your inventory is full.", "Ok"));
 									} else {
+										Crissaegrim.addSystemMessage("You start mining the rock...");
 										MineableRock mineableRock = (MineableRock)doodad;
-										Crissaegrim.addOutgoingDataPacket(new MineRockRequestPacket(
-												mineableRock.getId(), player.getId(), player.getCurrentBoardName(), mineableRock.getChanceOfSuccess()));
 										player.setBusy(new MiningRockBusy(player.getPosition()));
+										Crissaegrim.addOutgoingDataPacket(new MineRockRequestPacket(
+												mineableRock.getId(), player.getId(), player.getBusy().getId(), player.getCurrentBoardName(), mineableRock.getChanceOfSuccess()));
 									}
 									break;
 									

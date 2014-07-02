@@ -2,6 +2,8 @@ package busy;
 
 import java.util.Date;
 
+import thunderbrand.Thunderbrand;
+
 public abstract class Busy {
 	
 	protected enum ImmobilizingType { COMPLETELY_IMMOBILIZED, CANNOT_WALK, NOT_IMMOBILIZED }
@@ -21,11 +23,15 @@ public abstract class Busy {
 	protected final long startTime;
 	private final ImmobilizingType immobilizingType;
 	private final AttackableType attackableType;
+	private final int id;
+	
+	public int getId() { return id; }
 	
 	public Busy(ImmobilizingType immobilizingType, AttackableType attackableType) {
 		startTime = new Date().getTime();
 		this.immobilizingType = immobilizingType;
 		this.attackableType = attackableType;
+		id = Thunderbrand.getNextBusyId();
 	}
 	
 	/**

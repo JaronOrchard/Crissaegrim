@@ -16,6 +16,7 @@ import datapacket.DataPacket;
 import datapacket.DataPacketTypes;
 import datapacket.GotHitByAttackPacket;
 import datapacket.IncomingChunkCountPacket;
+import datapacket.MineRockResultPacket;
 import datapacket.NonexistentChunkPacket;
 import datapacket.ParticleSystemPacket;
 import datapacket.ReceiveItemsPacket;
@@ -24,6 +25,7 @@ import datapacket.ReceivePlayerNamePacket;
 import datapacket.SendEntityStatusesPacket;
 import datapacket.SendChatMessagePacket;
 import datapacket.SendSystemMessagePacket;
+import doodads.MineableRock;
 import effects.ParticleSystem;
 
 public final class CrissaegrimDataPacketProcessor {
@@ -97,10 +99,27 @@ public final class CrissaegrimDataPacketProcessor {
 			case DataPacketTypes.BOARD_DOODADS_PACKET:
 				Crissaegrim.getGameRunner().setDoodadsForBoard((BoardDoodadsPacket)(packet));
 				break;
+			case DataPacketTypes.MINE_ROCK_RESULT_PACKET:
+				MineRockResultPacket mrrp = (MineRockResultPacket)(packet);
+				if (!Crissaegrim.getPlayer().isBusy() || Crissaegrim.getPlayer().getBusy().getId() != mrrp.getBusyId()) {
+					// Player walked away from rock; this result packet is irrelevant
+				} else {
+					if (!mrrp.getSucceeded()) {
+						Crissaegrim.addSystemMessage("Another player has already mined this rock.");
+					} else {
+						MineableRock mineableRock = (MineableRock)(Crissaegrim.getPlayer().getMovementHelper().getBoardMap().get(mrrp.getBoardName()).getDoodads().get(mrrp.getDoodadId()));
+						Crissaegrim.getPlayer().setBusy(null);
+						Crissaegrim.addSystemMessage("You got some " + mineableRock.getOreString() + " ore.");
+						Crissaegrim.getPlayer().getInventory().addItem(mineableRock.getOreItem());
+						// update doodad
+						// send updated doodad packet to valmanway
+					}
+				}
+				break;
 				
 				
 			default:
-				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());
+				System.out.println("CLIENT - UNKNOWN PACKET TYPE: " + packet.getPacketType());
 		}
 		
 	}

@@ -1,6 +1,8 @@
 package doodads;
 
 import static org.lwjgl.opengl.GL11.*;
+import items.Item;
+import items.Items;
 import geometry.Coordinate;
 import geometry.Rect;
 import textures.Textures;
@@ -17,7 +19,22 @@ public class MineableRock extends Doodad {
 	private final long oreRespawnTime;
 	private boolean hasOre;
 	
+	public void setHasOre(boolean hasOre) { this.hasOre = hasOre; }
 	public boolean isDepleted() { return !hasOre; }
+	
+	public String getOreString() {
+		if (oreType == OreType.RHICHITE) { return "Rhichite"; }
+		else if (oreType == OreType.VALENITE) { return "Valenite"; }
+		else if (oreType == OreType.SANDSOMETHINGOROTHER) { return "Sandsomething"; }
+		return "Unknown";
+	}
+	
+	public Item getOreItem() {
+		if (oreType == OreType.RHICHITE) { return Items.rhichiteOre(); }
+		else if (oreType == OreType.VALENITE) { return Items.valeniteOre(); }
+		else if (oreType == OreType.SANDSOMETHINGOROTHER) { return Items.sandsomethingOre(); }
+		return null;
+	}
 	
 	public MineableRock(int id, Coordinate bottomCenter, OreType oreType) {
 		super(id, DoodadActions.MINE_ROCK, new Rect(

@@ -98,12 +98,12 @@ public final class ValmanwayDataPacketProcessor {
 			case DataPacketTypes.MINE_ROCK_REQUEST_PACKET:
 				MineRockRequestPacket mrrp = (MineRockRequestPacket)(packet);
 				Valmanway.getSharedData().addActionToQueue(new MineRockAction(
-						Constants.MILLIS_TO_MINE_A_ROCK, mrrp.getDoodadId(), mrrp.getPlayerId(), mrrp.getBoardName(), mrrp.getChanceOfSuccess()));
+						Constants.MILLIS_TO_MINE_A_ROCK, mrrp.getDoodadId(), mrrp.getPlayerId(), mrrp.getBusyId(), mrrp.getBoardName(), mrrp.getChanceOfSuccess()));
 				break;
 				
 				
 			default:
-				System.out.println("UNKNOWN PACKET TYPE: " + packet.getPacketType());
+				System.out.println("SERVER - UNKNOWN PACKET TYPE: " + packet.getPacketType());
 				break;
 		}
 		

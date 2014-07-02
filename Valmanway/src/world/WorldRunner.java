@@ -175,13 +175,13 @@ public class WorldRunner {
 			MineRockAction mra = (MineRockAction)(action);
 			MineableRock mineableRock = (MineableRock)(Valmanway.getSharedData().getBoardMap().get(mra.getBoardName()).getDoodads().get(mra.getDoodadId()));
 			if (mineableRock.isDepleted()) { // Another player has mined this rock already
-				Valmanway.sendPacketToPlayer(mra.getPlayerId(), new MineRockResultPacket(false));
+				Valmanway.sendPacketToPlayer(mra.getPlayerId(), new MineRockResultPacket(false, mra.getDoodadId(), mra.getBusyId(), mra.getBoardName()));
 			} else {
 				if (Thunderbrand.getRandomNumbers().getDouble() < mra.getChanceOfSuccess()) { // Success!
-					Valmanway.sendPacketToPlayer(mra.getPlayerId(), new MineRockResultPacket(true));
+					Valmanway.sendPacketToPlayer(mra.getPlayerId(), new MineRockResultPacket(true, mra.getDoodadId(), mra.getBusyId(), mra.getBoardName()));
 				} else { // Failed; requeue action
 					Valmanway.getSharedData().addActionToQueue(new MineRockAction(
-							Constants.MILLIS_TO_MINE_A_ROCK, mra.getDoodadId(), mra.getPlayerId(), mra.getBoardName(), mra.getChanceOfSuccess()));
+							Constants.MILLIS_TO_MINE_A_ROCK, mra.getDoodadId(), mra.getPlayerId(), mra.getBusyId(), mra.getBoardName(), mra.getChanceOfSuccess()));
 				}
 			}
 		} // else if (action instanceof ... ) { ...
