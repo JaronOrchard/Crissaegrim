@@ -68,7 +68,8 @@ public class Player extends Entity {
 			glEnd();
 			
 			if (icon != null) {
-				if (icon.equals("F")) glBindTexture(GL_TEXTURE_2D, Textures.ICON_F); 
+				if (icon.equals("F")) glBindTexture(GL_TEXTURE_2D, Textures.ICON_F);
+				else if (icon.equals("LEFT_CLICK")) glBindTexture(GL_TEXTURE_2D, Textures.ICON_LEFT_CLICK);
 				glBegin(GL_QUADS);
 					glTexCoord2d(0, 0);
 					glVertex2d(position.getX() - 0.5, position.getY() + 4);

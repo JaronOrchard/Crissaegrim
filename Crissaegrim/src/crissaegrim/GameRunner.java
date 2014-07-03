@@ -3,6 +3,7 @@ package crissaegrim;
 import static org.lwjgl.opengl.GL11.*;
 import items.Item;
 import items.ItemPartyPopper;
+import items.ItemPickaxe;
 import items.Weapon;
 
 import java.awt.Color;
@@ -145,6 +146,32 @@ public class GameRunner {
 				playerMovementHelper.moveEntityPre();
 				Item itemToUse = playerMovementHelper.getItemToUse();
 				if (itemToUse != null && !player.isBusy()) {
+					// Cycle through relevant click-to-interact Doodads:
+					for (Doodad doodad : Crissaegrim.getBoard().getDoodads().values()) {
+						if (!player.isBusy() && RectUtils.coordinateIsInRect(player.getPosition(), doodad.getBounds())) {
+							switch (doodad.getDoodadAction()) {
+								case DoodadActions.MINE_ROCK:
+									if (!(player.getInventory().getCurrentItem() instanceof ItemPickaxe)) {
+										Crissaegrim.addSystemMessage("You need to be holding a pickaxe to mine this rock.");
+									} else if (InventoryUtils.inventoryIsFull(player.getInventory())) {
+										new DialogBoxRunner().run(new DialogBox("Your inventory is full.", "Ok"));
+									} else {
+										MineableRock mineableRock = (MineableRock)doodad;
+										if (!mineableRock.isDepleted()) {
+											Crissaegrim.addSystemMessage("You start mining the rock...");
+											player.setBusy(new MiningRockBusy(player.getPosition()));
+											Crissaegrim.addOutgoingDataPacket(new MineRockRequestPacket(
+													mineableRock.getId(), player.getId(), player.getBusy().getId(), player.getCurrentBoardName(), mineableRock.getChanceOfSuccess()));
+										}
+									}
+									break;
+								default:
+									break;
+							}
+							break; // Found the relevant Doodad; ignore the rest
+						}
+					}
+					// Use item if necessary:
 					if (itemToUse instanceof Weapon) {
 						// TODO: This should be split up depending upon the weapon and attack type
 						// TODO: Bounding rect of sword swing should not be entire entity
@@ -260,11 +287,16 @@ public class GameRunner {
 	}
 	
 	private void actionDoodadList() {
+		if (Crissaegrim.getPlayer().isBusy()) { return; }
 		Iterator<Doodad> doodadIter = Crissaegrim.getBoard().getDoodads().values().iterator();
 		while (doodadIter.hasNext()) {
 			Doodad doodad = doodadIter.next();
 			if (doodad.isActionable() && RectUtils.coordinateIsInRect(Crissaegrim.getPlayer().getPosition(), doodad.getBounds())) {
-				Crissaegrim.getPlayer().setIcon("F");
+				if (doodad instanceof Door) {
+					Crissaegrim.getPlayer().setIcon("F");
+				} else if (doodad instanceof MineableRock) {
+					Crissaegrim.getPlayer().setIcon("LEFT_CLICK");
+				}
 			}
 		}
 	}
@@ -308,7 +340,7 @@ public class GameRunner {
 					Crissaegrim.toggleZoom();
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_M) {		// M key: Toggle window size
 					Crissaegrim.toggleWindowSize();
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_F) {		// F key: Activate doodad
+				} else if (Keyboard.getEventKey() == Keyboard.KEY_F) {		// F key: Activate F-key doodads
 					for (Doodad doodad : Crissaegrim.getBoard().getDoodads().values()) {
 						if (!player.isBusy() && RectUtils.coordinateIsInRect(player.getPosition(), doodad.getBounds())) {
 							switch (doodad.getDoodadAction()) {
@@ -318,22 +350,6 @@ public class GameRunner {
 									setNewDestination(door.getDestinationBoardName(), door.getDestinationCoordinate());
 									requestTravelToDestinationBoard();
 									break;
-								case DoodadActions.MINE_ROCK:
-									if (!InventoryUtils.containsPickaxe(player.getInventory())) {
-										new DialogBoxRunner().run(new DialogBox("You need a pickaxe to mine this rock.", "Ok"));
-									} else if (InventoryUtils.inventoryIsFull(player.getInventory())) {
-										new DialogBoxRunner().run(new DialogBox("Your inventory is full.", "Ok"));
-									} else {
-										MineableRock mineableRock = (MineableRock)doodad;
-										if (!mineableRock.isDepleted()) {
-											Crissaegrim.addSystemMessage("You start mining the rock...");
-											player.setBusy(new MiningRockBusy(player.getPosition()));
-											Crissaegrim.addOutgoingDataPacket(new MineRockRequestPacket(
-													mineableRock.getId(), player.getId(), player.getBusy().getId(), player.getCurrentBoardName(), mineableRock.getChanceOfSuccess()));
-										}
-									}
-									break;
-									
 								default:
 									break;
 							}
