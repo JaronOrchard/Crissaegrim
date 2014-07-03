@@ -128,7 +128,7 @@ public class GameRunner {
 			
 			// Update the board, including all entities and bullets:
 			if (!Crissaegrim.currentlyLoading) {
-				ClientBoard.verifyChunksExist(Crissaegrim.getBoard());
+				ClientBoard.verifyChunksExist(Crissaegrim.getCurrentBoard());
 				if (Crissaegrim.currentlyLoading) { continue; }
 				player.update();
 				actionDoodadList();
@@ -147,7 +147,7 @@ public class GameRunner {
 				Item itemToUse = playerMovementHelper.getItemToUse();
 				if (itemToUse != null && !player.isBusy()) {
 					// Cycle through relevant click-to-interact Doodads:
-					for (Doodad doodad : Crissaegrim.getBoard().getDoodads().values()) {
+					for (Doodad doodad : Crissaegrim.getCurrentBoard().getDoodads().values()) {
 						if (!player.isBusy() && RectUtils.coordinateIsInRect(player.getPosition(), doodad.getBounds())) {
 							switch (doodad.getDoodadAction()) {
 								case DoodadActions.MINE_ROCK:
@@ -213,16 +213,16 @@ public class GameRunner {
 	
 	public void drawScene() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		Board currentBoard = Crissaegrim.getBoard();
+		Board currentBoard = Crissaegrim.getCurrentBoard();
 		
-		if (Crissaegrim.getBoard() != null) {
+		if (Crissaegrim.getCurrentBoard() != null) {
 			GameInitializer.initializeNewFrameForWindow();
 			ClientBoard.drawBackground(currentBoard);
 			
 			GameInitializer.initializeNewFrameForScene();
 			ClientBoard.draw(currentBoard, TileLayer.BACKGROUND);
 			ClientBoard.draw(currentBoard, TileLayer.MIDDLEGROUND);
-			for (Doodad doodad : Crissaegrim.getBoard().getDoodads().values()) {
+			for (Doodad doodad : Crissaegrim.getCurrentBoard().getDoodads().values()) {
 				if (!Crissaegrim.getDebugMode()) {
 					doodad.draw();
 				} else {
@@ -288,7 +288,7 @@ public class GameRunner {
 	
 	private void actionDoodadList() {
 		if (Crissaegrim.getPlayer().isBusy()) { return; }
-		Iterator<Doodad> doodadIter = Crissaegrim.getBoard().getDoodads().values().iterator();
+		Iterator<Doodad> doodadIter = Crissaegrim.getCurrentBoard().getDoodads().values().iterator();
 		while (doodadIter.hasNext()) {
 			Doodad doodad = doodadIter.next();
 			if (doodad.isActionable() && RectUtils.coordinateIsInRect(Crissaegrim.getPlayer().getPosition(), doodad.getBounds())) {
@@ -341,7 +341,7 @@ public class GameRunner {
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_M) {		// M key: Toggle window size
 					Crissaegrim.toggleWindowSize();
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_F) {		// F key: Activate F-key doodads
-					for (Doodad doodad : Crissaegrim.getBoard().getDoodads().values()) {
+					for (Doodad doodad : Crissaegrim.getCurrentBoard().getDoodads().values()) {
 						if (!player.isBusy() && RectUtils.coordinateIsInRect(player.getPosition(), doodad.getBounds())) {
 							switch (doodad.getDoodadAction()) {
 								case DoodadActions.GO_THROUGH_DOORWAY:

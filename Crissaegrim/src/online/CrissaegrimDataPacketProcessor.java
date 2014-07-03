@@ -109,7 +109,7 @@ public final class CrissaegrimDataPacketProcessor {
 					if (!mrrp.getSucceeded()) {
 						Crissaegrim.addSystemMessage("Another player has already mined this rock.");
 					} else {
-						MineableRock mineableRock = (MineableRock)(Crissaegrim.getPlayer().getMovementHelper().getBoardMap().get(mrrp.getBoardName()).getDoodads().get(mrrp.getDoodadId()));
+						MineableRock mineableRock = (MineableRock)(Crissaegrim.getBoard(mrrp.getBoardName()).getDoodads().get(mrrp.getDoodadId()));
 						Crissaegrim.addSystemMessage("You got some " + mineableRock.getOreString() + " ore.");
 						Crissaegrim.getPlayer().getInventory().addItem(mineableRock.getOreItem());
 						mineableRock.setHasOre(false);
@@ -119,7 +119,7 @@ public final class CrissaegrimDataPacketProcessor {
 				break;
 			case DataPacketTypes.UPDATED_DOODAD_PACKET:
 				UpdatedDoodadPacket udp = (UpdatedDoodadPacket)(packet);
-				Crissaegrim.getPlayer().getMovementHelper().getBoardMap().get(udp.getBoardName()).getDoodads().put(udp.getDoodad().getId(), udp.getDoodad());
+				Crissaegrim.getBoard(udp.getBoardName()).getDoodads().put(udp.getDoodad().getId(), udp.getDoodad());
 				break;
 				
 				

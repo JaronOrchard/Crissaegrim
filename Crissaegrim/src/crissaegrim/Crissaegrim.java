@@ -55,7 +55,8 @@ public class Crissaegrim {
 		synchronized(Crissaegrim.getNpcGhosts()) { Crissaegrim.getNpcGhosts().clear(); }
 		synchronized(Crissaegrim.getPlayerGhosts()) { Crissaegrim.getPlayerGhosts().clear(); }
 	}
-	public static Board getBoard() { return player.getCurrentBoard(); }
+	public static Board getCurrentBoard() { return player.getCurrentBoard(); }
+	public static Board getBoard(String boardName) { return player.getMovementHelper().getBoardMap().get(boardName); }
 	public static ChatBox getChatBox() { return chatBox; }
 	public static PreferenceHandler getPreferenceHandler() { return preferenceHandler; }
 	public static CommonTextures getCommonTextures() { return commonTextures; }

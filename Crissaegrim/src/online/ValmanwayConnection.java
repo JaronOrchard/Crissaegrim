@@ -63,7 +63,7 @@ public class ValmanwayConnection {
 			Player player = Crissaegrim.getPlayer();
 			Crissaegrim.addOutgoingDataPacket(new SendPlayerStatusPacket(new EntityStatus(
 					player.getName(),
-					Crissaegrim.getBoard().getName(),
+					Crissaegrim.getCurrentBoard().getName(),
 					player.getPosition().getX(),
 					player.getPosition().getY(),
 					player.getCurrentTexture(),
