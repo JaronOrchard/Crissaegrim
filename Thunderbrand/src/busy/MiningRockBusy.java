@@ -11,8 +11,8 @@ public class MiningRockBusy extends StationaryBusy {
 	
 	@Override
 	public int getTexture() {
-		if (getMillisElapsed() % 200 < 100) return Textures.STICK_PLAYER_TYPING;
-		return Textures.STICK_PLAYER_STUNNED;
+		if (getMillisElapsed() % 800 < 400) return Textures.STICK_PLAYER_RHICHITE_MINING_2;
+		return Textures.STICK_PLAYER_RHICHITE_MINING_1;
 	}
 	
 }

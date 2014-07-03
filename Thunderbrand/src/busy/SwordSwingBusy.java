@@ -13,9 +13,9 @@ public class SwordSwingBusy extends TimedBusy {
 	@Override
 	public int getTexture() {
 		long millisElapsed = getMillisElapsed();
-		if (millisElapsed < 100) return Textures.STICK_PLAYER_SWORD_SWING_1;
-		if (millisElapsed < 300) return Textures.STICK_PLAYER_SWORD_SWING_2;
-		return Textures.STICK_PLAYER_SWORD_SWING_3;
+		if (millisElapsed < 100) return Textures.STICK_PLAYER_RHICHITE_SWORD_SWING_1;
+		if (millisElapsed < 300) return Textures.STICK_PLAYER_RHICHITE_SWORD_SWING_2;
+		return Textures.STICK_PLAYER_RHICHITE_SWORD_SWING_3;
 	}
 	
 }

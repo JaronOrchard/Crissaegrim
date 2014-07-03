@@ -38,7 +38,7 @@ public class Inventory {
 		updateSolaisTextTexture();
 		selectedItemIndex = 0;
 		
-		items[0] = new Weapon("Starter Sword", Textures.ITEM_STARTER_SWORD);
+		items[0] = new Weapon("Rhichite Sword", Textures.ITEM_RHICHITE_SWORD);
 		items[1] = new ItemPickaxe("Rhichite", Textures.ITEM_RHICHITE_PICKAXE);
 	}
 	

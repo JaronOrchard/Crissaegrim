@@ -101,11 +101,13 @@ public class Textures {
 	
 	public static final int STICK_PLAYER = 1000;
 	public static final int STICK_PLAYER_TYPING = 1001;
-	public static final int STICK_PLAYER_SWORD_SWING_1 = 1002;
-	public static final int STICK_PLAYER_SWORD_SWING_2 = 1003;
-	public static final int STICK_PLAYER_SWORD_SWING_3 = 1004;
-	public static final int STICK_PLAYER_STUNNED = 1005;
-	public static final int STICK_PLAYER_DEAD = 1006;
+	public static final int STICK_PLAYER_RHICHITE_SWORD_SWING_1 = 1002;
+	public static final int STICK_PLAYER_RHICHITE_SWORD_SWING_2 = 1003;
+	public static final int STICK_PLAYER_RHICHITE_SWORD_SWING_3 = 1004;
+	public static final int STICK_PLAYER_RHICHITE_MINING_1 = 1005;
+	public static final int STICK_PLAYER_RHICHITE_MINING_2 = 1006;
+	public static final int STICK_PLAYER_STUNNED = 1007;
+	public static final int STICK_PLAYER_DEAD = 1008;
 	
 	public static final int NPC_STICK_NINJA = 1100;
 	public static final int NPC_STICK_NINJA_STUNNED = 1101;
@@ -128,7 +130,7 @@ public class Textures {
 	
 	public static final int BACKGROUND_SOTN = 17960;
 	
-	public static final int ITEM_STARTER_SWORD = 20000;
+	public static final int ITEM_RHICHITE_SWORD = 20000;
 	public static final int ITEM_PARTY_POPPER_BLUE = 20001;
 	public static final int ITEM_PARTY_POPPER_GREEN = 20002;
 	public static final int ITEM_PARTY_POPPER_RED = 20003;
@@ -238,9 +240,11 @@ public class Textures {
 				
 		TextureLoader.loadTexture(STICK_PLAYER, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayer.png")));
 		TextureLoader.loadTexture(STICK_PLAYER_TYPING, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerTyping.png")));
-		TextureLoader.loadTexture(STICK_PLAYER_SWORD_SWING_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerSwordSwing1.png")));
-		TextureLoader.loadTexture(STICK_PLAYER_SWORD_SWING_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerSwordSwing2.png")));
-		TextureLoader.loadTexture(STICK_PLAYER_SWORD_SWING_3, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerSwordSwing3.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_RHICHITE_SWORD_SWING_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerRhichiteSwordSwing1.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_RHICHITE_SWORD_SWING_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerRhichiteSwordSwing2.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_RHICHITE_SWORD_SWING_3, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerRhichiteSwordSwing3.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_RHICHITE_MINING_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerRhichiteMining1.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_RHICHITE_MINING_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerRhichiteMining2.png")));
 		TextureLoader.loadTexture(STICK_PLAYER_STUNNED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerStunned.png")));
 		TextureLoader.loadTexture(STICK_PLAYER_DEAD, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerDead.png")));
 		
@@ -265,7 +269,7 @@ public class Textures {
 		
 		TextureLoader.loadTexture(BACKGROUND_SOTN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/SotNCastle.png")));
 		
-		TextureLoader.loadTexture(ITEM_STARTER_SWORD, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/StarterSword.png")));
+		TextureLoader.loadTexture(ITEM_RHICHITE_SWORD, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/RhichiteSword.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_BLUE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperBlue.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_GREEN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperGreen.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_RED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperRed.png")));
