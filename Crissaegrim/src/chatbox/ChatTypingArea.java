@@ -83,16 +83,17 @@ public class ChatTypingArea {
 	public void getKeyboardInput(boolean ignoreMouseClicks) {
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
-				if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
+				int pressedKey = Keyboard.getEventKey();
+				if (pressedKey == Keyboard.KEY_ESCAPE) {
 					typingModeEnabled = false;
 					return; // Don't process any more keys!
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_BACK) {
+				} else if (pressedKey == Keyboard.KEY_BACK) {
 					if (currentMessage.length() > getMinimumMessageLength()) {
 						currentMessage = currentMessage.substring(0, currentMessage.length() - 1);
 					} else if (currentColor != Color.WHITE) {
 						resetState();
 					}
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_RETURN) {
+				} else if (pressedKey == Keyboard.KEY_RETURN) {
 					if (!currentMessage.substring(getMinimumMessageLength()).trim().isEmpty()) {
 						String message = currentMessage.substring(getMinimumMessageLength()).trim();
 						Crissaegrim.addOutgoingDataPacket(new SendChatMessagePacket(new TextBlock(message, currentColor)));

@@ -19,6 +19,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
+import players.InventoryRunner;
 import players.InventoryUtils;
 import players.Player;
 import datapacket.AttackPacket;
@@ -313,8 +314,9 @@ public class GameRunner {
 		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
+				int pressedKey = Keyboard.getEventKey();
 				
-//				if (Keyboard.getEventKey() == Keyboard.KEY_B) {
+//				if (pressedKey == Keyboard.KEY_B) {
 //					DialogBoxRunner dbr = new DialogBoxRunner();
 //					DialogBox.Result res = dbr.run(new DialogBox(
 //							Arrays.asList("A wild dialog box appeared!", "Do you want to set this location as your respawn point?"),
@@ -324,23 +326,25 @@ public class GameRunner {
 //					else if (res == DialogBox.Result.BUTTON_3) { Crissaegrim.addSystemMessage("P-President Fabio?"); }
 //				}
 				
-				if (Keyboard.getEventKey() == Keyboard.KEY_T ||
-						Keyboard.getEventKey() == Keyboard.KEY_RETURN) {	// T or Enter: Enter chat mode
+				if (pressedKey == Keyboard.KEY_T ||
+						pressedKey == Keyboard.KEY_RETURN) {	// T or Enter: Enter chat mode
 					Crissaegrim.getChatBox().enableTypingMode();
 					return; // Don't process any more keys!
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_UP) {		// Up arrow: Select previous inventory item
+				} else if (pressedKey == Keyboard.KEY_UP) {		// Up arrow: Select previous inventory item
 					player.getInventory().selectPreviousItem();
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_DOWN) {	// Down arrow: Select next inventory item
+				} else if (pressedKey == Keyboard.KEY_DOWN) {	// Down arrow: Select next inventory item
 					player.getInventory().selectNextItem();
-				} else if (Keyboard.getEventKey() >= Keyboard.KEY_1 && Keyboard.getEventKey() <= Keyboard.KEY_8) { // 1-8: Select inventory item
-					player.getInventory().selectSpecificItem(Keyboard.getEventKey() - Keyboard.KEY_1);
-				} else if (Keyboard.getEventKey() == 41) {					// Backtick (`) key
+				} else if (pressedKey >= Keyboard.KEY_1 && pressedKey <= Keyboard.KEY_8) { // 1-8: Select inventory item
+					player.getInventory().selectSpecificItem(pressedKey - Keyboard.KEY_1);
+				} else if (pressedKey == 41) {					// Backtick (`) key
 					Crissaegrim.toggleDebugMode();
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_TAB) {	// Tab key: Toggle zoom
+				} else if (pressedKey == Keyboard.KEY_TAB) {	// Tab key: Toggle zoom
 					Crissaegrim.toggleZoom();
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_M) {		// M key: Toggle window size
+				} else if (pressedKey == Keyboard.KEY_M) {		// M key: Toggle window size
 					Crissaegrim.toggleWindowSize();
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_F) {		// F key: Activate F-key doodads
+				} else if (pressedKey == Keyboard.KEY_E) {		// E key: Open inventory
+					new InventoryRunner().run();
+				} else if (pressedKey == Keyboard.KEY_F) {		// F key: Activate F-key doodads
 					for (Doodad doodad : Crissaegrim.getCurrentBoard().getDoodads().values()) {
 						if (!player.isBusy() && RectUtils.coordinateIsInRect(player.getPosition(), doodad.getBounds())) {
 							switch (doodad.getDoodadAction()) {
