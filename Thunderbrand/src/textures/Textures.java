@@ -97,6 +97,25 @@ public class Textures {
 	public static final int WINDOW_BL = 212;
 	public static final int WINDOW_BR = 213;
 	
+	public static final int MIDLEVEL_DIRT_1L = 220;
+	public static final int MIDLEVEL_DIRT_1LI = 221;
+	public static final int MIDLEVEL_DIRT_1R = 222;
+	public static final int MIDLEVEL_DIRT_1RI = 223;
+	public static final int MIDLEVEL_DIRT_2L = 224;
+	public static final int MIDLEVEL_DIRT_2LH = 225;
+	public static final int MIDLEVEL_DIRT_2LHI = 226;
+	public static final int MIDLEVEL_DIRT_2LI = 227;
+	public static final int MIDLEVEL_DIRT_2R = 228;
+	public static final int MIDLEVEL_DIRT_2RH = 229;
+	public static final int MIDLEVEL_DIRT_2RHI = 230;
+	public static final int MIDLEVEL_DIRT_2RI = 231;
+	public static final int MIDLEVEL_DIRT_FULL = 232;
+	public static final int MIDLEVEL_DIRT_FULL_TOP = 233;
+	public static final int MIDLEVEL_DIRT_FULL_TL = 234;
+	public static final int MIDLEVEL_DIRT_FULL_TR = 235;
+	public static final int MIDLEVEL_DIRT_HALF_VERTICALLY = 236;
+	public static final int MIDLEVEL_DIRT_HALF_VERTICALLY_I = 237;
+	
 	public static final int CHUNK_NOT_FOUND = 999;
 	
 	public static final int STICK_PLAYER = 1000;
@@ -237,6 +256,25 @@ public class Textures {
 		TextureLoader.loadTexture(WINDOW_BL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/window/windowBL.png")));
 		TextureLoader.loadTexture(WINDOW_BR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/window/windowBR.png")));
 		
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_1L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/1L.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_1LI, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/1LI.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_1R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/1R.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_1RI, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/1RI.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_2L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/2L.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_2LH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/2LH.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_2LHI, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/2LHI.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_2LI, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/2LI.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_2R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/2R.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_2RH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/2RH.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_2RHI, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/2RHI.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_2RI, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/2RI.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_FULL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/Full.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_FULL_TOP, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/FullTop.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_FULL_TL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/FullTL.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_FULL_TR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/FullTR.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_HALF_VERTICALLY, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/HalfVertically.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_HALF_VERTICALLY_I, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/HalfVerticallyI.png")));
+		
 		TextureLoader.loadTexture(CHUNK_NOT_FOUND, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ChunkNotFound.png")));
 				
 		TextureLoader.loadTexture(STICK_PLAYER, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayer.png")));
@@ -290,6 +328,7 @@ public class Textures {
 			160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181,
 			200, 201, 202, 203, 204,
 			210, 211, 212, 213,
+			220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237,
 			999,
 			2000
 			);
