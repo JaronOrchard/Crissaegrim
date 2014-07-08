@@ -239,6 +239,7 @@ public class MapmakerBoard {
 		if (chunk != null) {
 			chunk.getTiles()[tileX % chunkSideSize][tileY % chunkSideSize] = new TileBlank();
 			chunk.checkAndSetIsEmpty();
+			modifiedChunks.add(chunkName);
 		}
 	}
 	
