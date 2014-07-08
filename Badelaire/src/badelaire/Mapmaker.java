@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 import geometry.Coordinate;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
@@ -22,6 +23,7 @@ public class Mapmaker {
 	
 	private static final int THREAD_SLEEP_MILLIS = 50; // Some number to let the mapmaker rest?
 	private static final double PAN_AMOUNT = 3.0;
+	private static final int RECENTLY_USED_CHOICES = 7; // First one is the current selection
 	
 	private int mode = 0; // 0 = View, 1 = BG, 2 = MG, 3 = FG, 4 = Tile types only
 	private FillArea fillArea = new FillArea();
@@ -34,6 +36,23 @@ public class Mapmaker {
 	
 	private Tile currentTileType;
 	private int currentTexture;
+	private List<Tile> previouslyUsedTileTypes;
+	private List<Integer> previouslyUsedTextures;
+	private Tile replacementTile;
+	private int replacementTexture;
+	
+	public Mapmaker() {
+		previouslyUsedTileTypes = new ArrayList<Tile>();
+		previouslyUsedTextures = new ArrayList<Integer>();
+		for (int i = 0; i < RECENTLY_USED_CHOICES; i++) {
+			previouslyUsedTileTypes.add(new TileBlank());
+			previouslyUsedTextures.add(Textures.NONE);
+		}
+		currentTileType = new TileBlank();
+		replacementTile = new TileBlank();
+		currentTexture = Textures.NONE;
+		replacementTexture = Textures.NONE;
+	}
 	
 	/**
 	 * Dangerous, important function.
@@ -72,14 +91,13 @@ public class Mapmaker {
 		//textureRemap(); if(true) return;
 		
 		center = new Coordinate(10050, 10000);
-		currentTileType = new TileBlank();
-		currentTexture = Textures.NONE;
 		updateDisplayTitle();
 		
 		while (!Display.isCloseRequested()) {
 			
 			// Draw new scene:
 			drawScene();
+			drawHUD();
 			
 			// Get input and move the player:
 			getKeyboardAndMouseInput();
@@ -97,16 +115,12 @@ public class Mapmaker {
 				mapmakerBoard.drawAll(center, showGrid);
 			} else if (mode == 1) {
 				mapmakerBoard.drawBG(center, showGrid);
-				drawCurrentTileOutline(currentTexture);
 			} else if (mode == 2) {
 				mapmakerBoard.drawMG(center, showGrid);
-				drawCurrentTileOutline(currentTexture);
 			} else if (mode == 3) {
 				mapmakerBoard.drawFG(center, showGrid);
-				drawCurrentTileOutline(currentTexture);
 			} else if (mode == 4) {
 				mapmakerBoard.drawTileTypes(center, showGrid);
-				drawCurrentTileOutline(currentTileType.getDefaultTexture());
 			}
 			if (!fillArea.isIdle()) {
 				int tileX = (int)center.getX() - (Badelaire.getWindowWidth() / 2 / Badelaire.getPixelsPerTile()) + (Mouse.getX() / Badelaire.getPixelsPerTile());
@@ -158,13 +172,39 @@ public class Mapmaker {
 		}
 	}
 	
-	private void drawCurrentTileOutline(int texture) {
-		double tileX = center.getX() - Badelaire.getWindowWidthRadiusInTiles();
-		double tileY = center.getY() + Badelaire.getWindowHeightRadiusInTiles() - 1;
+	private void drawHUD() {
+		if (textureSelectionModeEnabled || tileTypeSelectionModeEnabled || mode == 0 ||
+				Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+			return;
+		}
+		MapmakerInitializer.initializeNewFrameForScene(center);
 		glColor3d(1.0, 1.0, 1.0);
+		double tileX = center.getX() - Badelaire.getWindowWidthRadiusInTiles() + 0.5;
+		double tileY = center.getY() + Badelaire.getWindowHeightRadiusInTiles() - 1.5;
+		
+		// Draw recently used choices, including the current selection
+		for (int i = 0; i < RECENTLY_USED_CHOICES; i++) {
+			glPushMatrix();
+				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+				glBindTexture(GL_TEXTURE_2D, (mode == 4 ? previouslyUsedTileTypes.get(i).getDefaultTexture() : previouslyUsedTextures.get(i)));
+				glBegin(GL_QUADS);
+					glTexCoord2d(0, 1);
+					glVertex2d(tileX, tileY);
+					glTexCoord2d(1, 1);
+					glVertex2d(tileX + 1, tileY);
+					glTexCoord2d(1, 0);
+					glVertex2d(tileX + 1, tileY + 1);
+					glTexCoord2d(0, 0);
+					glVertex2d(tileX, tileY + 1);
+				glEnd();
+			glPopMatrix();
+			tileX += 2;
+		}
+		
+		// Draw replacement choice
 		glPushMatrix();
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBindTexture(GL_TEXTURE_2D, texture);
+			glBindTexture(GL_TEXTURE_2D, (mode == 4 ? replacementTile.getDefaultTexture() : replacementTexture));
 			glBegin(GL_QUADS);
 				glTexCoord2d(0, 1);
 				glVertex2d(tileX, tileY);
@@ -177,13 +217,21 @@ public class Mapmaker {
 			glEnd();
 		glPopMatrix();
 		
-		glColor3d(1, 0.2, 0.2);
+		// Draw all lines
+		tileX = center.getX() - Badelaire.getWindowWidthRadiusInTiles() + 0.5;
 		glDisable(GL_TEXTURE_2D);
-		glBegin(GL_LINE_STRIP);
-			glVertex2d(tileX, tileY);
-			glVertex2d(tileX + 1, tileY);
-			glVertex2d(tileX + 1, tileY + 1);
-		glEnd();
+		for (int i = 0; i < 1 + RECENTLY_USED_CHOICES; i++) {
+			if (i == 0)								{ glColor3d(0.7, 0.2, 0.2); } // Current selection
+			else if (i == RECENTLY_USED_CHOICES)	{ glColor3d(0.2, 0.7, 0.2); } // Replacement choice slot
+			else									{ glColor3d(0.2, 0.7, 0.7); } // Recently used
+			glBegin(GL_LINE_LOOP);
+				glVertex2d(tileX, tileY);
+				glVertex2d(tileX + 1, tileY);
+				glVertex2d(tileX + 1, tileY + 1);
+				glVertex2d(tileX, tileY + 1);
+			glEnd();
+			tileX += 2;
+		}
 		glEnable(GL_TEXTURE_2D);
 		glColor3d(1.0, 1.0, 1.0);
 	}
@@ -300,25 +348,26 @@ public class Mapmaker {
 		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
-				if (Keyboard.getEventKey() == Keyboard.KEY_G) {
+				int pressedKey = Keyboard.getEventKey();
+				if (pressedKey == Keyboard.KEY_G) {
 					toggleShowGrid();
 					updateDisplayTitle();
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_TAB && !textureSelectionModeEnabled && !tileTypeSelectionModeEnabled) {
+				} else if (pressedKey == Keyboard.KEY_TAB && !textureSelectionModeEnabled && !tileTypeSelectionModeEnabled) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 						mode = (mode + 5 - 1) % 5;
 					} else {
 						mode = (mode + 1) % 5;
 					}
 					updateDisplayTitle();
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_RETURN) {
+				} else if (pressedKey == Keyboard.KEY_RETURN) {
 					mapmakerBoard.saveModifiedChunks();
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_Z) { // Z key: toggle zoom
+				} else if (pressedKey == Keyboard.KEY_Z) { // Z key: toggle zoom
 					Badelaire.toggleZoom();
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_Q) { // Q key: toggle fill area
+				} else if (pressedKey == Keyboard.KEY_Q) { // Q key: toggle fill area
 					int tileX = (int)center.getX() - (Badelaire.getWindowWidth() / 2 / Badelaire.getPixelsPerTile()) + (Mouse.getX() / Badelaire.getPixelsPerTile());
 					int tileY = (int)center.getY() - (Badelaire.getWindowHeight() / 2 / Badelaire.getPixelsPerTile()) + (Mouse.getY() / Badelaire.getPixelsPerTile());
 					fillArea.nextState(tileX, tileY);
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_F) { // F key: Fill selected fill area
+				} else if (pressedKey == Keyboard.KEY_F) { // F key: Fill selected fill area
 					if (fillArea.readyToFill()) {
 						// This needs refactoring obvs.
 						int leftmostTile = fillArea.getPoint1TileX() < fillArea.getPoint2TileX() ? fillArea.getPoint1TileX() : fillArea.getPoint2TileX();
@@ -344,7 +393,7 @@ public class Mapmaker {
 						}
 						fillArea.nextState(0, 0);
 					}
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_C) {
+				} else if (pressedKey == Keyboard.KEY_C) {
 					if (fillArea.readyToFill()) {
 						// This needs refactoring obvs.
 						int leftmostTile = fillArea.getPoint1TileX() < fillArea.getPoint2TileX() ? fillArea.getPoint1TileX() : fillArea.getPoint2TileX();
@@ -358,11 +407,19 @@ public class Mapmaker {
 						}
 						fillArea.nextState(0, 0);
 					}
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_E) {
+				} else if (pressedKey == Keyboard.KEY_E) {
 					if (mode == 1 || mode == 2 || mode == 3) {
 						textureSelectionModeEnabled = !textureSelectionModeEnabled;
 					} else if (mode == 4) {
 						tileTypeSelectionModeEnabled = !tileTypeSelectionModeEnabled;
+					}
+				} else if (!textureSelectionModeEnabled && !tileTypeSelectionModeEnabled &&
+						pressedKey >= Keyboard.KEY_1 && pressedKey < Keyboard.KEY_1 + RECENTLY_USED_CHOICES - 1) {
+					int recentChoice = pressedKey - Keyboard.KEY_1 + 1;
+					if (mode == 4) {
+						selectTileType(null, recentChoice);
+					} else if (mode != 0) {
+						selectTexture(0, recentChoice);
 					}
 				}
 				updateDisplayTitle();
@@ -400,9 +457,11 @@ public class Mapmaker {
 				int tileY = (Badelaire.getWindowHeight() / Badelaire.getPixelsPerTile()) - 1 - Mouse.getY() / Badelaire.getPixelsPerTile();
 				int indexSelected = ((Badelaire.getWindowWidth() / Badelaire.getPixelsPerTile()) * tileY) + tileX;
 				if (indexSelected >= Textures.getSelectableTextures().size()) {
-					currentTexture = Textures.NONE;
+					if (Mouse.isButtonDown(0)) { replacementTexture = Textures.NONE; }
+					else { selectTexture(Textures.NONE, -1); }
 				} else {
-					currentTexture = Textures.getSelectableTextures().get(indexSelected);
+					if (Mouse.isButtonDown(0)) { replacementTexture = Textures.getSelectableTextures().get(indexSelected); }
+					else { selectTexture(Textures.getSelectableTextures().get(indexSelected), -1); }
 				}
 				if (Mouse.isButtonDown(1)) { textureSelectionModeEnabled = false; }
 			}
@@ -412,13 +471,39 @@ public class Mapmaker {
 				int tileY = (Badelaire.getWindowHeight() / Badelaire.getPixelsPerTile()) - 1 - Mouse.getY() / Badelaire.getPixelsPerTile();
 				int indexSelected = ((Badelaire.getWindowWidth() / Badelaire.getPixelsPerTile()) * tileY) + tileX;
 				if (indexSelected >= TileUtils.getMapmakerSelectableTiles().size()) {
-					currentTileType = new TileBlank();
+					if (Mouse.isButtonDown(0)) { replacementTile = new TileBlank(); }
+					else { selectTileType(new TileBlank(), -1); }
 				} else {
-					currentTileType = TileUtils.getMapmakerSelectableTiles().get(indexSelected);
+					if (Mouse.isButtonDown(0)) { replacementTile = TileUtils.getMapmakerSelectableTiles().get(indexSelected); }
+					else { selectTileType(TileUtils.getMapmakerSelectableTiles().get(indexSelected), -1); }
 				}
 				if (Mouse.isButtonDown(1)) { tileTypeSelectionModeEnabled = false; }
 			}
 		}
+	}
+	
+	private void selectTexture(int texture, int choiceFromRecent) {
+		if (choiceFromRecent >= 1 && choiceFromRecent < RECENTLY_USED_CHOICES) { texture = previouslyUsedTextures.get(choiceFromRecent); }
+		currentTexture = texture;
+		for (int i = 0; i < RECENTLY_USED_CHOICES; i++) {
+			if (previouslyUsedTextures.get(i) == texture) {
+				previouslyUsedTextures.remove(i);
+				break;
+			}
+		}
+		previouslyUsedTextures.add(0, texture);
+	}
+	
+	private void selectTileType(Tile tile, int choiceFromRecent) {
+		if (choiceFromRecent >= 1 && choiceFromRecent < RECENTLY_USED_CHOICES) { tile = previouslyUsedTileTypes.get(choiceFromRecent); }
+		currentTileType = tile;
+		for (int i = 0; i < RECENTLY_USED_CHOICES; i++) {
+			if (TileUtils.getTileTypeInt(previouslyUsedTileTypes.get(i)) == TileUtils.getTileTypeInt(tile)) {
+				previouslyUsedTileTypes.remove(i);
+				break;
+			}
+		}
+		previouslyUsedTileTypes.add(0, tile);
 	}
 	
 	private void drawStickPlayer(double x, double y) {
