@@ -14,9 +14,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import textures.Textures;
 import thunderbrand.Thunderbrand;
 import badelaire.Badelaire;
 import board.tiles.Tile;
+import board.tiles.TileUtils;
 import board.tiles.Tile.TileLayer;
 import board.tiles.TileBlank;
 
@@ -145,6 +147,26 @@ public class MapmakerBoard {
 			if (drawFG) { entry.getValue().draw(centerPosition, TileLayer.FOREGROUND, xRange, yRange); }
 			if (drawGrid) { entry.getValue().drawPostGrid(); }
 		}
+	}
+	
+	public int getBG(int tileX, int tileY) { return getInfo(tileX, tileY, 1); }
+	public int getMG(int tileX, int tileY) { return getInfo(tileX, tileY, 2); }
+	public int getFG(int tileX, int tileY) { return getInfo(tileX, tileY, 3); }
+	public int getTileType(int tileX, int tileY) { return getInfo(tileX, tileY, 4); }
+	
+	private int getInfo(int tileX, int tileY, int mode) {
+		int chunkSideSize = Thunderbrand.getChunkSideSize();
+		int chunkXOrigin = tileX - (tileX % chunkSideSize);
+		int chunkYOrigin = tileY - (tileY % chunkSideSize);
+		String chunkName = chunkXOrigin + "_" + chunkYOrigin;
+		MapmakerChunk chunk = chunkMap.get(chunkName);
+		if (chunk == null) { return -1; }
+		Tile tile = chunk.getTile(tileX % chunkSideSize, tileY % chunkSideSize);
+		if (mode == 1)		{ return tile.getBackgroundTexture(); }
+		else if (mode == 2)	{ return tile.getMiddlegroundTexture(); }
+		else if (mode == 3) { return tile.getForegroundTexture(); }
+		else if (mode == 4) { return TileUtils.getTileTypeInt(tile); }
+		return -1;
 	}
 	
 	public void setBG(int tileX, int tileY, int texture) {

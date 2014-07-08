@@ -407,6 +407,32 @@ public class Mapmaker {
 						}
 						fillArea.nextState(0, 0);
 					}
+				} else if (pressedKey == Keyboard.KEY_R) {
+					if (fillArea.readyToFill()) {
+						// This needs refactoring obvs.
+						int leftmostTile = fillArea.getPoint1TileX() < fillArea.getPoint2TileX() ? fillArea.getPoint1TileX() : fillArea.getPoint2TileX();
+						int rightmostTile = fillArea.getPoint1TileX() < fillArea.getPoint2TileX() ? fillArea.getPoint2TileX() : fillArea.getPoint1TileX();
+						int topmostTile = fillArea.getPoint1TileY() < fillArea.getPoint2TileY() ? fillArea.getPoint2TileY() : fillArea.getPoint1TileY();
+						int bottommostTile = fillArea.getPoint1TileY() < fillArea.getPoint2TileY() ? fillArea.getPoint1TileY() : fillArea.getPoint2TileY();
+						for (int tileX = leftmostTile; tileX <= rightmostTile; tileX++) {
+							for (int tileY = bottommostTile; tileY <= topmostTile; tileY++) {
+								if (mode == 1 && mapmakerBoard.getBG(tileX, tileY) == replacementTexture) {
+									mapmakerBoard.setBG(tileX, tileY, currentTexture);
+								} else if (mode == 2 && mapmakerBoard.getMG(tileX, tileY) == replacementTexture) {
+									mapmakerBoard.setMG(tileX, tileY, currentTexture);
+								} else if (mode == 3 && mapmakerBoard.getFG(tileX, tileY) == replacementTexture) {
+									mapmakerBoard.setFG(tileX, tileY, currentTexture);
+								} else if (mode == 4 && mapmakerBoard.getTileType(tileX, tileY) == TileUtils.getTileTypeInt(replacementTile)) {
+									try {
+										mapmakerBoard.setTileType(tileX, tileY, currentTileType.getClass().getConstructor().newInstance());
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							}
+						}
+						fillArea.nextState(0, 0);
+					}
 				} else if (pressedKey == Keyboard.KEY_E) {
 					if (mode == 1 || mode == 2 || mode == 3) {
 						textureSelectionModeEnabled = !textureSelectionModeEnabled;
