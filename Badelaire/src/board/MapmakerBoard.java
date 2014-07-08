@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import textures.Textures;
 import thunderbrand.Thunderbrand;
 import badelaire.Badelaire;
 import board.tiles.Tile;

@@ -431,7 +431,6 @@ public class Mapmaker {
 								}
 							}
 						}
-						fillArea.nextState(0, 0);
 					}
 				} else if (pressedKey == Keyboard.KEY_E) {
 					if (mode == 1 || mode == 2 || mode == 3) {
