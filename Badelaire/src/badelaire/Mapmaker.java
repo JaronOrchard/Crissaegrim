@@ -64,12 +64,12 @@ public class Mapmaker {
 		for (MapmakerChunk mc : mapmakerBoard.getChunkMap().values()) {
 			for (int x = 0; x < chunkSideSize; x++) {
 				for (int y = 0; y < chunkSideSize; y++) {
-					if (mc.getTile(x, y).getBackgroundTexture() > 174 && mc.getTile(x, y).getBackgroundTexture() < 179)
-						mc.getTile(x, y).setBackgroundTexture(Textures.CHUNK_NOT_FOUND);
-					if (mc.getTile(x, y).getMiddlegroundTexture() > 174 && mc.getTile(x, y).getMiddlegroundTexture() < 179)
-						mc.getTile(x, y).setMiddlegroundTexture(Textures.CHUNK_NOT_FOUND);
-					if (mc.getTile(x, y).getForegroundTexture() > 174 && mc.getTile(x, y).getForegroundTexture() < 179)
-						mc.getTile(x, y).setForegroundTexture(Textures.CHUNK_NOT_FOUND);
+					if (mc.getTile(x, y).getBackgroundTexture() > 180 && mc.getTile(x, y).getBackgroundTexture() < 182)
+						mc.getTile(x, y).setBackgroundTexture(172);
+					if (mc.getTile(x, y).getMiddlegroundTexture() > 180 && mc.getTile(x, y).getMiddlegroundTexture() < 182)
+						mc.getTile(x, y).setMiddlegroundTexture(172);
+					if (mc.getTile(x, y).getForegroundTexture() > 180 && mc.getTile(x, y).getForegroundTexture() < 182)
+						mc.getTile(x, y).setForegroundTexture(172);
 					
 				}
 			}
@@ -84,9 +84,9 @@ public class Mapmaker {
 		
 		//mapmakerBoard = new MapmakerBoard("sotn_clock_tower");
 		//mapmakerBoard = new MapmakerBoard("dawning_interior");
-		//mapmakerBoard = new MapmakerBoard("dawning");
+		mapmakerBoard = new MapmakerBoard("dawning");
 		//mapmakerBoard = new MapmakerBoard("tower_of_preludes");
-		mapmakerBoard = new MapmakerBoard("morriston");
+		//mapmakerBoard = new MapmakerBoard("morriston");
 		
 		//textureRemap(); if(true) return;
 		

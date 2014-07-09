@@ -63,21 +63,38 @@ public class Textures {
 	public static final int TOWER_OF_PRELUDES_HALF_VERTICALLY_TBL = 146;
 	public static final int TOWER_OF_PRELUDES_BACKGROUND = 147;
 	
-	public static final int KIKORI_DG_1L = 160;
-	public static final int KIKORI_DG_1R = 161;
-	public static final int KIKORI_DG_2L = 162;
-	public static final int KIKORI_DG_2LH = 163;
-	public static final int KIKORI_DG_2R = 164;
-	public static final int KIKORI_DG_2RH = 165;
-	public static final int KIKORI_DG_FULL = 166;
+	public static final int TOPLEVEL_GRASS_1L = 160;
+	public static final int TOPLEVEL_GRASS_1R = 161;
+	public static final int TOPLEVEL_GRASS_2L = 162;
+	public static final int TOPLEVEL_GRASS_2LH = 163;
+	public static final int TOPLEVEL_GRASS_2R = 164;
+	public static final int TOPLEVEL_GRASS_2RH = 165;
+	public static final int TOPLEVEL_GRASS_FULL_TOP = 166;
+	public static final int TOPLEVEL_GRASS_HALF_VERTICALLY = 167;
+	public static final int TOPLEVEL_GRASS_FULL_TL = 168;
+	public static final int TOPLEVEL_GRASS_FULL_TR = 169;
+	public static final int TOPLEVEL_GRASS_SPRIG_1 = 170;
+	public static final int TOPLEVEL_GRASS_SPRIG_2 = 171;
+	public static final int TOPLEVEL_GRASS_SPRIG_3 = 172;
 	
-	public static final int KIKORI_DG_HALF_VERTICALLY = 171;
-	public static final int KIKORI_DG_TL = 172;
-	public static final int KIKORI_DG_TR = 173;
-	public static final int KIKORI_D_FULL = 174;
-	public static final int KIKORI_GRASS_SPRIG_1 = 179;
-	public static final int KIKORI_GRASS_SPRIG_2 = 180;
-	public static final int KIKORI_GRASS_SPRIG_3 = 181;
+	public static final int TOPLEVEL_DIRT_FULL = 174;
+	public static final int TOPLEVEL_DIRT_FULL_TOP = 175;
+	public static final int TOPLEVEL_DIRT_FULL_TL = 176;
+	public static final int TOPLEVEL_DIRT_FULL_TR = 177;
+	public static final int TOPLEVEL_DIRT_1L = 178;
+	public static final int TOPLEVEL_DIRT_1R = 179;
+	public static final int TOPLEVEL_DIRT_1LI = 180;
+	public static final int TOPLEVEL_DIRT_1RI = 181;
+	public static final int TOPLEVEL_DIRT_2L = 182;
+	public static final int TOPLEVEL_DIRT_2LH = 183;
+	public static final int TOPLEVEL_DIRT_2RH = 184;
+	public static final int TOPLEVEL_DIRT_2R = 185;
+	public static final int TOPLEVEL_DIRT_2LI = 186;
+	public static final int TOPLEVEL_DIRT_2LHI = 187;
+	public static final int TOPLEVEL_DIRT_2RHI = 188;
+	public static final int TOPLEVEL_DIRT_2RI = 189;
+	public static final int TOPLEVEL_DIRT_HALF_VERTICALLY = 190;
+	public static final int TOPLEVEL_DIRT_HALF_VERTICALLY_I = 191;
 	
 	public static final int DAWNING_BRIDGE_2RH = 200;
 	public static final int DAWNING_BRIDGE_2R = 201;
@@ -215,20 +232,38 @@ public class Textures {
 		TextureLoader.loadTexture(TOWER_OF_PRELUDES_HALF_VERTICALLY_TBL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/tower_of_preludes/HalfVerticallyTBL.png")));
 		TextureLoader.loadTexture(TOWER_OF_PRELUDES_BACKGROUND, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/tower_of_preludes/towerBG.png")));
 		
-		TextureLoader.loadTexture(KIKORI_DG_1L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&G1L.PNG")));
-		TextureLoader.loadTexture(KIKORI_DG_1R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&G1R.PNG")));
-		TextureLoader.loadTexture(KIKORI_DG_2L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&G2L.PNG")));
-		TextureLoader.loadTexture(KIKORI_DG_2LH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&G2LH.PNG")));
-		TextureLoader.loadTexture(KIKORI_DG_2R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&G2R.PNG")));
-		TextureLoader.loadTexture(KIKORI_DG_2RH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&G2RH.PNG")));
-		TextureLoader.loadTexture(KIKORI_DG_FULL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&GFull.PNG")));
-		TextureLoader.loadTexture(KIKORI_DG_HALF_VERTICALLY, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&GHalfVertically.PNG")));
-		TextureLoader.loadTexture(KIKORI_DG_TL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&GTL.PNG")));
-		TextureLoader.loadTexture(KIKORI_DG_TR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&GTR.PNG")));
-		TextureLoader.loadTexture(KIKORI_D_FULL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileDFull.PNG")));
-		TextureLoader.loadTexture(KIKORI_GRASS_SPRIG_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/GrassSprig1.png")));
-		TextureLoader.loadTexture(KIKORI_GRASS_SPRIG_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/GrassSprig2.png")));
-		TextureLoader.loadTexture(KIKORI_GRASS_SPRIG_3, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/GrassSprig3.png")));
+		TextureLoader.loadTexture(TOPLEVEL_GRASS_1L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_grass/1L.png")));
+		TextureLoader.loadTexture(TOPLEVEL_GRASS_1R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_grass/1R.png")));
+		TextureLoader.loadTexture(TOPLEVEL_GRASS_2L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_grass/2L.png")));
+		TextureLoader.loadTexture(TOPLEVEL_GRASS_2LH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_grass/2LH.png")));
+		TextureLoader.loadTexture(TOPLEVEL_GRASS_2R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_grass/2R.png")));
+		TextureLoader.loadTexture(TOPLEVEL_GRASS_2RH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_grass/2RH.png")));
+		TextureLoader.loadTexture(TOPLEVEL_GRASS_FULL_TOP, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_grass/FullTop.png")));
+		TextureLoader.loadTexture(TOPLEVEL_GRASS_HALF_VERTICALLY, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_grass/HalfVertically.png")));
+		TextureLoader.loadTexture(TOPLEVEL_GRASS_FULL_TL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_grass/FullTL.png")));
+		TextureLoader.loadTexture(TOPLEVEL_GRASS_FULL_TR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_grass/FullTR.png")));
+		TextureLoader.loadTexture(TOPLEVEL_GRASS_SPRIG_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_grass/GrassSprig1.png")));
+		TextureLoader.loadTexture(TOPLEVEL_GRASS_SPRIG_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_grass/GrassSprig2.png")));
+		TextureLoader.loadTexture(TOPLEVEL_GRASS_SPRIG_3, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_grass/GrassSprig3.png")));
+		
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_FULL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/Full.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_FULL_TOP, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/FullTop.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_FULL_TL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/FullTL.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_FULL_TR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/FullTR.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_1L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/1L.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_1R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/1R.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_1LI, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/1LI.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_1RI, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/1RI.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_2L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/2L.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_2LH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/2LH.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_2RH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/2RH.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_2R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/2R.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_2LI, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/2LI.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_2LHI, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/2LHI.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_2RHI, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/2RHI.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_2RI, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/2RI.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_HALF_VERTICALLY, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/HalfVertically.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_HALF_VERTICALLY_I, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/HalfVerticallyI.png")));
 		
 		TextureLoader.loadTexture(DAWNING_BRIDGE_2RH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/bridge/Bridge2RH.png")));
 		TextureLoader.loadTexture(DAWNING_BRIDGE_2R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/bridge/Bridge2R.png")));
@@ -310,7 +345,8 @@ public class Textures {
 	private static List<Integer> selectableTextures = Arrays.asList(
 			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
 			120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147,
-			160, 161, 162, 163, 164, 165, 166, 171, 172, 173, 174, 179, 180, 181,
+			160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, // toplevel_grass
+			174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, // toplevel_dirt
 			200, 201, 202, 203, 204,
 			210, 211, 212, 213,
 			220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237,
