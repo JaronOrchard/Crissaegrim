@@ -64,12 +64,12 @@ public class Mapmaker {
 		for (MapmakerChunk mc : mapmakerBoard.getChunkMap().values()) {
 			for (int x = 0; x < chunkSideSize; x++) {
 				for (int y = 0; y < chunkSideSize; y++) {
-					if (mc.getTile(x, y).getBackgroundTexture() > 19 && mc.getTile(x, y).getBackgroundTexture() < 105)
-						mc.getTile(x, y).setBackgroundTexture(mc.getTile(x, y).getBackgroundTexture() + 100);
-					if (mc.getTile(x, y).getMiddlegroundTexture() > 19 && mc.getTile(x, y).getMiddlegroundTexture() < 105)
-						mc.getTile(x, y).setMiddlegroundTexture(mc.getTile(x, y).getMiddlegroundTexture() + 100);
-					if (mc.getTile(x, y).getForegroundTexture() > 19 && mc.getTile(x, y).getForegroundTexture() < 105)
-						mc.getTile(x, y).setForegroundTexture(mc.getTile(x, y).getForegroundTexture() + 100);
+					if (mc.getTile(x, y).getBackgroundTexture() > 174 && mc.getTile(x, y).getBackgroundTexture() < 179)
+						mc.getTile(x, y).setBackgroundTexture(Textures.CHUNK_NOT_FOUND);
+					if (mc.getTile(x, y).getMiddlegroundTexture() > 174 && mc.getTile(x, y).getMiddlegroundTexture() < 179)
+						mc.getTile(x, y).setMiddlegroundTexture(Textures.CHUNK_NOT_FOUND);
+					if (mc.getTile(x, y).getForegroundTexture() > 174 && mc.getTile(x, y).getForegroundTexture() < 179)
+						mc.getTile(x, y).setForegroundTexture(Textures.CHUNK_NOT_FOUND);
 					
 				}
 			}

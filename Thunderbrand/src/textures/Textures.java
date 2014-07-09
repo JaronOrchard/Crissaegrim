@@ -70,18 +70,11 @@ public class Textures {
 	public static final int KIKORI_DG_2R = 164;
 	public static final int KIKORI_DG_2RH = 165;
 	public static final int KIKORI_DG_FULL = 166;
-	public static final int KIKORI_DG_FULL_L = 167;
-	public static final int KIKORI_DG_FULL_OFL = 168;
-	public static final int KIKORI_DG_FULL_OFR = 169;
-	public static final int KIKORI_DG_FULL_R = 170;
+	
 	public static final int KIKORI_DG_HALF_VERTICALLY = 171;
 	public static final int KIKORI_DG_TL = 172;
 	public static final int KIKORI_DG_TR = 173;
 	public static final int KIKORI_D_FULL = 174;
-	public static final int KIKORI_D_FULL_L = 175;
-	public static final int KIKORI_D_FULL_OFL = 176;
-	public static final int KIKORI_D_FULL_OFR = 177;
-	public static final int KIKORI_D_FULL_R = 178;
 	public static final int KIKORI_GRASS_SPRIG_1 = 179;
 	public static final int KIKORI_GRASS_SPRIG_2 = 180;
 	public static final int KIKORI_GRASS_SPRIG_3 = 181;
@@ -229,18 +222,10 @@ public class Textures {
 		TextureLoader.loadTexture(KIKORI_DG_2R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&G2R.PNG")));
 		TextureLoader.loadTexture(KIKORI_DG_2RH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&G2RH.PNG")));
 		TextureLoader.loadTexture(KIKORI_DG_FULL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&GFull.PNG")));
-		TextureLoader.loadTexture(KIKORI_DG_FULL_L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&GFullL.PNG")));
-		TextureLoader.loadTexture(KIKORI_DG_FULL_OFL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&GFullOFL.PNG")));
-		TextureLoader.loadTexture(KIKORI_DG_FULL_OFR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&GFullOFR.PNG")));
-		TextureLoader.loadTexture(KIKORI_DG_FULL_R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&GFullR.PNG")));
 		TextureLoader.loadTexture(KIKORI_DG_HALF_VERTICALLY, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&GHalfVertically.PNG")));
 		TextureLoader.loadTexture(KIKORI_DG_TL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&GTL.PNG")));
 		TextureLoader.loadTexture(KIKORI_DG_TR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileD&GTR.PNG")));
 		TextureLoader.loadTexture(KIKORI_D_FULL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileDFull.PNG")));
-		TextureLoader.loadTexture(KIKORI_D_FULL_L, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileDFullL.PNG")));
-		TextureLoader.loadTexture(KIKORI_D_FULL_OFL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileDFullOFL.PNG")));
-		TextureLoader.loadTexture(KIKORI_D_FULL_OFR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileDFullOFR.PNG")));
-		TextureLoader.loadTexture(KIKORI_D_FULL_R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/TileDFullR.PNG")));
 		TextureLoader.loadTexture(KIKORI_GRASS_SPRIG_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/GrassSprig1.png")));
 		TextureLoader.loadTexture(KIKORI_GRASS_SPRIG_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/GrassSprig2.png")));
 		TextureLoader.loadTexture(KIKORI_GRASS_SPRIG_3, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/kikori/GrassSprig3.png")));
@@ -325,7 +310,7 @@ public class Textures {
 	private static List<Integer> selectableTextures = Arrays.asList(
 			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
 			120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147,
-			160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181,
+			160, 161, 162, 163, 164, 165, 166, 171, 172, 173, 174, 179, 180, 181,
 			200, 201, 202, 203, 204,
 			210, 211, 212, 213,
 			220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237,
