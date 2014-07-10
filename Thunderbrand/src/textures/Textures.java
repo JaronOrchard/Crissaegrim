@@ -128,6 +128,12 @@ public class Textures {
 	public static final int MIDLEVEL_DIRT_HALF_VERTICALLY_I = 237;
 	public static final int MIDLEVEL_DIRT_FULL_BOTTOM = 238;
 	
+	public static final int TRANSITION_TOP_MID_DIRT_VERTICALLY = 250;
+	public static final int TRANSITION_TOP_MID_DIRT_DIAGONALLY_LEFT_1 = 251;
+	public static final int TRANSITION_TOP_MID_DIRT_DIAGONALLY_LEFT_2= 252;
+	public static final int TRANSITION_TOP_MID_DIRT_DIAGONALLY_RIGHT_1 = 253;
+	public static final int TRANSITION_TOP_MID_DIRT_DIAGONALLY_RIGHT_2 = 254;
+	
 	public static final int CHUNK_NOT_FOUND = 999;
 	
 	public static final int STICK_PLAYER = 1000;
@@ -299,6 +305,12 @@ public class Textures {
 		TextureLoader.loadTexture(MIDLEVEL_DIRT_HALF_VERTICALLY_I, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/HalfVerticallyI.png")));
 		TextureLoader.loadTexture(MIDLEVEL_DIRT_FULL_BOTTOM, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/FullBottom.png")));
 		
+		TextureLoader.loadTexture(TRANSITION_TOP_MID_DIRT_VERTICALLY, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/transitions/TopMidDirtVertically.png")));
+		TextureLoader.loadTexture(TRANSITION_TOP_MID_DIRT_DIAGONALLY_LEFT_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/transitions/TopMidDirtDiagonallyLeft1.png")));
+		TextureLoader.loadTexture(TRANSITION_TOP_MID_DIRT_DIAGONALLY_LEFT_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/transitions/TopMidDirtDiagonallyLeft2.png")));
+		TextureLoader.loadTexture(TRANSITION_TOP_MID_DIRT_DIAGONALLY_RIGHT_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/transitions/TopMidDirtDiagonallyRight1.png")));
+		TextureLoader.loadTexture(TRANSITION_TOP_MID_DIRT_DIAGONALLY_RIGHT_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/transitions/TopMidDirtDiagonallyRight2.png")));
+		
 		TextureLoader.loadTexture(CHUNK_NOT_FOUND, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ChunkNotFound.png")));
 				
 		TextureLoader.loadTexture(STICK_PLAYER, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayer.png")));
@@ -354,6 +366,7 @@ public class Textures {
 			200, 201, 202, 203, 204, // dawning_bridge
 			210, 211, 212, 213, // window
 			220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, // midlevel_dirt
+			250, 251, 252, 253, 254, // transitions
 			999, // chunk not found
 			2000 // target
 			);
