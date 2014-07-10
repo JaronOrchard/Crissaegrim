@@ -95,6 +95,7 @@ public class Textures {
 	public static final int TOPLEVEL_DIRT_2RI = 189;
 	public static final int TOPLEVEL_DIRT_HALF_VERTICALLY = 190;
 	public static final int TOPLEVEL_DIRT_HALF_VERTICALLY_I = 191;
+	public static final int TOPLEVEL_DIRT_FULL_BOTTOM = 192;
 	
 	public static final int DAWNING_BRIDGE_2RH = 200;
 	public static final int DAWNING_BRIDGE_2R = 201;
@@ -125,6 +126,7 @@ public class Textures {
 	public static final int MIDLEVEL_DIRT_FULL_TR = 235;
 	public static final int MIDLEVEL_DIRT_HALF_VERTICALLY = 236;
 	public static final int MIDLEVEL_DIRT_HALF_VERTICALLY_I = 237;
+	public static final int MIDLEVEL_DIRT_FULL_BOTTOM = 238;
 	
 	public static final int CHUNK_NOT_FOUND = 999;
 	
@@ -264,6 +266,7 @@ public class Textures {
 		TextureLoader.loadTexture(TOPLEVEL_DIRT_2RI, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/2RI.png")));
 		TextureLoader.loadTexture(TOPLEVEL_DIRT_HALF_VERTICALLY, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/HalfVertically.png")));
 		TextureLoader.loadTexture(TOPLEVEL_DIRT_HALF_VERTICALLY_I, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/HalfVerticallyI.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_FULL_BOTTOM, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/FullBottom.png")));
 		
 		TextureLoader.loadTexture(DAWNING_BRIDGE_2RH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/bridge/Bridge2RH.png")));
 		TextureLoader.loadTexture(DAWNING_BRIDGE_2R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/bridge/Bridge2R.png")));
@@ -294,6 +297,7 @@ public class Textures {
 		TextureLoader.loadTexture(MIDLEVEL_DIRT_FULL_TR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/FullTR.png")));
 		TextureLoader.loadTexture(MIDLEVEL_DIRT_HALF_VERTICALLY, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/HalfVertically.png")));
 		TextureLoader.loadTexture(MIDLEVEL_DIRT_HALF_VERTICALLY_I, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/HalfVerticallyI.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_FULL_BOTTOM, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/FullBottom.png")));
 		
 		TextureLoader.loadTexture(CHUNK_NOT_FOUND, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ChunkNotFound.png")));
 				
@@ -343,15 +347,15 @@ public class Textures {
 	}
 	
 	private static List<Integer> selectableTextures = Arrays.asList(
-			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
-			120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147,
+			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, // default tiles
+			120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, // tower of preludes
 			160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, // toplevel_grass
-			174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, // toplevel_dirt
-			200, 201, 202, 203, 204,
-			210, 211, 212, 213,
-			220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237,
-			999,
-			2000
+			174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, // toplevel_dirt
+			200, 201, 202, 203, 204, // dawning_bridge
+			210, 211, 212, 213, // window
+			220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, // midlevel_dirt
+			999, // chunk not found
+			2000 // target
 			);
 	
 	public static List<Integer> getSelectableTextures() { return selectableTextures; }
