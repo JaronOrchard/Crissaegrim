@@ -134,6 +134,10 @@ public class Textures {
 	public static final int TRANSITION_TOP_MID_DIRT_DIAGONALLY_RIGHT_1 = 253;
 	public static final int TRANSITION_TOP_MID_DIRT_DIAGONALLY_RIGHT_2 = 254;
 	
+	public static final int MINE_BACKGROUND = 265;
+	public static final int MINE_BACKGROUND_LEFT = 266;
+	public static final int MINE_BACKGROUND_RIGHT = 267;
+	
 	public static final int WOODEN_SIDE_LEDGE_LEFT = 270;
 	public static final int WOODEN_SIDE_LEDGE_RIGHT = 271;
 	public static final int WOODEN_SCAFFOLD_TOP_LEFT = 272;
@@ -322,6 +326,10 @@ public class Textures {
 		TextureLoader.loadTexture(TRANSITION_TOP_MID_DIRT_DIAGONALLY_RIGHT_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/transitions/TopMidDirtDiagonallyRight1.png")));
 		TextureLoader.loadTexture(TRANSITION_TOP_MID_DIRT_DIAGONALLY_RIGHT_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/transitions/TopMidDirtDiagonallyRight2.png")));
 		
+		TextureLoader.loadTexture(MINE_BACKGROUND, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/BackgroundFull.png")));
+		TextureLoader.loadTexture(MINE_BACKGROUND_LEFT, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/BackgroundLeft.png")));
+		TextureLoader.loadTexture(MINE_BACKGROUND_RIGHT, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/BackgroundRight.png")));
+		
 		TextureLoader.loadTexture(WOODEN_SIDE_LEDGE_LEFT, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/WoodenSideLedgeLeft.png")));
 		TextureLoader.loadTexture(WOODEN_SIDE_LEDGE_RIGHT, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/WoodenSideLedgeRight.png")));
 		TextureLoader.loadTexture(WOODEN_SCAFFOLD_TOP_LEFT, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/WoodenScaffoldTopLeft.png")));
@@ -389,6 +397,7 @@ public class Textures {
 			210, 211, 212, 213, // window
 			220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, // midlevel_dirt
 			250, 251, 252, 253, 254, // transitions
+			265, 266, 267, // mine backgrounds
 			270, 271, 272, 273, 274, 275, 276, 277, 278, 279, // wooden ledges/scaffolding
 			999, // chunk not found
 			2000 // target
