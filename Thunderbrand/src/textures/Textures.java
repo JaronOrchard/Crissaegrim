@@ -96,6 +96,10 @@ public class Textures {
 	public static final int TOPLEVEL_DIRT_HALF_VERTICALLY = 190;
 	public static final int TOPLEVEL_DIRT_HALF_VERTICALLY_I = 191;
 	public static final int TOPLEVEL_DIRT_FULL_BOTTOM = 192;
+	public static final int TOPLEVEL_DIRT_TEXDAD_1 = 193;
+	public static final int TOPLEVEL_DIRT_TEXDAD_2 = 194;
+	public static final int TOPLEVEL_DIRT_TEXDAD_3 = 195;
+	public static final int TOPLEVEL_DIRT_TEXDAD_4 = 196;
 	
 	public static final int DAWNING_BRIDGE_2RH = 200;
 	public static final int DAWNING_BRIDGE_2R = 201;
@@ -127,6 +131,10 @@ public class Textures {
 	public static final int MIDLEVEL_DIRT_HALF_VERTICALLY = 236;
 	public static final int MIDLEVEL_DIRT_HALF_VERTICALLY_I = 237;
 	public static final int MIDLEVEL_DIRT_FULL_BOTTOM = 238;
+	public static final int MIDLEVEL_DIRT_TEXDAD_1 = 239;
+	public static final int MIDLEVEL_DIRT_TEXDAD_2 = 240;
+	public static final int MIDLEVEL_DIRT_TEXDAD_3 = 241;
+	public static final int MIDLEVEL_DIRT_TEXDAD_4 = 242;
 	
 	public static final int TRANSITION_TOP_MID_DIRT_VERTICALLY = 250;
 	public static final int TRANSITION_TOP_MID_DIRT_DIAGONALLY_LEFT_1 = 251;
@@ -148,6 +156,17 @@ public class Textures {
 	public static final int WOODEN_SCAFFOLD_MIDDLE = 277;
 	public static final int WOODEN_SCAFFOLD_SINGLE_TOP = 278;
 	public static final int WOODEN_SCAFFOLD_SINGLE_BOTTOM = 279;
+	
+	public static final int STONE_LEDGE_LEFT = 300;
+	public static final int STONE_LEDGE_MIDDLE = 301;
+	public static final int STONE_LEDGE_RIGHT = 302;
+	public static final int ROCK_SMALL = 303;
+	public static final int ROCK_LARGE_TL_FLAT = 304;
+	public static final int ROCK_LARGE_TL_SLOPED = 305;
+	public static final int ROCK_LARGE_TR_FLAT = 306;
+	public static final int ROCK_LARGE_TR_SLOPED = 307;
+	public static final int ROCK_LARGE_BL = 308;
+	public static final int ROCK_LARGE_BR = 309;
 	
 	public static final int CHUNK_NOT_FOUND = 999;
 	
@@ -288,6 +307,10 @@ public class Textures {
 		TextureLoader.loadTexture(TOPLEVEL_DIRT_HALF_VERTICALLY, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/HalfVertically.png")));
 		TextureLoader.loadTexture(TOPLEVEL_DIRT_HALF_VERTICALLY_I, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/HalfVerticallyI.png")));
 		TextureLoader.loadTexture(TOPLEVEL_DIRT_FULL_BOTTOM, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/FullBottom.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_TEXDAD_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/Texdad1.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_TEXDAD_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/Texdad2.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_TEXDAD_3, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/Texdad3.png")));
+		TextureLoader.loadTexture(TOPLEVEL_DIRT_TEXDAD_4, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/toplevel_dirt/Texdad4.png")));
 		
 		TextureLoader.loadTexture(DAWNING_BRIDGE_2RH, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/bridge/Bridge2RH.png")));
 		TextureLoader.loadTexture(DAWNING_BRIDGE_2R, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/bridge/Bridge2R.png")));
@@ -319,6 +342,10 @@ public class Textures {
 		TextureLoader.loadTexture(MIDLEVEL_DIRT_HALF_VERTICALLY, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/HalfVertically.png")));
 		TextureLoader.loadTexture(MIDLEVEL_DIRT_HALF_VERTICALLY_I, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/HalfVerticallyI.png")));
 		TextureLoader.loadTexture(MIDLEVEL_DIRT_FULL_BOTTOM, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/FullBottom.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_TEXDAD_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/Texdad1.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_TEXDAD_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/Texdad2.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_TEXDAD_3, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/Texdad3.png")));
+		TextureLoader.loadTexture(MIDLEVEL_DIRT_TEXDAD_4, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/midlevel_dirt/Texdad4.png")));
 		
 		TextureLoader.loadTexture(TRANSITION_TOP_MID_DIRT_VERTICALLY, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/transitions/TopMidDirtVertically.png")));
 		TextureLoader.loadTexture(TRANSITION_TOP_MID_DIRT_DIAGONALLY_LEFT_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ground/transitions/TopMidDirtDiagonallyLeft1.png")));
@@ -340,6 +367,17 @@ public class Textures {
 		TextureLoader.loadTexture(WOODEN_SCAFFOLD_MIDDLE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/WoodenScaffoldMiddle.png")));
 		TextureLoader.loadTexture(WOODEN_SCAFFOLD_SINGLE_TOP, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/WoodenScaffoldSingleTop.png")));
 		TextureLoader.loadTexture(WOODEN_SCAFFOLD_SINGLE_BOTTOM, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/WoodenScaffoldSingleBottom.png")));
+		
+		TextureLoader.loadTexture(STONE_LEDGE_LEFT, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/StoneLedgeLeft.png")));
+		TextureLoader.loadTexture(STONE_LEDGE_MIDDLE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/StoneLedgeMiddle.png")));
+		TextureLoader.loadTexture(STONE_LEDGE_RIGHT, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/StoneLedgeRight.png")));
+		TextureLoader.loadTexture(ROCK_SMALL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/RockSmall.png")));
+		TextureLoader.loadTexture(ROCK_LARGE_TL_FLAT, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/RockLargeTLFlat.png")));
+		TextureLoader.loadTexture(ROCK_LARGE_TL_SLOPED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/RockLargeTLSloped.png")));
+		TextureLoader.loadTexture(ROCK_LARGE_TR_FLAT, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/RockLargeTRFlat.png")));
+		TextureLoader.loadTexture(ROCK_LARGE_TR_SLOPED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/RockLargeTRSloped.png")));
+		TextureLoader.loadTexture(ROCK_LARGE_BL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/RockLargeBL.png")));
+		TextureLoader.loadTexture(ROCK_LARGE_BR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/RockLargeBR.png")));
 		
 		TextureLoader.loadTexture(CHUNK_NOT_FOUND, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ChunkNotFound.png")));
 				
@@ -392,13 +430,14 @@ public class Textures {
 			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, // default tiles
 			120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, // tower of preludes
 			160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, // toplevel_grass
-			174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, // toplevel_dirt
+			174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, // toplevel_dirt
 			200, 201, 202, 203, 204, // dawning_bridge
 			210, 211, 212, 213, // window
-			220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, // midlevel_dirt
+			220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, // midlevel_dirt
 			250, 251, 252, 253, 254, // transitions
 			265, 266, 267, // mine backgrounds
 			270, 271, 272, 273, 274, 275, 276, 277, 278, 279, // wooden ledges/scaffolding
+			300, 301, 302, 303, 304, 305, 306, 307, 308, 309, // mine stones/rocks
 			999, // chunk not found
 			2000 // target
 			);
