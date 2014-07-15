@@ -9,6 +9,7 @@ import textures.Textures;
 import crissaegrim.Crissaegrim;
 import items.Item;
 import items.ItemPickaxe;
+import items.Items;
 import items.Weapon;
 
 public class Inventory {
@@ -19,52 +20,57 @@ public class Inventory {
 	private final static long MILLIS_AT_FULL_EXTENDED = 2000;
 	private final static long MILLIS_TO_SLIDE_RIGHT = 300;
 	
-	private static final int INVENTORY_SIZE = 8;
+	private static final int INVENTORY_QUICKEQUIP_SLOTS = 6;
+	private static final int INVENTORY_SIZE = 30;
 	private TextTexture solaisTextTexture; // Update this whenever the user's amount of Solais changes
 	
 	private Item[] items;
 	private int solais;
 	private int solaisCountOnTextTexture; // Used to determine when the Solais count changes
-	private int selectedItemIndex;
+	private int selectedQuickequipItemIndex; // Only goes from 0 to INVENTORY_QUICKEQUIP_SLOTS-1
 	private long lastTouchedTime = 0;
 	
 	public int getInventorySize() { return INVENTORY_SIZE; }
 	public Item[] getItems() { return items; }
+	public Item getItem(int index) { return items[index]; }
 	
 	public Inventory() {
 		items = new Item[INVENTORY_SIZE];
 		solais = 0;
 		solaisCountOnTextTexture = 0;
 		updateSolaisTextTexture();
-		selectedItemIndex = 0;
+		selectedQuickequipItemIndex = 0;
 		
 		items[0] = new Weapon("Rhichite Sword", Textures.ITEM_RHICHITE_SWORD);
 		items[1] = new ItemPickaxe("Rhichite", Textures.ITEM_RHICHITE_PICKAXE);
+		items[8] = Items.rhichiteOre();
+		items[15] = Items.valeniteOre();
+		items[19] = Items.sandelugeOre();
 	}
 	
 	private void updateSolaisTextTexture() {
 		solaisTextTexture = Crissaegrim.getCommonTextures().getTextTexture("Solais: " + Integer.toString(solais));
 	}
 	
-	public Item getCurrentItem() { return items[selectedItemIndex]; }
+	public Item getCurrentItem() { return items[selectedQuickequipItemIndex]; }
 	
-	public void removeCurrentItem() { items[selectedItemIndex] = null; }
+	public void removeCurrentItem() { items[selectedQuickequipItemIndex] = null; }
 	
 	public void selectPreviousItem() {
-		selectedItemIndex = (selectedItemIndex + INVENTORY_SIZE - 1) % INVENTORY_SIZE;
+		selectedQuickequipItemIndex = (selectedQuickequipItemIndex + INVENTORY_QUICKEQUIP_SLOTS - 1) % INVENTORY_QUICKEQUIP_SLOTS;
 		updateLastTouchedTime();
 	}
 	public void selectNextItem() {
-		selectedItemIndex = (selectedItemIndex + 1) % INVENTORY_SIZE;
+		selectedQuickequipItemIndex = (selectedQuickequipItemIndex + 1) % INVENTORY_QUICKEQUIP_SLOTS;
 		updateLastTouchedTime();
 	}
 	public void selectSpecificItem(int index) {
 		if (index < 0) {
-			selectedItemIndex = 0;
-		} else if (index >= INVENTORY_SIZE) {
-			selectedItemIndex = INVENTORY_SIZE - 1;
+			selectedQuickequipItemIndex = 0;
+		} else if (index >= INVENTORY_QUICKEQUIP_SLOTS) {
+			selectedQuickequipItemIndex = INVENTORY_QUICKEQUIP_SLOTS - 1;
 		} else {
-			selectedItemIndex = index;
+			selectedQuickequipItemIndex = index;
 		}
 		updateLastTouchedTime();
 	}
@@ -89,7 +95,7 @@ public class Inventory {
 	
 	public void draw() {
 		long now = new Date().getTime();
-		if (items[selectedItemIndex] == null && now - lastTouchedTime > MILLIS_AT_FULL_EXTENDED + MILLIS_TO_SLIDE_RIGHT) {
+		if (items[selectedQuickequipItemIndex] == null && now - lastTouchedTime > MILLIS_AT_FULL_EXTENDED + MILLIS_TO_SLIDE_RIGHT) {
 			return; // Inventory is out of view
 		}
 		if (solaisCountOnTextTexture != solais) {
@@ -105,7 +111,7 @@ public class Inventory {
 			double amtSlid = ((double)(now - lastTouchedTime - MILLIS_AT_FULL_EXTENDED)) / (double)MILLIS_TO_SLIDE_RIGHT;
 			rightX = (int)((1.0 - amtSlid)*(selectedItemRightX) +
 					amtSlid*(Crissaegrim.getWindowWidth() + BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2));
-			if (items[selectedItemIndex] == null) {
+			if (items[selectedQuickequipItemIndex] == null) {
 				selectedItemRightX = (int)((1.0 - amtSlid)*(selectedItemRightX) +
 						amtSlid*(Crissaegrim.getWindowWidth() + BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2));
 			}
@@ -132,7 +138,7 @@ public class Inventory {
 		
 		// Draw item box outlines:
 		glDisable(GL_TEXTURE_2D);
-		for (int i = 0; i < selectedItemIndex; i++) {
+		for (int i = 0; i < selectedQuickequipItemIndex; i++) {
 			setGlColorForItem(i);
 			glBegin(GL_LINE_LOOP);
 				glVertex2d(rightX, topY);
@@ -142,7 +148,7 @@ public class Inventory {
 			glEnd();
 			topY -= BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		}
-		setGlColorForItem(selectedItemIndex);
+		setGlColorForItem(selectedQuickequipItemIndex);
 		glBegin(GL_LINE_LOOP);
 			glVertex2d(selectedItemRightX, topY);
 			glVertex2d(selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2, topY);
@@ -150,7 +156,7 @@ public class Inventory {
 			glVertex2d(selectedItemRightX, topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2);
 		glEnd();
 		topY -= BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
-		for (int i = selectedItemIndex + 1; i < INVENTORY_SIZE; i++) {
+		for (int i = selectedQuickequipItemIndex + 1; i < INVENTORY_QUICKEQUIP_SLOTS; i++) {
 			setGlColorForItem(i);
 			glBegin(GL_LINE_LOOP);
 				glVertex2d(rightX, topY);
@@ -165,7 +171,7 @@ public class Inventory {
 		glColor3d(1, 1, 1);
 		// Draw items in boxes and item label if applicable:
 		topY = Crissaegrim.getWindowHeight() - OUTER_PADDING_PIXELS - 24;
-		for (int i = 0; i < selectedItemIndex; i++) {
+		for (int i = 0; i < selectedQuickequipItemIndex; i++) {
 			if (items[i] != null) {
 				glBindTexture(GL_TEXTURE_2D, items[i].getTexture());
 				glPushMatrix();
@@ -184,8 +190,8 @@ public class Inventory {
 			}
 			topY -= BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		}
-		if (items[selectedItemIndex] != null) {
-			glBindTexture(GL_TEXTURE_2D, items[selectedItemIndex].getTexture());
+		if (items[selectedQuickequipItemIndex] != null) {
+			glBindTexture(GL_TEXTURE_2D, items[selectedQuickequipItemIndex].getTexture());
 			glPushMatrix();
 				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 				glBegin(GL_QUADS);
@@ -200,7 +206,7 @@ public class Inventory {
 				glEnd();
 			glPopMatrix();
 			if (now - lastTouchedTime < MILLIS_AT_FULL_EXTENDED) {
-				TextTexture selectedItemLabel = Crissaegrim.getCommonTextures().getTextTexture(items[selectedItemIndex].getName());
+				TextTexture selectedItemLabel = Crissaegrim.getCommonTextures().getTextTexture(items[selectedQuickequipItemIndex].getName());
 				int selectedItemLabelLeft = selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2 - OUTER_PADDING_PIXELS - selectedItemLabel.getWidth();
 				glBindTexture(GL_TEXTURE_2D, selectedItemLabel.getTextureId());
 				glPushMatrix();
@@ -219,7 +225,7 @@ public class Inventory {
 			}
 		}
 		topY -= BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
-		for (int i = selectedItemIndex + 1; i < INVENTORY_SIZE; i++) {
+		for (int i = selectedQuickequipItemIndex + 1; i < INVENTORY_QUICKEQUIP_SLOTS; i++) {
 			if (items[i] != null) {
 				glBindTexture(GL_TEXTURE_2D, items[i].getTexture());
 				glPushMatrix();
