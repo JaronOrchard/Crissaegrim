@@ -22,6 +22,7 @@ import geometry.RectUtils;
 public class InventoryRunner {
 	
 	private boolean closeInventory;
+	private Item heldItem;
 	
 	private static transient final int BOX_SIZE_PIXELS = 32;
 	private static transient final int INNER_PADDING_PIXELS = 4;
@@ -30,6 +31,7 @@ public class InventoryRunner {
 	
 	public InventoryRunner() {
 		closeInventory = false;
+		heldItem = null;
 		recalculateInventoryDimensions();
 	}
 	
@@ -56,22 +58,21 @@ public class InventoryRunner {
 					getKeyboardInput();
 				}
 				if (closeInventory) { return; } // Close Inventory if requested
-				drawMouseHoverStatus();
-				// If a button was clicked, find out which one and return it if valid
-//				while (Mouse.next()) {
-//					if (Mouse.getEventButtonState() && Mouse.getEventButton() == 0) {
-//						int clickedButton = dialogBox.getHoveredButtonIndex();
-//						if (clickedButton != -1) {
-//							return getDialogResultForIndex(clickedButton);
-//						}
-//					}
-//				}
+				int hoveredItemIndex = getHoveredItemIndex();
+				drawMouseHoverStatus(hoveredItemIndex);
+				while (Mouse.next()) {
+					if (Mouse.getEventButtonState() && Mouse.getEventButton() == 0) {
+						if (hoveredItemIndex != -1 && inventory.getItem(hoveredItemIndex) != null) {
+							heldItem = inventory.getItem(hoveredItemIndex);
+							inventory.setItem(hoveredItemIndex, null);
+						}
+					}
+				}
 				
 				playerMovementHelper.moveEntity();
 				
 				gameRunner.drawHUD();
 				drawInventory(inventory);
-				// --- DRAW INVENTORY BOX
 				
 				// Still transmit data to the server
 				Crissaegrim.getValmanwayConnection().sendPlayerStatus();
@@ -126,48 +127,49 @@ public class InventoryRunner {
 		}
 	}
 	
-	private void drawMouseHoverStatus() {
-		String mouseHoverString = "";
+	/**
+	 * @return The index of the inventory item the mouse is currently hovering over, or -1 if no item is being hovered over
+	 */
+	private int getHoveredItemIndex() {
 		Coordinate mouseCoords = new Coordinate(Mouse.getX(), Mouse.getY());
-		Inventory inventory = Crissaegrim.getPlayer().getInventory();
 		int posX, posY;
 		posX = (int)(inventoryRect.getLeft()) + OUTER_PADDING_PIXELS;
 		for (int i = 0; i < 5; i++) {
 			posY = (int)(inventoryRect.getTop()) - OUTER_PADDING_PIXELS*2 - 25;
 			for (int j = 0; j < 6; j++) {
-				Item item = inventory.getItem(i*6 + j);
-				if (item != null) {
-					Rect itemBoxRect = new Rect(
-							new Coordinate(posX, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2),
-							new Coordinate(posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY));
-					if (RectUtils.coordinateIsInRect(mouseCoords, itemBoxRect)) {
-						mouseHoverString = "Grab " + item.getName();
-						break;
-					}
+				Rect itemBoxRect = new Rect(
+						new Coordinate(posX, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2),
+						new Coordinate(posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY));
+				if (RectUtils.coordinateIsInRect(mouseCoords, itemBoxRect)) {
+					return (i*6 + j);
 				}
 				posY -= BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 			}
 			posX += BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		}
+		return -1;
+	}
+	
+	private void drawMouseHoverStatus(int hoveredItemIndex) {
+		if (hoveredItemIndex == -1 || Crissaegrim.getPlayer().getInventory().getItem(hoveredItemIndex) == null) { return; }
 		
-		if (!mouseHoverString.isEmpty()) {
-			TextTexture mouseHoverStatus = Crissaegrim.getCommonTextures().getTextTexture(mouseHoverString);
-			int top = Crissaegrim.getWindowHeight() - 5;
-			glBindTexture(GL_TEXTURE_2D, mouseHoverStatus.getTextureId());
-			glPushMatrix();
-				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-				glBegin(GL_QUADS);
-					glTexCoord2d(0, 1);
-					glVertex2d(5, top - 20);
-					glTexCoord2d(1, 1);
-					glVertex2d(5 + mouseHoverStatus.getWidth(), top - 20);
-					glTexCoord2d(1, 0);
-					glVertex2d(5 + mouseHoverStatus.getWidth(), top);
-					glTexCoord2d(0, 0);
-					glVertex2d(5, top);
-				glEnd();
-			glPopMatrix();
-		}
+		String mouseHoverString = "Grab " + Crissaegrim.getPlayer().getInventory().getItem(hoveredItemIndex).getName();
+		TextTexture mouseHoverStatus = Crissaegrim.getCommonTextures().getTextTexture(mouseHoverString);
+		int top = Crissaegrim.getWindowHeight() - 5;
+		glBindTexture(GL_TEXTURE_2D, mouseHoverStatus.getTextureId());
+		glPushMatrix();
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBegin(GL_QUADS);
+				glTexCoord2d(0, 1);
+				glVertex2d(5, top - 20);
+				glTexCoord2d(1, 1);
+				glVertex2d(5 + mouseHoverStatus.getWidth(), top - 20);
+				glTexCoord2d(1, 0);
+				glVertex2d(5 + mouseHoverStatus.getWidth(), top);
+				glTexCoord2d(0, 0);
+				glVertex2d(5, top);
+			glEnd();
+		glPopMatrix();
 	}
 	
 	private void drawInventory(Inventory inventory) {
@@ -299,6 +301,27 @@ public class InventoryRunner {
 			posX += BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		}
 		glEnable(GL_TEXTURE_2D);
+		glColor3d(1, 1, 1);
+		
+		// Draw held item
+		if (heldItem != null) {
+			int mouseX = Mouse.getX();
+			int mouseY = Mouse.getY();
+			glBindTexture(GL_TEXTURE_2D, heldItem.getTexture());
+			glPushMatrix();
+				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+				glBegin(GL_QUADS);
+					glTexCoord2d(0, 1);
+					glVertex2d(mouseX - 16, mouseY - 16);
+					glTexCoord2d(1, 1);
+					glVertex2d(mouseX + 16, mouseY - 16);
+					glTexCoord2d(1, 0);
+					glVertex2d(mouseX + 16, mouseY + 16);
+					glTexCoord2d(0, 0);
+					glVertex2d(mouseX - 16, mouseY + 16);
+				glEnd();
+			glPopMatrix();
+		}
 	}
 	
 	private void setGlColorForItemBoxBackground(Item item) {

@@ -33,6 +33,7 @@ public class Inventory {
 	public int getInventorySize() { return INVENTORY_SIZE; }
 	public Item[] getItems() { return items; }
 	public Item getItem(int index) { return items[index]; }
+	public void setItem(int index, Item item) { items[index] = item; }
 	
 	public Inventory() {
 		items = new Item[INVENTORY_SIZE];
