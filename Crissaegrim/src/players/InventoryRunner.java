@@ -6,6 +6,7 @@ import items.Item;
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import textblock.TextTexture;
@@ -16,6 +17,7 @@ import crissaegrim.GameRunner;
 import entities.EntityMovementHelper;
 import geometry.Coordinate;
 import geometry.Rect;
+import geometry.RectUtils;
 
 public class InventoryRunner {
 	
@@ -54,6 +56,7 @@ public class InventoryRunner {
 					getKeyboardInput();
 				}
 				if (closeInventory) { return; } // Close Inventory if requested
+				drawMouseHoverStatus();
 				// If a button was clicked, find out which one and return it if valid
 //				while (Mouse.next()) {
 //					if (Mouse.getEventButtonState() && Mouse.getEventButton() == 0) {
@@ -120,6 +123,50 @@ public class InventoryRunner {
 					closeInventory = true;
 				}
 			}
+		}
+	}
+	
+	private void drawMouseHoverStatus() {
+		String mouseHoverString = "";
+		Coordinate mouseCoords = new Coordinate(Mouse.getX(), Mouse.getY());
+		Inventory inventory = Crissaegrim.getPlayer().getInventory();
+		int posX, posY;
+		posX = (int)(inventoryRect.getLeft()) + OUTER_PADDING_PIXELS;
+		for (int i = 0; i < 5; i++) {
+			posY = (int)(inventoryRect.getTop()) - OUTER_PADDING_PIXELS*2 - 25;
+			for (int j = 0; j < 6; j++) {
+				Item item = inventory.getItem(i*6 + j);
+				if (item != null) {
+					Rect itemBoxRect = new Rect(
+							new Coordinate(posX, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2),
+							new Coordinate(posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY));
+					if (RectUtils.coordinateIsInRect(mouseCoords, itemBoxRect)) {
+						mouseHoverString = "Grab " + item.getName();
+						break;
+					}
+				}
+				posY -= BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
+			}
+			posX += BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
+		}
+		
+		if (!mouseHoverString.isEmpty()) {
+			TextTexture mouseHoverStatus = Crissaegrim.getCommonTextures().getTextTexture(mouseHoverString);
+			int top = Crissaegrim.getWindowHeight() - 5;
+			glBindTexture(GL_TEXTURE_2D, mouseHoverStatus.getTextureId());
+			glPushMatrix();
+				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+				glBegin(GL_QUADS);
+					glTexCoord2d(0, 1);
+					glVertex2d(5, top - 20);
+					glTexCoord2d(1, 1);
+					glVertex2d(5 + mouseHoverStatus.getWidth(), top - 20);
+					glTexCoord2d(1, 0);
+					glVertex2d(5 + mouseHoverStatus.getWidth(), top);
+					glTexCoord2d(0, 0);
+					glVertex2d(5, top);
+				glEnd();
+			glPopMatrix();
 		}
 	}
 	
