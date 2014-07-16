@@ -7,6 +7,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import players.Player;
+import textures.Textures;
 import thunderbrand.Thunderbrand;
 import crissaegrim.Crissaegrim;
 import crissaegrim.GameInitializer;
@@ -26,7 +27,11 @@ public class DialogBoxRunner {
 			while (!Display.isCloseRequested()) {
 				startTime = Thunderbrand.getTime();
 				
-				if (!Crissaegrim.connectionStable) { break; }
+				if (!Crissaegrim.connectionStable) { // Lost connection to server
+					Crissaegrim.getValmanwayConnection().closeConnections();
+					Crissaegrim.getGameRunner().displayMessageForever(Textures.LOST_CONNECTION_MESSAGE, 423, 64, "Connection lost - Please restart");
+					break;
+				}
 				
 				player.update(); // (Don't negate gravity)
 				gameRunner.drawScene();

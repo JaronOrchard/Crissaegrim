@@ -549,7 +549,7 @@ public class GameRunner {
 	 * @param optionalTitleChange This message will be shown on the title bar.  A {@code null} or empty string will be ignored.
 	 * @throws InterruptedException
 	 */
-	private void displayMessageForever(int texture, int width, int height, String optionalTitleChange) throws InterruptedException {
+	public void displayMessageForever(int texture, int width, int height, String optionalTitleChange) throws InterruptedException {
 		if (optionalTitleChange != null && !optionalTitleChange.trim().isEmpty()) {
 			GameInitializer.setWindowTitle(optionalTitleChange);
 		}

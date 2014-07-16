@@ -10,6 +10,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import textblock.TextTexture;
+import textures.Textures;
 import thunderbrand.Thunderbrand;
 import crissaegrim.Crissaegrim;
 import crissaegrim.GameInitializer;
@@ -47,7 +48,11 @@ public class InventoryRunner {
 			while (!Display.isCloseRequested()) {
 				startTime = Thunderbrand.getTime();
 				
-				if (!Crissaegrim.connectionStable) { break; }
+				if (!Crissaegrim.connectionStable) { // Lost connection to server
+					Crissaegrim.getValmanwayConnection().closeConnections();
+					Crissaegrim.getGameRunner().displayMessageForever(Textures.LOST_CONNECTION_MESSAGE, 423, 64, "Connection lost - Please restart");
+					return;
+				}
 				
 				player.update(); // (Don't negate gravity)
 				gameRunner.drawScene();
