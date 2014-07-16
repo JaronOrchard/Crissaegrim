@@ -62,9 +62,10 @@ public class InventoryRunner {
 				drawMouseHoverStatus(hoveredItemIndex);
 				while (Mouse.next()) {
 					if (Mouse.getEventButtonState() && Mouse.getEventButton() == 0) {
-						if (hoveredItemIndex != -1 && inventory.getItem(hoveredItemIndex) != null) {
-							heldItem = inventory.getItem(hoveredItemIndex);
-							inventory.setItem(hoveredItemIndex, null);
+						if (hoveredItemIndex != -1) {
+							Item itemInSpot = inventory.getItem(hoveredItemIndex);
+							inventory.setItem(hoveredItemIndex, heldItem);
+							heldItem = itemInSpot;
 						}
 					}
 				}
@@ -151,9 +152,18 @@ public class InventoryRunner {
 	}
 	
 	private void drawMouseHoverStatus(int hoveredItemIndex) {
-		if (hoveredItemIndex == -1 || Crissaegrim.getPlayer().getInventory().getItem(hoveredItemIndex) == null) { return; }
-		
-		String mouseHoverString = "Grab " + Crissaegrim.getPlayer().getInventory().getItem(hoveredItemIndex).getName();
+		Inventory inventory = Crissaegrim.getPlayer().getInventory();
+		if (hoveredItemIndex == -1 || (inventory.getItem(hoveredItemIndex) == null && heldItem == null)) {
+			return; // Nothing to display
+		}
+		String mouseHoverString;
+		if (heldItem == null) {
+			mouseHoverString = "Grab " + inventory.getItem(hoveredItemIndex).getName();
+		} else if (inventory.getItem(hoveredItemIndex) == null) {
+			mouseHoverString = "Place " + heldItem.getName() + " in empty slot";
+		} else {
+			mouseHoverString = "Swap " + inventory.getItem(hoveredItemIndex).getName() + " with " + heldItem.getName();
+		}
 		TextTexture mouseHoverStatus = Crissaegrim.getCommonTextures().getTextTexture(mouseHoverString);
 		int top = Crissaegrim.getWindowHeight() - 5;
 		glBindTexture(GL_TEXTURE_2D, mouseHoverStatus.getTextureId());
