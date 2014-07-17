@@ -1,6 +1,6 @@
 package chatbox;
 
-import static org.lwjgl.opengl.GL11.*;
+import gldrawer.GLDrawer;
 
 import java.awt.Color;
 import java.util.HashMap;
@@ -51,20 +51,8 @@ public class ChatTypingArea {
 				chatMessage = new ChatMessage(currentMessage, currentColor);
 				messageEntryTextures.put(hashMapKey, chatMessage);
 			}
-			glBindTexture(GL_TEXTURE_2D, chatMessage.getTextureId());
-			glPushMatrix();
-				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-				glBegin(GL_QUADS);
-					glTexCoord2d(0, 1);
-					glVertex2d(5, 5);
-					glTexCoord2d(1, 1);
-					glVertex2d(5 + chatMessage.getWidth(), 5);
-					glTexCoord2d(1, 0);
-					glVertex2d(5 + chatMessage.getWidth(), 25);
-					glTexCoord2d(0, 0);
-					glVertex2d(5, 25);
-				glEnd();
-			glPopMatrix();
+			GLDrawer.useTexture(chatMessage.getTextureId());
+			GLDrawer.drawQuad(5, 5 + chatMessage.getWidth(), 5, 25);
 		}
 	}
 	

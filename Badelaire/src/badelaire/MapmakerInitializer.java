@@ -6,7 +6,6 @@ import geometry.Coordinate;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.GL11;
 
 public final class MapmakerInitializer {
 	
@@ -30,7 +29,7 @@ public final class MapmakerInitializer {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_BLEND);
 		
-		glEnable(GL11.GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_2D);
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 	}

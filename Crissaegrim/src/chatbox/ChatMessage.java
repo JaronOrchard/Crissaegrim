@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.Date;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.*;
 
 import textures.TextureLoader;
 
@@ -27,7 +27,7 @@ public class ChatMessage {
 	}
 	
 	public void delete() {
-		GL11.glDeleteTextures(textureId);
+		glDeleteTextures(textureId);
 	}
 	
 	public double getAlpha() {

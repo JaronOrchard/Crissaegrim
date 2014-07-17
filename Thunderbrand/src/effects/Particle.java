@@ -1,12 +1,11 @@
 package effects;
 
-import static org.lwjgl.opengl.GL11.*;
-
 import java.awt.Color;
 
 import random.RandomNumbers;
 import thunderbrand.Thunderbrand;
 import geometry.Coordinate;
+import gldrawer.GLDrawer;
 
 public class Particle {
 	
@@ -50,13 +49,8 @@ public class Particle {
 	}
 	
 	public void draw() {
-		glColor4d(red, green, blue, getAlpha());
-		glBegin(GL_QUADS);
-			glVertex2d(position.getX() - halfWidth, position.getY() + halfWidth);
-			glVertex2d(position.getX() + halfWidth, position.getY() + halfWidth);
-			glVertex2d(position.getX() + halfWidth, position.getY() - halfWidth);
-			glVertex2d(position.getX() - halfWidth, position.getY() - halfWidth);
-		glEnd();
+		GLDrawer.setColor(red, green, blue, getAlpha());
+		GLDrawer.drawQuad(position.getX() - halfWidth, position.getX() + halfWidth, position.getY() - halfWidth, position.getY() + halfWidth);
 	}
 	
 	/**

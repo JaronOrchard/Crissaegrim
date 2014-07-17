@@ -1,14 +1,5 @@
 package entities;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glColor3d;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glVertex2d;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +10,7 @@ import busy.Busy;
 import geometry.Coordinate;
 import geometry.Line;
 import geometry.Rect;
+import gldrawer.GLDrawer;
 
 /**
  * An Entity is a living object, like a Player or Monster.
@@ -130,22 +122,11 @@ public abstract class Entity {
 			double healthBarMiddle = ((1.0 - amtHealth) * (xPos - 0.5)) + (amtHealth * (xPos + 0.5));
 			double healthBarBottom = yPosPlusTextureHeight + 0.15;
 			double healthBarTop = yPosPlusTextureHeight + 0.35;
-			glDisable(GL_TEXTURE_2D);
-			glColor3d(0.855, 0.188, 0.204);
-			glBegin(GL_QUADS); // Draw red backing
-				glVertex2d(xPos - 0.5, healthBarTop);
-				glVertex2d(xPos + 0.5, healthBarTop);
-				glVertex2d(xPos + 0.5, healthBarBottom);
-				glVertex2d(xPos - 0.5, healthBarBottom);
-			glEnd();
-			glColor3d(0.161, 0.714, 0.314);
-			glBegin(GL_QUADS); // Draw green remaining
-				glVertex2d(xPos - 0.5, healthBarTop);
-				glVertex2d(healthBarMiddle, healthBarTop);
-				glVertex2d(healthBarMiddle, healthBarBottom);
-				glVertex2d(xPos - 0.5, healthBarBottom);
-			glEnd();
-			glEnable(GL_TEXTURE_2D);
+			GLDrawer.disableTextures();
+			GLDrawer.setColor(0.855, 0.188, 0.204);
+			GLDrawer.drawQuad(xPos - 0.5, xPos + 0.5, healthBarBottom, healthBarTop); // Draw red backing
+			GLDrawer.setColor(0.161, 0.714, 0.314);
+			GLDrawer.drawQuad(xPos - 0.5, healthBarMiddle, healthBarBottom, healthBarTop); // Draw green remaining
 		}
 	}
 	

@@ -1,12 +1,11 @@
 package players;
 
-import static org.lwjgl.opengl.GL11.*;
-
 import java.util.Date;
 
 import textblock.TextTexture;
 import textures.Textures;
 import crissaegrim.Crissaegrim;
+import gldrawer.GLDrawer;
 import items.Item;
 import items.ItemPickaxe;
 import items.Items;
@@ -119,140 +118,68 @@ public class Inventory {
 		}
 		
 		// Draw "Solais: ###":
-		glColor3d(1, 1, 1);
 		int solaisLabelLeft = rightX - solaisTextTexture.getWidth();
-		glBindTexture(GL_TEXTURE_2D, solaisTextTexture.getTextureId());
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBegin(GL_QUADS);
-				glTexCoord2d(0, 1);
-				glVertex2d(solaisLabelLeft, topY - 20);
-				glTexCoord2d(1, 1);
-				glVertex2d(solaisLabelLeft + solaisTextTexture.getWidth(), topY - 20);
-				glTexCoord2d(1, 0);
-				glVertex2d(solaisLabelLeft + solaisTextTexture.getWidth(), topY);
-				glTexCoord2d(0, 0);
-				glVertex2d(solaisLabelLeft, topY);
-			glEnd();
-		glPopMatrix();
+		GLDrawer.useTexture(solaisTextTexture.getTextureId());
+		GLDrawer.drawQuad(solaisLabelLeft, solaisLabelLeft + solaisTextTexture.getWidth(), topY - 20, topY);
 		topY -= 24;
 		
 		// Draw item box outlines:
-		glDisable(GL_TEXTURE_2D);
+		GLDrawer.disableTextures();
 		for (int i = 0; i < selectedQuickequipItemIndex; i++) {
-			setGlColorForItem(i);
-			glBegin(GL_LINE_LOOP);
-				glVertex2d(rightX, topY);
-				glVertex2d(rightX - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, topY);
-				glVertex2d(rightX - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, topY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2);
-				glVertex2d(rightX, topY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2);
-			glEnd();
+			setColorForItem(i);
+			GLDrawer.drawOutline(rightX - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, rightX,
+					topY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, topY);
 			topY -= BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		}
-		setGlColorForItem(selectedQuickequipItemIndex);
-		glBegin(GL_LINE_LOOP);
-			glVertex2d(selectedItemRightX, topY);
-			glVertex2d(selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2, topY);
-			glVertex2d(selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2, topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2);
-			glVertex2d(selectedItemRightX, topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2);
-		glEnd();
+		setColorForItem(selectedQuickequipItemIndex);
+		GLDrawer.drawOutline(selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2, selectedItemRightX,
+				topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2, topY);
 		topY -= BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		for (int i = selectedQuickequipItemIndex + 1; i < INVENTORY_QUICKEQUIP_SLOTS; i++) {
-			setGlColorForItem(i);
-			glBegin(GL_LINE_LOOP);
-				glVertex2d(rightX, topY);
-				glVertex2d(rightX - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, topY);
-				glVertex2d(rightX - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, topY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2);
-				glVertex2d(rightX, topY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2);
-			glEnd();
+			setColorForItem(i);
+			GLDrawer.drawOutline(rightX - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, rightX,
+					topY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, topY);
 			topY -= BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		}
-		glEnable(GL_TEXTURE_2D);
 		
-		glColor3d(1, 1, 1);
 		// Draw items in boxes and item label if applicable:
 		topY = Crissaegrim.getWindowHeight() - OUTER_PADDING_PIXELS - 24;
 		for (int i = 0; i < selectedQuickequipItemIndex; i++) {
 			if (items[i] != null) {
-				glBindTexture(GL_TEXTURE_2D, items[i].getTexture());
-				glPushMatrix();
-					glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-					glBegin(GL_QUADS);
-						glTexCoord2d(0, 1);
-						glVertex2d(rightX - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, topY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS);
-						glTexCoord2d(1, 1);
-						glVertex2d(rightX - INNER_PADDING_PIXELS, topY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS);
-						glTexCoord2d(1, 0);
-						glVertex2d(rightX - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
-						glTexCoord2d(0, 0);
-						glVertex2d(rightX - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
-					glEnd();
-				glPopMatrix();
+				GLDrawer.useTexture(items[i].getTexture());
+				GLDrawer.drawQuad(rightX - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, rightX - INNER_PADDING_PIXELS,
+						topY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
 			}
 			topY -= BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		}
 		if (items[selectedQuickequipItemIndex] != null) {
-			glBindTexture(GL_TEXTURE_2D, items[selectedQuickequipItemIndex].getTexture());
-			glPushMatrix();
-				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-				glBegin(GL_QUADS);
-					glTexCoord2d(0, 1);
-					glVertex2d(selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS, topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS);
-					glTexCoord2d(1, 1);
-					glVertex2d(selectedItemRightX - INNER_PADDING_PIXELS, topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS);
-					glTexCoord2d(1, 0);
-					glVertex2d(selectedItemRightX - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
-					glTexCoord2d(0, 0);
-					glVertex2d(selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
-				glEnd();
-			glPopMatrix();
+			GLDrawer.useTexture(items[selectedQuickequipItemIndex].getTexture());
+			GLDrawer.drawQuad(selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS, selectedItemRightX - INNER_PADDING_PIXELS,
+					topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
 			if (now - lastTouchedTime < MILLIS_AT_FULL_EXTENDED) {
 				TextTexture selectedItemLabel = Crissaegrim.getCommonTextures().getTextTexture(items[selectedQuickequipItemIndex].getName());
 				int selectedItemLabelLeft = selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2 - OUTER_PADDING_PIXELS - selectedItemLabel.getWidth();
-				glBindTexture(GL_TEXTURE_2D, selectedItemLabel.getTextureId());
-				glPushMatrix();
-					glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-					glBegin(GL_QUADS);
-						glTexCoord2d(0, 1);
-						glVertex2d(selectedItemLabelLeft, topY - 45);
-						glTexCoord2d(1, 1);
-						glVertex2d(selectedItemLabelLeft + selectedItemLabel.getWidth(), topY - 45);
-						glTexCoord2d(1, 0);
-						glVertex2d(selectedItemLabelLeft + selectedItemLabel.getWidth(), topY - 25);
-						glTexCoord2d(0, 0);
-						glVertex2d(selectedItemLabelLeft, topY - 25);
-					glEnd();
-				glPopMatrix();
+				GLDrawer.useTexture(selectedItemLabel.getTextureId());
+				GLDrawer.drawQuad(selectedItemLabelLeft, selectedItemLabelLeft + selectedItemLabel.getWidth(), topY - 45, topY - 25);
 			}
 		}
 		topY -= BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		for (int i = selectedQuickequipItemIndex + 1; i < INVENTORY_QUICKEQUIP_SLOTS; i++) {
 			if (items[i] != null) {
-				glBindTexture(GL_TEXTURE_2D, items[i].getTexture());
-				glPushMatrix();
-					glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-					glBegin(GL_QUADS);
-						glTexCoord2d(0, 1);
-						glVertex2d(rightX - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, topY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS);
-						glTexCoord2d(1, 1);
-						glVertex2d(rightX - INNER_PADDING_PIXELS, topY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS);
-						glTexCoord2d(1, 0);
-						glVertex2d(rightX - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
-						glTexCoord2d(0, 0);
-						glVertex2d(rightX - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
-					glEnd();
-				glPopMatrix();
+				GLDrawer.useTexture(items[i].getTexture());
+				GLDrawer.drawQuad(rightX - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, rightX - INNER_PADDING_PIXELS,
+						topY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
 			}
 			topY -= BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		}
 		
 	}
 	
-	private void setGlColorForItem(int index) {
+	private void setColorForItem(int index) {
 		if (items[index] != null) {
-			glColor3d(1, 1, 1);
+			GLDrawer.clearColor();
 		} else {
-			glColor3d(0.6, 0.6, 0.6);
+			GLDrawer.setColor(0.6, 0.6, 0.6);
 		}
 	}
 	

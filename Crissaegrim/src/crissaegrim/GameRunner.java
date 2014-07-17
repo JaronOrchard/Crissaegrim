@@ -1,6 +1,5 @@
 package crissaegrim;
 
-import static org.lwjgl.opengl.GL11.*;
 import items.Item;
 import items.ItemPartyPopper;
 import items.ItemPickaxe;
@@ -44,6 +43,7 @@ import entities.EntityStatus;
 import geometry.Coordinate;
 import geometry.Rect;
 import geometry.RectUtils;
+import gldrawer.GLDrawer;
 import attack.Attack;
 import board.Board;
 import board.Chunk;
@@ -213,7 +213,7 @@ public class GameRunner {
 	}
 	
 	public void drawScene() {
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		GLDrawer.clear();
 		Board currentBoard = Crissaegrim.getCurrentBoard();
 		
 		if (Crissaegrim.getCurrentBoard() != null) {
@@ -260,31 +260,15 @@ public class GameRunner {
 		int healthBarMiddle = (int)(((1.0 - amtHealth) * healthBarLeft) + (amtHealth * healthBarRight));
 		
 		GameInitializer.initializeNewFrameForWindow();
-		glDisable(GL_TEXTURE_2D);
-		glColor3d(0.812, 0.188, 0.188);
-		glBegin(GL_QUADS); // Draw red backing
-			glVertex2d(healthBarLeft, healthBarTop);
-			glVertex2d(healthBarRight, healthBarTop);
-			glVertex2d(healthBarRight, healthBarBottom);
-			glVertex2d(healthBarLeft, healthBarBottom);
-		glEnd();
-		glColor3d(0.102, 0.533, 0.227);
-		glBegin(GL_QUADS); // Draw green remaining
-			glVertex2d(healthBarLeft, healthBarTop);
-			glVertex2d(healthBarMiddle, healthBarTop);
-			glVertex2d(healthBarMiddle, healthBarBottom);
-			glVertex2d(healthBarLeft, healthBarBottom);
-		glEnd();
-		glColor3d(0.686, 0.741, 0.686);
-		glLineWidth(2);
-		glBegin(GL_LINE_LOOP); // Draw outline
-			glVertex2d(healthBarLeft, healthBarTop);
-			glVertex2d(healthBarRight, healthBarTop);
-			glVertex2d(healthBarRight, healthBarBottom);
-			glVertex2d(healthBarLeft, healthBarBottom);
-		glEnd();
-		glLineWidth(1);
-		glEnable(GL_TEXTURE_2D);
+		GLDrawer.disableTextures();
+		GLDrawer.setColor(0.812, 0.188, 0.188);
+		GLDrawer.drawQuad(healthBarLeft, healthBarRight, healthBarBottom, healthBarTop); // Draw red backing
+		GLDrawer.setColor(0.102, 0.533, 0.227);
+		GLDrawer.drawQuad(healthBarLeft, healthBarMiddle, healthBarBottom, healthBarTop); // Draw green remaining
+		GLDrawer.setColor(0.686, 0.741, 0.686);
+		GLDrawer.setLineWidth(2);
+		GLDrawer.drawOutline(healthBarLeft, healthBarRight, healthBarBottom, healthBarTop); // Draw outline
+		GLDrawer.setLineWidth(1);
 	}
 	
 	private void actionDoodadList() {
@@ -397,20 +381,8 @@ public class GameRunner {
 		if (!players.isEmpty()) {
 			TextTexture mouseHoverStatus = Crissaegrim.getCommonTextures().getTextTexture(players.substring(2));
 			int top = Crissaegrim.getWindowHeight() - 5;
-			glBindTexture(GL_TEXTURE_2D, mouseHoverStatus.getTextureId());
-			glPushMatrix();
-				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-				glBegin(GL_QUADS);
-					glTexCoord2d(0, 1);
-					glVertex2d(5, top - 20);
-					glTexCoord2d(1, 1);
-					glVertex2d(5 + mouseHoverStatus.getWidth(), top - 20);
-					glTexCoord2d(1, 0);
-					glVertex2d(5 + mouseHoverStatus.getWidth(), top);
-					glTexCoord2d(0, 0);
-					glVertex2d(5, top);
-				glEnd();
-			glPopMatrix();
+			GLDrawer.useTexture(mouseHoverStatus.getTextureId());
+			GLDrawer.drawQuad(5, 5 + mouseHoverStatus.getWidth(), top - 20, top);
 		}
 	}
 	
@@ -460,21 +432,10 @@ public class GameRunner {
 		double yPos = ghost.getYPos();
 		double textureHalfWidth = ghost.getTextureHalfWidth();
 		double textureHeight = ghost.getTextureHeight();
-		glColor3d(1.0, 1.0, 1.0);
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBindTexture(GL_TEXTURE_2D, ghost.getCurrentTexture());
-			glBegin(GL_QUADS);
-				glTexCoord2d(facingRight ? 0 : 1, 0);
-				glVertex2d(xPos - textureHalfWidth, yPos + textureHeight);
-				glTexCoord2d(facingRight ? 1 : 0, 0);
-				glVertex2d(xPos + textureHalfWidth, yPos + textureHeight);
-				glTexCoord2d(facingRight ? 1 : 0, 1);
-				glVertex2d(xPos + textureHalfWidth, yPos);
-				glTexCoord2d(facingRight ? 0 : 1, 1);
-				glVertex2d(xPos - textureHalfWidth, yPos);
-			glEnd();
-		glPopMatrix();
+		double left = xPos - textureHalfWidth;
+		double right = xPos + textureHalfWidth;
+		GLDrawer.useTexture(ghost.getCurrentTexture());
+		GLDrawer.drawQuad((facingRight ? left : right), (facingRight ? right : left), yPos, yPos + textureHeight);
 		
 		Entity.drawMiniHealthBar(xPos, yPos + textureHeight, ghost.getAmtHealth());
 	}
@@ -496,22 +457,9 @@ public class GameRunner {
 	
 	private void drawLoadingMessage() {
 		GameInitializer.initializeNewFrameForWindow();
-		glColor3d(1.0, 1.0, 1.0);
 		// Loading message texture size is 372 x 64
-		glBindTexture(GL_TEXTURE_2D, Textures.LOADING_MESSAGE);
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBegin(GL_QUADS);
-				glTexCoord2d(0, 1);
-				glVertex2d(32, Crissaegrim.getWindowHeight() - 96);
-				glTexCoord2d(1, 1);
-				glVertex2d(404, Crissaegrim.getWindowHeight() - 96);
-				glTexCoord2d(1, 0);
-				glVertex2d(404, Crissaegrim.getWindowHeight() - 32);
-				glTexCoord2d(0, 0);
-				glVertex2d(32, Crissaegrim.getWindowHeight() - 32);
-			glEnd();
-		glPopMatrix();
+		GLDrawer.useTexture(Textures.LOADING_MESSAGE);
+		GLDrawer.drawQuad(32, 404, Crissaegrim.getWindowHeight() - 96, Crissaegrim.getWindowHeight() - 32);
 	}
 	
 	private void drawLoadingProgressBar() {
@@ -520,24 +468,13 @@ public class GameRunner {
 			double amtLoaded = (double)Crissaegrim.numPacketsReceived / (double)Crissaegrim.numPacketsToReceive;
 			int progressBarRight = (int)(((1.0 - amtLoaded) * 32.0) + (amtLoaded * 404));  
 			GameInitializer.initializeNewFrameForWindow();
-			glDisable(GL_TEXTURE_2D);
-			glColor3d(0.15, 0.45, 0.15);
-			glBegin(GL_QUADS);
-				glVertex2d(32, Crissaegrim.getWindowHeight() - 106);
-				glVertex2d(progressBarRight, Crissaegrim.getWindowHeight() - 106);
-				glVertex2d(progressBarRight, Crissaegrim.getWindowHeight() - 136);
-				glVertex2d(32, Crissaegrim.getWindowHeight() - 136);
-			glEnd();
-			glColor3d(0.66, 0.66, 0.66);
-			glLineWidth(2);
-			glBegin(GL_LINE_LOOP);
-				glVertex2d(32, Crissaegrim.getWindowHeight() - 106);
-				glVertex2d(404, Crissaegrim.getWindowHeight() - 106);
-				glVertex2d(404, Crissaegrim.getWindowHeight() - 136);
-				glVertex2d(32, Crissaegrim.getWindowHeight() - 136);
-			glEnd();
-			glLineWidth(1);
-			glEnable(GL_TEXTURE_2D);
+			GLDrawer.disableTextures();
+			GLDrawer.setColor(0.15, 0.45, 0.15);
+			GLDrawer.drawQuad(32, progressBarRight, Crissaegrim.getWindowHeight() - 136, Crissaegrim.getWindowHeight() - 106);
+			GLDrawer.setColor(0.66, 0.66, 0.66);
+			GLDrawer.setLineWidth(2);
+			GLDrawer.drawOutline(32, 404, Crissaegrim.getWindowHeight() - 136, Crissaegrim.getWindowHeight() - 106);
+			GLDrawer.setLineWidth(1);
 		}
 	}
 	
@@ -554,24 +491,10 @@ public class GameRunner {
 			GameInitializer.setWindowTitle(optionalTitleChange);
 		}
 		while (!Display.isCloseRequested()) {
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glColor3d(1.0, 1.0, 1.0);
 			GameInitializer.initializeNewFrameForWindow();
-			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, texture);
-			glPushMatrix();
-				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-				glBegin(GL_QUADS);
-					glTexCoord2d(0, 1);
-					glVertex2d(32, Crissaegrim.getWindowHeight() - (32 + height));
-					glTexCoord2d(1, 1);
-					glVertex2d((32 + width), Crissaegrim.getWindowHeight() - (32 + height));
-					glTexCoord2d(1, 0);
-					glVertex2d((32 + width), Crissaegrim.getWindowHeight() - 32);
-					glTexCoord2d(0, 0);
-					glVertex2d(32, Crissaegrim.getWindowHeight() - 32);
-				glEnd();
-			glPopMatrix();
+			GLDrawer.clear();
+			GLDrawer.useTexture(texture);
+			GLDrawer.drawQuad(32, 32 + width, Crissaegrim.getWindowHeight() - 32 - height, Crissaegrim.getWindowHeight() - 32);
 			
 			Display.update();
 			Thread.sleep(100);

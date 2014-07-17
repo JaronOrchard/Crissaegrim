@@ -19,6 +19,7 @@ import entities.EntityMovementHelper;
 import geometry.Coordinate;
 import geometry.Rect;
 import geometry.RectUtils;
+import gldrawer.GLDrawer;
 
 public class InventoryRunner {
 	
@@ -171,42 +172,20 @@ public class InventoryRunner {
 		}
 		TextTexture mouseHoverStatus = Crissaegrim.getCommonTextures().getTextTexture(mouseHoverString);
 		int top = Crissaegrim.getWindowHeight() - 5;
-		glBindTexture(GL_TEXTURE_2D, mouseHoverStatus.getTextureId());
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBegin(GL_QUADS);
-				glTexCoord2d(0, 1);
-				glVertex2d(5, top - 20);
-				glTexCoord2d(1, 1);
-				glVertex2d(5 + mouseHoverStatus.getWidth(), top - 20);
-				glTexCoord2d(1, 0);
-				glVertex2d(5 + mouseHoverStatus.getWidth(), top);
-				glTexCoord2d(0, 0);
-				glVertex2d(5, top);
-			glEnd();
-		glPopMatrix();
+		GLDrawer.useTexture(mouseHoverStatus.getTextureId());
+		GLDrawer.drawQuad(5, 5 + mouseHoverStatus.getWidth(), top - 20, top);
 	}
 	
 	private void drawInventory(Inventory inventory) {
 		GameInitializer.initializeNewFrameForWindow();
-		glDisable(GL_TEXTURE_2D);
+		GLDrawer.disableTextures();
 		
-		glColor3d(0.314, 0.314, 0.314);
-		glBegin(GL_QUADS); // Draw inventory background
-			glVertex2d(inventoryRect.getLeft(), inventoryRect.getTop());
-			glVertex2d(inventoryRect.getRight(), inventoryRect.getTop());
-			glVertex2d(inventoryRect.getRight(), inventoryRect.getBottom());
-			glVertex2d(inventoryRect.getLeft(), inventoryRect.getBottom());
-		glEnd();
-		glColor3d(0.75, 0.75, 0.75);
-		glLineWidth(3);
-		glBegin(GL_LINE_LOOP); // Draw inventory outline
-			glVertex2d(inventoryRect.getLeft(), inventoryRect.getTop());
-			glVertex2d(inventoryRect.getRight(), inventoryRect.getTop());
-			glVertex2d(inventoryRect.getRight(), inventoryRect.getBottom());
-			glVertex2d(inventoryRect.getLeft(), inventoryRect.getBottom());
-		glEnd();
-		glLineWidth(1);
+		GLDrawer.setColor(0.314, 0.314, 0.314);
+		GLDrawer.drawQuad(inventoryRect); // Draw inventory background
+		GLDrawer.setColor(0.75, 0.75, 0.75);
+		GLDrawer.setLineWidth(3);
+		GLDrawer.drawOutline(inventoryRect); // Draw inventory outline
+		GLDrawer.setLineWidth(1);
 		glBegin(GL_LINES); // Draw lines
 			glVertex2d(inventoryRect.getLeft() + 6, inventoryRect.getTop() - OUTER_PADDING_PIXELS - 25);
 			glVertex2d(inventoryRect.getRight() - 6, inventoryRect.getTop() - OUTER_PADDING_PIXELS - 25);
@@ -215,57 +194,25 @@ public class InventoryRunner {
 			glVertex2d(inventoryRect.getLeft() + 248, inventoryRect.getBottom() + 6);
 		glEnd();
 		
-		glEnable(GL_TEXTURE_2D);
-		glColor3d(1, 1, 1);
 		TextTexture headerLabel = Crissaegrim.getCommonTextures().getTextTexture("Inventory (Click items to move them, E to close)");
-		glBindTexture(GL_TEXTURE_2D, headerLabel.getTextureId());
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBegin(GL_QUADS);
-				glTexCoord2d(0, 1);
-				glVertex2d(inventoryRect.getLeft() + OUTER_PADDING_PIXELS, inventoryRect.getTop() - OUTER_PADDING_PIXELS - 20);
-				glTexCoord2d(1, 1);
-				glVertex2d(inventoryRect.getLeft() + OUTER_PADDING_PIXELS + headerLabel.getWidth(), inventoryRect.getTop() - OUTER_PADDING_PIXELS - 20);
-				glTexCoord2d(1, 0);
-				glVertex2d(inventoryRect.getLeft() + OUTER_PADDING_PIXELS + headerLabel.getWidth(), inventoryRect.getTop() - OUTER_PADDING_PIXELS);
-				glTexCoord2d(0, 0);
-				glVertex2d(inventoryRect.getLeft() + OUTER_PADDING_PIXELS, inventoryRect.getTop() - OUTER_PADDING_PIXELS);
-			glEnd();
-		glPopMatrix();
+		GLDrawer.useTexture(headerLabel.getTextureId());
+		GLDrawer.drawQuad(inventoryRect.getLeft() + OUTER_PADDING_PIXELS, inventoryRect.getLeft() + OUTER_PADDING_PIXELS + headerLabel.getWidth(),
+				inventoryRect.getTop() - OUTER_PADDING_PIXELS - 20, inventoryRect.getTop() - OUTER_PADDING_PIXELS);
 		
 		// Draw "Armor slots coming in future release" message
-		glColor3d(0.8, 0.8, 0.8);
 		TextTexture armorslotsLabel1 = Crissaegrim.getCommonTextures().getTextTexture("(Armor slots coming");
 		TextTexture armorslotsLabel2 = Crissaegrim.getCommonTextures().getTextTexture("in future release!)");
-		glBindTexture(GL_TEXTURE_2D, armorslotsLabel1.getTextureId());
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBegin(GL_QUADS);
-				glTexCoord2d(0, 1);
-				glVertex2d(inventoryRect.getLeft() + 248 + OUTER_PADDING_PIXELS, inventoryRect.getTop() - 180);
-				glTexCoord2d(1, 1);
-				glVertex2d(inventoryRect.getLeft() + 248 + OUTER_PADDING_PIXELS + armorslotsLabel1.getWidth(), inventoryRect.getTop() - 180);
-				glTexCoord2d(1, 0);
-				glVertex2d(inventoryRect.getLeft() + 248 + OUTER_PADDING_PIXELS + armorslotsLabel1.getWidth(), inventoryRect.getTop() - 160);
-				glTexCoord2d(0, 0);
-				glVertex2d(inventoryRect.getLeft() + 248 + OUTER_PADDING_PIXELS, inventoryRect.getTop() - 160);
-			glEnd();
-		glPopMatrix();
-		glBindTexture(GL_TEXTURE_2D, armorslotsLabel2.getTextureId());
+		GLDrawer.useTexture(armorslotsLabel1.getTextureId());
+		GLDrawer.setColor(0.8, 0.8, 0.8);
+		GLDrawer.drawQuad(inventoryRect.getLeft() + 248 + OUTER_PADDING_PIXELS,
+				inventoryRect.getLeft() + 248 + OUTER_PADDING_PIXELS + armorslotsLabel1.getWidth(),
+				inventoryRect.getTop() - 180, inventoryRect.getTop() - 160);
+		GLDrawer.useTexture(armorslotsLabel2.getTextureId());
+		GLDrawer.setColor(0.8, 0.8, 0.8);
 		int nudge = (armorslotsLabel1.getWidth() - armorslotsLabel2.getWidth()) / 2;
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBegin(GL_QUADS);
-				glTexCoord2d(0, 1);
-				glVertex2d(inventoryRect.getLeft() + 248 + nudge + OUTER_PADDING_PIXELS, inventoryRect.getTop() - 203);
-				glTexCoord2d(1, 1);
-				glVertex2d(inventoryRect.getLeft() + 248 + nudge + OUTER_PADDING_PIXELS + armorslotsLabel2.getWidth(), inventoryRect.getTop() - 203);
-				glTexCoord2d(1, 0);
-				glVertex2d(inventoryRect.getLeft() + 248 + nudge + OUTER_PADDING_PIXELS + armorslotsLabel2.getWidth(), inventoryRect.getTop() - 183);
-				glTexCoord2d(0, 0);
-				glVertex2d(inventoryRect.getLeft() + 248 + nudge + OUTER_PADDING_PIXELS, inventoryRect.getTop() - 183);
-			glEnd();
-		glPopMatrix();
+		GLDrawer.drawQuad(inventoryRect.getLeft() + 248 + nudge + OUTER_PADDING_PIXELS,
+				inventoryRect.getLeft() + 248 + nudge + OUTER_PADDING_PIXELS + armorslotsLabel2.getWidth(),
+				inventoryRect.getTop() - 203, inventoryRect.getTop() - 183);
 		
 		// Draw background and outline of all item boxes:
 		int posX, posY;
@@ -275,90 +222,53 @@ public class InventoryRunner {
 			for (int j = 0; j < 6; j++) {
 				Item item = inventory.getItem(i*6 + j);
 				
-				setGlColorForItemBoxBackground(item);
-				glDisable(GL_TEXTURE_2D);
-				glBegin(GL_QUADS);
-					glVertex2d(posX, posY);
-					glVertex2d(posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY);
-					glVertex2d(posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2);
-					glVertex2d(posX, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2);
-				glEnd();
+				setColorForItemBoxBackground(item);
+				GLDrawer.disableTextures();
+				GLDrawer.drawQuad(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
 				
 				setGlColorForItemBoxOutline(i == 0, item);
-				glBegin(GL_LINE_LOOP);
-					glVertex2d(posX, posY);
-					glVertex2d(posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY);
-					glVertex2d(posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2);
-					glVertex2d(posX, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2);
-				glEnd();
+				GLDrawer.drawOutline(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2,
+						posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
 				
 				if (item != null) {
-					glColor3d(1, 1, 1);
-					glEnable(GL_TEXTURE_2D);
-					glBindTexture(GL_TEXTURE_2D, item.getTexture());
-					glPushMatrix();
-						glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-						glBegin(GL_QUADS);
-							glTexCoord2d(0, 1);
-							glVertex2d(posX + INNER_PADDING_PIXELS, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS);
-							glTexCoord2d(1, 1);
-							glVertex2d(posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS);
-							glTexCoord2d(1, 0);
-							glVertex2d(posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS, posY - INNER_PADDING_PIXELS);
-							glTexCoord2d(0, 0);
-							glVertex2d(posX + INNER_PADDING_PIXELS, posY - INNER_PADDING_PIXELS);
-						glEnd();
-					glPopMatrix();
+					GLDrawer.useTexture(item.getTexture());
+					GLDrawer.drawQuad(posX + INNER_PADDING_PIXELS, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS,
+							posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, posY - INNER_PADDING_PIXELS);
 				}
-				
 				posY -= BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 			}
 			posX += BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		}
-		glEnable(GL_TEXTURE_2D);
-		glColor3d(1, 1, 1);
 		
 		// Draw held item
 		if (heldItem != null) {
 			int mouseX = Mouse.getX();
 			int mouseY = Mouse.getY();
-			glBindTexture(GL_TEXTURE_2D, heldItem.getTexture());
-			glPushMatrix();
-				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-				glBegin(GL_QUADS);
-					glTexCoord2d(0, 1);
-					glVertex2d(mouseX - 16, mouseY - 16);
-					glTexCoord2d(1, 1);
-					glVertex2d(mouseX + 16, mouseY - 16);
-					glTexCoord2d(1, 0);
-					glVertex2d(mouseX + 16, mouseY + 16);
-					glTexCoord2d(0, 0);
-					glVertex2d(mouseX - 16, mouseY + 16);
-				glEnd();
-			glPopMatrix();
+			GLDrawer.useTexture(heldItem.getTexture());
+			GLDrawer.drawQuad(mouseX - 16, mouseX + 16, mouseY - 16, mouseY + 16);
 		}
 	}
 	
-	private void setGlColorForItemBoxBackground(Item item) {
+	private void setColorForItemBoxBackground(Item item) {
 		if (item != null) {
-			glColor3d(0.122, 0.141, 0.161);
+			GLDrawer.setColor(0.122, 0.141, 0.161);
 		} else {
-			glColor3d(0.22, 0.22, 0.22);
+			GLDrawer.setColor(0.22, 0.22, 0.22);
 		}
 	}
 	
 	private void setGlColorForItemBoxOutline(boolean quickequipColumn, Item item) {
 		if (quickequipColumn) {
 			if (item != null) {
-				glColor3d(0.733, 0.953, 1);
+				GLDrawer.setColor(0.733, 0.953, 1);
 			} else {
-				glColor3d(0.518, 0.659, 0.682);
+				GLDrawer.setColor(0.518, 0.659, 0.682);
 			}
 		} else {
 			if (item != null) {
-				glColor3d(1, 1, 1);
+				GLDrawer.setColor(1, 1, 1);
 			} else {
-				glColor3d(0.6, 0.6, 0.6);
+				GLDrawer.setColor(0.6, 0.6, 0.6);
 			}
 		}
 	}

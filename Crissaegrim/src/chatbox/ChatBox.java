@@ -1,5 +1,7 @@
 package chatbox;
 
+import gldrawer.GLDrawer;
+
 import java.awt.Color;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -47,16 +49,14 @@ public class ChatBox {
 	}
 	
 	private void drawSeparatingLine() {
-		glDisable(GL_TEXTURE_2D);
+		GLDrawer.disableTextures();
 		glBegin(GL_LINE_STRIP);
-			glColor4d(1, 1, 1, 1);
+			GLDrawer.setColor(1, 1, 1, 1);
 			glVertex2d(5, 31);
 			glVertex2d(250, 31);
-			glColor4d(1, 1, 1, 0);
+			GLDrawer.setColor(1, 1, 1, 0);
 			glVertex2d(400, 31);
 		glEnd();
-		glEnable(GL_TEXTURE_2D);
-		glColor4d(1, 1, 1, 1);
 	}
 	
 }

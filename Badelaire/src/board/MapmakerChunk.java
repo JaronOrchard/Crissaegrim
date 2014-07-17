@@ -1,6 +1,7 @@
 package board;
 
 import static org.lwjgl.opengl.GL11.*;
+import gldrawer.GLDrawer;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,8 +36,12 @@ public class MapmakerChunk extends Chunk {
 	
 	public void drawPreGrid() {
 		int chunkSideSize = Thunderbrand.getChunkSideSize();
-		glDisable(GL_TEXTURE_2D);
-		if (isEmpty) { glColor3d(0.1, 0.15, 0.1); } else { glColor3d(0.2, 0.2, 0.2); }
+		GLDrawer.disableTextures();
+		if (isEmpty) {
+			GLDrawer.setColor(0.1, 0.15, 0.1);
+		} else {
+			GLDrawer.setColor(0.2, 0.2, 0.2);
+		}
 		glBegin(GL_LINES);
 			for (double i = xOrigin + 1; i < xOrigin + chunkSideSize; i += 1) {
 				glVertex2d(i, (double)yOrigin);
@@ -47,22 +52,13 @@ public class MapmakerChunk extends Chunk {
 				glVertex2d((double)xOrigin + chunkSideSize, j);
 			}
 		glEnd();
-		glColor3d(1.0, 1.0, 1.0);
-		glEnable(GL_TEXTURE_2D);
 	}
 	
 	public void drawPostGrid() {
 		int chunkSideSize = Thunderbrand.getChunkSideSize();
-		glDisable(GL_TEXTURE_2D);
-		glColor3d(0.5, 0.4, 0.1);
-		glBegin(GL_LINE_LOOP);
-			glVertex2d(xOrigin, yOrigin);
-			glVertex2d(xOrigin + chunkSideSize, yOrigin);
-			glVertex2d(xOrigin + chunkSideSize, yOrigin + chunkSideSize);
-			glVertex2d(xOrigin, yOrigin + chunkSideSize);
-		glEnd();
-		glColor3d(1.0, 1.0, 1.0);
-		glEnable(GL_TEXTURE_2D);
+		GLDrawer.disableTextures();
+		GLDrawer.setColor(0.5, 0.4, 0.1);
+		GLDrawer.drawOutline(xOrigin, xOrigin + chunkSideSize, yOrigin, yOrigin + chunkSideSize);
 	}
 	
 	/**

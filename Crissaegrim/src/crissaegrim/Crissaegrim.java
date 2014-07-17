@@ -1,6 +1,6 @@
 package crissaegrim;
 
-import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
 import java.io.IOException;

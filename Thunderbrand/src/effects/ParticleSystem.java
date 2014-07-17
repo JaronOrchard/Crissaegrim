@@ -1,10 +1,9 @@
 package effects;
 
-import static org.lwjgl.opengl.GL11.*;
-
 import java.awt.Color;
 
 import geometry.Coordinate;
+import gldrawer.GLDrawer;
 
 public class ParticleSystem {
 	
@@ -24,13 +23,12 @@ public class ParticleSystem {
 	}
 	
 	public void draw() {
-		glDisable(GL_TEXTURE_2D);
+		GLDrawer.disableTextures();
 		for (int i = 0; i < numParticles; i++) {
 			if (particles[i] != null) {
 				particles[i].draw();
 			}
 		}
-		glEnable(GL_TEXTURE_2D);
 	}
 	
 	/**

@@ -1,6 +1,6 @@
 package badelaire;
 
-import static org.lwjgl.opengl.GL11.*;
+import gldrawer.GLDrawer;
 
 public class FillArea {
 	private int mode = 0; // 0 = Idle, 1 = First tile chosen, 2 = Both tiles chosen
@@ -38,27 +38,20 @@ public class FillArea {
 	
 	public void draw(int tileX, int tileY) {
 		if (mode == 0) { return; }
-		glDisable(GL_TEXTURE_2D);
-		glLineWidth(3);
-		glBegin(GL_LINE_LOOP);
-			glColor3d(0.8, 0, 0);
-			
-			if (mode == 2) {
-				tileX = point2TileX;
-				tileY = point2TileY;
-			}
-			double leftmostTile = point1TileX < tileX ? point1TileX : tileX;
-			double rightmostTile = point1TileX < tileX ? tileX+1 : point1TileX+1;
-			double topmostTile = point1TileY < tileY ? tileY+1 : point1TileY+1;
-			double bottommostTile = point1TileY < tileY ? point1TileY : tileY;
-			
-			glVertex2d(leftmostTile, topmostTile);
-			glVertex2d(rightmostTile, topmostTile);
-			glVertex2d(rightmostTile, bottommostTile);
-			glVertex2d(leftmostTile, bottommostTile);
-		glEnd();
-		glLineWidth(1);
-		glEnable(GL_TEXTURE_2D);
+		if (mode == 2) {
+			tileX = point2TileX;
+			tileY = point2TileY;
+		}
+		double leftmostTile = point1TileX < tileX ? point1TileX : tileX;
+		double rightmostTile = point1TileX < tileX ? tileX+1 : point1TileX+1;
+		double topmostTile = point1TileY < tileY ? tileY+1 : point1TileY+1;
+		double bottommostTile = point1TileY < tileY ? point1TileY : tileY;
+		
+		GLDrawer.disableTextures();
+		GLDrawer.setLineWidth(3);
+		GLDrawer.setColor(0.8, 0, 0);
+		GLDrawer.drawOutline(leftmostTile, rightmostTile, bottommostTile, topmostTile);
+		GLDrawer.setLineWidth(1);
 	}
 	
 }

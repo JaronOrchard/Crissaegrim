@@ -1,6 +1,6 @@
 package players;
 
-import static org.lwjgl.opengl.GL11.*;
+import gldrawer.GLDrawer;
 import items.Item;
 import items.ItemSolais;
 
@@ -52,66 +52,34 @@ public class Player extends Entity {
 		
 		drawMiniHealthBar(position.getX(), position.getY() + textureHeight, getHealthBar().getAmtHealth());
 		
-		glColor3d(1.0, 1.0, 1.0);
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBindTexture(GL_TEXTURE_2D, getCurrentTexture());
-			glBegin(GL_QUADS);
-				glTexCoord2d(facingRight ? 0 : 1, 0);
-				glVertex2d(position.getX() - 1.5, position.getY() + 3);
-				glTexCoord2d(facingRight ? 1 : 0, 0);
-				glVertex2d(position.getX() + 1.5, position.getY() + 3);
-				glTexCoord2d(facingRight ? 1 : 0, 1);
-				glVertex2d(position.getX() + 1.5, position.getY());
-				glTexCoord2d(facingRight ? 0 : 1, 1);
-				glVertex2d(position.getX() - 1.5, position.getY());
-			glEnd();
-			
-			if (icon != null) {
-				if (icon.equals("F")) glBindTexture(GL_TEXTURE_2D, Textures.ICON_F);
-				else if (icon.equals("LEFT_CLICK")) glBindTexture(GL_TEXTURE_2D, Textures.ICON_LEFT_CLICK);
-				glBegin(GL_QUADS);
-					glTexCoord2d(0, 0);
-					glVertex2d(position.getX() - 0.5, position.getY() + 4);
-					glTexCoord2d(1, 0);
-					glVertex2d(position.getX() + 0.5, position.getY() + 4);
-					glTexCoord2d(1, 1);
-					glVertex2d(position.getX() + 0.5, position.getY() + 3);
-					glTexCoord2d(0, 1);
-					glVertex2d(position.getX() - 0.5, position.getY() + 3);
-				glEnd();
+		double left = position.getX() - 1.5;
+		double right = position.getX() + 1.5;
+		GLDrawer.useTexture(getCurrentTexture());
+		GLDrawer.drawQuad((facingRight ? left : right), (facingRight ? right : left), position.getY(), position.getY() + 3);
+		
+		if (icon != null) {
+			if (icon.equals("F")) {
+				GLDrawer.useTexture(Textures.ICON_F);
+			} else if (icon.equals("LEFT_CLICK")) {
+				GLDrawer.useTexture(Textures.ICON_LEFT_CLICK);
 			}
-		glPopMatrix();
+			GLDrawer.drawQuad(position.getX() - 0.5, position.getX() + 0.5, position.getY() + 3, position.getY() + 4);
+		}
 	}
 	
 	public void drawDebugMode() {
-		glDisable(GL_TEXTURE_2D);
-		glColor3d(0, 0, 1);
-		glBegin(GL_LINE_STRIP);
-			glVertex2d(position.getX() - (getBodyWidth() / 2), position.getY() + getFeetHeight());
-			glVertex2d(position.getX() - (getBodyWidth() / 2), position.getY());
-			glVertex2d(position.getX() + (getBodyWidth() / 2), position.getY());
-			glVertex2d(position.getX() + (getBodyWidth() / 2), position.getY() + getFeetHeight());
-		glEnd();
-		glColor3d(1, 0, 0);
-		glBegin(GL_LINES);	
-			glVertex2d(position.getX(), position.getY());
-			glVertex2d(position.getX(), position.getY() + getFeetHeight());
-		glEnd();
-		glBegin(GL_LINE_LOOP);
-			glVertex2d(position.getX() - (getBodyWidth() / 2), position.getY() + getFeetHeight());
-			glVertex2d(position.getX() + (getBodyWidth() / 2), position.getY() + getFeetHeight());
-			glVertex2d(position.getX() + (getBodyWidth() / 2), position.getY() + getFeetHeight() + getBodyHeight());
-			glVertex2d(position.getX() - (getBodyWidth() / 2), position.getY() + getFeetHeight() + getBodyHeight());
-		glEnd();
-		glColor3d(0, 1, 0);
-		glBegin(GL_LINE_STRIP);	
-			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * (getBodyWidth() / 2)), position.getY() + getPlayerSwordAltitude());
-			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * ((getBodyWidth() / 2) + getPlayerSwordLength())), position.getY() + getPlayerSwordAltitude());
-			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * ((getBodyWidth() / 2) + getPlayerSwordLength())), position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight());
-			glVertex2d(position.getX() + ((facingRight ? 1 : -1) * ((getBodyWidth() / 2))), position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight());
-		glEnd();
-		glEnable(GL_TEXTURE_2D);
+		GLDrawer.disableTextures();
+		GLDrawer.setColor(0, 0, 1);
+		GLDrawer.drawOutline(position.getX() - (getBodyWidth() / 2), position.getX() + (getBodyWidth() / 2),
+				position.getY(), position.getY() + getFeetHeight());
+		GLDrawer.setColor(1, 0, 0);
+		GLDrawer.drawLine(position.getX(), position.getY(), position.getX(), position.getY() + getFeetHeight());
+		GLDrawer.drawOutline(position.getX() - (getBodyWidth() / 2), position.getX() + (getBodyWidth() / 2),
+				position.getY() + getFeetHeight(), position.getY() + getFeetHeight() + getBodyHeight());
+		GLDrawer.setColor(0, 1, 0);
+		GLDrawer.drawOutline(position.getX() + ((facingRight ? 1 : -1) * (getBodyWidth() / 2)),
+				position.getX() + ((facingRight ? 1 : -1) * ((getBodyWidth() / 2) + getPlayerSwordLength())),
+				position.getY() + getPlayerSwordAltitude(), position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight());
 	}
 	
 	public void receiveItem(Item item) {

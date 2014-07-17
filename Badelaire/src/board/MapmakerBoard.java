@@ -1,10 +1,7 @@
 package board;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glColor3d;
 import geometry.Coordinate;
+import gldrawer.GLDrawer;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -134,8 +131,8 @@ public class MapmakerBoard {
 	public void drawTileTypes(Coordinate centerPosition, boolean drawGrid) { draw(centerPosition, drawGrid, false, false, false, true); }
 	
 	private void draw(Coordinate centerPosition, boolean drawGrid, boolean drawBG, boolean drawMG, boolean drawFG, boolean drawDefaults) {
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glColor3d(1.0, 1.0, 1.0);
+		GLDrawer.clear();
+		GLDrawer.clearColor();
 		int xRange = (int)Math.ceil(Badelaire.getWindowWidthRadiusInTiles()) + 1;
 		int yRange = (int)Math.ceil(Badelaire.getWindowHeightRadiusInTiles()) + 1;
 		for (Map.Entry<String, MapmakerChunk> entry : chunkMap.entrySet()) {

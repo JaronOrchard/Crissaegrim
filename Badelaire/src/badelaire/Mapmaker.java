@@ -2,6 +2,7 @@ package badelaire;
 
 import static org.lwjgl.opengl.GL11.*;
 import geometry.Coordinate;
+import gldrawer.GLDrawer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -138,8 +139,8 @@ public class Mapmaker {
 				int middleX = Badelaire.getWindowWidth() / 2;
 				int middleY = Badelaire.getWindowHeight() / 2;
 				MapmakerInitializer.initializeNewFrameForWindow();
-				glDisable(GL_TEXTURE_2D);
-				glColor3d(0.0, 0.4, 0.4);
+				GLDrawer.disableTextures();
+				GLDrawer.setColor(0, 0.4, 0.4);
 				glBegin(GL_LINES);
 					glVertex2d(viewLimitLeft, viewLimitBottom);
 					glVertex2d(viewLimitLeft, viewLimitTop);
@@ -161,10 +162,7 @@ public class Mapmaker {
 					glVertex2d(middleX - 5, middleY + 5);
 					glVertex2d(middleX + 5, middleY - 5);
 				glEnd();
-				glColor3d(1.0, 1.0, 1.0);
-				glEnable(GL_TEXTURE_2D);
 			}
-			
 		} else if (textureSelectionModeEnabled) {
 			drawSelectableTextures();
 		} else if (tileTypeSelectionModeEnabled) {
@@ -178,86 +176,40 @@ public class Mapmaker {
 			return;
 		}
 		MapmakerInitializer.initializeNewFrameForScene(center);
-		glColor3d(1.0, 1.0, 1.0);
 		double tileX = center.getX() - Badelaire.getWindowWidthRadiusInTiles() + 0.5;
 		double tileY = center.getY() + Badelaire.getWindowHeightRadiusInTiles() - 1.5;
 		
 		// Draw recently used choices, including the current selection
 		for (int i = 0; i < RECENTLY_USED_CHOICES; i++) {
-			glPushMatrix();
-				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-				glBindTexture(GL_TEXTURE_2D, (mode == 4 ? previouslyUsedTileTypes.get(i).getDefaultTexture() : previouslyUsedTextures.get(i)));
-				glBegin(GL_QUADS);
-					glTexCoord2d(0, 1);
-					glVertex2d(tileX, tileY);
-					glTexCoord2d(1, 1);
-					glVertex2d(tileX + 1, tileY);
-					glTexCoord2d(1, 0);
-					glVertex2d(tileX + 1, tileY + 1);
-					glTexCoord2d(0, 0);
-					glVertex2d(tileX, tileY + 1);
-				glEnd();
-			glPopMatrix();
+			GLDrawer.useTexture(mode == 4 ? previouslyUsedTileTypes.get(i).getDefaultTexture() : previouslyUsedTextures.get(i));
+			GLDrawer.drawQuad(tileX, tileX + 1, tileY, tileY + 1);
 			tileX += 2;
 		}
 		
 		// Draw replacement choice
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBindTexture(GL_TEXTURE_2D, (mode == 4 ? replacementTile.getDefaultTexture() : replacementTexture));
-			glBegin(GL_QUADS);
-				glTexCoord2d(0, 1);
-				glVertex2d(tileX, tileY);
-				glTexCoord2d(1, 1);
-				glVertex2d(tileX + 1, tileY);
-				glTexCoord2d(1, 0);
-				glVertex2d(tileX + 1, tileY + 1);
-				glTexCoord2d(0, 0);
-				glVertex2d(tileX, tileY + 1);
-			glEnd();
-		glPopMatrix();
+		GLDrawer.useTexture(mode == 4 ? replacementTile.getDefaultTexture() : replacementTexture);
+		GLDrawer.drawQuad(tileX, tileX + 1, tileY, tileY + 1);
 		
 		// Draw all lines
 		tileX = center.getX() - Badelaire.getWindowWidthRadiusInTiles() + 0.5;
-		glDisable(GL_TEXTURE_2D);
+		GLDrawer.disableTextures();
 		for (int i = 0; i < 1 + RECENTLY_USED_CHOICES; i++) {
-			if (i == 0)								{ glColor3d(0.7, 0.2, 0.2); } // Current selection
-			else if (i == RECENTLY_USED_CHOICES)	{ glColor3d(0.2, 0.7, 0.2); } // Replacement choice slot
-			else									{ glColor3d(0.2, 0.7, 0.7); } // Recently used
-			glBegin(GL_LINE_LOOP);
-				glVertex2d(tileX, tileY);
-				glVertex2d(tileX + 1, tileY);
-				glVertex2d(tileX + 1, tileY + 1);
-				glVertex2d(tileX, tileY + 1);
-			glEnd();
+			if (i == 0)								{ GLDrawer.setColor(0.7, 0.2, 0.2); } // Current selection
+			else if (i == RECENTLY_USED_CHOICES)	{ GLDrawer.setColor(0.2, 0.7, 0.2); } // Replacement choice slot
+			else									{ GLDrawer.setColor(0.2, 0.7, 0.7); } // Recently used
+			GLDrawer.drawOutline(tileX, tileX + 1, tileY, tileY + 1);
 			tileX += 2;
 		}
-		glEnable(GL_TEXTURE_2D);
-		glColor3d(1.0, 1.0, 1.0);
 	}
 	
 	private void drawSelectableTextures() {
 		double tileX = center.getX() - Badelaire.getWindowWidthRadiusInTiles();
 		double tileY = center.getY() + Badelaire.getWindowHeightRadiusInTiles() - 1;
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glColor3d(1.0, 1.0, 1.0);
+		GLDrawer.clear();
 		List<Integer> selectableTextures = Textures.getSelectableTextures();
 		for (int i = 0; i < selectableTextures.size(); i++) {
-			glPushMatrix();
-				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-				glBindTexture(GL_TEXTURE_2D, selectableTextures.get(i));
-				glBegin(GL_QUADS);
-					glTexCoord2d(0, 1);
-					glVertex2d(tileX, tileY);
-					glTexCoord2d(1, 1);
-					glVertex2d(tileX + 1, tileY);
-					glTexCoord2d(1, 0);
-					glVertex2d(tileX + 1, tileY + 1);
-					glTexCoord2d(0, 0);
-					glVertex2d(tileX, tileY + 1);
-				glEnd();
-			glPopMatrix();
-			
+			GLDrawer.useTexture(selectableTextures.get(i));
+			GLDrawer.drawQuad(tileX, tileX + 1, tileY, tileY + 1);
 			tileX += 1;
 			if (i != 0 && (i+1) % (Badelaire.getWindowWidth() / Badelaire.getPixelsPerTile()) == 0) {
 				tileY -= 1;
@@ -274,44 +226,18 @@ public class Mapmaker {
 		} else {
 			textureHovered = Textures.getSelectableTextures().get(textureHovered);
 		}
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBindTexture(GL_TEXTURE_2D, textureHovered);
-			glBegin(GL_QUADS);
-				glTexCoord2d(0, 1);
-				glVertex2d(tileX, tileY);
-				glTexCoord2d(1, 1);
-				glVertex2d(tileX + 1, tileY);
-				glTexCoord2d(1, 0);
-				glVertex2d(tileX + 1, tileY + 1);
-				glTexCoord2d(0, 0);
-				glVertex2d(tileX, tileY + 1);
-			glEnd();
-		glPopMatrix();
+		GLDrawer.useTexture(textureHovered);
+		GLDrawer.drawQuad(tileX, tileX + 1, tileY, tileY + 1);
 	}
 	
 	private void drawSelectableTileTypes() {
 		double tileX = center.getX() - Badelaire.getWindowWidthRadiusInTiles();
 		double tileY = center.getY() + Badelaire.getWindowHeightRadiusInTiles() - 1;
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glColor3d(1.0, 1.0, 1.0);
+		GLDrawer.clear();
 		List<Tile> selectableTiles = TileUtils.getMapmakerSelectableTiles();
 		for (int i = 0; i < selectableTiles.size(); i++) {
-			glPushMatrix();
-				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-				glBindTexture(GL_TEXTURE_2D, selectableTiles.get(i).getDefaultTexture());
-				glBegin(GL_QUADS);
-					glTexCoord2d(0, 1);
-					glVertex2d(tileX, tileY);
-					glTexCoord2d(1, 1);
-					glVertex2d(tileX + 1, tileY);
-					glTexCoord2d(1, 0);
-					glVertex2d(tileX + 1, tileY + 1);
-					glTexCoord2d(0, 0);
-					glVertex2d(tileX, tileY + 1);
-				glEnd();
-			glPopMatrix();
-			
+			GLDrawer.useTexture(selectableTiles.get(i).getDefaultTexture());
+			GLDrawer.drawQuad(tileX, tileX + 1, tileY, tileY + 1);
 			tileX += 1;
 			if (i != 0 && (i+1) % (Badelaire.getWindowWidth() / Badelaire.getPixelsPerTile()) == 0) {
 				tileY -= 1;
@@ -533,20 +459,8 @@ public class Mapmaker {
 	
 	private void drawStickPlayer(double x, double y) {
 		MapmakerInitializer.initializeNewFrameForScene(center);
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBindTexture(GL_TEXTURE_2D, Textures.STICK_PLAYER);
-			glBegin(GL_QUADS);
-				glTexCoord2d(0, 1);
-				glVertex2d(x - 1.5, y);
-				glTexCoord2d(1, 1);
-				glVertex2d(x + 1.5, y);
-				glTexCoord2d(1, 0);
-				glVertex2d(x + 1.5, y + 3);
-				glTexCoord2d(0, 0);
-				glVertex2d(x - 1.5, y + 3);
-			glEnd();
-		glPopMatrix();
+		GLDrawer.useTexture(Textures.STICK_PLAYER);
+		GLDrawer.drawQuad(x - 1.5, x + 1.5, y, y + 3);
 	}
 	
 }

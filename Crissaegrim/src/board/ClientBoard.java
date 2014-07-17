@@ -1,20 +1,7 @@
 package board;
 
-import static org.lwjgl.opengl.GL11.GL_MODULATE;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_ENV;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_ENV_MODE;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glColor3d;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glTexCoord2d;
-import static org.lwjgl.opengl.GL11.glTexEnvf;
-import static org.lwjgl.opengl.GL11.glVertex2d;
 import geometry.Coordinate;
+import gldrawer.GLDrawer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +55,6 @@ public class ClientBoard {
 		
 		int xRange = (int)Math.ceil(Crissaegrim.getWindowWidthRadiusInTiles()) + 1;
 		int yRange = (int)Math.ceil(Crissaegrim.getWindowHeightRadiusInTiles()) + 1;
-		glColor3d(1.0, 1.0, 1.0);
 		for (Chunk chunk : chunks) {
 			if (chunk != null) {
 				chunk.draw(playerPosition, layer, xRange, yRange);
@@ -77,21 +63,8 @@ public class ClientBoard {
 	}
 	
 	public static void drawBackground(Board board) {
-		glColor3d(1.0, 1.0, 1.0);
-		glBindTexture(GL_TEXTURE_2D, board.getBackgroundTextureId());
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBegin(GL_QUADS);
-				glTexCoord2d(0, 1);
-				glVertex2d(0, 0);
-				glTexCoord2d(1, 1);
-				glVertex2d(Crissaegrim.getWindowWidth(), 0);
-				glTexCoord2d(1, 0);
-				glVertex2d(Crissaegrim.getWindowWidth(), Crissaegrim.getWindowHeight());
-				glTexCoord2d(0, 0);
-				glVertex2d(0, Crissaegrim.getWindowHeight());
-			glEnd();
-		glPopMatrix();
+		GLDrawer.useTexture(board.getBackgroundTextureId());
+		GLDrawer.drawQuad(0, Crissaegrim.getWindowWidth(), 0, Crissaegrim.getWindowHeight());
 	}
 	
 }

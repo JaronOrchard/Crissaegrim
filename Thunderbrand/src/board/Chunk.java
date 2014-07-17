@@ -1,14 +1,12 @@
 package board;
 
-import static org.lwjgl.opengl.GL11.glTexCoord2d;
 import geometry.Coordinate;
+import gldrawer.GLDrawer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.lwjgl.opengl.GL11;
 
 import board.tiles.Tile;
 import board.tiles.TileUtils;
@@ -112,23 +110,12 @@ public class Chunk {
 				tilesToDraw.get(texture).add(new Coordinate(tileX, tileY));
 			}
 		}
+		
 		// Draw from a map so we only have to bind each different texture once
 		for (Integer texture : tilesToDraw.keySet()) {
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
+			GLDrawer.useTexture(texture);
 			for (Coordinate tileCoord : tilesToDraw.get(texture)) {
-				GL11.glPushMatrix();
-					GL11.glTexEnvf(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
-					GL11.glBegin(GL11.GL_QUADS);
-						glTexCoord2d(0, 1);
-						GL11.glVertex2d(tileCoord.getX(), tileCoord.getY());
-						glTexCoord2d(1, 1);
-						GL11.glVertex2d(tileCoord.getX() + 1, tileCoord.getY());
-						glTexCoord2d(1, 0);
-						GL11.glVertex2d(tileCoord.getX() + 1, tileCoord.getY() + 1);
-						glTexCoord2d(0, 0);
-						GL11.glVertex2d(tileCoord.getX(), tileCoord.getY() + 1);
-					GL11.glEnd();
-				GL11.glPopMatrix();
+				GLDrawer.drawQuad(tileCoord.getX(), tileCoord.getX() + 1, tileCoord.getY(), tileCoord.getY() + 1);
 			}
 		}
 	}

@@ -1,10 +1,10 @@
 package doodads;
 
-import static org.lwjgl.opengl.GL11.*;
 import items.Item;
 import items.Items;
 import geometry.Coordinate;
 import geometry.Rect;
+import gldrawer.GLDrawer;
 import textures.Textures;
 
 public class MineableRock extends Doodad {
@@ -75,34 +75,16 @@ public class MineableRock extends Doodad {
 	@Override
 	public void draw() {
 		Rect bounds = getBounds();
-		glPushMatrix();
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBindTexture(GL_TEXTURE_2D, (hasOre ? rockTexture : Textures.DEPLETED_ROCK));
-			glBegin(GL_QUADS);
-				glTexCoord2d(0, 0);
-				glVertex2d(bounds.getLeft(), bounds.getTop());
-				glTexCoord2d(1, 0);
-				glVertex2d(bounds.getRight(), bounds.getTop());
-				glTexCoord2d(1, 1);
-				glVertex2d(bounds.getRight(), bounds.getBottom());
-				glTexCoord2d(0, 1);
-				glVertex2d(bounds.getLeft(), bounds.getBottom());
-			glEnd();
-		glPopMatrix();
+		GLDrawer.useTexture(hasOre ? rockTexture : Textures.DEPLETED_ROCK);
+		GLDrawer.drawQuad(bounds);
 	}
 
 	@Override
 	public void drawDebugMode() {
 		Rect bounds = getBounds();
-		glDisable(GL_TEXTURE_2D);
-		glBegin(GL_LINE_LOOP);
-			glColor3d(0, 1, 1);
-			glVertex2d(bounds.getLeft(), bounds.getBottom());
-			glVertex2d(bounds.getRight(), bounds.getBottom());
-			glVertex2d(bounds.getRight(), bounds.getTop());
-			glVertex2d(bounds.getLeft(), bounds.getTop());
-		glEnd();
-		glEnable(GL_TEXTURE_2D);
+		GLDrawer.disableTextures();
+		GLDrawer.setColor(0, 1, 1);
+		GLDrawer.drawOutline(bounds);
 	}
 	
 }
