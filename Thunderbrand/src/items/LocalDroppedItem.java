@@ -1,5 +1,6 @@
 package items;
 
+import board.Board;
 import thunderbrand.Constants;
 import thunderbrand.Thunderbrand;
 import geometry.Coordinate;
@@ -11,21 +12,21 @@ public class LocalDroppedItem {
 	private final int id;
 	private final Item item;
 	private Coordinate position;
-	private String boardName;
+	private Board board;
 	private double horizontalVelocity;
 	private double verticalVelocity;
 	private Long hitGroundTime;
 	private Rect bounds;
 	
 	public int getId() { return id; }
-	public String getBoardName() { return boardName; }
+	public String getBoardName() { return board.getName(); }
 	public Rect getBounds() { return bounds; }
 	
-	public LocalDroppedItem(Item item, Coordinate pos, String boardName, boolean facingRight) {
+	public LocalDroppedItem(Item item, Coordinate pos, Board currentBoard, boolean facingRight) {
 		id = Thunderbrand.getNextDroppedItemId();
 		this.item = item;
 		position = new Coordinate(pos);
-		this.boardName = boardName;
+		board = currentBoard;
 		horizontalVelocity = Thunderbrand.getRandomNumbers().getDoubleInRange(0.7, 0.10) * (facingRight ? 1 : -1);
 		verticalVelocity = Thunderbrand.getRandomNumbers().getDoubleInRange(0.09, 0.11);
 		hitGroundTime = null;
@@ -33,6 +34,9 @@ public class LocalDroppedItem {
 	}
 	
 	public void update() {
+		Coordinate currentPosition = new Coordinate(position);
+		
+		
 		// If the item moves, recalculate bounds
 	}
 	

@@ -31,10 +31,13 @@ public class Board {
 	}
 	
 	/**
-	 * 
-	 * @param entityPosition
+	 * @param position Current position
+	 * @param xLeft The amount of tiles to also grab in the left direction
+	 * @param xRight The amount of tiles to also grab in the right direction
+	 * @param yDown The amount of tiles to also grab in the down direction
+	 * @param yUp The amount of tiles to also grab in the up direction
 	 * @return
-	 * <code>
+	 * <code>(When 1, 1, 1, 4:)<br/>
 	 * 15 16 17<br/>
 	 * 12 13 14<br/>
 	 * 09 10 11<br/>
@@ -43,33 +46,33 @@ public class Board {
 	 * 00 01 02
 	 * </code>
 	 */
-	public List<CollisionDetectionTile> getCollisionDetectionTilesNearEntity(Coordinate entityPosition) {
+	public List<CollisionDetectionTile> getCollisionDetectionTilesNearPosition(Coordinate position, int xLeft, int xRight, int yDown, int yUp) {
 		int chunkSideSize = Thunderbrand.getChunkSideSize();
-		int chunkXOrigin = (int)entityPosition.getX() - ((int)entityPosition.getX() % chunkSideSize);
-		int chunkYOrigin = (int)entityPosition.getY() - ((int)entityPosition.getY() % chunkSideSize);
+		int chunkXOrigin = (int)position.getX() - ((int)position.getX() % chunkSideSize);
+		int chunkYOrigin = (int)position.getY() - ((int)position.getY() % chunkSideSize);
 		String chunkName = chunkXOrigin + "_" + chunkYOrigin;
 		Chunk chunk = chunkMap.get(chunkName);
 		
 		List<CollisionDetectionTile> nearbyTiles = new ArrayList<CollisionDetectionTile>();
-		int localizedPlayerTileX = (int)entityPosition.getX() - chunk.getXOrigin();
-		int localizedPlayerTileY = (int)entityPosition.getY() - chunk.getYOrigin();
+		int localizedPlayerTileX = (int)position.getX() - chunk.getXOrigin();
+		int localizedPlayerTileY = (int)position.getY() - chunk.getYOrigin();
 		
-		if (localizedPlayerTileX > 0 && localizedPlayerTileX < chunkSideSize - 1 &&
-				localizedPlayerTileY > 0 && localizedPlayerTileY < chunkSideSize - 4) {
+		if (localizedPlayerTileX > 0 && localizedPlayerTileX < chunkSideSize - xRight &&
+				localizedPlayerTileY > 0 && localizedPlayerTileY < chunkSideSize - yUp) {
 			// Case 1: Player is well within a chunk
-			for (int x = localizedPlayerTileX - 1; x <= localizedPlayerTileX + 1; x++) {
-				for (int y = localizedPlayerTileY - 1; y <= localizedPlayerTileY + 4; y++) {
+			for (int x = localizedPlayerTileX - xLeft; x <= localizedPlayerTileX + xRight; x++) {
+				for (int y = localizedPlayerTileY - yDown; y <= localizedPlayerTileY + yUp; y++) {
 					nearbyTiles.add(new CollisionDetectionTile(chunk.getXOrigin() + x, chunk.getYOrigin() + y, chunk.getTile(x, y)));
 				}
 			}
-		} else if ((localizedPlayerTileX == 0 || localizedPlayerTileX == chunkSideSize - 1) &&
-				localizedPlayerTileY > 0 && localizedPlayerTileY < chunkSideSize - 4) {
+		} else if ((localizedPlayerTileX == 0 || localizedPlayerTileX == chunkSideSize - xRight) &&
+				localizedPlayerTileY > 0 && localizedPlayerTileY < chunkSideSize - yUp) {
 			// Case 2: Player is on left or right edge of chunk, but isn't crossing vertical boundaries
 			Chunk leftChunk = chunkMap.get((chunkXOrigin - chunkSideSize) + "_" + chunkYOrigin);
 			Chunk rightChunk = chunkMap.get((chunkXOrigin + chunkSideSize) + "_" + chunkYOrigin);
-			for (int x = localizedPlayerTileX - 1; x <= localizedPlayerTileX + 1; x++) {
-				for (int y = localizedPlayerTileY - 1; y <= localizedPlayerTileY + 4; y++) {
-					if (x == -1) {
+			for (int x = localizedPlayerTileX - xLeft; x <= localizedPlayerTileX + xRight; x++) {
+				for (int y = localizedPlayerTileY - yDown; y <= localizedPlayerTileY + yUp; y++) {
+					if (x < 0) {
 						nearbyTiles.add(new CollisionDetectionTile(chunk.getXOrigin() + x, chunk.getYOrigin() + y, leftChunk.getTile(x + chunkSideSize, y)));
 					} else if (x == chunkSideSize) {
 						nearbyTiles.add(new CollisionDetectionTile(chunk.getXOrigin() + x, chunk.getYOrigin() + y, rightChunk.getTile(x - chunkSideSize, y)));
@@ -78,13 +81,13 @@ public class Board {
 					}
 				}
 			}
-		} else if (localizedPlayerTileX > 0 && localizedPlayerTileX < chunkSideSize - 1 &&
-				(localizedPlayerTileY == 0 || localizedPlayerTileY >= chunkSideSize - 4)) {
+		} else if (localizedPlayerTileX > 0 && localizedPlayerTileX < chunkSideSize - xRight &&
+				(localizedPlayerTileY == 0 || localizedPlayerTileY >= chunkSideSize - yUp)) {
 			// Case 3: Player is on top or bottom edge of chunk, but isn't crossing horizontal boundaries
 			Chunk topChunk = chunkMap.get(chunkXOrigin + "_" + (chunkYOrigin + chunkSideSize));
 			Chunk bottomChunk = chunkMap.get(chunkXOrigin + "_" + (chunkYOrigin - chunkSideSize));
-			for (int x = localizedPlayerTileX - 1; x <= localizedPlayerTileX + 1; x++) {
-				for (int y = localizedPlayerTileY - 1; y <= localizedPlayerTileY + 4; y++) {
+			for (int x = localizedPlayerTileX - xLeft; x <= localizedPlayerTileX + xRight; x++) {
+				for (int y = localizedPlayerTileY - yDown; y <= localizedPlayerTileY + yUp; y++) {
 					if (y < 0) {
 						nearbyTiles.add(new CollisionDetectionTile(chunk.getXOrigin() + x, chunk.getYOrigin() + y, bottomChunk.getTile(x, y + chunkSideSize)));
 					} else if (y >= chunkSideSize) {
@@ -104,13 +107,13 @@ public class Board {
 			Chunk bottomRightChunk = chunkMap.get((chunkXOrigin + chunkSideSize) + "_" + (chunkYOrigin - chunkSideSize));
 			Chunk topLeftChunk = chunkMap.get((chunkXOrigin - chunkSideSize) + "_" + (chunkYOrigin + chunkSideSize));
 			Chunk topRightChunk = chunkMap.get((chunkXOrigin + chunkSideSize) + "_" + (chunkYOrigin + chunkSideSize));
-			for (int x = localizedPlayerTileX - 1; x <= localizedPlayerTileX + 1; x++) {
-				for (int y = localizedPlayerTileY - 1; y <= localizedPlayerTileY + 4; y++) {
-					if (x == -1 && y < 0) {
+			for (int x = localizedPlayerTileX - xLeft; x <= localizedPlayerTileX + xRight; x++) {
+				for (int y = localizedPlayerTileY - yDown; y <= localizedPlayerTileY + yUp; y++) {
+					if (x < 0 && y < 0) {
 						nearbyTiles.add(new CollisionDetectionTile(chunk.getXOrigin() + x, chunk.getYOrigin() + y, bottomLeftChunk.getTile(x + chunkSideSize, y + chunkSideSize)));
-					} else if (x == -1 && y >= chunkSideSize) {
+					} else if (x < 0 && y >= chunkSideSize) {
 						nearbyTiles.add(new CollisionDetectionTile(chunk.getXOrigin() + x, chunk.getYOrigin() + y, topLeftChunk.getTile(x + chunkSideSize, y - chunkSideSize)));
-					} else if (x == -1 /* && not crossing vertical boundary */) { 
+					} else if (x < 0 /* && not crossing vertical boundary */) { 
 						nearbyTiles.add(new CollisionDetectionTile(chunk.getXOrigin() + x, chunk.getYOrigin() + y, leftChunk.getTile(x + chunkSideSize, y)));
 					} else if (x == chunkSideSize && y < 0) {
 						nearbyTiles.add(new CollisionDetectionTile(chunk.getXOrigin() + x, chunk.getYOrigin() + y, bottomRightChunk.getTile(x - chunkSideSize, y + chunkSideSize)));

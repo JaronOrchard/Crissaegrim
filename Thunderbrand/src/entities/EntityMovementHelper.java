@@ -118,7 +118,7 @@ public class EntityMovementHelper {
 		// - If left/right not requested and not on the ground, horizontal momentum quickly tapers off towards 0
 		
 		// 1) Get the 18 tiles adjacent to the player for collision detection
-		List<CollisionDetectionTile> nearbyTiles = parentEntity.getCurrentBoard().getCollisionDetectionTilesNearEntity(parentEntity.getPosition());
+		List<CollisionDetectionTile> nearbyTiles = parentEntity.getCurrentBoard().getCollisionDetectionTilesNearPosition(parentEntity.getPosition(), 1, 1, 1, 4);
 		Collections.swap(nearbyTiles, 0, 7); // A little hack to ensure that the Tile
 		Collections.swap(nearbyTiles, 1, 6); //    the player is in always takes
 		Collections.swap(nearbyTiles, 2, 8); //    precedence for raisedEndingPosition

@@ -155,7 +155,7 @@ public class InventoryRunner {
 		Crissaegrim.getGameRunner().addLocalDroppedItem(new LocalDroppedItem(
 						item,
 						new Coordinate(player.getPosition().getX(), player.getPosition().getY() + (player.getEntireHeight() / 2)),
-						player.getCurrentBoardName(),
+						Crissaegrim.getCurrentBoard(),
 						player.getFacingRight()));
 	}
 	
