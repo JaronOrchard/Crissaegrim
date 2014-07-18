@@ -2,6 +2,7 @@ package players;
 
 import static org.lwjgl.opengl.GL11.*;
 import items.Item;
+import items.LocalDroppedItem;
 
 import java.io.IOException;
 
@@ -58,13 +59,19 @@ public class InventoryRunner {
 				player.update(); // (Don't negate gravity)
 				gameRunner.drawScene();
 				
+				int hoveredItemIndex = getHoveredItemIndex();
 				if (Crissaegrim.getChatBox().isTypingMode()) {
 					Crissaegrim.getChatBox().getKeyboardInput(false);
 				} else {
-					getKeyboardInput();
+					getKeyboardInput(hoveredItemIndex);
 				}
-				if (closeInventory) { return; } // Close Inventory if requested
-				int hoveredItemIndex = getHoveredItemIndex();
+				if (closeInventory) { // Close Inventory if requested
+					if (heldItem != null) {
+						dropItem(heldItem);
+						heldItem = null;
+					}
+					return;
+				}
 				drawMouseHoverStatus(hoveredItemIndex);
 				while (Mouse.next()) {
 					if (Mouse.getEventButtonState() && Mouse.getEventButton() == 0) {
@@ -111,7 +118,7 @@ public class InventoryRunner {
 	/**
 	 * Detects keyboard input and reacts accordingly.
 	 */
-	private void getKeyboardInput() {
+	private void getKeyboardInput(int hoveredItemIndex) {
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
 				int pressedKey = Keyboard.getEventKey();
@@ -126,12 +133,30 @@ public class InventoryRunner {
 				} else if (pressedKey == Keyboard.KEY_M) {		// M key: Toggle window size
 					Crissaegrim.toggleWindowSize();
 					recalculateInventoryDimensions();
+				} else if (pressedKey == Keyboard.KEY_Q) {		// Q key: Drop heldItem or hovered item
+					Inventory inventory = Crissaegrim.getPlayer().getInventory();
+					if (heldItem != null) {
+						dropItem(heldItem);
+						heldItem = null;
+					} else if (inventory.getItem(hoveredItemIndex) != null) {
+						dropItem(inventory.getItem(hoveredItemIndex));
+						inventory.setItem(hoveredItemIndex, null);
+					}
 				} else if (pressedKey == Keyboard.KEY_ESCAPE ||
 						pressedKey == Keyboard.KEY_E) {			// E / Escape: Close inventory
 					closeInventory = true;
 				}
 			}
 		}
+	}
+	
+	private void dropItem(Item item) {
+		Player player = Crissaegrim.getPlayer();
+		Crissaegrim.getGameRunner().addLocalDroppedItem(new LocalDroppedItem(
+						item,
+						new Coordinate(player.getPosition().getX(), player.getPosition().getY() + (player.getEntireHeight() / 2)),
+						player.getCurrentBoardName(),
+						player.getFacingRight()));
 	}
 	
 	/**

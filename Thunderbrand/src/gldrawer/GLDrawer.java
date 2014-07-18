@@ -16,7 +16,7 @@ public final class GLDrawer {
 	}
 	
 	/**
-	 * Enables OpenGL texturing and binds the given texture id.
+	 * Enables OpenGL texturing, resets glColor to white, and binds the given texture id.
 	 * @param textureId The texture id of the texture to use
 	 */
 	public static void useTexture(int textureId) {

@@ -17,8 +17,11 @@ public final class Thunderbrand {
 	private static final RandomNumbers randomNumbers = new RandomNumbers();
 	public static RandomNumbers getRandomNumbers() { return randomNumbers; }
 	
+	// (Pretty sure these could all be consolidated safely, but would it become confusing...?)
+	private static int nextDroppedItemId = 1;
 	private static int nextDoodadId = 1;
 	private static int nextBusyId = 1;
+	public synchronized static int getNextDroppedItemId() { nextDroppedItemId++; return nextDroppedItemId - 1; }
 	public synchronized static int getNextDoodadId() { nextDoodadId++; return nextDoodadId - 1; }
 	public synchronized static int getNextBusyId() { nextBusyId++; return nextBusyId - 1; }
 	

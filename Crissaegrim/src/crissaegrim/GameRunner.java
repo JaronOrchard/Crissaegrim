@@ -3,6 +3,7 @@ package crissaegrim;
 import items.Item;
 import items.ItemPartyPopper;
 import items.ItemPickaxe;
+import items.LocalDroppedItem;
 import items.Weapon;
 
 import java.awt.Color;
@@ -71,9 +72,11 @@ public class GameRunner {
 	private Coordinate destinationCoordinate = null;
 	private List<TextBlock> waitingChatMessages = Collections.synchronizedList(new ArrayList<TextBlock>());
 	private List<ParticleSystem> particleSystems = Collections.synchronizedList(new ArrayList<ParticleSystem>());
+	private Map<Integer, LocalDroppedItem> localDroppedItems = new HashMap<Integer, LocalDroppedItem>();
 	
 	public void addWaitingChatMessage(TextBlock tb) { waitingChatMessages.add(tb); }
 	public void addParticleSystem(ParticleSystem ps) { particleSystems.add(ps); }
+	public void addLocalDroppedItem(LocalDroppedItem ldi) { localDroppedItems.put(ldi.getId(), ldi); }
 	
 	public void run() throws InterruptedException, IOException {
 		GameInitializer.initializeDisplay();
@@ -133,6 +136,7 @@ public class GameRunner {
 				if (Crissaegrim.currentlyLoading) { continue; }
 				player.update();
 				actionDoodadList();
+				updateLocalDroppedItems();
 				
 				// Draw new scene:
 				drawScene();
@@ -223,11 +227,20 @@ public class GameRunner {
 			GameInitializer.initializeNewFrameForScene();
 			ClientBoard.draw(currentBoard, TileLayer.BACKGROUND);
 			ClientBoard.draw(currentBoard, TileLayer.MIDDLEGROUND);
-			for (Doodad doodad : Crissaegrim.getCurrentBoard().getDoodads().values()) {
+			for (Doodad doodad : currentBoard.getDoodads().values()) {
 				if (!Crissaegrim.getDebugMode()) {
 					doodad.draw();
 				} else {
 					doodad.drawDebugMode();
+				}
+			}
+			for (LocalDroppedItem localDroppedItem : localDroppedItems.values()) {
+				if (localDroppedItem.getBoardName().equals(currentBoard.getName())) {
+					if (!Crissaegrim.getDebugMode()) {
+						localDroppedItem.draw();
+					} else {
+						localDroppedItem.drawDebugMode();
+					}
 				}
 			}
 			Crissaegrim.getPlayer().draw();
@@ -282,6 +295,17 @@ public class GameRunner {
 				} else if (doodad instanceof MineableRock) {
 					Crissaegrim.getPlayer().setIcon("LEFT_CLICK");
 				}
+			}
+		}
+	}
+	
+	private void updateLocalDroppedItems() {
+		Iterator<LocalDroppedItem> localDroppedItemsIter = localDroppedItems.values().iterator();
+		while (localDroppedItemsIter.hasNext()) {
+			LocalDroppedItem localDroppedItem = localDroppedItemsIter.next();
+			localDroppedItem.update();
+			if (!Crissaegrim.getPlayer().isBusy() && RectUtils.rectsOverlap(Crissaegrim.getPlayer().getEntityEntireRect(), localDroppedItem.getBounds())) {
+				Crissaegrim.getPlayer().setIcon("F");
 			}
 		}
 	}
