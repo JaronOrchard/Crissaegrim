@@ -31,9 +31,8 @@ public class TileHalfVerticallyI extends Tile {
 
 	@Override
 	public Coordinate entityFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine, boolean onTheGround) {
-		List<Line> tileBoundingBoxLines = RectUtils.getLinesFromRect(new Rect(new Coordinate(xPos, yPos + 0.5), new Coordinate(xPos + 1, yPos + 1)));
 		List<Line> playerFeetLines = entity.getEntityFeetLines(endingPosition, includeHorizontalFeetLine);
-		if (LineUtils.lineSetsIntersect(tileBoundingBoxLines, playerFeetLines)) {
+		if (LineUtils.lineSetsIntersect(getTileBoundaryLines(xPos, yPos), playerFeetLines)) {
 			return raisePositionToAboveTile(xPos, yPos, entity, endingPosition);
 		} else {
 			return null;
@@ -43,6 +42,16 @@ public class TileHalfVerticallyI extends Tile {
 	@Override
 	protected Coordinate raisePositionToAboveTile(int xPos, int yPos, Entity entity, Coordinate position) {
 		return new Coordinate(position.getX(), yPos + 1 + entity.getTileCollisionPadding());
+	}
+	
+	@Override
+	public boolean lineIntersectsTile(int xPos, int yPos, Line line) {
+		return LineUtils.lineSetsIntersect(line, getTileBoundaryLines(xPos, yPos));
+	}
+	
+	@Override
+	protected List<Line> getTileBoundaryLines(int xPos, int yPos) {
+		return RectUtils.getLinesFromRect(new Rect(new Coordinate(xPos, yPos + 0.5), new Coordinate(xPos + 1, yPos + 1)));
 	}
 	
 }

@@ -2,6 +2,7 @@ package board.tiles;
 
 import entities.Entity;
 import geometry.Coordinate;
+import geometry.Line;
 
 public class CollisionDetectionTile {
 	private final int xPos;
@@ -21,6 +22,10 @@ public class CollisionDetectionTile {
 	// Returns null if no collision, or a coordinate for a raised position if they do
 	public Coordinate entityFeetCollide(Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine, boolean onTheGround) {
 		return tile.entityFeetCollide(xPos, yPos, entity, startingPosition, endingPosition, includeHorizontalFeetLine, onTheGround);
+	}
+	
+	public boolean lineIntersectsTile(Line line) {
+		return tile.lineIntersectsTile(xPos, yPos, line);
 	}
 	
 }

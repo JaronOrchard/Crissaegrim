@@ -1,7 +1,11 @@
 package board.tiles;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import entities.Entity;
 import geometry.Coordinate;
+import geometry.Line;
 import textures.Textures;
 
 public class TileBlank extends Tile {
@@ -29,4 +33,13 @@ public class TileBlank extends Tile {
 		return position; // You can never collide with empty space
 	}
 	
+	@Override
+	public boolean lineIntersectsTile(int xPos, int yPos, Line line) {
+		return false; // You can never collide with empty space
+	}
+	
+	@Override
+	protected List<Line> getTileBoundaryLines(int xPos, int yPos) {
+		return new ArrayList<Line>(); // Empty space contains no boundary lines
+	}
 }

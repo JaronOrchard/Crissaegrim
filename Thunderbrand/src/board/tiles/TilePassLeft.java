@@ -1,8 +1,13 @@
 package board.tiles;
 
+import java.util.Arrays;
+import java.util.List;
+
 import entities.Entity;
 import geometry.Coordinate;
 import geometry.CoordinateUtils;
+import geometry.Line;
+import geometry.LineUtils;
 import geometry.Rect;
 import geometry.RectUtils;
 import textures.Textures;
@@ -36,6 +41,17 @@ public class TilePassLeft extends Tile {
 	@Override
 	protected Coordinate raisePositionToAboveTile(int xPos, int yPos, Entity entity, Coordinate position) {
 		return position; // Can't be pushed up by this tile
+	}
+	
+	@Override
+	public boolean lineIntersectsTile(int xPos, int yPos, Line line) {
+		return (line.getPoint1().getX() < xPos && LineUtils.lineSetsIntersect(line, getTileBoundaryLines(xPos, yPos)));
+	}
+	
+	@Override
+	protected List<Line> getTileBoundaryLines(int xPos, int yPos) {
+		return Arrays.asList(
+				new Line(new Coordinate(xPos, yPos), new Coordinate(xPos, yPos + 1)));
 	}
 	
 }

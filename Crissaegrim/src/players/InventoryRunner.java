@@ -138,7 +138,7 @@ public class InventoryRunner {
 					if (heldItem != null) {
 						dropItem(heldItem);
 						heldItem = null;
-					} else if (inventory.getItem(hoveredItemIndex) != null) {
+					} else if (hoveredItemIndex != -1 && inventory.getItem(hoveredItemIndex) != null) {
 						dropItem(inventory.getItem(hoveredItemIndex));
 						inventory.setItem(hoveredItemIndex, null);
 					}

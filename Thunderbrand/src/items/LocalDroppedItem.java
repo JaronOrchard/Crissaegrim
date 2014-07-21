@@ -1,13 +1,21 @@
 package items;
 
+import java.util.Date;
+import java.util.List;
+
 import board.Board;
+import board.tiles.CollisionDetectionTile;
 import thunderbrand.Constants;
 import thunderbrand.Thunderbrand;
 import geometry.Coordinate;
+import geometry.Line;
 import geometry.Rect;
 import gldrawer.GLDrawer;
 
 public class LocalDroppedItem {
+	
+	private static final double GRAVITY_ACCELERATION = -0.0045;
+	private static final double GRAVITY_TERMINAL_VELOCITY = -0.4;
 	
 	private final int id;
 	private final Item item;
@@ -27,17 +35,60 @@ public class LocalDroppedItem {
 		this.item = item;
 		position = new Coordinate(pos);
 		board = currentBoard;
-		horizontalVelocity = Thunderbrand.getRandomNumbers().getDoubleInRange(0.7, 0.10) * (facingRight ? 1 : -1);
-		verticalVelocity = Thunderbrand.getRandomNumbers().getDoubleInRange(0.09, 0.11);
+		horizontalVelocity = Thunderbrand.getRandomNumbers().getDoubleInRange(0.05, 0.11) * (facingRight ? 1 : -1);
+		verticalVelocity = Thunderbrand.getRandomNumbers().getDoubleInRange(0.08, 0.12);
 		hitGroundTime = null;
 		recalculateBoundsRect();
 	}
 	
 	public void update() {
-		Coordinate currentPosition = new Coordinate(position);
-		
-		
-		// If the item moves, recalculate bounds
+		if (hitGroundTime == null) { // Item has not yet hit the ground
+			Coordinate originalPosition = new Coordinate(position);
+			int xLeft = (horizontalVelocity > 0 ? 0 : 1);
+			int xRight = (horizontalVelocity > 0 ? 1 : 0);
+			int yDown = (verticalVelocity > 0 ? 0 : 1);
+			int yUp = (verticalVelocity > 0 ? 1 : 0);
+			List<CollisionDetectionTile> nearbyTiles = board.getCollisionDetectionTilesNearPosition(position, xLeft, xRight, yDown, yUp);
+			
+			// Move horizontally:
+			if (horizontalVelocity != 0) {
+				Line horizontalMovementLine = new Line(position.getX(), position.getY(), position.getX() + horizontalVelocity, position.getY());
+				boolean collisionDetected = false;
+				for (CollisionDetectionTile cdt : nearbyTiles) {
+					if (cdt.lineIntersectsTile(horizontalMovementLine)) {
+						collisionDetected = true;
+						break;
+					}
+				}
+				if (collisionDetected) {
+					horizontalVelocity = 0; // ->| *whack* v| *thud* .|
+				} else {
+					position.incrementX(horizontalVelocity);
+				}
+			}
+			
+			// Move vertically:
+			Line verticalMovementLine = new Line(position.getX(), position.getY(), position.getX(), position.getY() + verticalVelocity);
+			boolean collisionDetected = false;
+			for (CollisionDetectionTile cdt : nearbyTiles) {
+				if (cdt.lineIntersectsTile(verticalMovementLine)) {
+					collisionDetected = true;
+					break;
+				}
+			}
+			if (!collisionDetected) {
+				position.incrementY(verticalVelocity);
+				verticalVelocity = Math.max(verticalVelocity + GRAVITY_ACCELERATION, GRAVITY_TERMINAL_VELOCITY);
+			} else if (verticalVelocity > 0) { // Hit the ceiling going up; start going down
+				verticalVelocity = 0;
+			} else { // Hit the floor; stop moving entirely
+				hitGroundTime = new Date().getTime();
+			}
+			
+			if (!position.matchesCoordinate(originalPosition)) {
+				recalculateBoundsRect();
+			}
+		}
 	}
 	
 	private void recalculateBoundsRect() {

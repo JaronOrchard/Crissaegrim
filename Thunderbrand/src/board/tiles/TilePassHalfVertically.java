@@ -8,6 +8,7 @@ import geometry.LineUtils;
 import geometry.Rect;
 import geometry.RectUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 import textures.Textures;
@@ -51,6 +52,17 @@ public class TilePassHalfVertically extends Tile {
 	@Override
 	protected Coordinate raisePositionToAboveTile(int xPos, int yPos, Entity entity, Coordinate position) {
 		return new Coordinate(position.getX(), yPos + 0.5 + entity.getTileCollisionPadding());
+	}
+	
+	@Override
+	public boolean lineIntersectsTile(int xPos, int yPos, Line line) {
+		return (line.getPoint1().getY() >= yPos + 0.5 && LineUtils.lineSetsIntersect(line, getTileBoundaryLines(xPos, yPos)));
+	}
+	
+	@Override
+	protected List<Line> getTileBoundaryLines(int xPos, int yPos) {
+		return Arrays.asList(
+				new Line(new Coordinate(xPos, yPos + 0.5), new Coordinate(xPos + 1, yPos + 0.5)));
 	}
 	
 }

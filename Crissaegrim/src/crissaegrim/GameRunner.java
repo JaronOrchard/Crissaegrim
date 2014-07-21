@@ -135,8 +135,8 @@ public class GameRunner {
 				ClientBoard.verifyChunksExist(Crissaegrim.getCurrentBoard());
 				if (Crissaegrim.currentlyLoading) { continue; }
 				player.update();
-				actionDoodadList();
-				updateLocalDroppedItems();
+				setIconForDoodads();
+				setIconForLocalDroppedItems();
 				
 				// Draw new scene:
 				drawScene();
@@ -234,15 +234,7 @@ public class GameRunner {
 					doodad.drawDebugMode();
 				}
 			}
-			for (LocalDroppedItem localDroppedItem : localDroppedItems.values()) {
-				if (localDroppedItem.getBoardName().equals(currentBoard.getName())) {
-					if (!Crissaegrim.getDebugMode()) {
-						localDroppedItem.draw();
-					} else {
-						localDroppedItem.drawDebugMode();
-					}
-				}
-			}
+			drawLocalDroppedItems();
 			Crissaegrim.getPlayer().draw();
 			if (Crissaegrim.getDebugMode()) {
 				Crissaegrim.getPlayer().drawDebugMode();
@@ -284,7 +276,7 @@ public class GameRunner {
 		GLDrawer.setLineWidth(1);
 	}
 	
-	private void actionDoodadList() {
+	private void setIconForDoodads() {
 		if (Crissaegrim.getPlayer().isBusy()) { return; }
 		Iterator<Doodad> doodadIter = Crissaegrim.getCurrentBoard().getDoodads().values().iterator();
 		while (doodadIter.hasNext()) {
@@ -299,11 +291,10 @@ public class GameRunner {
 		}
 	}
 	
-	private void updateLocalDroppedItems() {
+	private void setIconForLocalDroppedItems() {
 		Iterator<LocalDroppedItem> localDroppedItemsIter = localDroppedItems.values().iterator();
 		while (localDroppedItemsIter.hasNext()) {
 			LocalDroppedItem localDroppedItem = localDroppedItemsIter.next();
-			localDroppedItem.update();
 			if (!Crissaegrim.getPlayer().isBusy() && RectUtils.rectsOverlap(Crissaegrim.getPlayer().getEntityEntireRect(), localDroppedItem.getBounds())) {
 				Crissaegrim.getPlayer().setIcon("F");
 			}
@@ -478,6 +469,22 @@ public class GameRunner {
 			}
 		}
 	}
+	
+	private void drawLocalDroppedItems() {
+		Iterator<LocalDroppedItem> localDroppedItemsIter = localDroppedItems.values().iterator();
+		while (localDroppedItemsIter.hasNext()) {
+			LocalDroppedItem localDroppedItem = localDroppedItemsIter.next();
+			if (localDroppedItem.getBoardName().equals(Crissaegrim.getPlayer().getCurrentBoardName())) {
+				if (!Crissaegrim.getDebugMode()) {
+					localDroppedItem.draw();
+				} else {
+					localDroppedItem.drawDebugMode();
+				}
+			}
+			localDroppedItem.update(); // remove if necessary code goes here; see particle system example above
+		}
+	}
+	
 	
 	private void drawLoadingMessage() {
 		GameInitializer.initializeNewFrameForWindow();

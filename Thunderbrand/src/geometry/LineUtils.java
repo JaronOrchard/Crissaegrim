@@ -1,11 +1,14 @@
 package geometry;
 
+import java.util.Arrays;
 import java.util.List;
 
 public final class LineUtils {
 	
 	/**
 	 * Detects if two lines intersect.  Taken from http://gamedev.stackexchange.com/questions/26004/how-to-detect-2d-line-on-line-collision
+	 * <br/><br/>
+	 * Here be dragons
 	 * @param line1 The first line
 	 * @param line2 The second line
 	 * @return {@code true} if the lines intersect, {@code false} otherwise
@@ -57,6 +60,16 @@ public final class LineUtils {
 //	}
 	
 	/**
+	 * Given a {@link Line} and a set of lines, see if any of the lines from the set intersect the single line.
+	 * @param line1 The single line
+	 * @param lines2 The set of lines
+	 * @return {@code true} if any lines in {@code lines2} intersect {@code line1}, {@code false} otherwise
+	 */
+	public static boolean lineSetsIntersect(Line line1, List<Line> lines2) {
+		return lineSetsIntersect(Arrays.asList(line1), lines2);
+	}
+	
+	/**
 	 * Given two lists of lines, see if any of the lines from the first list intersect any from the second list.
 	 * @param lines1 The first list of lines
 	 * @param lines2 The second list of lines
@@ -70,5 +83,29 @@ public final class LineUtils {
 		}
 		return false;
 	}
+	
+	/**
+	 * @param line The {@link Line} to check
+	 * @return {@code true} if the Line's second point is higher than the first, {@code false} otherwise 
+	 */
+	public static boolean isMovingUp(Line line) { return line.getPoint2().getY() > line.getPoint1().getY(); }
+	
+	/**
+	 * @param line The {@link Line} to check
+	 * @return {@code true} if the Line's second point is lower than the first, {@code false} otherwise 
+	 */
+	public static boolean isMovingDown(Line line) { return line.getPoint2().getY() < line.getPoint1().getY(); }
+	
+	/**
+	 * @param line The {@link Line} to check
+	 * @return {@code true} if the Line's second point is to the left of the first, {@code false} otherwise 
+	 */
+	public static boolean isMovingLeft(Line line) { return line.getPoint2().getX() < line.getPoint1().getX(); }
+	
+	/**
+	 * @param line The {@link Line} to check
+	 * @return {@code true} if the Line's second point is to the right of the first, {@code false} otherwise 
+	 */
+	public static boolean isMovingRight(Line line) { return line.getPoint2().getX() > line.getPoint1().getX(); }
 	
 }

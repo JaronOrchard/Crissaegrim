@@ -1,5 +1,7 @@
 package board.tiles;
 
+import java.util.List;
+
 import entities.Entity;
 import geometry.Coordinate;
 import geometry.Line;
@@ -57,5 +59,22 @@ public abstract class Tile {
 	public abstract Coordinate entityFeetCollide(int xPos, int yPos, Entity entity, Coordinate startingPosition, Coordinate endingPosition, boolean includeHorizontalFeetLine, boolean onTheGround);
 	
 	protected abstract Coordinate raisePositionToAboveTile(int xPos, int yPos, Entity entity, Coordinate position);
+	
+	/**
+	 * Checks to see if a given {@link Line} intersects the lines of the given {@link Tile} type.
+	 * @param xPos X position of the Tile in overall space
+	 * @param yPos Y position of the Tile in overall space
+	 * @param line The Line to check for intersection
+	 * @return {@code true} if the Line intersects the Tile, {@code false} otherwise
+	 */
+	public abstract boolean lineIntersectsTile(int xPos, int yPos, Line line);
+	
+	/**
+	 * Returns a {@link List} of {@link Line}s that make up the edges of the given Tile type.
+	 * @param xPos X position of the Tile in overall space
+	 * @param yPos Y position of the Tile in overall space
+	 * @return A List of Lines of the Tile's edges
+	 */
+	protected abstract List<Line> getTileBoundaryLines(int xPos, int yPos);
 	
 }
