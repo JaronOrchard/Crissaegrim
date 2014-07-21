@@ -1,5 +1,7 @@
 package items;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import java.util.Date;
 import java.util.List;
 
@@ -99,7 +101,16 @@ public class LocalDroppedItem {
 	
 	public void draw() {
 		GLDrawer.useTexture(item.getTexture());
-		GLDrawer.drawQuad(bounds);
+		double oscillation = 0;
+		if (hitGroundTime != null) {
+			long millisSinceHitGround = new Date().getTime() - hitGroundTime;
+			double radians = Math.PI * ((double)(millisSinceHitGround) / 1000.0);
+			oscillation = Math.sin(radians) * 0.12;
+		}
+		glPushMatrix();
+			glTranslated(0, oscillation, 0);
+			GLDrawer.drawQuad(bounds);
+		glPopMatrix();
 	}
 	
 	public void drawDebugMode() {
