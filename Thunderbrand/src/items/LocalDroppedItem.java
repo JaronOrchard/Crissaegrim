@@ -29,6 +29,7 @@ public class LocalDroppedItem {
 	private Rect bounds;
 	
 	public int getId() { return id; }
+	public Item getItem() { return item; }
 	public String getBoardName() { return board.getName(); }
 	public Rect getBounds() { return bounds; }
 	

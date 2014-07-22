@@ -20,7 +20,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import players.InventoryRunner;
-import players.InventoryUtils;
 import players.Player;
 import datapacket.AttackPacket;
 import datapacket.BoardDoodadsPacket;
@@ -56,6 +55,7 @@ import busy.SwordSwingBusy;
 import textblock.TextBlock;
 import textblock.TextTexture;
 import textures.Textures;
+import thunderbrand.TextUtils;
 import thunderbrand.Thunderbrand;
 
 public class GameRunner {
@@ -158,7 +158,7 @@ public class GameRunner {
 								case DoodadActions.MINE_ROCK:
 									if (!(player.getInventory().getCurrentItem() instanceof ItemPickaxe)) {
 										Crissaegrim.addSystemMessage("You need to be holding a pickaxe to mine this rock.");
-									} else if (InventoryUtils.inventoryIsFull(player.getInventory())) {
+									} else if (player.getInventory().isFull()) {
 										new DialogBoxRunner().run(new DialogBox("Your inventory is full.", "Ok"));
 									} else {
 										MineableRock mineableRock = (MineableRock)doodad;
@@ -295,7 +295,8 @@ public class GameRunner {
 		Iterator<LocalDroppedItem> localDroppedItemsIter = localDroppedItems.values().iterator();
 		while (localDroppedItemsIter.hasNext()) {
 			LocalDroppedItem localDroppedItem = localDroppedItemsIter.next();
-			if (!Crissaegrim.getPlayer().isBusy() && RectUtils.rectsOverlap(Crissaegrim.getPlayer().getEntityEntireRect(), localDroppedItem.getBounds())) {
+			if (!Crissaegrim.getPlayer().isBusy() && Crissaegrim.getPlayer().getCurrentBoardName().equals(localDroppedItem.getBoardName()) &&
+					RectUtils.rectsOverlap(Crissaegrim.getPlayer().getEntityEntireRect(), localDroppedItem.getBounds())) {
 				Crissaegrim.getPlayer().setIcon("F");
 			}
 		}
@@ -343,20 +344,40 @@ public class GameRunner {
 					Crissaegrim.toggleWindowSize();
 				} else if (pressedKey == Keyboard.KEY_E) {		// E key: Open inventory
 					new InventoryRunner().run();
-				} else if (pressedKey == Keyboard.KEY_F) {		// F key: Activate F-key doodads
-					for (Doodad doodad : Crissaegrim.getCurrentBoard().getDoodads().values()) {
-						if (!player.isBusy() && RectUtils.coordinateIsInRect(player.getPosition(), doodad.getBounds())) {
-							switch (doodad.getDoodadAction()) {
-								case DoodadActions.GO_THROUGH_DOORWAY:
-									Door door = (Door)doodad;
-									pmh.resetMovementRequests();
-									setNewDestination(door.getDestinationBoardName(), door.getDestinationCoordinate());
-									requestTravelToDestinationBoard();
-									break;
-								default:
-									break;
+				} else if (pressedKey == Keyboard.KEY_F) {		// F key: Activate F-key doodads or pick up items
+					boolean pickedUpAnItem = false;
+					Iterator<LocalDroppedItem> localDroppedItemsIter = localDroppedItems.values().iterator();
+					while (localDroppedItemsIter.hasNext()) {
+						LocalDroppedItem localDroppedItem = localDroppedItemsIter.next();
+						if (!player.isBusy() && player.getCurrentBoardName().equals(localDroppedItem.getBoardName()) &&
+								RectUtils.rectsOverlap(Crissaegrim.getPlayer().getEntityEntireRect(), localDroppedItem.getBounds())) {
+							if (player.getInventory().isFull()) {
+								Crissaegrim.addSystemMessage("Your inventory is full.");
+							} else {
+								Item item = localDroppedItem.getItem();
+								Crissaegrim.addSystemMessage("You picked up " + TextUtils.aOrAn(item.getName()) + " " + item.getName() + ".");
+								player.getInventory().addItem(item);
+								localDroppedItemsIter.remove();
+								pickedUpAnItem = true;
 							}
-							break; // Found the relevant Doodad; ignore the rest
+							break;
+						}
+					}
+					if (!pickedUpAnItem) { // If the F key was not used to pick up an item, it will be used to activate a doodad
+						for (Doodad doodad : Crissaegrim.getCurrentBoard().getDoodads().values()) {
+							if (!player.isBusy() && RectUtils.coordinateIsInRect(player.getPosition(), doodad.getBounds())) {
+								switch (doodad.getDoodadAction()) {
+									case DoodadActions.GO_THROUGH_DOORWAY:
+										Door door = (Door)doodad;
+										pmh.resetMovementRequests();
+										setNewDestination(door.getDestinationBoardName(), door.getDestinationCoordinate());
+										requestTravelToDestinationBoard();
+										break;
+									default:
+										break;
+								}
+								break; // Found the relevant Doodad; ignore the rest
+							}
 						}
 					}
 				}

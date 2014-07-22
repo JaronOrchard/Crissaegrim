@@ -183,4 +183,15 @@ public class Inventory {
 		}
 	}
 	
+	/**
+	 * Determines if the {@link Inventory} is full or not.
+	 * @return {@code true} if the Inventory has no more empty spaces, {@code false} otherwise
+	 */
+	public boolean isFull() {
+		for (int i = getInventorySize() - 1; i >= 0; i--) {
+			if (items[i] == null) { return false; }
+		}
+		return true;
+	}
+	
 }

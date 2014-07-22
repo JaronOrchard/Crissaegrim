@@ -18,17 +18,4 @@ public final class InventoryUtils {
 		return false;
 	}
 	
-	/**
-	 * Determines if the given {@link Inventory} is full or not.
-	 * @param inventory The Inventory to check
-	 * @return {@code true} if the Inventory has no more empty spaces, {@code false} otherwise
-	 */
-	public static boolean inventoryIsFull(Inventory inventory) {
-		Item[] items = inventory.getItems();
-		for (int i = inventory.getInventorySize() - 1; i >= 0; i--) {
-			if (items[i] == null) { return false; }
-		}
-		return true;
-	}
-	
 }
