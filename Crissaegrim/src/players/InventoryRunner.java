@@ -219,7 +219,7 @@ public class InventoryRunner {
 			glVertex2d(inventoryRect.getLeft() + 248, inventoryRect.getBottom() + 6);
 		glEnd();
 		
-		TextTexture headerLabel = Crissaegrim.getCommonTextures().getTextTexture("Inventory (Click items to move them, E to close)");
+		TextTexture headerLabel = Crissaegrim.getCommonTextures().getTextTexture("Inventory (Click: Move item, Q: Drop, E: Close)");
 		GLDrawer.useTexture(headerLabel.getTextureId());
 		GLDrawer.drawQuad(inventoryRect.getLeft() + OUTER_PADDING_PIXELS, inventoryRect.getLeft() + OUTER_PADDING_PIXELS + headerLabel.getWidth(),
 				inventoryRect.getTop() - OUTER_PADDING_PIXELS - 20, inventoryRect.getTop() - OUTER_PADDING_PIXELS);

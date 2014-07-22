@@ -72,11 +72,11 @@ public class GameRunner {
 	private Coordinate destinationCoordinate = null;
 	private List<TextBlock> waitingChatMessages = Collections.synchronizedList(new ArrayList<TextBlock>());
 	private List<ParticleSystem> particleSystems = Collections.synchronizedList(new ArrayList<ParticleSystem>());
-	private Map<Integer, LocalDroppedItem> localDroppedItems = new HashMap<Integer, LocalDroppedItem>();
+	private List<LocalDroppedItem> localDroppedItems = new ArrayList<LocalDroppedItem>();
 	
 	public void addWaitingChatMessage(TextBlock tb) { waitingChatMessages.add(tb); }
 	public void addParticleSystem(ParticleSystem ps) { particleSystems.add(ps); }
-	public void addLocalDroppedItem(LocalDroppedItem ldi) { localDroppedItems.put(ldi.getId(), ldi); }
+	public void addLocalDroppedItem(LocalDroppedItem ldi) { localDroppedItems.add(ldi); }
 	
 	public void run() throws InterruptedException, IOException {
 		GameInitializer.initializeDisplay();
@@ -292,7 +292,7 @@ public class GameRunner {
 	}
 	
 	private void setIconForLocalDroppedItems() {
-		Iterator<LocalDroppedItem> localDroppedItemsIter = localDroppedItems.values().iterator();
+		Iterator<LocalDroppedItem> localDroppedItemsIter = localDroppedItems.iterator();
 		while (localDroppedItemsIter.hasNext()) {
 			LocalDroppedItem localDroppedItem = localDroppedItemsIter.next();
 			if (!Crissaegrim.getPlayer().isBusy() && Crissaegrim.getPlayer().getCurrentBoardName().equals(localDroppedItem.getBoardName()) &&
@@ -346,7 +346,7 @@ public class GameRunner {
 					new InventoryRunner().run();
 				} else if (pressedKey == Keyboard.KEY_F) {		// F key: Activate F-key doodads or pick up items
 					boolean pickedUpAnItem = false;
-					Iterator<LocalDroppedItem> localDroppedItemsIter = localDroppedItems.values().iterator();
+					Iterator<LocalDroppedItem> localDroppedItemsIter = localDroppedItems.iterator();
 					while (localDroppedItemsIter.hasNext()) {
 						LocalDroppedItem localDroppedItem = localDroppedItemsIter.next();
 						if (!player.isBusy() && player.getCurrentBoardName().equals(localDroppedItem.getBoardName()) &&
@@ -492,7 +492,7 @@ public class GameRunner {
 	}
 	
 	private void drawLocalDroppedItems() {
-		Iterator<LocalDroppedItem> localDroppedItemsIter = localDroppedItems.values().iterator();
+		Iterator<LocalDroppedItem> localDroppedItemsIter = localDroppedItems.iterator();
 		while (localDroppedItemsIter.hasNext()) {
 			LocalDroppedItem localDroppedItem = localDroppedItemsIter.next();
 			if (localDroppedItem.getBoardName().equals(Crissaegrim.getPlayer().getCurrentBoardName())) {
