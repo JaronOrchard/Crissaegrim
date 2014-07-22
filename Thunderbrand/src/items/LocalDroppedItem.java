@@ -43,7 +43,10 @@ public class LocalDroppedItem {
 		recalculateBoundsRect();
 	}
 	
-	public void update() {
+	/**
+	 * @return {@code true} if the LocalDroppedItem has reached end-of-life, {@code false} otherwise
+	 */
+	public boolean update() {
 		if (hitGroundTime == null) { // Item has not yet hit the ground
 			Coordinate originalPosition = new Coordinate(position);
 			int xLeft = (horizontalVelocity > 0 ? 0 : 1);
@@ -90,6 +93,9 @@ public class LocalDroppedItem {
 			if (!position.matchesCoordinate(originalPosition)) {
 				recalculateBoundsRect();
 			}
+			return false;
+		} else {
+			return new Date().getTime() > hitGroundTime + Constants.LOCAL_DROPPED_ITEM_LIFESPAN_MILLIS;
 		}
 	}
 	

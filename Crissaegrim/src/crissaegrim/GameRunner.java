@@ -481,7 +481,9 @@ public class GameRunner {
 					localDroppedItem.drawDebugMode();
 				}
 			}
-			localDroppedItem.update(); // remove if necessary code goes here; see particle system example above
+			if (localDroppedItem.update()) {
+				localDroppedItemsIter.remove();
+			}
 		}
 	}
 	
