@@ -11,9 +11,8 @@ import doodads.MineableRock;
 
 public class BoardInfo {
 	
-	public static void addDoodadsToBoard(Board board) {
-		String boardName = board.getName();
-		Map<Integer, Doodad> doodadMap = board.getDoodads();
+	public static void addDoodadsToBoard(Board board) { addDoodadsToBoard(board.getName(), board.getDoodads()); }
+	public static void addDoodadsToBoard(String boardName, Map<Integer, Doodad> doodadMap) {
 		int id;
 		if (boardName.equals("dawning")) {
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10052.5, 10013), "tower_of_preludes", new Coordinate(10050.5, 10016)));

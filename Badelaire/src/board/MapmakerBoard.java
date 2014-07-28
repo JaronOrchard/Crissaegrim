@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import doodads.Doodad;
 import thunderbrand.Thunderbrand;
 import badelaire.Badelaire;
 import board.tiles.Tile;
@@ -22,9 +23,11 @@ public class MapmakerBoard {
 	
 	private final String boardName;
 	
+	private Map<Integer, Doodad> doodads;
 	private Map<String, MapmakerChunk> chunkMap;
 	private Set<String> modifiedChunks;
 	
+	public Map<Integer, Doodad> getDoodads() { return doodads; }
 	public Map<String, MapmakerChunk> getChunkMap() { return chunkMap; }
 	public boolean getModifiedChunksExist() { return !modifiedChunks.isEmpty(); }
 	
@@ -32,6 +35,9 @@ public class MapmakerBoard {
 		boardName = bName;
 		chunkMap = new HashMap<String, MapmakerChunk>();
 		modifiedChunks = new HashSet<String>();
+		
+		doodads = new HashMap<Integer, Doodad>();
+		BoardInfo.addDoodadsToBoard(boardName, doodads);
 		
 		// Load all chunks for the current board:
 		loadChunks();

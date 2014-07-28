@@ -12,6 +12,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
+import doodads.Doodad;
 import board.MapmakerBoard;
 import board.MapmakerChunk;
 import board.tiles.Tile;
@@ -122,6 +123,9 @@ public class Mapmaker {
 				mapmakerBoard.drawFG(center, showGrid);
 			} else if (mode == 4) {
 				mapmakerBoard.drawTileTypes(center, showGrid);
+			}
+			for (Doodad doodad : mapmakerBoard.getDoodads().values()) {
+				doodad.draw();
 			}
 			if (!fillArea.isIdle()) {
 				int tileX = (int)center.getX() - (Badelaire.getWindowWidth() / 2 / Badelaire.getPixelsPerTile()) + (Mouse.getX() / Badelaire.getPixelsPerTile());
