@@ -16,6 +16,7 @@ import doodads.MineableRock;
 import npc.NPC;
 import npc.NPCChargingSpike;
 import npc.NPCPhanto;
+import npc.NPCSpikePit;
 import npc.NPCStickNinja;
 import npc.SpawnCondition;
 import entities.EntityStatus;
@@ -164,6 +165,7 @@ public class WorldRunner {
 		npcMap.get("sotn_clock_tower").add(new NPCChargingSpike(new SpawnCondition(new Coordinate(10140, 10013)), new Coordinate(10154, 10013), "sotn_clock_tower"));
 		npcMap.get("sotn_clock_tower").add(new NPCChargingSpike(new SpawnCondition(new Coordinate(10080, 10025)), new Coordinate(10090, 10025), "sotn_clock_tower"));
 		
+		npcMap.get("morriston").add(new NPCSpikePit(new SpawnCondition(new Coordinate(10124.5, 9976)), "morriston", 15));
 		
 		for (List<NPC> npcList : npcMap.values()) {
 			for (NPC npc : npcList) {

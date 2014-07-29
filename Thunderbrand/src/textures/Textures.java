@@ -184,6 +184,7 @@ public class Textures {
 	public static final int NPC_STICK_NINJA_STUNNED = 1101;
 	public static final int NPC_PHANTO = 1102;
 	public static final int NPC_CHARGING_SPIKE = 1103;
+	public static final int NPC_SPIKE_PIT_15 = 1104;
 	
 	public static final int ICON_F = 1800;
 	public static final int ICON_LEFT_CLICK = 1801;
@@ -395,6 +396,7 @@ public class Textures {
 		TextureLoader.loadTexture(NPC_STICK_NINJA_STUNNED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NPCStunned.png")));
 		TextureLoader.loadTexture(NPC_PHANTO, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/npc/Phanto.png")));
 		TextureLoader.loadTexture(NPC_CHARGING_SPIKE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/npc/ChargingSpike.png")));
+		TextureLoader.loadTexture(NPC_SPIKE_PIT_15, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/npc/SpikePit15.png")));
 		
 		TextureLoader.loadTexture(ICON_F, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/IconF.png")));
 		TextureLoader.loadTexture(ICON_LEFT_CLICK, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/IconLeftClick.png")));
