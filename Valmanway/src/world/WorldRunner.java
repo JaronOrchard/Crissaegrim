@@ -166,6 +166,9 @@ public class WorldRunner {
 		npcMap.get("sotn_clock_tower").add(new NPCChargingSpike(new SpawnCondition(new Coordinate(10080, 10025)), new Coordinate(10090, 10025), "sotn_clock_tower"));
 		
 		npcMap.get("morriston").add(new NPCSpikePit(new SpawnCondition(new Coordinate(10124.5, 9976)), "morriston", 15));
+		npcMap.get("morriston").add(new NPCChargingSpike(new SpawnCondition(new Coordinate(10180, 9969)), new Coordinate(10205, 9969), "morriston"));
+		npcMap.get("morriston").add(new NPCChargingSpike(new SpawnCondition(new Coordinate(10205, 9969)), new Coordinate(10180, 9969), "morriston"));
+		npcMap.get("morriston").add(new NPCChargingSpike(new SpawnCondition(new Coordinate(10185, 10017)), new Coordinate(10173, 10017), "morriston"));
 		
 		for (List<NPC> npcList : npcMap.values()) {
 			for (NPC npc : npcList) {
