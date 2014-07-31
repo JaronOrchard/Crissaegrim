@@ -213,6 +213,8 @@ public class Textures {
 	public static final int ITEM_RHICHITE_ORE = 20020;
 	public static final int ITEM_VALENITE_ORE = 20021;
 	public static final int ITEM_SANDELUGE_ORE = 20022;
+	public static final int ITEM_RHICHITE_BAR = 20023;
+	public static final int ITEM_VAL_SAN_BAR = 20024;
 	
 	// (Texture IDs 100000 and up are reserved for text)
 	
@@ -425,6 +427,8 @@ public class Textures {
 		TextureLoader.loadTexture(ITEM_RHICHITE_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/RhichiteOre.png")));
 		TextureLoader.loadTexture(ITEM_VALENITE_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/ValeniteOre.png")));
 		TextureLoader.loadTexture(ITEM_SANDELUGE_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/SandelugeOre.png")));
+		TextureLoader.loadTexture(ITEM_RHICHITE_BAR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/RhichiteBar.png")));
+		TextureLoader.loadTexture(ITEM_VAL_SAN_BAR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/ValSanBar.png")));
 		
 	}
 	

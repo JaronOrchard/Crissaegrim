@@ -207,17 +207,20 @@ public class InventoryRunner {
 		
 		GLDrawer.setColor(0.314, 0.314, 0.314);
 		GLDrawer.drawQuad(inventoryRect); // Draw inventory background
+		// Draw blue gradient title bar rectangle:
+		glBegin(GL_QUADS);
+		GLDrawer.setColor(0, 0.188, 0.502);
+			glVertex2d(inventoryRect.getLeft(), inventoryRect.getTop());
+			glVertex2d(inventoryRect.getRight(), inventoryRect.getTop());
+			GLDrawer.setColor(0, 0.251, 0.667);
+			glVertex2d(inventoryRect.getRight(), inventoryRect.getTop() - OUTER_PADDING_PIXELS - 25);
+			glVertex2d(inventoryRect.getLeft(), inventoryRect.getTop() - OUTER_PADDING_PIXELS - 25);
+		glEnd();
 		GLDrawer.setColor(0.75, 0.75, 0.75);
 		GLDrawer.setLineWidth(3);
 		GLDrawer.drawOutline(inventoryRect); // Draw inventory outline
 		GLDrawer.setLineWidth(1);
-		glBegin(GL_LINES); // Draw lines
-			glVertex2d(inventoryRect.getLeft() + 6, inventoryRect.getTop() - OUTER_PADDING_PIXELS - 25);
-			glVertex2d(inventoryRect.getRight() - 6, inventoryRect.getTop() - OUTER_PADDING_PIXELS - 25);
-			
-			glVertex2d(inventoryRect.getLeft() + 248, inventoryRect.getTop() - OUTER_PADDING_PIXELS - 25);
-			glVertex2d(inventoryRect.getLeft() + 248, inventoryRect.getBottom() + 6);
-		glEnd();
+		GLDrawer.drawLine(inventoryRect.getLeft() + 248, inventoryRect.getTop() - OUTER_PADDING_PIXELS - 29, inventoryRect.getLeft() + 248, inventoryRect.getBottom() + 6);
 		
 		TextTexture headerLabel = Crissaegrim.getCommonTextures().getTextTexture("Inventory (Click: Move item, Q: Drop, E: Close)");
 		GLDrawer.useTexture(headerLabel.getTextureId());
@@ -252,8 +255,7 @@ public class InventoryRunner {
 				GLDrawer.drawQuad(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
 				
 				setGlColorForItemBoxOutline(i == 0, item);
-				GLDrawer.drawOutline(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2,
-						posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
+				GLDrawer.drawOutline(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
 				
 				if (item != null) {
 					GLDrawer.useTexture(item.getTexture());
