@@ -1,16 +1,13 @@
 package smithing;
 
 import static org.lwjgl.opengl.GL11.*;
-import items.Item;
-import items.LocalDroppedItem;
-
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import players.Inventory;
+import players.InventoryUtils;
 import players.Player;
 import textblock.TextTexture;
 import textures.Textures;
@@ -21,7 +18,6 @@ import crissaegrim.GameRunner;
 import entities.EntityMovementHelper;
 import geometry.Coordinate;
 import geometry.Rect;
-import geometry.RectUtils;
 import gldrawer.GLDrawer;
 
 public class SmeltingRunner {
@@ -137,6 +133,10 @@ public class SmeltingRunner {
 	}
 	
 	private void drawSmeltingDialog(Inventory inventory) {
+		boolean hasRhichiteOre = InventoryUtils.containsOre("Rhichite");
+		boolean hasValeniteOre = InventoryUtils.containsOre("Valenite");
+		boolean hasSandelugeOre = InventoryUtils.containsOre("Sandeluge");
+		
 		GameInitializer.initializeNewFrameForWindow();
 		GLDrawer.disableTextures();
 		
@@ -167,13 +167,17 @@ public class SmeltingRunner {
 		posY = (int)(smeltingDialogRect.getTop()) - OUTER_PADDING_PIXELS*2 - 25;
 		for (int i = 0; i < 2; i++) {
 			GLDrawer.disableTextures();
-			GLDrawer.setColor(0.122, 0.141, 0.161);
-			GLDrawer.drawQuad(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
-			GLDrawer.setColor(1, 1, 1);
-			GLDrawer.drawOutline(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
 			if (i == 0) {
+				setColorForItemBoxBackground(hasRhichiteOre);
+				GLDrawer.drawQuad(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
+				setGlColorForItemBoxOutline(hasRhichiteOre);
+				GLDrawer.drawOutline(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
 				GLDrawer.useTexture(Textures.ITEM_RHICHITE_BAR);
 			} else if (i == 1) {
+				setColorForItemBoxBackground(hasValeniteOre && hasSandelugeOre);
+				GLDrawer.drawQuad(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
+				setGlColorForItemBoxOutline(hasValeniteOre && hasSandelugeOre);
+				GLDrawer.drawOutline(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
 				GLDrawer.useTexture(Textures.ITEM_VAL_SAN_BAR);
 			}
 			GLDrawer.drawQuad(posX + INNER_PADDING_PIXELS, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS,
@@ -206,9 +210,9 @@ public class SmeltingRunner {
 		posX = (int)(smeltingDialogRect.getLeft()) + 186;
 		posY = (int)(smeltingDialogRect.getTop()) - OUTER_PADDING_PIXELS*2 - 25;
 		GLDrawer.disableTextures();
-		GLDrawer.setColor(0.122, 0.141, 0.161);
+		setColorForItemBoxBackground(hasRhichiteOre);
 		GLDrawer.drawQuad(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
-		GLDrawer.setColor(1, 1, 1);
+		setGlColorForItemBoxOutline(hasRhichiteOre);
 		GLDrawer.drawOutline(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
 		GLDrawer.useTexture(Textures.ITEM_RHICHITE_ORE);
 		GLDrawer.drawQuad(posX + INNER_PADDING_PIXELS, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS,
@@ -217,9 +221,9 @@ public class SmeltingRunner {
 		posX = (int)(smeltingDialogRect.getLeft()) + 186;
 		posY = (int)(smeltingDialogRect.getTop()) - OUTER_PADDING_PIXELS*3 - 25 - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2;
 		GLDrawer.disableTextures();
-		GLDrawer.setColor(0.122, 0.141, 0.161);
+		setColorForItemBoxBackground(hasValeniteOre);
 		GLDrawer.drawQuad(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
-		GLDrawer.setColor(1, 1, 1);
+		setGlColorForItemBoxOutline(hasValeniteOre);
 		GLDrawer.drawOutline(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
 		GLDrawer.useTexture(Textures.ITEM_VALENITE_ORE);
 		GLDrawer.drawQuad(posX + INNER_PADDING_PIXELS, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS,
@@ -227,9 +231,9 @@ public class SmeltingRunner {
 		
 		posX = (int)(smeltingDialogRect.getLeft()) + 184 + OUTER_PADDING_PIXELS*2 + INNER_PADDING_PIXELS*2 + BOX_SIZE_PIXELS + plusLabel.getWidth();
 		GLDrawer.disableTextures();
-		GLDrawer.setColor(0.122, 0.141, 0.161);
+		setColorForItemBoxBackground(hasSandelugeOre);
 		GLDrawer.drawQuad(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
-		GLDrawer.setColor(1, 1, 1);
+		setGlColorForItemBoxOutline(hasSandelugeOre);
 		GLDrawer.drawOutline(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
 		GLDrawer.useTexture(Textures.ITEM_SANDELUGE_ORE);
 		GLDrawer.drawQuad(posX + INNER_PADDING_PIXELS, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS,
@@ -238,27 +242,19 @@ public class SmeltingRunner {
 		
 	}
 	
-	private void setColorForItemBoxBackground(Item item) {
-		if (item != null) {
+	private void setColorForItemBoxBackground(boolean fulfillsRequirements) {
+		if (fulfillsRequirements) {
 			GLDrawer.setColor(0.122, 0.141, 0.161);
 		} else {
-			GLDrawer.setColor(0.22, 0.22, 0.22);
+			GLDrawer.setColor(0.188, 0.094, 0.094);
 		}
 	}
 	
-	private void setGlColorForItemBoxOutline(boolean quickequipColumn, Item item) {
-		if (quickequipColumn) {
-			if (item != null) {
-				GLDrawer.setColor(0.733, 0.953, 1);
-			} else {
-				GLDrawer.setColor(0.518, 0.659, 0.682);
-			}
+	private void setGlColorForItemBoxOutline(boolean fulfillsRequirements) {
+		if (fulfillsRequirements) {
+			GLDrawer.setColor(1, 1, 1);
 		} else {
-			if (item != null) {
-				GLDrawer.setColor(1, 1, 1);
-			} else {
-				GLDrawer.setColor(0.6, 0.6, 0.6);
-			}
+			GLDrawer.setColor(1, 0.651, 0.651);
 		}
 	}
 	

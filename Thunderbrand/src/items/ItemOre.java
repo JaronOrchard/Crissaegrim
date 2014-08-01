@@ -3,8 +3,12 @@ package items;
 public class ItemOre extends Item {
 	private static final long serialVersionUID = 1L;
 	
-	public ItemOre(String oreName, int textureId) {
-		super(oreName + " Ore", textureId);
+	private final String oreType;
+	public String getOreType() { return oreType; }
+	
+	public ItemOre(String oreType, int textureId) {
+		super(oreType + " Ore", textureId);
+		this.oreType = oreType;
 	}
 	
 }
