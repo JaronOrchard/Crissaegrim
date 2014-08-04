@@ -179,6 +179,7 @@ public class Textures {
 	public static final int STICK_PLAYER_RHICHITE_MINING_2 = 1006;
 	public static final int STICK_PLAYER_STUNNED = 1007;
 	public static final int STICK_PLAYER_DEAD = 1008;
+	public static final int STICK_PLAYER_SMELTING_ORE = 1009;
 	
 	public static final int NPC_STICK_NINJA = 1100;
 	public static final int NPC_STICK_NINJA_STUNNED = 1101;
@@ -393,6 +394,7 @@ public class Textures {
 		TextureLoader.loadTexture(STICK_PLAYER_RHICHITE_MINING_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerRhichiteMining2.png")));
 		TextureLoader.loadTexture(STICK_PLAYER_STUNNED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerStunned.png")));
 		TextureLoader.loadTexture(STICK_PLAYER_DEAD, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerDead.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_SMELTING_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerSmeltingOre.png")));
 		
 		TextureLoader.loadTexture(NPC_STICK_NINJA, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NPC.png")));
 		TextureLoader.loadTexture(NPC_STICK_NINJA_STUNNED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NPCStunned.png")));

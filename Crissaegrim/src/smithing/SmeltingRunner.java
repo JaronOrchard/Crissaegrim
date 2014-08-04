@@ -1,13 +1,18 @@
 package smithing;
 
 import static org.lwjgl.opengl.GL11.*;
+import items.Item;
+import items.ItemOre;
+import items.Items;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
+import busy.SmeltingOreBusy;
 import players.Inventory;
 import players.InventoryUtils;
 import players.Player;
@@ -26,11 +31,15 @@ import gldrawer.GLDrawer;
 public class SmeltingRunner {
 	
 	private boolean closeSmeltingRunner;
+	private boolean showingDialog;
+	private int smeltingOreType;
+	private long lastSmeltTime;
 	
 	private boolean hasRhichiteOre;
 	private boolean hasValeniteOre;
 	private boolean hasSandelugeOre;
 	
+	private static transient final long SMELT_ORE_DELAY_MILLIS = 1500;
 	private static transient final int BOX_SIZE_PIXELS = 64;
 	private static transient final int INNER_PADDING_PIXELS = 4;
 	private static transient final int OUTER_PADDING_PIXELS = 8;
@@ -38,6 +47,9 @@ public class SmeltingRunner {
 	
 	public SmeltingRunner() {
 		closeSmeltingRunner = false;
+		showingDialog = true;
+		smeltingOreType = -1;
+		lastSmeltTime = -1;
 		hasRhichiteOre = InventoryUtils.containsOre("Rhichite");
 		hasValeniteOre = InventoryUtils.containsOre("Valenite");
 		hasSandelugeOre = InventoryUtils.containsOre("Sandeluge");
@@ -75,20 +87,29 @@ public class SmeltingRunner {
 					return;
 				}
 				drawMouseHoverStatus(hoveredItemIndex);
-//				while (Mouse.next()) {
-//					if (Mouse.getEventButtonState() && Mouse.getEventButton() == 0) {
-//						if (hoveredItemIndex != -1) {
-//							Item itemInSpot = inventory.getItem(hoveredItemIndex);
-//							inventory.setItem(hoveredItemIndex, heldItem);
-//							heldItem = itemInSpot;
-//						}
-//					}
-//				}
+				while (Mouse.next()) {
+					if (Mouse.getEventButtonState() && Mouse.getEventButton() == 0) {
+						if (showingDialog && hoveredItemIndex != -1 && !player.isBusy()) {
+							if (hoveredItemIndex == 0 && !hasRhichiteOre) {
+								Crissaegrim.addSystemMessage("You need Rhichite Ore to smelt a Rhichite Bar.");
+							} else if (hoveredItemIndex == 1 && (!hasValeniteOre || !hasSandelugeOre)) {
+								Crissaegrim.addSystemMessage("You need Valenite Ore and Sandeluge Ore to smelt a Val_San_Bar.");
+							} else {
+								showingDialog = false;
+								Crissaegrim.addSystemMessage("You begin smelting the ore.");
+								smeltingOreType = hoveredItemIndex;
+								lastSmeltTime = new Date().getTime();
+								player.setBusy(new SmeltingOreBusy(player.getPosition()));
+							}
+						}
+					}
+				}
 				
 				playerMovementHelper.moveEntity();
 				
 				gameRunner.drawHUD();
-				drawSmeltingDialog(inventory);
+				if (showingDialog) { drawSmeltingDialog(inventory); }
+				if (smeltingOreType != -1 && new Date().getTime() > lastSmeltTime + SMELT_ORE_DELAY_MILLIS) { smeltOre(); }
 				
 				// Still transmit data to the server
 				Crissaegrim.getValmanwayConnection().sendPlayerStatus();
@@ -107,6 +128,79 @@ public class SmeltingRunner {
 		System.exit(1);
 	}
 	
+	/**
+	 * Perform the next ore smelting action tick.
+	 */
+	private void smeltOre() {
+		Inventory inventory = Crissaegrim.getPlayer().getInventory();
+		boolean canContinue = true;
+		if (smeltingOreType == 0) { // Rhichite
+			int rhichiteIndex = getNextOreIndex("Rhichite");
+			if (rhichiteIndex != -1) {
+				inventory.setItem(rhichiteIndex, null);
+				if (Thunderbrand.getRandomNumbers().getBoolean()) {
+					inventory.addItem(Items.rhichiteBar());
+					Crissaegrim.addSystemMessage("You smelt a Rhichite Bar.");
+				} else {
+					Crissaegrim.addSystemMessage("The Rhichite Ore crumbled away.");
+				}
+			}
+			if (getNextOreIndex("Rhichite") == -1) {
+				canContinue = false;
+			}
+		} else if (smeltingOreType == 1) { // Val_San
+			int valeniteIndex = getNextOreIndex("Valenite");
+			int sandelugeIndex = getNextOreIndex("Sandeluge");
+			if (valeniteIndex != -1 && sandelugeIndex != -1) {
+				inventory.setItem(valeniteIndex, null);
+				inventory.setItem(sandelugeIndex, null);
+				inventory.addItem(Items.valSanBar());
+				Crissaegrim.addSystemMessage("You smelt a Val_San_Bar.");
+			}
+			if (getNextOreIndex("Valenite") == -1 || getNextOreIndex("Sandeluge") == -1) {
+				canContinue = false;
+			}
+		}
+		lastSmeltTime = new Date().getTime();
+		if (!canContinue) {
+			quitSmeltingOre(true);
+			closeSmeltingRunner = true;
+		}
+	}
+	
+	/**
+	 * @param oreType The type of ore to find
+	 * @return The index of that ore in the player's {@link Inventory}
+	 */
+	private int getNextOreIndex(String oreType) {
+		Inventory inventory = Crissaegrim.getPlayer().getInventory();
+		for (int i = 0; i < inventory.getInventorySize(); i++) {
+			Item item = inventory.getItem(i);
+			if (item instanceof ItemOre && ((ItemOre)(item)).getOreType().equals(oreType)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	/**
+	 * Quit smelting ores.  Display a message and remove the SmeltingOreBusy if it is still active.
+	 * @param quitNormally Determines which message to show
+	 */
+	private void quitSmeltingOre(boolean quitNormally) {
+		if (Crissaegrim.getPlayer().getBusy() instanceof SmeltingOreBusy) {
+			Crissaegrim.getPlayer().setBusy(null);
+			if (quitNormally) {
+				Crissaegrim.addSystemMessage("You finish smelting the ore.");
+			} else {
+				Crissaegrim.addSystemMessage("You stop smelting the ore.");
+			}
+		}
+	}
+	
+	/**
+	 * Recalculates {@code smeltingDialogRect} due to first-run conditions or a changed window size.
+	 */
 	private void recalculateDialogDimensions() {
 		int dialogBoxWidth = 365;
 		int dialogBoxHeight = 204;
@@ -121,6 +215,13 @@ public class SmeltingRunner {
 	 * Detects keyboard input and reacts accordingly.
 	 */
 	private void getKeyboardInput() {
+		if (Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_D) ||
+				Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+			if (smeltingOreType != -1) { quitSmeltingOre(false); }
+			closeSmeltingRunner = true;
+			return;
+		}
+		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) { // Key was pressed (not released)
 				int pressedKey = Keyboard.getEventKey();
@@ -165,9 +266,9 @@ public class SmeltingRunner {
 	private void drawMouseHoverStatus(int hoveredItemIndex) {
 		String mouseHoverString;
 		if (hoveredItemIndex == 0 && hasRhichiteOre) {
-			mouseHoverString = "Smelt Rhichite bar";
+			mouseHoverString = "Smelt Rhichite Bar";
 		} else if (hoveredItemIndex == 1 && hasValeniteOre && hasSandelugeOre) {
-			mouseHoverString = "Smelt Val_San bar";
+			mouseHoverString = "Smelt Val_San Bar";
 		} else {
 			return; // Nothing to display
 		}
