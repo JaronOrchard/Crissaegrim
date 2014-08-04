@@ -140,7 +140,7 @@ public class InventoryRunner {
 						heldItem = null;
 					} else if (hoveredItemIndex != -1 && inventory.getItem(hoveredItemIndex) != null) {
 						dropItem(inventory.getItem(hoveredItemIndex));
-						inventory.setItem(hoveredItemIndex, null);
+						inventory.removeItem(hoveredItemIndex);
 					}
 				} else if (pressedKey == Keyboard.KEY_ESCAPE ||
 						pressedKey == Keyboard.KEY_E) {			// E / Escape: Close inventory

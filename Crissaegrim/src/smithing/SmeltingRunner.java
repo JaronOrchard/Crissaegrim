@@ -137,7 +137,7 @@ public class SmeltingRunner {
 		if (smeltingOreType == 0) { // Rhichite
 			int rhichiteIndex = getNextOreIndex("Rhichite");
 			if (rhichiteIndex != -1) {
-				inventory.setItem(rhichiteIndex, null);
+				inventory.removeItem(rhichiteIndex);
 				if (Thunderbrand.getRandomNumbers().getBoolean()) {
 					inventory.addItem(Items.rhichiteBar());
 					Crissaegrim.addSystemMessage("You smelt a Rhichite Bar.");
@@ -152,8 +152,8 @@ public class SmeltingRunner {
 			int valeniteIndex = getNextOreIndex("Valenite");
 			int sandelugeIndex = getNextOreIndex("Sandeluge");
 			if (valeniteIndex != -1 && sandelugeIndex != -1) {
-				inventory.setItem(valeniteIndex, null);
-				inventory.setItem(sandelugeIndex, null);
+				inventory.removeItem(valeniteIndex);
+				inventory.removeItem(sandelugeIndex);
 				inventory.addItem(Items.valSanBar());
 				Crissaegrim.addSystemMessage("You smelt a Val_San_Bar.");
 			}
