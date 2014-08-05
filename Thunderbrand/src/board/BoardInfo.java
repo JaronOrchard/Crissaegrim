@@ -7,6 +7,7 @@ import textures.Textures;
 import thunderbrand.Thunderbrand;
 import doodads.Doodad;
 import doodads.Door;
+import doodads.Furnace;
 import doodads.MineableRock;
 
 public class BoardInfo {
@@ -46,6 +47,8 @@ public class BoardInfo {
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10244, 9958), MineableRock.OreType.SANDELUGE));
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10231, 9970), MineableRock.OreType.SANDELUGE));
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10258, 9940), MineableRock.OreType.UNKNOWN));
+			// Needs to move into Morriston proper:
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Furnace(id, new Coordinate(10290, 9954)));
 		}
 	}
 	

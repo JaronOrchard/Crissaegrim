@@ -3,7 +3,6 @@ package doodads;
 import geometry.Coordinate;
 import geometry.Rect;
 import gldrawer.GLDrawer;
-
 import textures.Textures;
 
 public class Door extends Doodad {
@@ -28,6 +27,9 @@ public class Door extends Doodad {
 	
 	@Override
 	public boolean isActionable() { return true; }
+	
+	@Override
+	public String getActionIcon() { return "F"; }
 	
 	@Override
 	public void draw() {

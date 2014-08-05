@@ -298,7 +298,7 @@ public class SmeltingRunner {
 		GLDrawer.drawOutline(smeltingDialogRect); // Draw smelting dialog outline
 		GLDrawer.setLineWidth(1);
 		
-		TextTexture headerLabel = Crissaegrim.getCommonTextures().getTextTexture("Smelting ores");
+		TextTexture headerLabel = Crissaegrim.getCommonTextures().getTextTexture("Furnace: Smelt ores");
 		GLDrawer.useTexture(headerLabel.getTextureId());
 		GLDrawer.drawQuad(smeltingDialogRect.getLeft() + OUTER_PADDING_PIXELS, smeltingDialogRect.getLeft() + OUTER_PADDING_PIXELS + headerLabel.getWidth(),
 				smeltingDialogRect.getTop() - OUTER_PADDING_PIXELS - 20, smeltingDialogRect.getTop() - OUTER_PADDING_PIXELS);

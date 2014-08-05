@@ -196,6 +196,7 @@ public class Textures {
 	public static final int RHICHITE_ROCK = 2021;
 	public static final int VALENITE_ROCK = 2022;
 	public static final int SANDELUGE_ROCK = 2023;
+	public static final int FURNACE = 2040;
 	
 	public static final int LOADING_MESSAGE = 17900;
 	public static final int NO_CONNECTION_MESSAGE = 17901;
@@ -411,6 +412,7 @@ public class Textures {
 		TextureLoader.loadTexture(RHICHITE_ROCK, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/doodads/RhichiteRock.png")));
 		TextureLoader.loadTexture(VALENITE_ROCK, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/doodads/ValeniteRock.png")));
 		TextureLoader.loadTexture(SANDELUGE_ROCK, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/doodads/SandelugeRock.png")));
+		TextureLoader.loadTexture(FURNACE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/doodads/Furnace.png")));
 		
 		TextureLoader.loadTexture(LOADING_MESSAGE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/LoadingMessage.png")));
 		TextureLoader.loadTexture(NO_CONNECTION_MESSAGE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NoConnectionMessage.png")));

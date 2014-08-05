@@ -73,6 +73,9 @@ public class MineableRock extends Doodad {
 	public boolean isActionable() { return hasOre; }
 	
 	@Override
+	public String getActionIcon() { return "LEFT_CLICK"; }
+	
+	@Override
 	public void draw() {
 		Rect bounds = getBounds();
 		GLDrawer.useTexture(hasOre ? rockTexture : Textures.DEPLETED_ROCK);

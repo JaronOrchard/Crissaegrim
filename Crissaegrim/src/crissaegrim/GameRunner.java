@@ -283,11 +283,7 @@ public class GameRunner {
 		while (doodadIter.hasNext()) {
 			Doodad doodad = doodadIter.next();
 			if (doodad.isActionable() && RectUtils.coordinateIsInRect(Crissaegrim.getPlayer().getPosition(), doodad.getBounds())) {
-				if (doodad instanceof Door) {
-					Crissaegrim.getPlayer().setIcon("F");
-				} else if (doodad instanceof MineableRock) {
-					Crissaegrim.getPlayer().setIcon("LEFT_CLICK");
-				}
+				Crissaegrim.getPlayer().setIcon(doodad.getActionIcon());
 			}
 		}
 	}
@@ -375,6 +371,9 @@ public class GameRunner {
 										pmh.resetMovementRequests();
 										setNewDestination(door.getDestinationBoardName(), door.getDestinationCoordinate());
 										requestTravelToDestinationBoard();
+										break;
+									case DoodadActions.SMELT_ORE:
+										new SmeltingRunner().run();
 										break;
 									default:
 										break;

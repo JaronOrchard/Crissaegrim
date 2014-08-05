@@ -22,6 +22,7 @@ public abstract class Doodad implements Serializable {
 	}
 	
 	public abstract boolean isActionable();
+	public abstract String getActionIcon();
 	public abstract void draw();
 	public abstract void drawDebugMode();
 	
