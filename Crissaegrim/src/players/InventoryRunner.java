@@ -2,6 +2,8 @@ package players;
 
 import static org.lwjgl.opengl.GL11.*;
 import items.Item;
+import items.ItemNothing;
+import items.Items;
 import items.LocalDroppedItem;
 
 import java.io.IOException;
@@ -34,7 +36,7 @@ public class InventoryRunner {
 	
 	public InventoryRunner() {
 		closeInventory = false;
-		heldItem = null;
+		heldItem = Items.nothing();
 		recalculateInventoryDimensions();
 	}
 	
@@ -66,9 +68,9 @@ public class InventoryRunner {
 					getKeyboardInput(hoveredItemIndex);
 				}
 				if (closeInventory) { // Close Inventory if requested
-					if (heldItem != null) {
+					if (!(heldItem instanceof ItemNothing)) {
 						dropItem(heldItem);
-						heldItem = null;
+						heldItem = Items.nothing();
 					}
 					return;
 				}
@@ -135,10 +137,10 @@ public class InventoryRunner {
 					recalculateInventoryDimensions();
 				} else if (pressedKey == Keyboard.KEY_Q) {		// Q key: Drop heldItem or hovered item
 					Inventory inventory = Crissaegrim.getPlayer().getInventory();
-					if (heldItem != null) {
+					if (!(heldItem instanceof ItemNothing)) {
 						dropItem(heldItem);
-						heldItem = null;
-					} else if (hoveredItemIndex != -1 && inventory.getItem(hoveredItemIndex) != null) {
+						heldItem = Items.nothing();
+					} else if (hoveredItemIndex != -1 && !(inventory.getItem(hoveredItemIndex) instanceof ItemNothing)) {
 						dropItem(inventory.getItem(hoveredItemIndex));
 						inventory.removeItem(hoveredItemIndex);
 					}
@@ -184,13 +186,13 @@ public class InventoryRunner {
 	
 	private void drawMouseHoverStatus(int hoveredItemIndex) {
 		Inventory inventory = Crissaegrim.getPlayer().getInventory();
-		if (hoveredItemIndex == -1 || (inventory.getItem(hoveredItemIndex) == null && heldItem == null)) {
+		if (hoveredItemIndex == -1 || (inventory.getItem(hoveredItemIndex) instanceof ItemNothing && heldItem instanceof ItemNothing)) {
 			return; // Nothing to display
 		}
 		String mouseHoverString;
-		if (heldItem == null) {
+		if (heldItem instanceof ItemNothing) {
 			mouseHoverString = "Grab " + inventory.getItem(hoveredItemIndex).getName();
-		} else if (inventory.getItem(hoveredItemIndex) == null) {
+		} else if (inventory.getItem(hoveredItemIndex) instanceof ItemNothing) {
 			mouseHoverString = "Place " + heldItem.getName() + " in empty slot";
 		} else {
 			mouseHoverString = "Swap " + inventory.getItem(hoveredItemIndex).getName() + " with " + heldItem.getName();
@@ -257,7 +259,7 @@ public class InventoryRunner {
 				setGlColorForItemBoxOutline(i == 0, item);
 				GLDrawer.drawOutline(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
 				
-				if (item != null) {
+				if (!(item instanceof ItemNothing)) {
 					GLDrawer.useTexture(item.getTexture());
 					GLDrawer.drawQuad(posX + INNER_PADDING_PIXELS, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS,
 							posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, posY - INNER_PADDING_PIXELS);
@@ -268,7 +270,7 @@ public class InventoryRunner {
 		}
 		
 		// Draw held item
-		if (heldItem != null) {
+		if (!(heldItem instanceof ItemNothing)) {
 			int mouseX = Mouse.getX();
 			int mouseY = Mouse.getY();
 			GLDrawer.useTexture(heldItem.getTexture());
@@ -277,7 +279,7 @@ public class InventoryRunner {
 	}
 	
 	private void setColorForItemBoxBackground(Item item) {
-		if (item != null) {
+		if (!(item instanceof ItemNothing)) {
 			GLDrawer.setColor(0.122, 0.141, 0.161);
 		} else {
 			GLDrawer.setColor(0.22, 0.22, 0.22);
@@ -286,13 +288,13 @@ public class InventoryRunner {
 	
 	private void setGlColorForItemBoxOutline(boolean quickequipColumn, Item item) {
 		if (quickequipColumn) {
-			if (item != null) {
+			if (!(item instanceof ItemNothing)) {
 				GLDrawer.setColor(0.733, 0.953, 1);
 			} else {
 				GLDrawer.setColor(0.518, 0.659, 0.682);
 			}
 		} else {
-			if (item != null) {
+			if (!(item instanceof ItemNothing)) {
 				GLDrawer.setColor(1, 1, 1);
 			} else {
 				GLDrawer.setColor(0.6, 0.6, 0.6);

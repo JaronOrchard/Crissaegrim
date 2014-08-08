@@ -322,8 +322,9 @@ public class GameRunner {
 //					else if (res == DialogBox.Result.BUTTON_2) { Crissaegrim.addSystemMessage("Fine!"); }
 //					else if (res == DialogBox.Result.BUTTON_3) { Crissaegrim.addSystemMessage("P-President Fabio?"); }
 //				}
-				if (pressedKey == Keyboard.KEY_B)
+				if (pressedKey == Keyboard.KEY_B) {
 					new SmeltingRunner().run();
+				}
 				
 				if (pressedKey == Keyboard.KEY_T ||
 						pressedKey == Keyboard.KEY_RETURN) {	// T or Enter: Enter chat mode

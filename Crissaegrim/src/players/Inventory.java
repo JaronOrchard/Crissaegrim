@@ -2,12 +2,22 @@ package players;
 
 import java.util.Date;
 
+import outside_src.RuntimeTypeAdapterFactory;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import textblock.TextTexture;
 import textures.Textures;
 import crissaegrim.Crissaegrim;
 import gldrawer.GLDrawer;
 import items.Item;
+import items.ItemBar;
+import items.ItemNothing;
+import items.ItemOre;
+import items.ItemPartyPopper;
 import items.ItemPickaxe;
+import items.ItemSolais;
 import items.Items;
 import items.Weapon;
 
@@ -16,12 +26,13 @@ public class Inventory {
 	private static final int BOX_SIZE_PIXELS = 32;
 	private static final int INNER_PADDING_PIXELS = 4;
 	private static final int OUTER_PADDING_PIXELS = 8;
-	private final static long MILLIS_AT_FULL_EXTENDED = 2000;
-	private final static long MILLIS_TO_SLIDE_RIGHT = 300;
+	private static final long MILLIS_AT_FULL_EXTENDED = 2000;
+	private static final long MILLIS_TO_SLIDE_RIGHT = 300;
 	
 	private static final int INVENTORY_QUICKEQUIP_SLOTS = 6;
 	private static final int INVENTORY_SIZE = 30;
-	private TextTexture solaisTextTexture; // Update this whenever the user's amount of Solais changes
+	private TextTexture solaisTextTexture;
+	private Gson gson;
 	
 	private Item[] items;
 	private int solais;
@@ -32,21 +43,37 @@ public class Inventory {
 	public int getInventorySize() { return INVENTORY_SIZE; }
 	public Item[] getItems() { return items; }
 	public Item getItem(int index) { return items[index]; }
-	public void setItem(int index, Item item) { items[index] = item; }
-	public void removeItem(int index) { items[index] = null; }
+	public void setItem(int index, Item item) { items[index] = item; serializeAndSaveItems(); }
+	public void removeItem(int index) { items[index] = Items.nothing(); serializeAndSaveItems(); }
 	
 	public Inventory() {
-		items = new Item[INVENTORY_SIZE];
-		solais = 0;
-		solaisCountOnTextTexture = 0;
-		updateSolaisTextTexture();
 		selectedQuickequipItemIndex = 0;
 		
+		items = new Item[INVENTORY_SIZE];
+		for (int i = 0; i < INVENTORY_SIZE; i++) {
+			items[i] = Items.nothing();
+		}
 		items[0] = new Weapon("Rhichite Sword", Textures.ITEM_RHICHITE_SWORD);
 		items[1] = new ItemPickaxe("Rhichite", Textures.ITEM_RHICHITE_PICKAXE);
 		items[8] = Items.rhichiteOre();
 		items[15] = Items.valeniteOre();
 		items[19] = Items.sandelugeOre();
+		
+		RuntimeTypeAdapterFactory<Item> adapter = RuntimeTypeAdapterFactory.of(Item.class)
+				.registerSubtype(ItemBar.class)
+				.registerSubtype(ItemNothing.class)
+				.registerSubtype(ItemOre.class)
+				.registerSubtype(ItemPartyPopper.class)
+				.registerSubtype(ItemPickaxe.class)
+				.registerSubtype(ItemSolais.class)
+				.registerSubtype(Weapon.class);
+		gson = new GsonBuilder().registerTypeAdapterFactory(adapter).create();
+		
+		deserializeAndLoadSolais();
+		solaisCountOnTextTexture = solais;
+		updateSolaisTextTexture();
+		
+		deserializeAndLoadItems();
 	}
 	
 	private void updateSolaisTextTexture() {
@@ -55,7 +82,10 @@ public class Inventory {
 	
 	public Item getCurrentItem() { return items[selectedQuickequipItemIndex]; }
 	
-	public void removeCurrentItem() { items[selectedQuickequipItemIndex] = null; }
+	public void removeCurrentItem() {
+		items[selectedQuickequipItemIndex] = Items.nothing();
+		serializeAndSaveItems();
+	}
 	
 	public void selectPreviousItem() {
 		selectedQuickequipItemIndex = (selectedQuickequipItemIndex + INVENTORY_QUICKEQUIP_SLOTS - 1) % INVENTORY_QUICKEQUIP_SLOTS;
@@ -77,7 +107,10 @@ public class Inventory {
 	}
 	private void updateLastTouchedTime() { lastTouchedTime = new Date().getTime(); }
 	
-	public void addSolais(int amount) { solais += amount; }
+	public void addSolais(int amount) {
+		solais += amount;
+		serializeAndSaveSolais();
+	}
 	
 	/**
 	 * Adds the {@link Item} to the Inventory.  If the Inventory is full, returns {@code false}.
@@ -86,7 +119,7 @@ public class Inventory {
 	 */
 	public boolean addItem(Item item) {
 		for (int i = 0; i < INVENTORY_SIZE; i++) {
-			if (items[i] == null) {
+			if (items[i] instanceof ItemNothing) {
 				items[i] = item;
 				return true;
 			}
@@ -94,9 +127,28 @@ public class Inventory {
 		return false;
 	}
 	
+	private void serializeAndSaveSolais() {
+		Crissaegrim.getPreferenceHandler().setInventorySolais(solais);
+	}
+	
+	private void serializeAndSaveItems() {
+		Crissaegrim.getPreferenceHandler().setInventoryItemsJson(gson.toJson(items, Item[].class));
+	}
+	
+	private void deserializeAndLoadSolais() {
+		solais = Crissaegrim.getPreferenceHandler().getInventorySolais();
+	}
+	
+	private void deserializeAndLoadItems() {
+		String jsonItems = Crissaegrim.getPreferenceHandler().getInventoryItemsJson();
+		if (jsonItems != null) {
+			items = gson.fromJson(jsonItems, Item[].class);
+		}
+	}
+	
 	public void draw() {
 		long now = new Date().getTime();
-		if (items[selectedQuickequipItemIndex] == null && now - lastTouchedTime > MILLIS_AT_FULL_EXTENDED + MILLIS_TO_SLIDE_RIGHT) {
+		if (items[selectedQuickequipItemIndex] instanceof ItemNothing && now - lastTouchedTime > MILLIS_AT_FULL_EXTENDED + MILLIS_TO_SLIDE_RIGHT) {
 			return; // Inventory is out of view
 		}
 		if (solaisCountOnTextTexture != solais) {
@@ -112,7 +164,7 @@ public class Inventory {
 			double amtSlid = ((double)(now - lastTouchedTime - MILLIS_AT_FULL_EXTENDED)) / (double)MILLIS_TO_SLIDE_RIGHT;
 			rightX = (int)((1.0 - amtSlid)*(selectedItemRightX) +
 					amtSlid*(Crissaegrim.getWindowWidth() + BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2));
-			if (items[selectedQuickequipItemIndex] == null) {
+			if (items[selectedQuickequipItemIndex] instanceof ItemNothing) {
 				selectedItemRightX = (int)((1.0 - amtSlid)*(selectedItemRightX) +
 						amtSlid*(Crissaegrim.getWindowWidth() + BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2));
 			}
@@ -146,14 +198,14 @@ public class Inventory {
 		// Draw items in boxes and item label if applicable:
 		topY = Crissaegrim.getWindowHeight() - OUTER_PADDING_PIXELS - 24;
 		for (int i = 0; i < selectedQuickequipItemIndex; i++) {
-			if (items[i] != null) {
+			if (!(items[i] instanceof ItemNothing)) {
 				GLDrawer.useTexture(items[i].getTexture());
 				GLDrawer.drawQuad(rightX - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, rightX - INNER_PADDING_PIXELS,
 						topY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
 			}
 			topY -= BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		}
-		if (items[selectedQuickequipItemIndex] != null) {
+		if (!(items[selectedQuickequipItemIndex] instanceof ItemNothing)) {
 			GLDrawer.useTexture(items[selectedQuickequipItemIndex].getTexture());
 			GLDrawer.drawQuad(selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS, selectedItemRightX - INNER_PADDING_PIXELS,
 					topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
@@ -166,7 +218,7 @@ public class Inventory {
 		}
 		topY -= BOX_SIZE_PIXELS*2 + INNER_PADDING_PIXELS*2 + OUTER_PADDING_PIXELS;
 		for (int i = selectedQuickequipItemIndex + 1; i < INVENTORY_QUICKEQUIP_SLOTS; i++) {
-			if (items[i] != null) {
+			if (!(items[i] instanceof ItemNothing)) {
 				GLDrawer.useTexture(items[i].getTexture());
 				GLDrawer.drawQuad(rightX - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, rightX - INNER_PADDING_PIXELS,
 						topY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
@@ -177,7 +229,7 @@ public class Inventory {
 	}
 	
 	private void setColorForItem(int index) {
-		if (items[index] != null) {
+		if (!(items[index] instanceof ItemNothing)) {
 			GLDrawer.clearColor();
 		} else {
 			GLDrawer.setColor(0.6, 0.6, 0.6);
@@ -190,7 +242,7 @@ public class Inventory {
 	 */
 	public boolean isFull() {
 		for (int i = getInventorySize() - 1; i >= 0; i--) {
-			if (items[i] == null) { return false; }
+			if (items[i] instanceof ItemNothing) { return false; }
 		}
 		return true;
 	}
