@@ -108,7 +108,7 @@ public final class ValmanwayDataPacketProcessor {
 				UpdatedDoodadPacket udp = (UpdatedDoodadPacket)(packet);
 				Valmanway.getSharedData().addDataPacket(packet); // Bounce packet back to Crissaegrim
 				Valmanway.getSharedData().getBoardMap().get(udp.getBoardName()).getDoodads().put(udp.getDoodad().getId(), udp.getDoodad());
-				processUpdatedDoodadPacket(udp, valmanwayUserData);
+				processUpdatedDoodadPacket(udp);
 				break;
 				
 				
@@ -153,7 +153,7 @@ public final class ValmanwayDataPacketProcessor {
 		}
 	}
 	
-	private static void processUpdatedDoodadPacket(UpdatedDoodadPacket udp, ValmanwayUserData vud) {
+	private static void processUpdatedDoodadPacket(UpdatedDoodadPacket udp) {
 		Doodad doodad = udp.getDoodad();
 		if (doodad instanceof MineableRock) { // Ore needs to respawn after a certain amount of time
 			MineableRock mineableRock = (MineableRock)(doodad);

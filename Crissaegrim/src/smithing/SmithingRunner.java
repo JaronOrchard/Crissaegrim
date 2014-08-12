@@ -6,7 +6,9 @@ import items.ItemOre;
 import items.Items;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -22,34 +24,55 @@ import thunderbrand.Thunderbrand;
 import crissaegrim.Crissaegrim;
 import crissaegrim.GameInitializer;
 import crissaegrim.GameRunner;
+import dialogboxes.DialogBox;
+import dialogboxes.DialogBoxRunner;
 import entities.EntityMovementHelper;
 import geometry.Coordinate;
 import geometry.Rect;
 import geometry.RectUtils;
 import gldrawer.GLDrawer;
 
-public class SmeltingRunner {
+public class SmithingRunner {
 	
-	private boolean closeSmeltingRunner;
+	
+	// --- SmithingRunner is not yet ready
+	// --- Going to come back to this after Weapons and Throwing Knives and Stackable Items have been added
+	
+	
+	private boolean closeSmithingRunner;
 	private boolean showingDialog;
-	private int smeltingOreType;
-	private long lastSmeltTime;
+	private int smithingItemType;
+	@SuppressWarnings("unused")
+	private String smithingOreType;
+	private long lastSmithTime;
 	
 	private boolean hasRhichiteOre;
 	private boolean hasValeniteOre;
 	private boolean hasSandelugeOre;
 	
-	private static transient final long SMELT_ORE_DELAY_MILLIS = 1500;
+	private static transient final long SMITH_ITEM_DELAY_MILLIS = 1500;
 	private static transient final int BOX_SIZE_PIXELS = 64;
 	private static transient final int INNER_PADDING_PIXELS = 4;
 	private static transient final int OUTER_PADDING_PIXELS = 8;
-	private Rect smeltingDialogRect;
+	private Rect smithingDialogRect;
 	
-	public SmeltingRunner() {
-		closeSmeltingRunner = false;
+	@SuppressWarnings("unused")
+	private class SmithableItem {
+		String name;
+		TextTexture label;
+		List<Integer> textures; // per ore type
+		// Item itemToReceive;
+		
+		// SET UP SMITHABLE ITEMS
+		
+	}
+	
+	public SmithingRunner() {
+		closeSmithingRunner = false;
 		showingDialog = true;
-		smeltingOreType = -1;
-		lastSmeltTime = -1;
+		smithingItemType = -1;
+		smithingOreType = "";
+		lastSmithTime = -1;
 		hasRhichiteOre = InventoryUtils.containsOre("Rhichite");
 		hasValeniteOre = InventoryUtils.containsOre("Valenite");
 		hasSandelugeOre = InventoryUtils.containsOre("Sandeluge");
@@ -60,7 +83,15 @@ public class SmeltingRunner {
 		GameRunner gameRunner = Crissaegrim.getGameRunner();
 		Player player = Crissaegrim.getPlayer();
 		EntityMovementHelper playerMovementHelper = player.getMovementHelper();
-		GameInitializer.setWindowTitle("Smelting ores");
+		GameInitializer.setWindowTitle("Smithing items");
+		
+		DialogBoxRunner dbr = new DialogBoxRunner();
+		DialogBox.Result res = dbr.run(new DialogBox(
+				"Which type of bar do you want to smith items from?",
+				Arrays.asList("Rhichite", "Val_San", "I don't want to smith anything")));
+		if (res == DialogBox.Result.BUTTON_1) { smithingOreType = "Rhichite"; }
+		else if (res == DialogBox.Result.BUTTON_2) { smithingOreType = "Val_San"; }
+		else { return; }
 		
 		try {
 			long startTime, endTime, elaspedTime; // Per-loop times to keep FRAMES_PER_SECOND
@@ -82,7 +113,7 @@ public class SmeltingRunner {
 				} else {
 					getKeyboardInput();
 				}
-				if (closeSmeltingRunner) { // Close dialog if requested
+				if (closeSmithingRunner) { // Close dialog if requested
 					return;
 				}
 				drawMouseHoverStatus(hoveredItemIndex);
@@ -96,8 +127,8 @@ public class SmeltingRunner {
 							} else {
 								showingDialog = false;
 								Crissaegrim.addSystemMessage("You begin smelting the ore.");
-								smeltingOreType = hoveredItemIndex;
-								lastSmeltTime = new Date().getTime();
+								smithingItemType = hoveredItemIndex;
+								lastSmithTime = new Date().getTime();
 								player.setBusy(new SmeltingOreBusy(player.getPosition()));
 							}
 						}
@@ -107,8 +138,8 @@ public class SmeltingRunner {
 				playerMovementHelper.moveEntity();
 				
 				gameRunner.drawHUD();
-				if (showingDialog) { drawSmeltingDialog(); }
-				if (smeltingOreType != -1 && new Date().getTime() > lastSmeltTime + SMELT_ORE_DELAY_MILLIS) { smeltOre(); }
+				if (showingDialog) { drawSmithingDialog(); }
+				if (smithingItemType != -1 && new Date().getTime() > lastSmithTime + SMITH_ITEM_DELAY_MILLIS) { smeltOre(); }
 				
 				// Still transmit data to the server
 				Crissaegrim.getValmanwayConnection().sendPlayerStatus();
@@ -133,7 +164,7 @@ public class SmeltingRunner {
 	private void smeltOre() {
 		Inventory inventory = Crissaegrim.getPlayer().getInventory();
 		boolean canContinue = true;
-		if (smeltingOreType == 0) { // Rhichite
+		if (smithingItemType == 0) { // Rhichite
 			int rhichiteIndex = getNextOreIndex("Rhichite");
 			if (rhichiteIndex != -1) {
 				inventory.removeItem(rhichiteIndex);
@@ -147,7 +178,7 @@ public class SmeltingRunner {
 			if (getNextOreIndex("Rhichite") == -1) {
 				canContinue = false;
 			}
-		} else if (smeltingOreType == 1) { // Val_San
+		} else if (smithingItemType == 1) { // Val_San
 			int valeniteIndex = getNextOreIndex("Valenite");
 			int sandelugeIndex = getNextOreIndex("Sandeluge");
 			if (valeniteIndex != -1 && sandelugeIndex != -1) {
@@ -160,10 +191,10 @@ public class SmeltingRunner {
 				canContinue = false;
 			}
 		}
-		lastSmeltTime = new Date().getTime();
+		lastSmithTime = new Date().getTime();
 		if (!canContinue) {
 			quitSmeltingOre(true);
-			closeSmeltingRunner = true;
+			closeSmithingRunner = true;
 		}
 	}
 	
@@ -205,7 +236,7 @@ public class SmeltingRunner {
 		int dialogBoxHeight = 204;
 		int widthBuffer = (Crissaegrim.getWindowWidth() - dialogBoxWidth) / 2;
 		int heightBuffer = (Crissaegrim.getWindowHeight() - dialogBoxHeight) / 2;
-		smeltingDialogRect = new Rect(
+		smithingDialogRect = new Rect(
 				new Coordinate(widthBuffer, heightBuffer),
 				new Coordinate(Crissaegrim.getWindowWidth() - widthBuffer, Crissaegrim.getWindowHeight() - heightBuffer));
 	}
@@ -216,8 +247,8 @@ public class SmeltingRunner {
 	private void getKeyboardInput() {
 		if (Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_D) ||
 				Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-			if (smeltingOreType != -1) { quitSmeltingOre(false); }
-			closeSmeltingRunner = true;
+			if (smithingItemType != -1) { quitSmeltingOre(false); }
+			closeSmithingRunner = true;
 			return;
 		}
 		
@@ -235,8 +266,8 @@ public class SmeltingRunner {
 				} else if (pressedKey == Keyboard.KEY_M) {		// M key: Toggle window size
 					Crissaegrim.toggleWindowSize();
 					recalculateDialogDimensions();
-				} else if (pressedKey == Keyboard.KEY_ESCAPE) {	// Escape: Close smelting dialog
-					closeSmeltingRunner = true;
+				} else if (pressedKey == Keyboard.KEY_ESCAPE) {	// Escape: Close smithing dialog
+					closeSmithingRunner = true;
 				}
 			}
 		}
@@ -248,8 +279,8 @@ public class SmeltingRunner {
 	private int getHoveredItemIndex() {
 		Coordinate mouseCoords = new Coordinate(Mouse.getX(), Mouse.getY());
 		int posX, posY;
-		posX = (int)(smeltingDialogRect.getLeft()) + OUTER_PADDING_PIXELS;
-		posY = (int)(smeltingDialogRect.getTop()) - OUTER_PADDING_PIXELS*2 - 25;
+		posX = (int)(smithingDialogRect.getLeft()) + OUTER_PADDING_PIXELS;
+		posY = (int)(smithingDialogRect.getTop()) - OUTER_PADDING_PIXELS*2 - 25;
 		for (int i = 0; i < 2; i++) {
 			Rect smeltableItemBoxRect = new Rect(
 					new Coordinate(posX, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2),
@@ -277,35 +308,35 @@ public class SmeltingRunner {
 		GLDrawer.drawQuad(5, 5 + mouseHoverStatus.getWidth(), top - 20, top);
 	}
 	
-	private void drawSmeltingDialog() {
+	private void drawSmithingDialog() {
 		GameInitializer.initializeNewFrameForWindow();
 		GLDrawer.disableTextures();
 		
 		GLDrawer.setColor(0.314, 0.314, 0.314);
-		GLDrawer.drawQuad(smeltingDialogRect); // Draw smelting dialog background
+		GLDrawer.drawQuad(smithingDialogRect); // Draw smithing dialog background
 		// Draw blue gradient title bar rectangle:
 		glBegin(GL_QUADS);
 		GLDrawer.setColor(0, 0.188, 0.502);
-			glVertex2d(smeltingDialogRect.getLeft(), smeltingDialogRect.getTop());
-			glVertex2d(smeltingDialogRect.getRight(), smeltingDialogRect.getTop());
+			glVertex2d(smithingDialogRect.getLeft(), smithingDialogRect.getTop());
+			glVertex2d(smithingDialogRect.getRight(), smithingDialogRect.getTop());
 			GLDrawer.setColor(0, 0.251, 0.667);
-			glVertex2d(smeltingDialogRect.getRight(), smeltingDialogRect.getTop() - OUTER_PADDING_PIXELS - 25);
-			glVertex2d(smeltingDialogRect.getLeft(), smeltingDialogRect.getTop() - OUTER_PADDING_PIXELS - 25);
+			glVertex2d(smithingDialogRect.getRight(), smithingDialogRect.getTop() - OUTER_PADDING_PIXELS - 25);
+			glVertex2d(smithingDialogRect.getLeft(), smithingDialogRect.getTop() - OUTER_PADDING_PIXELS - 25);
 		glEnd();
 		GLDrawer.setColor(0.75, 0.75, 0.75);
 		GLDrawer.setLineWidth(3);
-		GLDrawer.drawOutline(smeltingDialogRect); // Draw smelting dialog outline
+		GLDrawer.drawOutline(smithingDialogRect); // Draw smithing dialog outline
 		GLDrawer.setLineWidth(1);
 		
-		TextTexture headerLabel = Crissaegrim.getCommonTextures().getTextTexture("Furnace: Smelt ores");
+		TextTexture headerLabel = Crissaegrim.getCommonTextures().getTextTexture("Anvil: Smith items");
 		GLDrawer.useTexture(headerLabel.getTextureId());
-		GLDrawer.drawQuad(smeltingDialogRect.getLeft() + OUTER_PADDING_PIXELS, smeltingDialogRect.getLeft() + OUTER_PADDING_PIXELS + headerLabel.getWidth(),
-				smeltingDialogRect.getTop() - OUTER_PADDING_PIXELS - 20, smeltingDialogRect.getTop() - OUTER_PADDING_PIXELS);
+		GLDrawer.drawQuad(smithingDialogRect.getLeft() + OUTER_PADDING_PIXELS, smithingDialogRect.getLeft() + OUTER_PADDING_PIXELS + headerLabel.getWidth(),
+				smithingDialogRect.getTop() - OUTER_PADDING_PIXELS - 20, smithingDialogRect.getTop() - OUTER_PADDING_PIXELS);
 		
 		// Draw clickable boxes:
 		int posX, posY;
-		posX = (int)(smeltingDialogRect.getLeft()) + OUTER_PADDING_PIXELS;
-		posY = (int)(smeltingDialogRect.getTop()) - OUTER_PADDING_PIXELS*2 - 25;
+		posX = (int)(smithingDialogRect.getLeft()) + OUTER_PADDING_PIXELS;
+		posY = (int)(smithingDialogRect.getTop()) - OUTER_PADDING_PIXELS*2 - 25;
 		for (int i = 0; i < 2; i++) {
 			GLDrawer.disableTextures();
 			if (i == 0) {
@@ -331,25 +362,25 @@ public class SmeltingRunner {
 		TextTexture plusLabel = Crissaegrim.getCommonTextures().getTextTexture("+");
 		GLDrawer.useTexture(requiresLabel.getTextureId());
 		GLDrawer.drawQuad(
-				smeltingDialogRect.getLeft() + OUTER_PADDING_PIXELS*2 + INNER_PADDING_PIXELS*2 + BOX_SIZE_PIXELS,
-				smeltingDialogRect.getLeft() + OUTER_PADDING_PIXELS*2 + INNER_PADDING_PIXELS*2 + BOX_SIZE_PIXELS + requiresLabel.getWidth(),
-				smeltingDialogRect.getTop() - OUTER_PADDING_PIXELS*2 - 71,
-				smeltingDialogRect.getTop() - OUTER_PADDING_PIXELS*2 - 51);
+				smithingDialogRect.getLeft() + OUTER_PADDING_PIXELS*2 + INNER_PADDING_PIXELS*2 + BOX_SIZE_PIXELS,
+				smithingDialogRect.getLeft() + OUTER_PADDING_PIXELS*2 + INNER_PADDING_PIXELS*2 + BOX_SIZE_PIXELS + requiresLabel.getWidth(),
+				smithingDialogRect.getTop() - OUTER_PADDING_PIXELS*2 - 71,
+				smithingDialogRect.getTop() - OUTER_PADDING_PIXELS*2 - 51);
 		GLDrawer.drawQuad(
-				smeltingDialogRect.getLeft() + OUTER_PADDING_PIXELS*2 + INNER_PADDING_PIXELS*2 + BOX_SIZE_PIXELS,
-				smeltingDialogRect.getLeft() + OUTER_PADDING_PIXELS*2 + INNER_PADDING_PIXELS*2 + BOX_SIZE_PIXELS + requiresLabel.getWidth(),
-				smeltingDialogRect.getTop() - OUTER_PADDING_PIXELS*3 - INNER_PADDING_PIXELS*2 - BOX_SIZE_PIXELS - 71,
-				smeltingDialogRect.getTop() - OUTER_PADDING_PIXELS*3 - INNER_PADDING_PIXELS*2 - BOX_SIZE_PIXELS - 51);
+				smithingDialogRect.getLeft() + OUTER_PADDING_PIXELS*2 + INNER_PADDING_PIXELS*2 + BOX_SIZE_PIXELS,
+				smithingDialogRect.getLeft() + OUTER_PADDING_PIXELS*2 + INNER_PADDING_PIXELS*2 + BOX_SIZE_PIXELS + requiresLabel.getWidth(),
+				smithingDialogRect.getTop() - OUTER_PADDING_PIXELS*3 - INNER_PADDING_PIXELS*2 - BOX_SIZE_PIXELS - 71,
+				smithingDialogRect.getTop() - OUTER_PADDING_PIXELS*3 - INNER_PADDING_PIXELS*2 - BOX_SIZE_PIXELS - 51);
 		GLDrawer.useTexture(plusLabel.getTextureId());
 		GLDrawer.drawQuad(
-				smeltingDialogRect.getLeft() + OUTER_PADDING_PIXELS*4 + INNER_PADDING_PIXELS*4 + BOX_SIZE_PIXELS*2 + requiresLabel.getWidth(),
-				smeltingDialogRect.getLeft() + OUTER_PADDING_PIXELS*4 + INNER_PADDING_PIXELS*4 + BOX_SIZE_PIXELS*2 + requiresLabel.getWidth() + plusLabel.getWidth(),
-				smeltingDialogRect.getTop() - OUTER_PADDING_PIXELS*3 - INNER_PADDING_PIXELS*2 - BOX_SIZE_PIXELS - 71,
-				smeltingDialogRect.getTop() - OUTER_PADDING_PIXELS*3 - INNER_PADDING_PIXELS*2 - BOX_SIZE_PIXELS - 51);
+				smithingDialogRect.getLeft() + OUTER_PADDING_PIXELS*4 + INNER_PADDING_PIXELS*4 + BOX_SIZE_PIXELS*2 + requiresLabel.getWidth(),
+				smithingDialogRect.getLeft() + OUTER_PADDING_PIXELS*4 + INNER_PADDING_PIXELS*4 + BOX_SIZE_PIXELS*2 + requiresLabel.getWidth() + plusLabel.getWidth(),
+				smithingDialogRect.getTop() - OUTER_PADDING_PIXELS*3 - INNER_PADDING_PIXELS*2 - BOX_SIZE_PIXELS - 71,
+				smithingDialogRect.getTop() - OUTER_PADDING_PIXELS*3 - INNER_PADDING_PIXELS*2 - BOX_SIZE_PIXELS - 51);
 		
 		// Draw required ores:
-		posX = (int)(smeltingDialogRect.getLeft()) + 186;
-		posY = (int)(smeltingDialogRect.getTop()) - OUTER_PADDING_PIXELS*2 - 25;
+		posX = (int)(smithingDialogRect.getLeft()) + 186;
+		posY = (int)(smithingDialogRect.getTop()) - OUTER_PADDING_PIXELS*2 - 25;
 		GLDrawer.disableTextures();
 		setColorForItemBoxBackground(hasRhichiteOre);
 		GLDrawer.drawQuad(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
@@ -359,8 +390,8 @@ public class SmeltingRunner {
 		GLDrawer.drawQuad(posX + INNER_PADDING_PIXELS, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS,
 				posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, posY - INNER_PADDING_PIXELS);
 		
-		posX = (int)(smeltingDialogRect.getLeft()) + 186;
-		posY = (int)(smeltingDialogRect.getTop()) - OUTER_PADDING_PIXELS*3 - 25 - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2;
+		posX = (int)(smithingDialogRect.getLeft()) + 186;
+		posY = (int)(smithingDialogRect.getTop()) - OUTER_PADDING_PIXELS*3 - 25 - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2;
 		GLDrawer.disableTextures();
 		setColorForItemBoxBackground(hasValeniteOre);
 		GLDrawer.drawQuad(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
@@ -370,7 +401,7 @@ public class SmeltingRunner {
 		GLDrawer.drawQuad(posX + INNER_PADDING_PIXELS, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS,
 				posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, posY - INNER_PADDING_PIXELS);
 		
-		posX = (int)(smeltingDialogRect.getLeft()) + 184 + OUTER_PADDING_PIXELS*2 + INNER_PADDING_PIXELS*2 + BOX_SIZE_PIXELS + plusLabel.getWidth();
+		posX = (int)(smithingDialogRect.getLeft()) + 184 + OUTER_PADDING_PIXELS*2 + INNER_PADDING_PIXELS*2 + BOX_SIZE_PIXELS + plusLabel.getWidth();
 		GLDrawer.disableTextures();
 		setColorForItemBoxBackground(hasSandelugeOre);
 		GLDrawer.drawQuad(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);

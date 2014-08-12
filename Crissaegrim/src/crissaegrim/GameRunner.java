@@ -53,6 +53,7 @@ import board.tiles.Tile.TileLayer;
 import busy.MiningRockBusy;
 import busy.SwordSwingBusy;
 import smithing.SmeltingRunner;
+import smithing.SmithingRunner;
 import textblock.TextBlock;
 import textblock.TextTexture;
 import textures.Textures;
@@ -322,9 +323,9 @@ public class GameRunner {
 //					else if (res == DialogBox.Result.BUTTON_2) { Crissaegrim.addSystemMessage("Fine!"); }
 //					else if (res == DialogBox.Result.BUTTON_3) { Crissaegrim.addSystemMessage("P-President Fabio?"); }
 //				}
-				if (pressedKey == Keyboard.KEY_B) {
-					new SmeltingRunner().run();
-				}
+//				if (pressedKey == Keyboard.KEY_B) {
+//					new SmithingRunner().run(); // Incomplete
+//				}
 				
 				if (pressedKey == Keyboard.KEY_T ||
 						pressedKey == Keyboard.KEY_RETURN) {	// T or Enter: Enter chat mode
