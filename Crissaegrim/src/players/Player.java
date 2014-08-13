@@ -1,8 +1,11 @@
 package players;
 
+import geometry.Coordinate;
+import geometry.Rect;
 import gldrawer.GLDrawer;
 import items.Item;
 import items.ItemSolais;
+import items.ItemSword;
 
 import java.util.Map;
 
@@ -77,9 +80,11 @@ public class Player extends Entity {
 		GLDrawer.drawOutline(position.getX() - (getBodyWidth() / 2), position.getX() + (getBodyWidth() / 2),
 				position.getY() + getFeetHeight(), position.getY() + getFeetHeight() + getBodyHeight());
 		GLDrawer.setColor(0, 1, 0);
-		GLDrawer.drawOutline(position.getX() + ((facingRight ? 1 : -1) * (getBodyWidth() / 2)),
-				position.getX() + ((facingRight ? 1 : -1) * ((getBodyWidth() / 2) + getPlayerSwordLength())),
-				position.getY() + getPlayerSwordAltitude(), position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight());
+		GLDrawer.drawLine(
+				position.getX() + ((facingRight ? 1 : -1) * (getBodyWidth() / 2)),
+				position.getY() + PLAYER_SWORD_ALTITUDE,
+				position.getX() + ((facingRight ? 1 : -1) * ((getBodyWidth() / 2) + 1)),
+				position.getY() + PLAYER_SWORD_ALTITUDE);
 	}
 	
 	public void receiveItem(Item item) {
@@ -128,6 +133,13 @@ public class Player extends Entity {
 			}
 		}
 		icon = null;
+	}
+	
+	private static double PLAYER_SWORD_ALTITUDE = 1.74;
+	public Rect getSwordSwingRect(ItemSword sword) {
+		return sword.getSwordSwingRect(
+				new Coordinate(position.getX() + (getBodyWidth() / 2 * (facingRight ? 1 : -1)), position.getY() + PLAYER_SWORD_ALTITUDE),
+				facingRight);
 	}
 	
 }

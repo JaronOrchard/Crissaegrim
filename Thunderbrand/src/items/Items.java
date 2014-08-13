@@ -16,4 +16,11 @@ public class Items {
 	public static Item rhichiteBar() { return new ItemBar("Rhichite", Textures.ITEM_RHICHITE_BAR); }
 	public static Item valSanBar() { return new ItemBar("ValSan", Textures.ITEM_VAL_SAN_BAR); }
 	
+	// Pickaxes:
+	public static Item rhichitePickaxe() { return new ItemPickaxe("Rhichite", Textures.ITEM_RHICHITE_PICKAXE); }
+	
+	// Weapons:
+	public static Item rhichiteSword() { return new ItemSword("Rhichite"); }
+	public static Item valSanSword() { return new ItemSword("Val_San"); }
+	
 }

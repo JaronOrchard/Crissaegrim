@@ -6,9 +6,9 @@ import outside_src.RuntimeTypeAdapterFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 
 import textblock.TextTexture;
-import textures.Textures;
 import crissaegrim.Crissaegrim;
 import gldrawer.GLDrawer;
 import items.Item;
@@ -19,7 +19,7 @@ import items.ItemPartyPopper;
 import items.ItemPickaxe;
 import items.ItemSolais;
 import items.Items;
-import items.Weapon;
+import items.ItemSword;
 
 public class Inventory {
 	
@@ -53,8 +53,8 @@ public class Inventory {
 		for (int i = 0; i < INVENTORY_SIZE; i++) {
 			items[i] = Items.nothing();
 		}
-		items[0] = new Weapon("Rhichite Sword", Textures.ITEM_RHICHITE_SWORD);
-		items[1] = new ItemPickaxe("Rhichite", Textures.ITEM_RHICHITE_PICKAXE);
+		items[0] = Items.rhichiteSword();
+		items[1] = Items.rhichitePickaxe();
 		items[8] = Items.rhichiteOre();
 		items[15] = Items.valeniteOre();
 		items[19] = Items.sandelugeOre();
@@ -66,7 +66,7 @@ public class Inventory {
 				.registerSubtype(ItemPartyPopper.class)
 				.registerSubtype(ItemPickaxe.class)
 				.registerSubtype(ItemSolais.class)
-				.registerSubtype(Weapon.class);
+				.registerSubtype(ItemSword.class);
 		gson = new GsonBuilder().registerTypeAdapterFactory(adapter).create();
 		
 		deserializeAndLoadSolais();
@@ -121,6 +121,7 @@ public class Inventory {
 		for (int i = 0; i < INVENTORY_SIZE; i++) {
 			if (items[i] instanceof ItemNothing) {
 				items[i] = item;
+				serializeAndSaveItems();
 				return true;
 			}
 		}
@@ -142,7 +143,12 @@ public class Inventory {
 	private void deserializeAndLoadItems() {
 		String jsonItems = Crissaegrim.getPreferenceHandler().getInventoryItemsJson();
 		if (jsonItems != null) {
-			items = gson.fromJson(jsonItems, Item[].class);
+			try {
+				items = gson.fromJson(jsonItems, Item[].class);
+			} catch (JsonParseException e) {
+				Crissaegrim.addSystemMessage("Your inventory could not be loaded and was reset.  Sorry!");
+				serializeAndSaveItems();
+			}
 		}
 	}
 	

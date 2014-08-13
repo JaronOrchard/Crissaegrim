@@ -4,7 +4,7 @@ import items.Item;
 import items.ItemPartyPopper;
 import items.ItemPickaxe;
 import items.LocalDroppedItem;
-import items.Weapon;
+import items.ItemSword;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -53,7 +53,6 @@ import board.tiles.Tile.TileLayer;
 import busy.MiningRockBusy;
 import busy.SwordSwingBusy;
 import smithing.SmeltingRunner;
-import smithing.SmithingRunner;
 import textblock.TextBlock;
 import textblock.TextTexture;
 import textures.Textures;
@@ -179,12 +178,13 @@ public class GameRunner {
 						}
 					}
 					// Use item if necessary:
-					if (itemToUse instanceof Weapon) {
+					if (itemToUse instanceof ItemSword) {
 						// TODO: This should be split up depending upon the weapon and attack type
 						// TODO: Bounding rect of sword swing should not be entire entity
 						player.setBusy(new SwordSwingBusy());
+						ItemSword sword = (ItemSword)(itemToUse);
 						Crissaegrim.addOutgoingDataPacket(new AttackPacket(new Attack(
-								player.getId(), player.getCurrentBoardName(), player.getSwordSwingRect(), ((Weapon)(itemToUse)).getAttackPower(), 1)));
+								player.getId(), player.getCurrentBoardName(), player.getSwordSwingRect(sword), sword.getAttackPower(), 1)));
 					} else if (itemToUse instanceof ItemPartyPopper) {
 						ItemPartyPopper popper = (ItemPartyPopper)(itemToUse);
 						Crissaegrim.addOutgoingDataPacket(new ParticleSystemPacket(

@@ -134,25 +134,4 @@ public abstract class Entity {
 	public abstract int getCurrentTexture();
 	public abstract int getStunnedTexture();
 	
-	// --- TEMPORARY CODE/METHOD to test Attacks; bounding rect will be built into the weapon later
-	private static double PLAYER_SWORD_ALTITUDE = 1.74;
-	private static double PLAYER_SWORD_HEIGHT = 0.15;
-	private static double PLAYER_SWORD_LENGTH = 1.0;
-	
-	public static double getPlayerSwordAltitude() { return PLAYER_SWORD_ALTITUDE; }
-	public static double getPlayerSwordHeight() { return PLAYER_SWORD_HEIGHT; }
-	public static double getPlayerSwordLength() { return PLAYER_SWORD_LENGTH; }
-	
-	public Rect getSwordSwingRect() {
-		if (facingRight) {
-			return new Rect(
-					new Coordinate(position.getX() + getBodyWidth() / 2, position.getY() + getPlayerSwordAltitude()),
-					new Coordinate(position.getX() + getBodyWidth() / 2 + getPlayerSwordLength(), position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight()));
-		} else {
-			return new Rect(
-					new Coordinate(position.getX() - getBodyWidth() / 2 - getPlayerSwordLength(), position.getY() + getPlayerSwordAltitude()),
-					new Coordinate(position.getX() - getBodyWidth() / 2, position.getY() + getPlayerSwordAltitude() + getPlayerSwordHeight()));
-		}
-	}
-	
 }
