@@ -22,8 +22,8 @@ public class ItemSword extends Item {
 	
 	private static int getTextureForSwordType(String type) {
 		if (type.equals("Rhichite")) return Textures.ITEM_RHICHITE_SWORD;
-		else if (type.equals("Val_San")) return Textures.CHUNK_NOT_FOUND;
-		return Textures.CHUNK_NOT_FOUND;
+		else if (type.equals("Val_San")) return Textures.ITEM_UNKNOWN;
+		return Textures.ITEM_UNKNOWN;
 	}
 	
 	private void setUpAttributes(String type) {

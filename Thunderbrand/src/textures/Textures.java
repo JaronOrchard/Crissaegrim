@@ -205,13 +205,14 @@ public class Textures {
 	
 	public static final int BACKGROUND_SOTN = 17960;
 	
-	public static final int ITEM_RHICHITE_SWORD = 20000;
-	public static final int ITEM_PARTY_POPPER_BLUE = 20001;
-	public static final int ITEM_PARTY_POPPER_GREEN = 20002;
-	public static final int ITEM_PARTY_POPPER_RED = 20003;
-	public static final int ITEM_PARTY_POPPER_WHITE = 20004;
-	public static final int ITEM_PARTY_POPPER_YELLOW = 20005;
-	public static final int ITEM_RHICHITE_PICKAXE = 20006;
+	public static final int ITEM_UNKNOWN = 20000;
+	public static final int ITEM_RHICHITE_SWORD = 20001;
+	public static final int ITEM_PARTY_POPPER_BLUE = 20002;
+	public static final int ITEM_PARTY_POPPER_GREEN = 20003;
+	public static final int ITEM_PARTY_POPPER_RED = 20004;
+	public static final int ITEM_PARTY_POPPER_WHITE = 20005;
+	public static final int ITEM_PARTY_POPPER_YELLOW = 20006;
+	public static final int ITEM_RHICHITE_PICKAXE = 20007;
 	public static final int ITEM_RHICHITE_ORE = 20020;
 	public static final int ITEM_VALENITE_ORE = 20021;
 	public static final int ITEM_SANDELUGE_ORE = 20022;
@@ -421,6 +422,7 @@ public class Textures {
 		
 		TextureLoader.loadTexture(BACKGROUND_SOTN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/SotNCastle.png")));
 		
+		TextureLoader.loadTexture(ITEM_UNKNOWN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/ItemUnknown.png")));
 		TextureLoader.loadTexture(ITEM_RHICHITE_SWORD, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/RhichiteSword.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_BLUE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperBlue.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_GREEN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperGreen.png")));

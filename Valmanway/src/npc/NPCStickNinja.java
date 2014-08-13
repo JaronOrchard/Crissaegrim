@@ -1,7 +1,7 @@
 package npc;
 
 import items.Item;
-import items.ItemSolais;
+import items.Items;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class NPCStickNinja extends NPC {
 		List<Item> items = new ArrayList<Item>();
 		
 		// Solais return: 100% = 1
-		items.add(new ItemSolais(1));
+		items.add(Items.solais(1));
 		
 		return items;
 	}
