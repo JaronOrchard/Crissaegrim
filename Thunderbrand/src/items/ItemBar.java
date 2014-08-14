@@ -15,7 +15,7 @@ public class ItemBar extends Item {
 	
 	private static int getTextureForBarType(String type) {
 		if (type.equals("Rhichite")) return Textures.ITEM_RHICHITE_BAR;
-		else if (type.equals("Val_San")) return Textures.ITEM_VAL_SAN_BAR;
+		else if (type.equals("Tameike")) return Textures.ITEM_TAMEIKE_BAR;
 		return Textures.ITEM_UNKNOWN;
 	}
 	

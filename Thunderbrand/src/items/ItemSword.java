@@ -22,7 +22,7 @@ public class ItemSword extends Item {
 	
 	private static int getTextureForSwordType(String type) {
 		if (type.equals("Rhichite")) return Textures.ITEM_RHICHITE_SWORD;
-		else if (type.equals("Val_San")) return Textures.ITEM_UNKNOWN;
+		else if (type.equals("Tameike")) return Textures.ITEM_TAMEIKE_SWORD;
 		return Textures.ITEM_UNKNOWN;
 	}
 	
@@ -31,7 +31,7 @@ public class ItemSword extends Item {
 			attackPower = 1;
 			height = 0.15;
 			length = 1.0;
-		} else if (type.equals("Val_San")) {
+		} else if (type.equals("Tameike")) {
 			attackPower = 2;
 			height = 0.15;
 			length = 1.0;

@@ -92,7 +92,7 @@ public class SmeltingRunner {
 							if (hoveredItemIndex == 0 && !hasRhichiteOre) {
 								Crissaegrim.addSystemMessage("You need Rhichite Ore to smelt a Rhichite Bar.");
 							} else if (hoveredItemIndex == 1 && (!hasValeniteOre || !hasSandelugeOre)) {
-								Crissaegrim.addSystemMessage("You need Valenite Ore and Sandeluge Ore to smelt a Val_San_Bar.");
+								Crissaegrim.addSystemMessage("You need Valenite Ore and Sandeluge Ore to smelt a Tameike Bar.");
 							} else {
 								showingDialog = false;
 								Crissaegrim.addSystemMessage("You begin smelting the ore.");
@@ -147,14 +147,14 @@ public class SmeltingRunner {
 			if (getNextOreIndex("Rhichite") == -1) {
 				canContinue = false;
 			}
-		} else if (smeltingOreType == 1) { // Val_San
+		} else if (smeltingOreType == 1) { // Tameike
 			int valeniteIndex = getNextOreIndex("Valenite");
 			int sandelugeIndex = getNextOreIndex("Sandeluge");
 			if (valeniteIndex != -1 && sandelugeIndex != -1) {
 				inventory.removeItem(valeniteIndex);
 				inventory.removeItem(sandelugeIndex);
-				inventory.addItem(Items.valSanBar());
-				Crissaegrim.addSystemMessage("You smelt a Val_San_Bar.");
+				inventory.addItem(Items.tameikeBar());
+				Crissaegrim.addSystemMessage("You smelt a Tameike Bar.");
 			}
 			if (getNextOreIndex("Valenite") == -1 || getNextOreIndex("Sandeluge") == -1) {
 				canContinue = false;
@@ -267,7 +267,7 @@ public class SmeltingRunner {
 		if (hoveredItemIndex == 0 && hasRhichiteOre) {
 			mouseHoverString = "Smelt Rhichite Bar";
 		} else if (hoveredItemIndex == 1 && hasValeniteOre && hasSandelugeOre) {
-			mouseHoverString = "Smelt Val_San Bar";
+			mouseHoverString = "Smelt Tameike Bar";
 		} else {
 			return; // Nothing to display
 		}
@@ -319,7 +319,7 @@ public class SmeltingRunner {
 				GLDrawer.drawQuad(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
 				setGlColorForItemBoxOutline(hasValeniteOre && hasSandelugeOre);
 				GLDrawer.drawOutline(posX, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS*2, posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS*2, posY);
-				GLDrawer.useTexture(Textures.ITEM_VAL_SAN_BAR);
+				GLDrawer.useTexture(Textures.ITEM_TAMEIKE_BAR);
 			}
 			GLDrawer.drawQuad(posX + INNER_PADDING_PIXELS, posX + BOX_SIZE_PIXELS + INNER_PADDING_PIXELS,
 					posY - BOX_SIZE_PIXELS - INNER_PADDING_PIXELS, posY - INNER_PADDING_PIXELS);

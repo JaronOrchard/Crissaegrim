@@ -5,6 +5,7 @@ public class Items {
 	// Empty slot:
 	public static Item nothing() { return new ItemNothing(); }
 	
+	// Solais:
 	public static Item solais(int amount) { return new ItemSolais(amount); }
 	
 	// Ores:
@@ -14,14 +15,14 @@ public class Items {
 	
 	// Bars:
 	public static Item rhichiteBar() { return new ItemBar("Rhichite"); }
-	public static Item valSanBar() { return new ItemBar("Val_San"); }
+	public static Item tameikeBar() { return new ItemBar("Tameike"); }
 	
 	// Pickaxes:
 	public static Item rhichitePickaxe() { return new ItemPickaxe("Rhichite"); }
 	
 	// Weapons:
 	public static Item rhichiteSword() { return new ItemSword("Rhichite"); }
-	public static Item valSanSword() { return new ItemSword("Val_San"); }
+	public static Item tameikeSword() { return new ItemSword("Tameike"); }
 	
 	// Party poppers:
 	public static Item bluePartyPopper() { return new ItemPartyPopper("Blue"); }

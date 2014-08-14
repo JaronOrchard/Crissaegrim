@@ -180,6 +180,11 @@ public class Textures {
 	public static final int STICK_PLAYER_STUNNED = 1007;
 	public static final int STICK_PLAYER_DEAD = 1008;
 	public static final int STICK_PLAYER_SMELTING_ORE = 1009;
+	public static final int STICK_PLAYER_TAMEIKE_SWORD_SWING_1 = 1010;
+	public static final int STICK_PLAYER_TAMEIKE_SWORD_SWING_2 = 1011;
+	public static final int STICK_PLAYER_TAMEIKE_SWORD_SWING_3 = 1012;
+	public static final int STICK_PLAYER_TAMEIKE_MINING_1 = 1013;
+	public static final int STICK_PLAYER_TAMEIKE_MINING_2 = 1014;
 	
 	public static final int NPC_STICK_NINJA = 1100;
 	public static final int NPC_STICK_NINJA_STUNNED = 1101;
@@ -207,17 +212,19 @@ public class Textures {
 	
 	public static final int ITEM_UNKNOWN = 20000;
 	public static final int ITEM_RHICHITE_SWORD = 20001;
-	public static final int ITEM_PARTY_POPPER_BLUE = 20002;
-	public static final int ITEM_PARTY_POPPER_GREEN = 20003;
-	public static final int ITEM_PARTY_POPPER_RED = 20004;
-	public static final int ITEM_PARTY_POPPER_WHITE = 20005;
-	public static final int ITEM_PARTY_POPPER_YELLOW = 20006;
-	public static final int ITEM_RHICHITE_PICKAXE = 20007;
+	public static final int ITEM_TAMEIKE_SWORD = 20002;
+	public static final int ITEM_PARTY_POPPER_BLUE = 20003;
+	public static final int ITEM_PARTY_POPPER_GREEN = 20004;
+	public static final int ITEM_PARTY_POPPER_RED = 20005;
+	public static final int ITEM_PARTY_POPPER_WHITE = 20006;
+	public static final int ITEM_PARTY_POPPER_YELLOW = 20007;
+	public static final int ITEM_RHICHITE_PICKAXE = 20008;
+	public static final int ITEM_TAMEIKE_PICKAXE = 20009;
 	public static final int ITEM_RHICHITE_ORE = 20020;
 	public static final int ITEM_VALENITE_ORE = 20021;
 	public static final int ITEM_SANDELUGE_ORE = 20022;
 	public static final int ITEM_RHICHITE_BAR = 20023;
-	public static final int ITEM_VAL_SAN_BAR = 20024;
+	public static final int ITEM_TAMEIKE_BAR = 20024;
 	
 	// (Texture IDs 100000 and up are reserved for text)
 	
@@ -397,6 +404,11 @@ public class Textures {
 		TextureLoader.loadTexture(STICK_PLAYER_STUNNED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerStunned.png")));
 		TextureLoader.loadTexture(STICK_PLAYER_DEAD, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerDead.png")));
 		TextureLoader.loadTexture(STICK_PLAYER_SMELTING_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerSmeltingOre.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_TAMEIKE_SWORD_SWING_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerTameikeSwordSwing1.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_TAMEIKE_SWORD_SWING_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerTameikeSwordSwing2.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_TAMEIKE_SWORD_SWING_3, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerTameikeSwordSwing3.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_TAMEIKE_MINING_1, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerTameikeMining1.png")));
+		TextureLoader.loadTexture(STICK_PLAYER_TAMEIKE_MINING_2, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/StickPlayerTameikeMining2.png")));
 		
 		TextureLoader.loadTexture(NPC_STICK_NINJA, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NPC.png")));
 		TextureLoader.loadTexture(NPC_STICK_NINJA_STUNNED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/NPCStunned.png")));
@@ -424,17 +436,19 @@ public class Textures {
 		
 		TextureLoader.loadTexture(ITEM_UNKNOWN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/ItemUnknown.png")));
 		TextureLoader.loadTexture(ITEM_RHICHITE_SWORD, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/RhichiteSword.png")));
+		TextureLoader.loadTexture(ITEM_TAMEIKE_SWORD, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/TameikeSword.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_BLUE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperBlue.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_GREEN, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperGreen.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_RED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperRed.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_WHITE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperWhite.png")));
 		TextureLoader.loadTexture(ITEM_PARTY_POPPER_YELLOW, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/PartyPopperYellow.png")));
 		TextureLoader.loadTexture(ITEM_RHICHITE_PICKAXE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/RhichitePickaxe.png")));
+		TextureLoader.loadTexture(ITEM_TAMEIKE_PICKAXE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/TameikePickaxe.png")));
 		TextureLoader.loadTexture(ITEM_RHICHITE_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/RhichiteOre.png")));
 		TextureLoader.loadTexture(ITEM_VALENITE_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/ValeniteOre.png")));
 		TextureLoader.loadTexture(ITEM_SANDELUGE_ORE, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/SandelugeOre.png")));
 		TextureLoader.loadTexture(ITEM_RHICHITE_BAR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/RhichiteBar.png")));
-		TextureLoader.loadTexture(ITEM_VAL_SAN_BAR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/ValSanBar.png")));
+		TextureLoader.loadTexture(ITEM_TAMEIKE_BAR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/items/TameikeBar.png")));
 		
 	}
 	

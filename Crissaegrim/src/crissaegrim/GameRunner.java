@@ -3,6 +3,7 @@ package crissaegrim;
 import items.Item;
 import items.ItemPartyPopper;
 import items.ItemPickaxe;
+import items.Items;
 import items.LocalDroppedItem;
 import items.ItemSword;
 
@@ -326,6 +327,9 @@ public class GameRunner {
 //				if (pressedKey == Keyboard.KEY_B) {
 //					new SmithingRunner().run(); // Incomplete
 //				}
+				if (pressedKey == Keyboard.KEY_B) {
+					player.receiveItem(Items.tameikeSword());
+				}
 				
 				if (pressedKey == Keyboard.KEY_T ||
 						pressedKey == Keyboard.KEY_RETURN) {	// T or Enter: Enter chat mode
