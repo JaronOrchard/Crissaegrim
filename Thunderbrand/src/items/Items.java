@@ -19,6 +19,7 @@ public class Items {
 	
 	// Pickaxes:
 	public static Item rhichitePickaxe() { return new ItemPickaxe("Rhichite"); }
+	public static Item tameikePickaxe() { return new ItemPickaxe("Tameike"); }
 	
 	// Weapons:
 	public static Item rhichiteSword() { return new ItemSword("Rhichite"); }

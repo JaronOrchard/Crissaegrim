@@ -164,11 +164,13 @@ public class GameRunner {
 										new DialogBoxRunner().run(new DialogBox("Your inventory is full.", "Ok"));
 									} else {
 										MineableRock mineableRock = (MineableRock)doodad;
+										ItemPickaxe pickaxe = (ItemPickaxe)(player.getInventory().getCurrentItem());
 										if (!mineableRock.isDepleted()) {
 											Crissaegrim.addSystemMessage("You start mining the rock...");
-											player.setBusy(new MiningRockBusy(player.getPosition()));
+											player.setBusy(new MiningRockBusy(player.getPosition(), pickaxe.getPickaxeType()));
 											Crissaegrim.addOutgoingDataPacket(new MineRockRequestPacket(
-													mineableRock.getId(), player.getId(), player.getBusy().getId(), player.getCurrentBoardName(), mineableRock.getChanceOfSuccess()));
+													mineableRock.getId(), player.getId(), player.getBusy().getId(), player.getCurrentBoardName(),
+													mineableRock.getChanceOfSuccess() * pickaxe.getChanceOfSuccessMultiplier()));
 										}
 									}
 									break;
@@ -182,8 +184,8 @@ public class GameRunner {
 					if (itemToUse instanceof ItemSword) {
 						// TODO: This should be split up depending upon the weapon and attack type
 						// TODO: Bounding rect of sword swing should not be entire entity
-						player.setBusy(new SwordSwingBusy());
 						ItemSword sword = (ItemSword)(itemToUse);
+						player.setBusy(new SwordSwingBusy(sword.getSwordType()));
 						Crissaegrim.addOutgoingDataPacket(new AttackPacket(new Attack(
 								player.getId(), player.getCurrentBoardName(), player.getSwordSwingRect(sword), sword.getAttackPower(), 1)));
 					} else if (itemToUse instanceof ItemPartyPopper) {
@@ -329,6 +331,7 @@ public class GameRunner {
 //				}
 				if (pressedKey == Keyboard.KEY_B) {
 					player.receiveItem(Items.tameikeSword());
+					player.receiveItem(Items.tameikePickaxe());
 				}
 				
 				if (pressedKey == Keyboard.KEY_T ||

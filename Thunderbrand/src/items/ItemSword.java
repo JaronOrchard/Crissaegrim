@@ -7,10 +7,12 @@ import textures.Textures;
 public class ItemSword extends Item {
 	private static final long serialVersionUID = 1L;
 	
+	private String swordType;
 	private int attackPower;
 	private double height;
 	private double length;
 	
+	public String getSwordType() { return swordType; }
 	public int getAttackPower() { return attackPower; }
 	public double getHeight() { return height; }
 	public double getLength() { return length; }
@@ -18,6 +20,7 @@ public class ItemSword extends Item {
 	public ItemSword(String type) {
 		super(type + " Sword", getTextureForSwordType(type));
 		setUpAttributes(type);
+		swordType = type;
 	}
 	
 	private static int getTextureForSwordType(String type) {
