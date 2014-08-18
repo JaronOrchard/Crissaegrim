@@ -6,6 +6,7 @@ import items.ItemPickaxe;
 import items.Items;
 import items.LocalDroppedItem;
 import items.ItemSword;
+import items.StackableItem;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -192,8 +193,7 @@ public class GameRunner {
 						ItemPartyPopper popper = (ItemPartyPopper)(itemToUse);
 						Crissaegrim.addOutgoingDataPacket(new ParticleSystemPacket(
 								125, playerMovementHelper.getCoordinateClicked(), player.getCurrentBoardName(), popper.getColor()));
-						popper.decrementUses();
-						if (popper.getUsesLeft() <= 0) {
+						if (popper.removeOneFromStack()) {
 							player.getInventory().removeCurrentItem();
 						}
 					}
@@ -330,8 +330,9 @@ public class GameRunner {
 //					new SmithingRunner().run(); // Incomplete
 //				}
 				if (pressedKey == Keyboard.KEY_B) {
-					player.receiveItem(Items.tameikeSword());
-					player.receiveItem(Items.tameikePickaxe());
+//					player.receiveItem(Items.tameikeSword());
+//					player.receiveItem(Items.tameikePickaxe());
+					player.receiveItem(Items.bluePartyPopper());
 				}
 				
 				if (pressedKey == Keyboard.KEY_T ||
@@ -363,7 +364,11 @@ public class GameRunner {
 								Crissaegrim.addSystemMessage("Your inventory is full.");
 							} else {
 								Item item = localDroppedItem.getItem();
-								Crissaegrim.addSystemMessage("You picked up " + TextUtils.aOrAn(item.getName()) + " " + item.getName() + ".");
+								if (item instanceof StackableItem) {
+									Crissaegrim.addSystemMessage("You picked up " + ((StackableItem)(item)).getNumberInStack() + " " + item.getName() + "s.");
+								} else {
+									Crissaegrim.addSystemMessage("You picked up " + TextUtils.aOrAn(item.getName()) + " " + item.getName() + ".");
+								}
 								player.getInventory().addItem(item);
 								localDroppedItemsIter.remove();
 								pickedUpAnItem = true;

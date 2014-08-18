@@ -6,6 +6,7 @@ import gldrawer.GLDrawer;
 import items.Item;
 import items.ItemSolais;
 import items.ItemSword;
+import items.StackableItem;
 
 import java.util.Map;
 
@@ -94,9 +95,13 @@ public class Player extends Entity {
 			Crissaegrim.addSystemMessage("You received " + numSolais + " Solais.");
 		} else {
 			if (getInventory().addItem(item)) {
-				Crissaegrim.addSystemMessage("You received a " + item.getName() + ".");
+				if (item instanceof StackableItem) {
+					Crissaegrim.addSystemMessage("You received " + ((StackableItem)(item)).getNumberInStack() + " " + item.getName() + "s.");
+				} else {
+					Crissaegrim.addSystemMessage("You received a " + item.getName() + ".");
+				}
 			} else {
-				Crissaegrim.addSystemMessage("You dropped a " + item.getName() + " because your inventory was full!");
+				Crissaegrim.addSystemMessage("You dropped a " + item.getDisplayName() + " because your inventory was full!");
 			}
 		}
 	}

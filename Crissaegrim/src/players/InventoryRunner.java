@@ -191,11 +191,11 @@ public class InventoryRunner {
 		}
 		String mouseHoverString;
 		if (heldItem instanceof ItemNothing) {
-			mouseHoverString = "Grab " + inventory.getItem(hoveredItemIndex).getName();
+			mouseHoverString = "Grab " + inventory.getItem(hoveredItemIndex).getDisplayName();
 		} else if (inventory.getItem(hoveredItemIndex) instanceof ItemNothing) {
-			mouseHoverString = "Place " + heldItem.getName() + " in empty slot";
+			mouseHoverString = "Place " + heldItem.getDisplayName() + " in empty slot";
 		} else {
-			mouseHoverString = "Swap " + inventory.getItem(hoveredItemIndex).getName() + " with " + heldItem.getName();
+			mouseHoverString = "Swap " + inventory.getItem(hoveredItemIndex).getDisplayName() + " with " + heldItem.getDisplayName();
 		}
 		TextTexture mouseHoverStatus = Crissaegrim.getCommonTextures().getTextTexture(mouseHoverString);
 		int top = Crissaegrim.getWindowHeight() - 5;

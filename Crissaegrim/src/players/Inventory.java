@@ -216,7 +216,7 @@ public class Inventory {
 			GLDrawer.drawQuad(selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS, selectedItemRightX - INNER_PADDING_PIXELS,
 					topY - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS, topY - INNER_PADDING_PIXELS);
 			if (now - lastTouchedTime < MILLIS_AT_FULL_EXTENDED) {
-				TextTexture selectedItemLabel = Crissaegrim.getCommonTextures().getTextTexture(items[selectedQuickequipItemIndex].getName());
+				TextTexture selectedItemLabel = Crissaegrim.getCommonTextures().getTextTexture(items[selectedQuickequipItemIndex].getDisplayName());
 				int selectedItemLabelLeft = selectedItemRightX - BOX_SIZE_PIXELS*2 - INNER_PADDING_PIXELS*2 - OUTER_PADDING_PIXELS - selectedItemLabel.getWidth();
 				GLDrawer.useTexture(selectedItemLabel.getTextureId());
 				GLDrawer.drawQuad(selectedItemLabelLeft, selectedItemLabelLeft + selectedItemLabel.getWidth(), topY - 45, topY - 25);

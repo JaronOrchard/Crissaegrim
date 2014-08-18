@@ -4,18 +4,14 @@ import java.awt.Color;
 
 import textures.Textures;
 
-public class ItemPartyPopper extends Item {
+public class ItemPartyPopper extends StackableItem {
 	private static final long serialVersionUID = 1L;
 	
 	private final Color color;
-	private int usesLeft;
 	public Color getColor() { return color; }
-	public int getUsesLeft() { return usesLeft; }
-	public void decrementUses() { usesLeft--; }
 	
 	public ItemPartyPopper(String colorName) {
-		super(colorName + " Party Popper", getTextureForPartyPopperColor(colorName));
-		usesLeft = 3;
+		super(colorName + " Party Popper", getTextureForPartyPopperColor(colorName), 3);
 		
 		if (colorName.equals("Blue")) color = new Color(63, 72, 204);
 		else if (colorName.equals("Green")) color = new Color(27, 146, 63);
