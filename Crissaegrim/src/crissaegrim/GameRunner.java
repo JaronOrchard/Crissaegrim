@@ -330,8 +330,8 @@ public class GameRunner {
 //					new SmithingRunner().run(); // Incomplete
 //				}
 				if (pressedKey == Keyboard.KEY_B) {
-//					player.receiveItem(Items.tameikeSword());
-//					player.receiveItem(Items.tameikePickaxe());
+					player.receiveItem(Items.tameikeSword());
+					player.receiveItem(Items.tameikePickaxe());
 					player.receiveItem(Items.bluePartyPopper());
 				}
 				

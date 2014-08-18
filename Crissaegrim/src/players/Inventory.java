@@ -20,6 +20,7 @@ import items.ItemPickaxe;
 import items.ItemSolais;
 import items.Items;
 import items.ItemSword;
+import items.StackableItem;
 
 public class Inventory {
 	
@@ -118,6 +119,11 @@ public class Inventory {
 	 * @return {@code true} if the Item was added, {@code false} otherwise
 	 */
 	public boolean addItem(Item item) {
+		int itemStackIndex = InventoryUtils.findIndexOfStack(item);
+		if (itemStackIndex != -1) {
+			((StackableItem)(items[itemStackIndex])).addToStack(((StackableItem)(item)).getNumberInStack());
+			return true;
+		}
 		for (int i = 0; i < INVENTORY_SIZE; i++) {
 			if (items[i] instanceof ItemNothing) {
 				items[i] = item;
