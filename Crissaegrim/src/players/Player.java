@@ -6,6 +6,7 @@ import gldrawer.GLDrawer;
 import items.Item;
 import items.ItemSolais;
 import items.ItemSword;
+import items.LocalDroppedItem;
 import items.StackableItem;
 
 import java.util.Map;
@@ -101,6 +102,12 @@ public class Player extends Entity {
 					Crissaegrim.addSystemMessage("You received a " + item.getName() + ".");
 				}
 			} else {
+				Player player = Crissaegrim.getPlayer();
+				Crissaegrim.getGameRunner().addLocalDroppedItem(new LocalDroppedItem(
+						item,
+						new Coordinate(player.getPosition().getX(), player.getPosition().getY() + (player.getEntireHeight() / 2)),
+						Crissaegrim.getCurrentBoard(),
+						player.getFacingRight()));
 				Crissaegrim.addSystemMessage("You dropped a " + item.getDisplayName() + " because your inventory was full!");
 			}
 		}
