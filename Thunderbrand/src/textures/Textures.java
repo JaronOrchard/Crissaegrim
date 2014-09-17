@@ -168,6 +168,8 @@ public class Textures {
 	public static final int ROCK_LARGE_BL = 308;
 	public static final int ROCK_LARGE_BR = 309;
 	
+	public static final int HUB_BACKGROUND = 330;
+	
 	public static final int CHUNK_NOT_FOUND = 999;
 	
 	public static final int STICK_PLAYER = 1000;
@@ -392,6 +394,8 @@ public class Textures {
 		TextureLoader.loadTexture(ROCK_LARGE_TR_SLOPED, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/RockLargeTRSloped.png")));
 		TextureLoader.loadTexture(ROCK_LARGE_BL, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/RockLargeBL.png")));
 		TextureLoader.loadTexture(ROCK_LARGE_BR, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/mine/RockLargeBR.png")));
+		
+		TextureLoader.loadTexture(HUB_BACKGROUND, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/HubBG.png")));
 		
 		TextureLoader.loadTexture(CHUNK_NOT_FOUND, TextureLoader.loadImage(ClassLoader.getSystemResourceAsStream("resources/textures/ChunkNotFound.png")));
 				
