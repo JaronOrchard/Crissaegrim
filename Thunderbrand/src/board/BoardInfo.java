@@ -1,5 +1,6 @@
 package board;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import geometry.Coordinate;
@@ -9,6 +10,7 @@ import doodads.Doodad;
 import doodads.Door;
 import doodads.Furnace;
 import doodads.MineableRock;
+import doodads.Signpost;
 
 public class BoardInfo {
 	
@@ -49,6 +51,8 @@ public class BoardInfo {
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10258, 9940), MineableRock.OreType.UNKNOWN));
 			// Needs to move into Morriston proper:
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Furnace(id, new Coordinate(10290, 9954)));
+			
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Signpost(id, new Coordinate(10285, 9955), Arrays.asList("Hey", "How's it going")));
 		}
 	}
 	

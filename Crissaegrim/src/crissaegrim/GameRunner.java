@@ -38,6 +38,7 @@ import doodads.Doodad;
 import doodads.DoodadActions;
 import doodads.Door;
 import doodads.MineableRock;
+import doodads.Signpost;
 import effects.ParticleSystem;
 import entities.Entity;
 import entities.EntityMovementHelper;
@@ -388,6 +389,10 @@ public class GameRunner {
 										break;
 									case DoodadActions.SMELT_ORE:
 										new SmeltingRunner().run();
+										break;
+									case DoodadActions.READ_SIGNPOST:
+										Signpost signpost = (Signpost)doodad;
+										new DialogBoxRunner().run(new DialogBox(signpost.getMessages(), "Ok"));
 										break;
 									default:
 										break;
