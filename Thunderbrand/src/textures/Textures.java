@@ -470,6 +470,7 @@ public class Textures {
 			265, 266, 267, // mine backgrounds
 			270, 271, 272, 273, 274, 275, 276, 277, 278, 279, // wooden ledges/scaffolding
 			300, 301, 302, 303, 304, 305, 306, 307, 308, 309, // mine stones/rocks
+			330, // hub background
 			999, // chunk not found
 			2000 // target
 			);

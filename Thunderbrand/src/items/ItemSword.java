@@ -35,7 +35,7 @@ public class ItemSword extends Item {
 			height = 0.15;
 			length = 1.0;
 		} else if (type.equals("Tameike")) {
-			attackPower = 2;
+			attackPower = 3;
 			height = 0.15;
 			length = 1.0;
 		} else {

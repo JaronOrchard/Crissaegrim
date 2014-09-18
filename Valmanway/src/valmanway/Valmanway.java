@@ -39,7 +39,7 @@ public class Valmanway {
 	public static List<String> getBoardNames() {
 		if (boardNames == null) {
 			boardNames = Arrays.asList(
-					"tower_of_preludes", "dawning", "dawning_interior", "sotn_clock_tower", "morriston"
+					"tower_of_preludes", "dawning", "dawning_interior", "sotn_clock_tower", "morriston", "barrett_station"
 			);
 		}
 		return boardNames;

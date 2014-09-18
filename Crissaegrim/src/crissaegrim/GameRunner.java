@@ -588,8 +588,10 @@ public class GameRunner {
 //		setNewDestination("dawning", new Coordinate(10246, 10003));
 
 //		setNewDestination("morriston", new Coordinate(10019, 10035));
-		setNewDestination("morriston", new Coordinate(10280, 9956));
+//		setNewDestination("morriston", new Coordinate(10280, 9956));
 //		setNewDestination("morriston", new Coordinate(10110, 9994));
+		
+		setNewDestination("barrett_station", new Coordinate(10050.5, 10056));
 		
 	}
 	

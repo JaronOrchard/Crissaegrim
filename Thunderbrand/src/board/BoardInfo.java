@@ -23,7 +23,7 @@ public class BoardInfo {
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10232.5, 10004), "dawning_interior", new Coordinate(10061.5, 10019)));
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10251.5, 10003), "dawning_interior", new Coordinate(10139.5, 10027)));
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10258.5, 10009), "dawning_interior", new Coordinate(10139.5, 10033)));
-			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10283.5, 9999), "sotn_clock_tower", new Coordinate(10177.5, 10033)));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10283.5, 9999), "barrett_station", new Coordinate(10040.5, 10051)));
 		} else if (boardName.equals("dawning_interior")) {
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10043.5, 10019), "dawning", new Coordinate(10214.5, 10004)));
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10061.5, 10019), "dawning", new Coordinate(10232.5, 10004)));
@@ -33,8 +33,10 @@ public class BoardInfo {
 		} else if (boardName.equals("tower_of_preludes")) {
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10050.5, 10016), "dawning", new Coordinate(10052.5, 10013)));
 		} else if (boardName.equals("sotn_clock_tower")) {
-			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(9860.5, 10096), "dawning", new Coordinate(10280.5, 9992)));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(9860.5, 10096), "barrett_station", new Coordinate(10050.5, 10045)));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10177.5, 10033), "barrett_station", new Coordinate(10050.5, 10051)));
 		} else if (boardName.equals("morriston")) {
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10022.5, 10035), "barrett_station", new Coordinate(10060.5, 10051)));
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10271, 9954), MineableRock.OreType.RHICHITE));
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10268, 9954), MineableRock.OreType.RHICHITE));
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10264, 9954), MineableRock.OreType.RHICHITE));
@@ -51,8 +53,34 @@ public class BoardInfo {
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new MineableRock(id, new Coordinate(10258, 9940), MineableRock.OreType.UNKNOWN));
 			// Needs to move into Morriston proper:
 			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Furnace(id, new Coordinate(10290, 9954)));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Signpost(id, new Coordinate(10293.5, 9955), Arrays.asList(
+					"Feel free to smelt ores in this furance.",
+					"...You can't actually do anything with the bars yet, though.")));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Signpost(id, new Coordinate(10115.5, 9991), "(This one's for you, Market Man!)"));
 			
-			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Signpost(id, new Coordinate(10285, 9955), Arrays.asList("Hey", "How's it going")));
+		} else if (boardName.equals("barrett_station")) {
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10040.5, 10051), "dawning", new Coordinate(10283.5, 9999)));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10050.5, 10051), "sotn_clock_tower", new Coordinate(10177.5, 10033)));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Door(id, new Coordinate(10060.5, 10051), "morriston", new Coordinate(10022.5, 10035)));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Signpost(id, new Coordinate(10048.5, 10056), Arrays.asList(
+					"Welcome to Crissaegrim!",
+					"This is Barrett Station, the Hub.",
+					"Feel free to explore the areas",
+					"beyond the three doors below!")));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Signpost(id, new Coordinate(10042.5, 10051), Arrays.asList(
+					"Dawning",
+					"Tower of Preludes (far west)",
+					"(The first area ever!)")));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Signpost(id, new Coordinate(10052.5, 10051), Arrays.asList(
+					"SotN Clock Tower",
+					"(Kill Phantos, get fireworks!)")));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Signpost(id, new Coordinate(10058.5, 10051), Arrays.asList(
+					"Morriston Mine",
+					"(Explore a mine and get ores!)")));
+			doodadMap.put(id = Thunderbrand.getNextDoodadId(), new Signpost(id, new Coordinate(10048.5, 10045), Arrays.asList(
+					"Congrats on reaching the end of the",
+					"clock tower!  Here's a tip:",
+					"Press B to get some nice items!")));
 		}
 	}
 	
@@ -61,6 +89,7 @@ public class BoardInfo {
 		else if (boardName.equals("dawning_interior"))	return Textures.NONE;
 		else if (boardName.equals("tower_of_preludes"))	return Textures.NONE;
 		else if (boardName.equals("sotn_clock_tower"))	return Textures.BACKGROUND_SOTN;
+		else if (boardName.equals("barrett_station"))	return Textures.NONE;
 		else											return Textures.NONE;
 	}
 	

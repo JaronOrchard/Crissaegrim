@@ -89,6 +89,7 @@ public class Mapmaker {
 		//mapmakerBoard = new MapmakerBoard("dawning");
 		//mapmakerBoard = new MapmakerBoard("tower_of_preludes");
 		mapmakerBoard = new MapmakerBoard("morriston");
+		//mapmakerBoard = new MapmakerBoard("barrett_station");
 		
 		//textureRemap(); if(true) return;
 		
